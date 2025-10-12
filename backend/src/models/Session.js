@@ -21,7 +21,7 @@ const sessionSchema = new Schema({
     },
     courseId: { 
         type: mongoose.Schema.Types.ObjectId, 
-        ref: 'Question' 
+        ref: 'Course' 
     },
     // currentQuestionId: { 
     //     type: mongoose.Schema.Types.ObjectId, 
@@ -57,7 +57,8 @@ const sessionSchema = new Schema({
 }, 
 { 
     timestamps: true, // Add createdAt and updatedAt fields
-    versionKey: false // Disable the __v version key
+    versionKey: false, // Disable the __v version key
+    collection: 'Session' // Specify the collection name
 });
 
 //Export the model

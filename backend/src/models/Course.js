@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const debug = require('debug')('backend:models:course');
 
-const {validateTeacherRole} = require('../middleware/authMiddleware');
+const {validateTeacherRole} = require('../middleware/validationRole');
 
 //Define course schema
 const courseSchema = new Schema({
@@ -47,7 +47,8 @@ const courseSchema = new Schema({
 }, 
 { 
     timestamps: true, // Add createdAt and updatedAt fields
-    versionKey: false // Disable the __v version key
+    versionKey: false, // Disable the __v version key
+    collection: 'Course' // Specify the collection name
 }); 
 
 //Pre-save hook to validate that the teacherId corresponds to a user with the 'teacher' role

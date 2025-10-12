@@ -1,5 +1,4 @@
-const mongoose = require('mongoose');
-const debug = require('debug')('backend:middleware:validationRole');
+// Import models
 const User = require('../models/User');
 
 // Middleware to validate teacher role
@@ -13,4 +12,6 @@ async function validateTeacherRole(userId) {
     return true;
 }
 
-module.exports = {validateTeacherRole};
+module.exports = {
+    validateTeacherRole
+};

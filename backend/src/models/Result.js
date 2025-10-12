@@ -32,7 +32,7 @@ const resultSchema = new Schema({
     //Relations
     playerId: { 
         type: Schema.Types.ObjectId, 
-        ref: 'Player', 
+        ref: 'User', 
         required: true 
     },
     sessionId: { 
@@ -61,9 +61,10 @@ const resultSchema = new Schema({
         required: true 
     }
 }, { 
-    timestamps: true,
-    versionKey: false
+    timestamps: true, // Add createdAt and updatedAt fields
+    versionKey: false, // Disable the __v version key
+    collection: 'Result' // Specify the collection name
 });
 
 //Export Result model
-const Result = mongoose.model('Result', resultSchema);
+module.exports = mongoose.model('Result', resultSchema);

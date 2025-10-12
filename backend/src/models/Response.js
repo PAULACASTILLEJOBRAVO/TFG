@@ -58,7 +58,8 @@ const responseSchema = new Schema({
     },
 }, { 
     timestamps: true, // Add createdAt and updatedAt fields
-    versionKey: false // Disable the __v version key
+    versionKey: false, // Disable the __v version key
+    collection: 'Response' // Specify the collection name
 });
 
 //Export the model

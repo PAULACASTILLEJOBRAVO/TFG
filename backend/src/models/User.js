@@ -51,13 +51,14 @@ const userSchema = new Schema({
         type: Boolean, 
         default: true 
     },
-    lastLogin: { 
-        type: Date 
-    },
+    // lastLogin: { 
+    //     type: Date 
+    // },
 }, 
 { 
     timestamps: true, // Add createdAt and updatedAt fields
-    versionKey: false // Disable the __v version key
+    versionKey: false, // Disable the __v version key
+    collection: 'User' // Specify the collection name
 }); 
 
 //Pre-save hook to hash the password before saving

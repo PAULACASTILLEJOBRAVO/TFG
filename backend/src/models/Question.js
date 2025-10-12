@@ -65,7 +65,8 @@ const questionSchema = new Schema({
 }, 
 { 
     timestamps: true, // Add createdAt and updatedAt fields
-    versionKey: false // Disable the __v version key
+    versionKey: false, // Disable the __v version key
+    collection: 'Question' // Specify the collection name
 });
 
 //Ensure and order options before saving

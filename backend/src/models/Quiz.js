@@ -2,8 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const debug = require('debug')('backend:models:quiz');
 
-const Question = require('./route/Question');
-const {validateTeacherRole} = require('../middleware/authMiddleware');
+const {validateTeacherRole} = require('../middleware/validationRole');
 
 //Define quiz schema
 const quizSchema = new Schema({
@@ -65,7 +64,8 @@ const quizSchema = new Schema({
 }, 
 { 
     timestamps: true, // Add createdAt and updatedAt fields
-    versionKey: false // Disable the __v version key
+    versionKey: false, // Disable the __v version key
+    collection: 'Quiz' // Specify the collection name
 });
 
 //Pre-save hook to validate that the creatorId corresponds to a user with the 'teacher' role

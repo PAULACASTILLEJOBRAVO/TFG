@@ -35,7 +35,8 @@ const questionSchema = new Schema({
     }], // Array of options for multiple-choice and true-false questions
     correctOptions: [
         { 
-            type: String 
+            type: String,
+            required: true
         }
     ], // Correct options for multiple-choice and true-false questions
 

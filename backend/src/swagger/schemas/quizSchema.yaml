@@ -1,0 +1,54 @@
+components:
+  schemas:
+    Quiz:
+      type: object
+      required:
+        - title
+        - creatorId
+        - courseId
+      properties:
+        _id:
+          type: ObjectId
+          description: The quiz ID.
+          example: "63a7f0c2e4b0c8b1a1e4d3f3"
+        title:
+          type: string
+          description: The title of the quiz.
+          example: "Midterm Exam - Module 1"
+        description:
+          type: string
+          description: A brief description of the quiz.
+          example: "This quiz covers topics from chapters 1 to 5."
+        dificulty:
+          type: enum
+          description: The difficulty level of the quiz.
+          enum: [Easy, Medium, Hard]
+          example: "Medium"
+        isActive:
+          type: boolean
+          description: Indicates if the quiz is active.
+          example: true
+        isPublic:
+          type: boolean
+          description: Indicates if the quiz is public.
+          example: false
+        createdAt:
+          type: date-time
+          description: The date and time when the quiz was created.
+          example: "2023-07-10T12:00:00Z"
+        updatedAt:
+          type: date-time
+          description: The date and time when the quiz was last updated.
+          example: "2023-07-12T12:00:00Z"
+        creatorId:
+          $ref: '#/components/schemas/User'
+          description: The user who created the quiz.
+        courseId:
+          $ref: '#/components/schemas/Course'
+          description: The course to which the quiz belongs.
+        questionIds:
+          type: array
+          description: The list of questions in the quiz.
+          items:
+            $ref: '#/components/schemas/Question'
+              

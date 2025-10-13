@@ -1,0 +1,53 @@
+components:
+  schemas:
+    Course:
+      type: object
+      required:
+        - title
+        - teacherId
+      properties:
+        _id:
+          type: ObjectId
+          description: The course ID.
+          example: "63a7f0c2e4b0c8b1a1e4d3f2"
+        title:
+          type: string
+          description: The name of the course.
+          example: "Introduction to Programming"
+        description:
+          type: string
+          description: A brief description of the course.
+          example: "This course covers the basics of programming using Python."
+        category:
+          type: string
+          description: The category of the course.
+          example: "Computer Science"
+        isActive:
+          type: boolean
+          description: Indicates if the course is active.
+          example: true
+        max-students:
+          type: integer
+          description: The maximum number of students allowed in the course.
+          example: 30
+        createdAt:
+          type: date-time
+          description: The date and time when the course was created.
+          example: "2023-07-01T12:00:00Z"
+        updatedAt:
+          type: date-time
+          description: The date and time when the course was last updated.
+          example: "2023-07-15T12:00:00Z"
+        teacherId:
+          $ref: '#/components/schemas/User'
+          description: The instructor of the course.
+        studentIds:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+          description: The list of students enrolled in the course.
+        quizIds:
+          type: array
+          description: The list of quizzes associated with the course.
+          items:
+            $ref: '#/components/schemas/Quiz'

@@ -5,7 +5,7 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const path = require('path');
 const createError = require('http-errors');
-var logger = require("morgan");
+const logger = require("morgan");
 
 //Configure debug
 const debug = require('debug')('backend:app');
@@ -27,9 +27,10 @@ const resultRoutes = require('./src/routes/v1/resultRoutes');
 const sessionRoutes = require('./src/routes/v1/sessionRoutes');
 const userRoutes = require('./src/routes/v1/userRoutes');
 
-//Connect to database
-// console.log('Using Mongo URI:', MONGO_URI);
+// Import swagger configuration
+const {swaggerUi, swaggerSpec} = require('./src/config/swagger.js');
 
+//Connect to database
 mongoose.connect(MONGO_URI).then(() => {
     debug('MongoDB connected!');
 }).catch(err => {
@@ -42,6 +43,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'src/public')));
 app.use(logger('dev'));
+
+// Define Swagger route
+app.use('/swagger-api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 //Define principals routes 
 app.use("/", rootRouter);

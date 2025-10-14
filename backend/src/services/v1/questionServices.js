@@ -7,7 +7,13 @@ const getAllQuestions = async () => {
     return await Question.find();
 };
 
+// Service to fetch a question by ID
+const getQuestionById = async (id) => {
+    return await Question.findById(id);
+}
+
 // Export service functions
 module.exports = {
-    getAllQuestions
+    getAllQuestions,
+    getQuestionById
 };

@@ -50,4 +50,4 @@ components:
           type: array
           description: The list of quizzes associated with the course.
           items:
-            $ref: '#/components/schemas/Quiz'
+            $ref: '#/components/schemas/Quiz' 

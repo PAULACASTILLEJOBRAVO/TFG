@@ -26,11 +26,92 @@ const userController = require('../../controllers/v1/userControllers');
  *              content:
  *                  application/json:
  *                      schema:
- *                          type: array
- *                          items:
- *                             $ref: '#/components/schemas/User'
+ *                          type: object
+ *                          properties:
+ *                              message:    
+ *                                  type: string
+ *                                  example: 'Users fetched successfully'
+ *                              data:
+ *                                  type: array
+ *                                  items:
+ *                                      $ref: '#/components/schemas/User'
+ *          500:
+ *              description: Server error while fetching user
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              message:
+ *                                  type: string
+ *                                  example: Error fetching user
+ *                              error:
+ *                                  type: string
  */
 router.get('/', userController.getAllUsers);
+
+// Route to get an user by ID
+/**
+ * @swagger
+ * /v1/users/{id}:
+ *   get:
+ *     summary: Retrieve a user by ID
+ *     description: Retrieve a specific user by their unique MongoDB ObjectId.
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: "68e28135fe97fd5d3f0cc3a4"
+ *     responses:
+ *       200:
+ *         description: User fetched successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: User fetched successfully
+ *                 data: 
+ *                   $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Missing or invalid user ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: User ID is required
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: User not found
+ *       500:
+ *         description: Server error while fetching user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Error fetching user
+ *                 error:
+ *                   type: string
+ */
+router.get('/:id', userController.getUserById);
 
 //Export the module
 module.exports = router;

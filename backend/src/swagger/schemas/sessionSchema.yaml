@@ -1,0 +1,56 @@
+components:
+  schemas:
+    Session:
+      type: object
+      required:
+        - teacherId
+        - playerId
+        - quizId
+        - startTime
+      properties:
+        id:
+          type: objectId
+          description: Unique identifier for the session
+          example: "64b8f0c2e4b0f5a1c2d3e4f5"
+        startTime:
+          type:  date-time
+          description: Start time of the session in ISO 8601 format
+          example: "2023-07-19T12:34:56Z"
+        endTime:
+          type: date-time
+          description: End time of the session in ISO 8601 format
+          example: "2023-07-19T13:34:56Z"
+        status:
+          type: string
+          description: Status of the session
+          enum: ['pending', 'active', 'completed', 'paused']
+          example: "active"
+        createdAt:
+          type: date-time
+          description: Timestamp when the session was created
+          example: "2023-07-19T12:00:00Z"
+        updatedAt:
+          type: date-time
+          description: Timestamp when the session was last updated
+          example: "2023-07-19T12:30:00Z"
+        
+        teacherId:
+          type: array
+          description: Unique identifier for the teacher
+          items:
+            $ref: '#/components/schemas/User'
+        playerId:
+          type: array
+          description: Unique identifier for the player
+          items:
+            $ref: '#/components/schemas/User'
+        quizId:
+          type: array
+          description: Unique identifier for the quiz
+          items:
+            $ref: '#/components/schemas/Quiz'
+        courseId:
+          type: array
+          description: Unique identifier for the course
+          items:
+            $ref: '#/components/schemas/Course'

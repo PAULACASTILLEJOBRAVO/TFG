@@ -5,7 +5,7 @@ const router = express.Router();
 // Import controllers
 const quizController = require('../../controllers/v1/quizControllers');
 
-// Course routes
+// Quiz routes
 /**
  * @swagger
  * tags:
@@ -26,11 +26,92 @@ const quizController = require('../../controllers/v1/quizControllers');
  *              content:
  *                  application/json:
  *                      schema:
- *                          type: array
- *                          items:
- *                              $ref: '#/components/schemas/Quiz'
+ *                          type: object
+ *                          properties:
+ *                              message:    
+ *                                  type: string
+ *                                  example: 'Quizzes fetched successfully'
+ *                              data:
+ *                                  type: array
+ *                                  items:
+ *                                      $ref: '#/components/schemas/Quiz'
+ *          500:
+ *              description: Server error while fetching quizzes
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              message:
+ *                                  type: string
+ *                                  example: Error fetching quizzes
+ *                              error:
+ *                                  type: string
  */
 router.get('/', quizController.getAllQuizzes);
+
+/**
+ * @swagger
+ * /v1/quizzes/{id}:
+ *   get:
+ *     summary: Retrieve a quiz by ID
+ *     description: Retrieve a specific quiz by their unique MongoDB ObjectId.
+ *     tags: [Quizzes]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: "68e28ac9d9eaff29b0c8453b"
+ *     responses:
+ *       200:
+ *         description: Quiz fetched successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Quiz fetched successfully
+ *                 data: 
+ *                   $ref: '#/components/schemas/Quiz'
+ *       400:
+ *         description: Missing or invalid quiz ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Quiz ID is required
+ *       404:
+ *         description: Quiz not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Quiz not found
+ *       500:
+ *         description: Server error while fetching quiz
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Error fetching quiz
+ *                 error:
+ *                   type: string
+ */
+router.get('/:id', quizController.getQuizById);
+
 
 // Export the module
 module.exports = router;

@@ -1,14 +1,14 @@
 // Import services
-const responseService = require('../../services/v1/responseServices');
+const responseServices = require('../../services/v1/responseServices');
 
 // Response controllers
 // Controller to get all responses
 const getAllResponses = async (req, res) => {
   try {
-    const responses = await responseService.getAllResponses();
+    const responses = await responseServices.getAllResponses();
     res.status(200).json({
         message: 'Responses fetched successfully',
-        responses: responses
+        data: responses
     });
   } catch (error) {
     res.status(500).json({ 
@@ -18,7 +18,31 @@ const getAllResponses = async (req, res) => {
   }
 };
 
+// Controller to get a response by ID
+const getResponseById = async (req, res) => {
+  const {id} = req.params;
+
+  if(!id) return res.status(400).json({ message: 'Response ID is required' });
+      
+      try{
+          const response = await responseServices.getResponseById(id);
+  
+          if (!response) return res.status(404).json({ message: 'Response not found' });
+          
+          res.status(200).json({
+              message: 'Response fetched successfully', 
+              data: response
+          });
+      } catch (error){
+          res.status(500).json({ 
+              message: 'Error fetching response', 
+              error: error.message 
+          });
+      }
+}
+
 // Export response controllers
 module.exports = {
   getAllResponses,
+  getResponseById
 };

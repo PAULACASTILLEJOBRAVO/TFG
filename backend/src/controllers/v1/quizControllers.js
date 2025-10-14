@@ -7,7 +7,7 @@ const getAllQuizzes = async (req, res) => {
     try {
         const quizzes = await quizServices.getAllQuizzes();
         res.status(200).json({
-            message: 'Quizzes fetched successful', 
+            data: 'Quizzes fetched successful', 
             quizzes: quizzes
         });
     } catch (error) {
@@ -18,7 +18,32 @@ const getAllQuizzes = async (req, res) => {
     }
 };
 
+// Controller to get a quiz by ID
+const getQuizById = async (req, res) => {
+    const {id} = req.params;
+
+    if(!id) return res.status(400).json({ message: 'Quiz ID is required' });
+    
+    try{
+        const quiz = await quizServices.getQuizById(id);
+
+        if (!quiz) return res.status(404).json({ message: 'Quiz not found' });
+        
+        res.status(200).json({
+            message: 'Quiz fetched successfully', 
+            data: quiz
+        });
+    } catch (error){
+        res.status(500).json({ 
+            message: 'Error fetching quiz', 
+            error: error.message 
+        });
+    }
+}
+
+
 // Export controllers functions
 module.exports = {
-    getAllQuizzes
+    getAllQuizzes,
+    getQuizById
 };

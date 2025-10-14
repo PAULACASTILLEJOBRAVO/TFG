@@ -1,0 +1,68 @@
+components:
+  schemas:
+    Response:
+      type: object
+      required:
+      - answer
+      - isCorrect
+      - timeTaken
+      - pointsAwarded
+      - playerId
+      - sessionId
+      - questionId
+      properties:
+        _id:
+          type: ObjectId
+          description: The response ID.
+          example: "63a7f0c2e4b0c8b1a1e4d3f4"
+        answer:
+          type: string
+          description: The answer provided by the player.
+          example: "Stack"
+        isCorrect:
+          type: boolean
+          description: Indicates if the answer is correct.
+          example: true
+        timeTaken:
+          type: integer
+          description: The time taken to answer the question in seconds.
+          example: 30
+        pointsAwarded:
+          type: integer
+          description: The points awarded for the answer.
+          example: 10
+        attemptNumber:
+          type: integer
+          description: The attempt number for this question.
+          example: 1
+        isFirstAttempt:
+          type: boolean
+          description: Indicates if this is the first attempt for the question.
+          example: true
+        isFinalAttempt:
+          type: boolean
+          description: Indicates if this is the final attempt for the question.
+          example: true
+        createdAt:
+          type: date-time
+          description: The date and time when the response was created.
+          example: "2023-07-10T12:00:00Z"
+        updatedAt:
+          type: date-time
+          description: The date and time when the response was last updated.
+          example: "2023-07-10T12:05:00Z"
+        playerId:
+          type: array
+          description: The ID of the player who provided the response.
+          items:
+            $ref: '#/components/schemas/User'
+        sessionId:
+          type: array
+          description: The ID of the game session.
+          items:
+            $ref: '#/components/schemas/Session'
+        questionId:
+          type: array
+          description: The ID of the question being answered.
+          items:
+            $ref: '#/components/schemas/Question'

@@ -56,7 +56,7 @@ const resultSchema = new Schema({
         type: Number, // in seconds
         required: true 
     },
-    FinishedAt: { 
+    finishedAt: { 
         type: Date, 
         required: true 
     }

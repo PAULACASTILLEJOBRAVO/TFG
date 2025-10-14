@@ -1,0 +1,75 @@
+components:
+  schemas:
+    Result:
+      type: object
+      required:
+        - totalScore
+        - correctAnswers
+        - wrongAnswers
+        - unansweredAnswers
+        - totalQuestions
+        - rank
+        - playerId
+        - sessionId
+        - quizId
+      properties:
+        totalScore:
+          type: number
+          description: Total score obtained by the player.
+          example: 85
+        correctAnswers:
+          type: integer
+          description: Number of correct answers given by the player.
+          example: 17
+        wrongAnswers:
+          type: integer
+          description: Number of wrong answers given by the player.
+          example: 3
+        unansweredAnswers:
+          type: integer
+          description: Number of unanswered questions.
+          example: 0
+        totalQuestions:
+          type: integer
+          description: Total number of questions in the quiz.
+          example: 20
+        rank:
+          type: integer
+          description: Player's rank in the session.
+          example: 2
+        status:
+          type: enum
+          enum: ["completed", "in-progress"]
+          description: Status of the result (e.g., "completed", "in-progress").
+          example: "completed"
+        timeTaken:
+          type: integer
+          description: Time taken to complete the quiz in seconds.
+          example: 300
+        createdAt:
+          type: date-time
+          description: Timestamp when the quiz was started.
+          example: "2023-10-01T10:00:00Z"
+        updatedAt:
+          type: date-time
+          description: Timestamp when the result was last updated.
+          example: "2023-10-01T10:05:00Z"
+        finishedAt:
+          type: date-time
+          description: Timestamp when the quiz was finished.
+          example: "2023-10-01T10:05:00Z"
+        playerId:
+          type: array
+          description: Unique identifier of the player.
+          items:
+            $ref: '#/components/schemas/User'
+        sessionId:
+          type: array
+          description: Unique identifier of the game session.
+          items:
+            $ref: '#/components/schemas/Session'
+        quizId:
+          type: array
+          description: Unique identifier of the quiz.
+          items:
+            $ref: '#/components/schemas/Quiz'

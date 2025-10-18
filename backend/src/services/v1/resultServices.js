@@ -12,8 +12,19 @@ const getResultById = async (id) => {
   return await Result.findById(id).populate('playerId').populate('quizId').populate('sessionId');
 }
 
+// Service to create a new Result
+const createResult = async (body) => {
+    try{
+        return await Result.create(body);
+    } catch(error){
+        throw error.message;
+    }
+}
+
 // Export result services
 module.exports = {
   getAllResults,
-  getResultById
+  getResultById,
+
+  createResult
 };

@@ -62,5 +62,17 @@ const responseSchema = new Schema({
     collection: 'Response' // Specify the collection name
 });
 
+// Pre-save hook to automatically set 'isFinalAttempt' based on 'attemptNumber'
+responseSchema.pre('save', function(next) {
+    // If this is the first attempt, mark as final attempt
+    if (this.attemptNumber === 1) {
+        this.isFinalAttempt = true;
+    } else {
+        // For any other attempt number, mark as not final
+        this.isFinalAttempt = false;
+    }
+    next();
+});
+
 //Export the model
 module.exports = mongoose.model('Response', responseSchema);

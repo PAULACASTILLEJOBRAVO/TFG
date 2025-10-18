@@ -12,8 +12,19 @@ const getSessionById = async (id) => {
   return await Session.findById(id).populate('teacherId').populate('playerIds').populate('quizId').populate('courseId');
 };
 
+// Service to create a new session
+const createSession = async (body) => {
+    try{
+        return await Session.create(body);
+    } catch(error){
+        throw error.message;
+    }
+}
+
 // Export session services
 module.exports = {
   getAllSessions,
-  getSessionById
+  getSessionById,
+
+  createSession
 };

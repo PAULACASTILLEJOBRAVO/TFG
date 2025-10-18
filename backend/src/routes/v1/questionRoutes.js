@@ -112,5 +112,9 @@ router.get('/', questionController.getAllQuestions);
  */
 router.get('/:id', questionController.getQuestionById);
 
+// Route to post an user
+
+router.post('/', questionController.createQuestion);
+
 // Export the module
 module.exports = router;

@@ -111,5 +111,9 @@ router.get('/', responseController.getAllResponses);
  */
 router.get('/:id', responseController.getResponseById);
 
+// Route to post an user
+
+router.post('/', responseController.createResponse);
+
 // Export the module
 module.exports = router;

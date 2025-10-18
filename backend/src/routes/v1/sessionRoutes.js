@@ -113,5 +113,9 @@ router.get('/', sessionController.getAllSessions);
 router.get('/:id', sessionController.getSessionById);
 
 
+// Route to post an user
+
+router.post('/', sessionController.createSession);
+
 // Export the module
 module.exports = router;

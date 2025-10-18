@@ -110,6 +110,9 @@ router.get('/', resultController.getAllResults);
  */
 router.get('/:id', resultController.getResultById);
 
+// Route to post an user
+
+router.post('/', resultController.createResult);
 
 // Export the module
 module.exports = router;

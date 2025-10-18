@@ -41,8 +41,31 @@ const getResponseById = async (req, res) => {
       }
 }
 
+// Controller to create a new response
+const createResponse = async (req, res) => {
+    const {body} = req;
+
+    if (!body) return res.status(400).json({ message: 'Body is required' });
+
+    try{
+        const newResponse = await responseServices.createResponse(body);
+
+        res.status(201).json({
+            message: 'Response created successfully', 
+            data: newResponse
+        });    
+    } catch(error){
+        res.status(500).json({ 
+            message: 'Error creating response', 
+            error: error.message 
+        });
+    }
+}
+
 // Export response controllers
 module.exports = {
   getAllResponses,
-  getResponseById
+  getResponseById,
+
+  createResponse
 };

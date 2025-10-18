@@ -113,5 +113,9 @@ router.get('/', userController.getAllUsers);
  */
 router.get('/:id', userController.getUserById);
 
+// Route to post an user
+
+router.post('/', userController.createUser);
+
 //Export the module
 module.exports = router;

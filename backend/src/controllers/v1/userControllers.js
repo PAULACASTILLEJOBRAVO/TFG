@@ -41,8 +41,36 @@ const getUserById = async (req, res) => {
     }
 }
 
+// Controller to create a new user
+const createUser = async (req, res) => {
+    const {body} = req;
+
+    if (!body) return res.status(400).json({ message: 'Body is required' });
+
+    try{
+        const newUser = await userServices.createUser(body);
+
+        res.status(201).json({
+            message: 'User created successfully', 
+            data: newUser
+        });    
+    } catch(error){
+        if(error.code === 11000) return res.status(400).json({
+            message: 'Username is in use',
+            error: error.message
+        })
+
+        res.status(500).json({ 
+            message: 'Error creating user', 
+            error: error.message 
+        });
+    }
+}
+
 //Export controller functions
 module.exports = {
     getAllUsers,
-    getUserById
+    getUserById,
+    
+    createUser
 };  

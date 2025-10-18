@@ -41,8 +41,31 @@ const getSessionById = async (req, res) => {
     }
 }
 
+// Controller to create a new session
+const createSession = async (req, res) => {
+    const {body} = req;
+
+    if (!body) return res.status(400).json({ message: 'Body is required' });
+
+    try{
+        const newSession = await sessionServices.createSession(body);
+
+        res.status(201).json({
+            message: 'Session created successfully', 
+            data: newSession
+        });    
+    } catch(error){
+        res.status(500).json({ 
+            message: 'Error creating session', 
+            error: error.message 
+        });
+    }
+}
+
 // Export session controllers
 module.exports = {
   getAllSessions,
-  getSessionById
+  getSessionById,
+
+  createSession
 };

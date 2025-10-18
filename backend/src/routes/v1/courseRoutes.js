@@ -113,5 +113,9 @@ router.get('/', courseController.getAllCourses);
  */
 router.get('/:id', courseController.getCourseById);
 
+// Route to post an user
+
+router.post('/', courseController.createCourse);
+
 // Export the module
 module.exports = router;

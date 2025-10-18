@@ -12,8 +12,19 @@ const getQuizById = async (id) => {
     return await Quiz.findById(id).populate('creatorId').populate('courseId').populate('questionIds');
 }
 
+// Service to create a new user
+const createQuiz = async (body) => {
+    try{
+        return await Quiz.create(body);
+    } catch(error){
+        throw error.message;
+    }
+}
+
 // Export service functions
 module.exports = {
     getAllQuizzes,
-    getQuizById
+    getQuizById,
+
+    createQuiz
 };

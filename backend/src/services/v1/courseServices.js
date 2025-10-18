@@ -12,8 +12,19 @@ const getCourseById = async (id) => {
     return await Course.findById(id).populate('teacherId').populate('studentIds').populate('quizIds');
 }
 
+// Service to create a new course
+const createCourse = async (body) => {
+    try{
+        return await Course.create(body);
+    } catch(error){
+        throw error.message;
+    }
+}
+
 // Export service functions
 module.exports = {
     getAllCourses,
-    getCourseById
+    getCourseById,
+    
+    createCourse
 };

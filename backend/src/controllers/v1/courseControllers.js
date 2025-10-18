@@ -41,8 +41,31 @@ const getCourseById = async (req, res) => {
     } 
 }
 
+// Controller to create a new course
+const createCourse = async (req, res) => {
+    const {body} = req;
+
+    if (!body) return res.status(400).json({ message: 'Body is required' });
+
+    try{
+        const newCourse = await courseServices.createCourse(body);
+
+        res.status(201).json({
+            message: 'Course created successfully', 
+            data: newCourse
+        });    
+    } catch(error){
+        res.status(500).json({ 
+            message: 'Error creating course', 
+            error: error.message 
+        });
+    }
+}
+
 // Export controllers functions
 module.exports = {
     getAllCourses,
-    getCourseById
+    getCourseById,
+
+    createCourse
 };

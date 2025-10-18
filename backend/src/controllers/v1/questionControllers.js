@@ -41,8 +41,31 @@ const getQuestionById = async (req, res) => {
     }
 }
 
+// Controller to create a new question
+const createQuestion = async (req, res) => {
+    const {body} = req;
+
+    if (!body) return res.status(400).json({ message: 'Body is required' });
+
+    try{
+        const newQuestion = await questionServices.createQuestion(body);
+
+        res.status(201).json({
+            message: 'Question created successfully', 
+            data: newQuestion
+        });    
+    } catch(error){
+        res.status(500).json({ 
+            message: 'Error creating question', 
+            error: error.message 
+        });
+    }
+}
+
 // Export controllers functions
 module.exports = {
     getAllQuestions,
-    getQuestionById
+    getQuestionById,
+
+    createQuestion
 };

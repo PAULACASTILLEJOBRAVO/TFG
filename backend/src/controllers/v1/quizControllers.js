@@ -41,9 +41,31 @@ const getQuizById = async (req, res) => {
     }
 }
 
+// Controller to create a new quiz
+const createQuiz = async (req, res) => {
+    const {body} = req;
+
+    if (!body) return res.status(400).json({ message: 'Body is required' });
+
+    try{
+        const newQuiz = await quizServices.createQuiz(body);
+
+        res.status(201).json({
+            message: 'Quiz created successfully', 
+            data: newQuiz
+        });    
+    } catch(error){
+        res.status(500).json({ 
+            message: 'Error creating quiz', 
+            error: error.message 
+        });
+    }
+}
 
 // Export controllers functions
 module.exports = {
     getAllQuizzes,
-    getQuizById
+    getQuizById,
+
+    createQuiz
 };

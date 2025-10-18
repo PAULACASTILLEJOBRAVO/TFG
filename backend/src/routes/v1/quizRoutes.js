@@ -112,6 +112,9 @@ router.get('/', quizController.getAllQuizzes);
  */
 router.get('/:id', quizController.getQuizById);
 
+// Route to post an user
+
+router.post('/', quizController.createQuiz);
 
 // Export the module
 module.exports = router;

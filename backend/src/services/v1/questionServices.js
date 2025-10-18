@@ -12,8 +12,19 @@ const getQuestionById = async (id) => {
     return await Question.findById(id);
 }
 
+// Service to create a new question
+const createQuestion = async (body) => {
+    try{
+        return await Question.create(body);
+    } catch(error){
+        throw error.message;
+    }
+}
+
 // Export service functions
 module.exports = {
     getAllQuestions,
-    getQuestionById
+    getQuestionById,
+
+    createQuestion
 };

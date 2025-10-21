@@ -45,7 +45,7 @@ const getSessionById = async (req, res) => {
 const createSession = async (req, res) => {
     const {body} = req;
 
-    if (!body) return res.status(400).json({ message: 'Body is required' });
+    if (!body) return res.status(400).json({ message: 'Invalid session data. Body is required' });
 
     try{
         const newSession = await sessionServices.createSession(body);

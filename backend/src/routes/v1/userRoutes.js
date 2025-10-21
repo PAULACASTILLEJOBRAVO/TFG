@@ -114,7 +114,56 @@ router.get('/', userController.getAllUsers);
 router.get('/:id', userController.getUserById);
 
 // Route to post an user
-
+/**
+ * @swagger
+ * /v1/users:
+ *   post:
+ *     summary: Create a new user
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UserInput'
+ *     responses:
+ *       201:
+ *         description: User created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'User created successfully'
+ *                 data:
+ *                   $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Invalid input or duplicate entry
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Invalid user data'
+ *                 error:
+ *                   type: string
+ *       500:
+ *         description: Server error while creating user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Error creating user'
+ *                 error:
+ *                   type: string
+ */
 router.post('/', userController.createUser);
 
 //Export the module

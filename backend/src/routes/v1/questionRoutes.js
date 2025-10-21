@@ -113,7 +113,56 @@ router.get('/', questionController.getAllQuestions);
 router.get('/:id', questionController.getQuestionById);
 
 // Route to post an user
-
+/**
+ * @swagger
+ * /v1/questions:
+ *   post:
+ *     summary: Create a new question
+ *     tags: [Questions]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/QuestionInput'
+ *     responses:
+ *       201:
+ *         description: Question created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Question created successfully'
+ *                 data:
+ *                   $ref: '#/components/schemas/Question'
+ *       400:
+ *         description: Invalid input entry
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Invalid question data. Body is required'
+ *                 error:
+ *                   type: string
+ *       500:
+ *         description: Server error while creating question
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Error creating question'
+ *                 error:
+ *                   type: string
+ */
 router.post('/', questionController.createQuestion);
 
 // Export the module

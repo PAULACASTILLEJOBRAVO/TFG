@@ -1,0 +1,38 @@
+components:
+  schemas:
+    QuizInput:
+      type: object
+      required:
+        - title
+        - creatorId
+        - courseId
+      properties:
+        title:
+          type: string
+          description: The title of the quiz.
+          example: "Midterm Exam - Module 1"
+        description:
+          type: string
+          description: A brief description of the quiz.
+          example: "This quiz covers topics from chapters 1 to 5."
+        dificulty:
+          type: enum
+          description: The difficulty level of the quiz.
+          enum: [Easy, Medium, Hard]
+          default: "Medium"
+        isActive:
+          type: boolean
+          description: Indicates if the quiz is active.
+          default: false
+        isPublic:
+          type: boolean
+          description: Indicates if the quiz is public.
+          default: false
+        creatorId:
+          type: ObjectId
+          description: The user ID who created the quiz.
+          example: '64a7f0c2e4b0c8b1a1e4d3f2'
+        courseId:
+          type: ObjectId
+          description: The course ID to which the quiz belongs.
+          example: '63a7f0c2e4b0c8b1a1e4d3f2'

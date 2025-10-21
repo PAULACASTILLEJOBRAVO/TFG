@@ -113,8 +113,57 @@ router.get('/', courseController.getAllCourses);
  */
 router.get('/:id', courseController.getCourseById);
 
-// Route to post an user
-
+// Route to post an course
+/**
+ * @swagger
+ * /v1/courses:
+ *   post:
+ *     summary: Create a new course
+ *     tags: [Courses]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/CourseInput'
+ *     responses:
+ *       201:
+ *         description: Course created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Course created successfully'
+ *                 data:
+ *                   $ref: '#/components/schemas/Course'
+ *       400:
+ *         description: Invalid input entry
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Invalid course data. Body is required'
+ *                 error:
+ *                   type: string
+ *       500:
+ *         description: Server error while creating course
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Error creating course'
+ *                 error:
+ *                   type: string
+ */
 router.post('/', courseController.createCourse);
 
 // Export the module

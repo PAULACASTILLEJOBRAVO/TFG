@@ -111,7 +111,56 @@ router.get('/', resultController.getAllResults);
 router.get('/:id', resultController.getResultById);
 
 // Route to post an user
-
+/**
+ * @swagger
+ * /v1/results:
+ *   post:
+ *     summary: Create a new result
+ *     tags: [Results]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ResultInput'
+ *     responses:
+ *       201:
+ *         description: Result created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Result created successfully'
+ *                 data:
+ *                   $ref: '#/components/schemas/Result'
+ *       400:
+ *         description: Invalid input entry
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Invalid result data. Body is required'
+ *                 error:
+ *                   type: string
+ *       500:
+ *         description: Server error while creating result
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Error creating result'
+ *                 error:
+ *                   type: string
+ */
 router.post('/', resultController.createResult);
 
 // Export the module

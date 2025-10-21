@@ -45,7 +45,7 @@ const getQuizById = async (req, res) => {
 const createQuiz = async (req, res) => {
     const {body} = req;
 
-    if (!body) return res.status(400).json({ message: 'Body is required' });
+    if (!body) return res.status(400).json({ message: 'Invalid quiz data. Body is required' });
 
     try{
         const newQuiz = await quizServices.createQuiz(body);

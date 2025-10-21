@@ -113,7 +113,56 @@ router.get('/', quizController.getAllQuizzes);
 router.get('/:id', quizController.getQuizById);
 
 // Route to post an user
-
+/**
+ * @swagger
+ * /v1/quizzes:
+ *   post:
+ *     summary: Create a new quiz
+ *     tags: [Quizzes]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/QuizInput'
+ *     responses:
+ *       201:
+ *         description: Quiz created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Quiz created successfully'
+ *                 data:
+ *                   $ref: '#/components/schemas/Quiz'
+ *       400:
+ *         description: Invalid input entry
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Invalid quiz data. Body is required'
+ *                 error:
+ *                   type: string
+ *       500:
+ *         description: Server error while creating quiz
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Error creating quiz'
+ *                 error:
+ *                   type: string
+ */
 router.post('/', quizController.createQuiz);
 
 // Export the module

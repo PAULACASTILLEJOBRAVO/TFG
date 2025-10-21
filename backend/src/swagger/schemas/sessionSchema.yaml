@@ -33,7 +33,6 @@ components:
           type: date-time
           description: Timestamp when the session was last updated
           example: "2023-07-19T12:30:00Z"
-        
         teacherId:
           type: array
           description: Unique identifier for the teacher

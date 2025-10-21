@@ -45,7 +45,7 @@ const getResponseById = async (req, res) => {
 const createResponse = async (req, res) => {
     const {body} = req;
 
-    if (!body) return res.status(400).json({ message: 'Body is required' });
+    if (!body) return res.status(400).json({ message: 'Invalid response data. Body is required' });
 
     try{
         const newResponse = await responseServices.createResponse(body);

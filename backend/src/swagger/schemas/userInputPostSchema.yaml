@@ -1,16 +1,12 @@
 components:
   schemas:
-    User:
+    UserInput:
       type: object
       required:
         - username
         - password
         - email
       properties:
-        _id:
-          type: ObjectId
-          description: The user ID.
-          example: "64a7f0c2e4b0c8b1a1e4d3f2"
         username:
           type: string
           description: The username of the user.
@@ -24,6 +20,7 @@ components:
           type: string
           description: The password of the user.
           format: password
+          example: "HolaMundo1234"
         role:
           type: string
           description: The role of the user.
@@ -36,13 +33,5 @@ components:
         isActive:
           type: boolean
           description: Indicates if the user is active.
-          example: true
-        createdAt:
-          type: date-time
-          description: The date and time when the user was created.
-          example: "2023-07-01T12:00:00Z"
-        updatedAt:
-          type: date-time
-          description: The date and time when the user was last updated.
-          example: "2023-07-15T12:00:00Z"
+          default: true
         

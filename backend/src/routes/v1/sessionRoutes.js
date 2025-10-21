@@ -114,7 +114,56 @@ router.get('/:id', sessionController.getSessionById);
 
 
 // Route to post an user
-
+/**
+ * @swagger
+ * /v1/sessions:
+ *   post:
+ *     summary: Create a new session
+ *     tags: [Sessions]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/SessionInput'
+ *     responses:
+ *       201:
+ *         description: Session created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Session created successfully'
+ *                 data:
+ *                   $ref: '#/components/schemas/Session'
+ *       400:
+ *         description: Invalid input entry
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Invalid session data. Body is required'
+ *                 error:
+ *                   type: string
+ *       500:
+ *         description: Server error while creating session
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Error creating session'
+ *                 error:
+ *                   type: string
+ */
 router.post('/', sessionController.createSession);
 
 // Export the module

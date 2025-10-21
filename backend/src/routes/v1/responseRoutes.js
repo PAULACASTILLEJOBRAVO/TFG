@@ -112,6 +112,56 @@ router.get('/', responseController.getAllResponses);
 router.get('/:id', responseController.getResponseById);
 
 // Route to post an user
+/**
+ * @swagger
+ * /v1/responses:
+ *   post:
+ *     summary: Create a new response
+ *     tags: [Responses]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ResponseInput'
+ *     responses:
+ *       201:
+ *         description: Resposne created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Response created successfully'
+ *                 data:
+ *                   $ref: '#/components/schemas/Response'
+ *       400:
+ *         description: Invalid input entry
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Invalid response data. Body is required'
+ *                 error:
+ *                   type: string
+ *       500:
+ *         description: Server error while creating response
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Error creating response'
+ *                 error:
+ *                   type: string
+ */
 
 router.post('/', responseController.createResponse);
 

@@ -45,7 +45,7 @@ const getQuestionById = async (req, res) => {
 const createQuestion = async (req, res) => {
     const {body} = req;
 
-    if (!body) return res.status(400).json({ message: 'Body is required' });
+    if (!body) return res.status(400).json({ message: 'Invalid question data. Body is required' });
 
     try{
         const newQuestion = await questionServices.createQuestion(body);

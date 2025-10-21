@@ -45,7 +45,7 @@ const getCourseById = async (req, res) => {
 const createCourse = async (req, res) => {
     const {body} = req;
 
-    if (!body) return res.status(400).json({ message: 'Body is required' });
+    if (!body) return res.status(400).json({ message: 'Invalid course data. Body is required' });
 
     try{
         const newCourse = await courseServices.createCourse(body);

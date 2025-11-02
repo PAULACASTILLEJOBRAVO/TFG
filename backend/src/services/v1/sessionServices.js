@@ -21,10 +21,25 @@ const createSession = async (body) => {
     }
 }
 
+// Service to delete a session by ID
+const deleteSessionById = async (id) => {
+    try {
+        const session = await getSessionById(id);
+        if (!session) return false; // If the session doesn't exist, return false
+
+        await Session.findByIdAndDelete(id);
+        return true; // Return true if deletion was successful
+    } catch (error) {
+        throw new Error(error.message);
+    }
+}
+
 // Export session services
 module.exports = {
   getAllSessions,
   getSessionById,
 
-  createSession
+  createSession,
+
+  deleteSessionById,
 };

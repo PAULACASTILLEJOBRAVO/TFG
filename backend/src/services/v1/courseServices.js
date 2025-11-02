@@ -21,10 +21,25 @@ const createCourse = async (body) => {
     }
 }
 
+// Service to delete a course by ID
+const deleteCourseById = async (id) => {
+    try {
+        const course = await getCourseById(id);
+        if (!course) return false; // If the course doesn't exist, return false
+
+        await Course.findByIdAndDelete(id);
+        return true; // Return true if deletion was successful
+    } catch (error) {
+        throw new Error(error.message);
+    }
+}
+
 // Export service functions
 module.exports = {
     getAllCourses,
     getCourseById,
     
-    createCourse
+    createCourse,
+
+    deleteCourseById,
 };

@@ -21,10 +21,25 @@ const createQuestion = async (body) => {
     }
 }
 
+// Service to delete a question by ID
+const deleteQuestionById = async (id) => {
+    try {
+        const question = await getQuestionById(id);
+        if (!question) return false; // If the question doesn't exist, return false
+
+        await Question.findByIdAndDelete(id);
+        return true; // Return true if deletion was successful
+    } catch (error) {
+        throw new Error(error.message);
+    }
+}
+
 // Export service functions
 module.exports = {
     getAllQuestions,
     getQuestionById,
 
-    createQuestion
+    createQuestion,
+
+    deleteQuestionById,
 };

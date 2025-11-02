@@ -1,4 +1,5 @@
 // Import models
+const { get } = require('mongoose');
 const User = require('../../models/User');
 
 // User services
@@ -21,10 +22,25 @@ const createUser = async (body) => {
     }
 }
 
+// Service to delete an user by ID
+const deleteUserById = async (id) => {
+    try {
+        const user = await getUserById(id);
+        if (!user) return false; // If the user doesn't exist, return false
+
+        await User.findByIdAndDelete(id);
+        return true; // Return true if deletion was successful
+    } catch (error) {
+        throw new Error(error.message);
+    }
+}
+
 // Export service functions
 module.exports = {
     getAllUsers,
     getUserById,
     
-    createUser
+    createUser,
+
+    deleteUserById,
 };

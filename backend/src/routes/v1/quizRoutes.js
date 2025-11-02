@@ -165,5 +165,67 @@ router.get('/:id', quizController.getQuizById);
  */
 router.post('/', quizController.createQuiz);
 
+// Route to delete a quiz by ID
+/**
+ * @swagger
+ * /v1/quizzes/{id}:
+ *   delete:
+ *     summary: Delete a quiz by ID
+ *     description: Permanently removes a quiz from the database using its unique MongoDB ObjectId.
+ *     tags: [Quizzes]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: "68f3cd3785388f1653996766"
+ *     responses:
+ *       200:
+ *         description: Quiz deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Quiz deleted successfully
+ *       400:
+ *         description: Missing or invalid quiz ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Quiz ID is required
+ *       404:
+ *         description: Quiz not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Quiz not found
+ *       500:
+ *         description: Server error while deleting quiz
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Error deleting quiz
+ *                 error:
+ *                   type: string
+ */
+
+router.delete('/:id', quizController.deleteQuizById);
+
 // Export the module
 module.exports = router;

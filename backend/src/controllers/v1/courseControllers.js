@@ -62,10 +62,34 @@ const createCourse = async (req, res) => {
     }
 }
 
+// Controller to delete a course by ID
+const deleteCourseById = async (req, res) => {
+    const {id} = req.params;
+
+    if(!id) return res.status(400).json({ message: 'Course ID is required'});
+
+    try{
+        const deleted = await courseServices.deleteCourseById(id);
+
+        if (!deleted) return res.status(404).json({ message: 'Course not found' });
+
+        res.status(200).json({
+         message: 'Course deleted successfully'
+        });
+    }catch(error){
+        res.status(500).json({
+            message: 'Error deleting course',
+            error: error.message
+        })
+    }
+}
+
 // Export controllers functions
 module.exports = {
     getAllCourses,
     getCourseById,
 
-    createCourse
+    createCourse,
+
+    deleteCourseById,
 };

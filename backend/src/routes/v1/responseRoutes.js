@@ -165,5 +165,67 @@ router.get('/:id', responseController.getResponseById);
 
 router.post('/', responseController.createResponse);
 
+// Route to delete a response by ID
+/**
+ * @swagger
+ * /v1/responses/{id}:
+ *   delete:
+ *     summary: Delete a response by ID
+ *     description: Permanently removes a response from the database using its unique MongoDB ObjectId.
+ *     tags: [Responses]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: "68f3df0ceaf212f6ed41e5a0"
+ *     responses:
+ *       200:
+ *         description: Response deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Response deleted successfully
+ *       400:
+ *         description: Missing or invalid response ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Response ID is required
+ *       404:
+ *         description: Response not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Response not found
+ *       500:
+ *         description: Server error while deleting response
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Error deleting response
+ *                 error:
+ *                   type: string
+ */
+
+router.delete('/:id', responseController.deleteResponseById);
+
 // Export the module
 module.exports = router;

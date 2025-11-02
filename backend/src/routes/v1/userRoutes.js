@@ -166,5 +166,66 @@ router.get('/:id', userController.getUserById);
  */
 router.post('/', userController.createUser);
 
+// Route to delete an user by ID
+/**
+ * @swagger
+ * /v1/users/{id}:
+ *   delete:
+ *     summary: Delete a user by ID
+ *     description: Permanently removes a User from the database using its unique MongoDB ObjectId.
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: "68f270d1e556829877241f19"
+ *     responses:
+ *       200:
+ *         description: User deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: User deleted successfully
+ *       400:
+ *         description: Missing or invalid {{modelo}} ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: User ID is required
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: User not found
+ *       500:
+ *         description: Server error while deleting user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Error deleting user
+ *                 error:
+ *                   type: string
+ */
+router.delete('/:id', userController.deleteUserById);
+
 //Export the module
 module.exports = router;

@@ -62,10 +62,34 @@ const createQuestion = async (req, res) => {
     }
 }
 
+// Controller to delete a question by ID
+const deleteQuestionById = async (req, res) => {
+    const {id} = req.params;
+
+    if(!id) return res.status(400).json({ message: 'Question ID is required'});
+
+    try{
+        const deleted = await questionServices.deleteQuestionById(id);
+
+        if (!deleted) return res.status(404).json({ message: 'Question not found' });
+
+        res.status(200).json({
+         message: 'Question deleted successfully'
+        });
+    }catch(error){
+        res.status(500).json({
+            message: 'Error deleting question',
+            error: error.message
+        })
+    }
+}
+
 // Export controllers functions
 module.exports = {
     getAllQuestions,
     getQuestionById,
 
-    createQuestion
+    createQuestion,
+
+    deleteQuestionById,
 };

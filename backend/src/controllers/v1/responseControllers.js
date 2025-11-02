@@ -62,10 +62,34 @@ const createResponse = async (req, res) => {
     }
 }
 
+// Controller to delete a response by ID
+const deleteResponseById = async (req, res) => {
+    const {id} = req.params;
+
+    if(!id) return res.status(400).json({ message: 'Response ID is required'});
+
+    try{
+        const deleted = await responseServices.deleteResponseById(id);
+
+        if (!deleted) return res.status(404).json({ message: 'Response not found' });
+
+        res.status(200).json({
+         message: 'Response deleted successfully'
+        });
+    }catch(error){
+        res.status(500).json({
+            message: 'Error deleting response',
+            error: error.message
+        })
+    }
+}
+
 // Export response controllers
 module.exports = {
   getAllResponses,
   getResponseById,
 
-  createResponse
+  createResponse,
+
+  deleteResponseById,
 };

@@ -21,10 +21,26 @@ const createQuiz = async (body) => {
     }
 }
 
+
+// Service to delete an user by ID
+const deleteQuizById = async (id) => {
+    try {
+        const quiz = await getQuizById(id);
+        if (!quiz) return false; // If the quiz doesn't exist, return false
+
+        await Quiz.findByIdAndDelete(id);
+        return true; // Return true if deletion was successful
+    } catch (error) {
+        throw new Error(error.message);
+    }
+}
+
 // Export service functions
 module.exports = {
     getAllQuizzes,
     getQuizById,
 
-    createQuiz
+    createQuiz,
+
+    deleteQuizById,
 };

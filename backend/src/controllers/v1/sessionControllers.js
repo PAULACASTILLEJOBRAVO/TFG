@@ -62,10 +62,34 @@ const createSession = async (req, res) => {
     }
 }
 
+// Controller to delete a session by ID
+const deleteSessionById = async (req, res) => {
+    const {id} = req.params;
+
+    if(!id) return res.status(400).json({ message: 'Session ID is required'});
+
+    try{
+        const deleted = await sessionServices.deleteSessionById(id);
+
+        if (!deleted) return res.status(404).json({ message: 'Session not found' });
+
+        res.status(200).json({
+         message: 'Session deleted successfully'
+        });
+    }catch(error){
+        res.status(500).json({
+            message: 'Error deleting session',
+            error: error.message
+        })
+    }
+}
+
 // Export session controllers
 module.exports = {
   getAllSessions,
   getSessionById,
 
-  createSession
+  createSession,
+
+  deleteSessionById,
 };

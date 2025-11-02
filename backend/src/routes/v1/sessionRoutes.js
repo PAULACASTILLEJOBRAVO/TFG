@@ -166,5 +166,66 @@ router.get('/:id', sessionController.getSessionById);
  */
 router.post('/', sessionController.createSession);
 
+// Route to delete a session by ID
+/**
+ * @swagger
+ * /v1/sessions/{id}:
+ *   delete:
+ *     summary: Delete a session by ID
+ *     description: Permanently removes a session from the database using its unique MongoDB ObjectId.
+ *     tags: [Sessions]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: "68f3d3bb85388f1653996798"
+ *     responses:
+ *       200:
+ *         description: Session deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Session deleted successfully
+ *       400:
+ *         description: Missing or invalid session ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Session ID is required
+ *       404:
+ *         description: Session not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Session not found
+ *       500:
+ *         description: Server error while deleting session
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Error deleting session
+ *                 error:
+ *                   type: string
+ */
+router.delete('/:id', sessionController.deleteSessionById);
+
 // Export the module
 module.exports = router;

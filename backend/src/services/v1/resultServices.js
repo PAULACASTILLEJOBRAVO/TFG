@@ -21,10 +21,25 @@ const createResult = async (body) => {
     }
 }
 
+// Service to delete a result by ID
+const deleteResultById = async (id) => {
+    try {
+        const result = await getResultById(id);
+        if (!result) return false; // If the user doesn't exist, return false
+
+        await Result.findByIdAndDelete(id);
+        return true; // Return true if deletion was successful
+    } catch (error) {
+        throw new Error(error.message);
+    }
+}
+
 // Export result services
 module.exports = {
   getAllResults,
   getResultById,
 
-  createResult
+  createResult,
+
+  deleteResultById,
 };

@@ -62,10 +62,34 @@ const createQuiz = async (req, res) => {
     }
 }
 
+// Controller to delete a quiz by ID
+const deleteQuizById = async (req, res) => {
+    const {id} = req.params;
+
+    if(!id) return res.status(400).json({ message: 'Quiz ID is required'});
+
+    try{
+        const deleted = await quizServices.deleteQuizById(id);
+
+        if (!deleted) return res.status(404).json({ message: 'Quiz not found' });
+
+        res.status(200).json({
+         message: 'Quiz deleted successfully'
+        });
+    }catch(error){
+        res.status(500).json({
+            message: 'Error deleting quiz',
+            error: error.message
+        })
+    }
+}
+
 // Export controllers functions
 module.exports = {
     getAllQuizzes,
     getQuizById,
 
-    createQuiz
+    createQuiz,
+    
+    deleteQuizById,
 };

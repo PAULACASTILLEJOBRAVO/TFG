@@ -166,5 +166,67 @@ router.get('/:id', courseController.getCourseById);
  */
 router.post('/', courseController.createCourse);
 
+// Route to delete a course by ID
+/**
+ * @swagger
+ * /v1/courses/{id}:
+ *   delete:
+ *     summary: Delete a course by ID
+ *     description: Permanently removes a course from the database using its unique MongoDB ObjectId.
+ *     tags: [Courses]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: "68f3b6e9d594bd08679250e5"
+ *     responses:
+ *       200:
+ *         description: Course deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Course deleted successfully
+ *       400:
+ *         description: Missing or invalid course ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Course ID is required
+ *       404:
+ *         description: Course not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Course not found
+ *       500:
+ *         description: Server error while deleting course
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Error deleting course
+ *                 error:
+ *                   type: string
+ */
+
+router.delete('/:id', courseController.deleteCourseById);
+
 // Export the module
 module.exports = router;

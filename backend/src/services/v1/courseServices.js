@@ -22,12 +22,12 @@ const createCourse = async (body) => {
 }
 
 // Service to delete a course by ID
-const deleteCourseById = async (id) => {
+const deleteCourseById = async (id, by = null, reason = 'Course deleted via service') => {
     try {
         const course = await getCourseById(id);
         if (!course) return false; // If the course doesn't exist, return false
 
-        await Course.findByIdAndDelete(id);
+        await Course.softDeleteById(id, { by, reason });
         return true; // Return true if deletion was successful
     } catch (error) {
         throw new Error(error.message);

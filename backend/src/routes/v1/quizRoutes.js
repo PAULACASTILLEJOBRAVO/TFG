@@ -180,6 +180,12 @@ router.post('/', quizController.createQuiz);
  *         schema:
  *           type: string
  *           example: "68f3cd3785388f1653996766"
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/QuizDeletionMetadata'
  *     responses:
  *       200:
  *         description: Quiz deleted successfully

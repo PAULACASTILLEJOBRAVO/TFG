@@ -37,6 +37,18 @@ components:
           type: boolean
           description: Indicates if the user is active.
           example: true
+        isDeleted:
+          type: boolean
+          description: Indicates if the user is deleted.
+          example: false
+        deletedBy:
+          type: string
+          description: The identifier of the user who deleted this user.
+          example: "64a7f0c2e4b0c8b1a1e4d3f2"
+        deleteReason:
+          type: string
+          description: The reason for deleting the user.
+          example: "User requested account deletion."
         createdAt:
           type: date-time
           description: The date and time when the user was created.
@@ -45,4 +57,11 @@ components:
           type: date-time
           description: The date and time when the user was last updated.
           example: "2023-07-15T12:00:00Z"
-        
+        deletedAt:
+          type: date-time
+          description: The date and time when the user was deleted.
+          example: "2023-07-20T12:00:00Z"
+        lastLogin:
+          type: date-time
+          description: The date and time when the user last logged in.
+          example: "2023-07-18T08:30:00Z"

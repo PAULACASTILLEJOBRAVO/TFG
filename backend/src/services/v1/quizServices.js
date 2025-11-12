@@ -23,12 +23,12 @@ const createQuiz = async (body) => {
 
 
 // Service to delete an user by ID
-const deleteQuizById = async (id) => {
+const deleteQuizById = async (id, by = null, reason = 'Quiz deleted via service') => {
     try {
         const quiz = await getQuizById(id);
         if (!quiz) return false; // If the quiz doesn't exist, return false
 
-        await Quiz.findByIdAndDelete(id);
+        await Quiz.softDeleteById(id, { by, reason });
         return true; // Return true if deletion was successful
     } catch (error) {
         throw new Error(error.message);

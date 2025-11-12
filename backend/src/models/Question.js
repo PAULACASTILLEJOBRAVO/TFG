@@ -41,13 +41,32 @@ const questionSchema = new Schema({
     ], // Correct options for multiple-choice and true-false questions
 
     //States and configuration
-    isActive: { 
+    isActive: {             // true = published, false = draft
         type: Boolean, 
         default: true 
     },
-    isReusable: { // Can be used in multiple teachers
+    isReusable: {           // Can be used in multiple teachers
         type: Boolean, 
         default: true 
+    },
+    isPublic: {
+        type: Boolean,
+        default: false // true = shared with all teachers, false = private to creator
+    },
+    isDeleted: {
+        type: Boolean,
+        default: false
+    },     
+    deletedAt: { 
+        type: Date 
+    },
+    deletedBy: { 
+        type: Schema.Types.ObjectId, 
+        ref: 'User' 
+    },
+    deleteReason: { 
+        type: String, 
+        trim: true 
     },
     points: { 
         type: Number, 
@@ -59,7 +78,7 @@ const questionSchema = new Schema({
         default: 60,
         min: 10
     },
-    AllowMultipleSelections: { // Only for multiple-choice questions
+    allowMultipleSelections: { // Only for multiple-choice questions
         type: Boolean, 
         default: false 
     },
@@ -70,7 +89,64 @@ const questionSchema = new Schema({
     collection: 'Question' // Specify the collection name
 });
 
-//Ensure and order options before saving
+// Indexes
+questionSchema.index({ text: 1 });
+questionSchema.index({ isDeleted: 1 });
+questionSchema.index({ text: 'text' });
+
+// Query helper to exclude soft-deleted docs easily
+questionSchema.query.notDeleted = function() {
+  return this.where({ isDeleted: false });
+};
+
+// Instance method to soft-delete
+questionSchema.methods.softDelete = async function({ by = null, reason = null } = {}) {
+  this.isDeleted = true;
+  this.deletedAt = new Date();
+
+  if (by) this.deletedBy = by;
+  if (reason) this.deleteReason = reason;
+
+  // optionally also set isActive = false so question can't be used
+  this.isActive = false;
+  return this.save();
+};
+
+// Instance method to restore
+questionSchema.methods.restore = async function() {
+  this.isDeleted = false;
+  this.deletedAt = null;
+  this.deletedBy = null;
+  this.deleteReason = null;
+  this.isActive = true; // or leave it as previous state if you track it
+
+  return this.save();
+};
+
+// Static helper to soft-delete by id (useful in services)
+questionSchema.statics.softDeleteById = async function(id, { by = null, reason = null } = {}) {
+  const question = await this.findById(id);
+  
+  if (!question) return false;
+  
+  await question.softDelete({ by, reason });
+
+  return true;
+};
+
+// Static restore by id
+questionSchema.statics.restoreById = async function(id) {
+  const question = await this.findById(id);
+  
+  if (!question) return false;
+
+  await question.restore();
+
+  return true;
+};
+
+
+//Order options before saving
 questionSchema.pre('save', function(next) {
     const question = this;
     debug('Pre-save hook triggered for question: ', question._id);

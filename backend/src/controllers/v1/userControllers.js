@@ -1,6 +1,12 @@
 // Import services
 const userServices = require('../../services/v1/userServices');
 
+// Import models
+const User = require('../../models/User');
+
+// Import utils
+const { checkExists } = require('../../utils/checkExists');
+
 // User controllers
 // Controller to get all users
 const getAllUsers = async (req, res) => {
@@ -48,6 +54,10 @@ const createUser = async (req, res) => {
     if (!body) return res.status(400).json({ message: 'Body is required' });
 
     try{
+        if (await checkExists(User, 'email', req.body.email)) {
+            return res.status(409).json({ message: 'The user alredy exists' });
+        }
+
         const newUser = await userServices.createUser(body);
 
         res.status(201).json({
@@ -69,12 +79,14 @@ const createUser = async (req, res) => {
 
 // Controller to delete an user by ID
 const deleteUserById = async (req, res) => {
-    const {id} = req.params;
+    const { id } = req.params;
+    const { by, reason } = req.body;
 
     if(!id) return res.status(400).json({ message: 'User ID is required'});
+    if(!by && !reason) return res.status(400).json({ message: 'Deletion metadata is required'});
 
     try{
-        const deleted = await userServices.deleteUserById(id);
+        const deleted = await userServices.deleteUserById(id, by, reason);
 
         if (!deleted) return res.status(404).json({ message: 'User not found' });
 

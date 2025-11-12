@@ -67,6 +67,18 @@ components:
           type: boolean
           description: Indicates if the question can be reused in other quizzes.
           example: false
+        isDeleted:
+          type: boolean
+          description: Indicates if the question has been deleted.
+          example: false
+        deletedBy:
+          type: ObjectId
+          description: Identifier of the user who deleted the question.
+          example: "64f0c8e2b4d1c2a5f6e7d8d0"
+        deleteReason:
+          type: string
+          description: Reason for deleting the question.
+          example: "Outdated content"
         allowMultipleAttempts:
           type: boolean
           description: Indicates if multiple options can be selected for this question.
@@ -79,3 +91,7 @@ components:
           type: date-time
           description: Timestamp when the question was last updated.
           example: "2023-10-01T12:00:00Z"
+        deletedAt:
+          type: date-time
+          description: Timestamp when the question was deleted.
+          example: "2023-10-15T12:00:00Z"

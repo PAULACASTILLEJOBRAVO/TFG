@@ -23,12 +23,12 @@ const createUser = async (body) => {
 }
 
 // Service to delete an user by ID
-const deleteUserById = async (id) => {
+const deleteUserById = async (id, by = null, reason = 'User removed via service') => {
     try {
         const user = await getUserById(id);
         if (!user) return false; // If the user doesn't exist, return false
 
-        await User.findByIdAndDelete(id);
+        await User.softDeleteById(id, { by, reason });
         return true; // Return true if deletion was successful
     } catch (error) {
         throw new Error(error.message);

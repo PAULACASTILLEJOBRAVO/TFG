@@ -180,6 +180,12 @@ router.post('/', questionController.createQuestion);
  *         schema:
  *           type: string
  *           example: "68f3c1e2d43ac378d6f3995a"
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/QuestionDeletionMetadata'
  *     responses:
  *       200:
  *         description: Question deleted successfully

@@ -21,25 +21,10 @@ const createResponse = async (body) => {
     }
 }
 
-// Service to delete a response by ID
-const deleteResponseById = async (id) => {
-    try {
-        const response = await getResponseById(id);
-        if (!response) return false; // If the response doesn't exist, return false
-
-        await Response.findByIdAndDelete(id);
-        return true; // Return true if deletion was successful
-    } catch (error) {
-        throw new Error(error.message);
-    }
-}
-
 // Export response services
 module.exports = {
   getAllResponses,
   getResponseById,
 
   createResponse,
-
-  deleteResponseById,
 };

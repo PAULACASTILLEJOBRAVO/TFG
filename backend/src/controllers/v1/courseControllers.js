@@ -65,11 +65,13 @@ const createCourse = async (req, res) => {
 // Controller to delete a course by ID
 const deleteCourseById = async (req, res) => {
     const {id} = req.params;
+    const { by, reason } = req.body; 
 
     if(!id) return res.status(400).json({ message: 'Course ID is required'});
+    if(!by && !reason) return res.status(400).json({ message: 'Deletion metadata is required'});
 
     try{
-        const deleted = await courseServices.deleteCourseById(id);
+        const deleted = await courseServices.deleteCourseById(id, by, reason);
 
         if (!deleted) return res.status(404).json({ message: 'Course not found' });
 

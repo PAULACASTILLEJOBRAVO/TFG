@@ -29,9 +29,22 @@ components:
           description: Indicates if the quiz is active.
           example: true
         isPublic:
-          type: boolean
+          type: string
+          enum: [public, private]
           description: Indicates if the quiz is public.
+          example: private
+        isDeleted:
+          type: boolean
+          description: Indicates if the quiz has been deleted.
           example: false
+        deletedBy:
+          $ref: '#/components/schemas/User'
+          description: The user who deleted the quiz. 
+          example: "64a7f0c2e4b0c8b1a1e4d3f2"
+        deleteReason:
+          type: string
+          description: The reason for deleting the quiz.
+          example: "Outdated content"
         createdAt:
           type: date-time
           description: The date and time when the quiz was created.
@@ -40,6 +53,10 @@ components:
           type: date-time
           description: The date and time when the quiz was last updated.
           example: "2023-07-12T12:00:00Z"
+        deletedAt:
+          type: date-time
+          description: The date and time when the quiz was deleted.
+          example: "2023-08-01T12:00:00Z"
         creatorId:
           $ref: '#/components/schemas/User'
           description: The user who created the quiz.

@@ -25,9 +25,10 @@ components:
           description: Indicates if the quiz is active.
           default: false
         isPublic:
-          type: boolean
+          type: string
+          enum: [public, private]
           description: Indicates if the quiz is public.
-          default: false
+          default: private
         creatorId:
           type: ObjectId
           description: The user ID who created the quiz.

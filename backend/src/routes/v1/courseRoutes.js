@@ -181,6 +181,12 @@ router.post('/', courseController.createCourse);
  *         schema:
  *           type: string
  *           example: "68f3b6e9d594bd08679250e5"
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/CourseDeletionMetadata'
  *     responses:
  *       200:
  *         description: Course deleted successfully

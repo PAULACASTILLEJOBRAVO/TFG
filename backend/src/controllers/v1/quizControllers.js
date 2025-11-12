@@ -65,11 +65,13 @@ const createQuiz = async (req, res) => {
 // Controller to delete a quiz by ID
 const deleteQuizById = async (req, res) => {
     const {id} = req.params;
+    const { by, reason } = req.body;
 
     if(!id) return res.status(400).json({ message: 'Quiz ID is required'});
+    if(!by && !reason) return res.status(400).json({ message: 'Deletion metadata is required'});
 
     try{
-        const deleted = await quizServices.deleteQuizById(id);
+        const deleted = await quizServices.deleteQuizById(id, by, reason);
 
         if (!deleted) return res.status(404).json({ message: 'Quiz not found' });
 

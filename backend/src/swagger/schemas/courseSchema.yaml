@@ -26,6 +26,18 @@ components:
           type: boolean
           description: Indicates if the course is active.
           example: true
+        isDeleted:
+          type: boolean
+          description: Indicates if the course has been deleted.
+          example: false
+        deletedBy:
+          $ref: '#/components/schemas/User'
+          description: The user who deleted the course.
+          example: "64a7f0c2e4b0c8b1a1e4d3f2"
+        deleteReason:
+          type: string
+          description: The reason for deleting the course.
+          example: "Course is no longer offered."
         maxStudents:
           type: integer
           description: The maximum number of students allowed in the course.
@@ -38,6 +50,10 @@ components:
           type: date-time
           description: The date and time when the course was last updated.
           example: "2023-07-15T12:00:00Z"
+        deletedAt:
+          type: date-time
+          description: The date and time when the course was deleted.
+          example: "2023-07-20T12:00:00Z"
         teacherId:
           $ref: '#/components/schemas/User'
           description: The instructor of the course.

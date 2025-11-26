@@ -2,6 +2,9 @@
 const express = require('express');
 const router = express.Router();
 
+// Import middleware
+const { authenticate } = require('../../middleware/authentication');
+
 // Import controllers
 const userController = require('../../controllers/v1/userControllers');
 
@@ -232,6 +235,12 @@ router.post('/', userController.createUser);
  *                   type: string
  */
 router.delete('/:id', userController.deleteUserById);
+
+// Route to update an user by ID
+router.patch('/:id', authenticate, userController.updateUserById);
+
+// Route to update a user's password by ID
+router.patch('/password/:id/', authenticate, userController.updatePasswordById);
 
 //Export the module
 module.exports = router;

@@ -22,12 +22,12 @@ const createSession = async (body) => {
 }
 
 // Service to delete a session by ID
-const deleteSessionById = async (id) => {
+const deleteSessionById = async (id, by = null, reason = 'Session removed via service') => {
     try {
         const session = await getSessionById(id);
         if (!session) return false; // If the session doesn't exist, return false
 
-        await Session.findByIdAndDelete(id);
+        await Session.softDeleteById(id, { by, reason });
         return true; // Return true if deletion was successful
     } catch (error) {
         throw new Error(error.message);

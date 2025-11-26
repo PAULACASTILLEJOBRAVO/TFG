@@ -181,6 +181,12 @@ router.post('/', sessionController.createSession);
  *         schema:
  *           type: string
  *           example: "68f3d3bb85388f1653996798"
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/SessionDeletionMetadata'
  *     responses:
  *       200:
  *         description: Session deleted successfully

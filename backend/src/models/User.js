@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcryptjs');
 const debug = require('debug')('backend:models:user');
+const jwt = require('jsonwebtoken');
+
+// Import constants
+const { getUserEditableFields } = require('../utils/checkRolePermissions');
+const { validatePasswordChange } = require('../utils/validatePasswordChange');
 
 // Define the number of salt rounds for bcrypt
 const SALT_WORK_FACTOR = 10;
@@ -106,6 +111,28 @@ userSchema.methods.restore = async function() {
   return this.save();
 };
 
+// Generate authentication token
+userSchema.methods.generateAuthToken = async function() {
+  try{
+    const secretKey = process.env.JWT_SECRET;
+    
+    const token = jwt.sign({
+      _id: this._id,
+      username: this.username,
+      role: this.role,
+      email: this.email
+    }, 
+    secretKey, 
+    { 
+      expiresIn: '1h' // Token valid for 1 hour
+    });   
+
+    return token;  
+  }catch(error){
+    throw new Error('Error generating auth token: ' + error.message);
+  }
+}
+
 // Static helper to soft-delete by id (useful in services)
 userSchema.statics.softDeleteById = async function(id, { by = null, reason = null } = {}) {
   const user = await this.findById(id);
@@ -127,6 +154,65 @@ userSchema.statics.restoreById = async function(id) {
 
   return true;
 };
+
+// Static update by id
+userSchema.statics.updateById = async function(id, body, currentUserData) {
+    const user = await this.findById(id);
+    if (!user) return false;
+
+    // Extract current user ID and role
+    const { _id: currentUserId, role: currentUserRole } = currentUserData; 
+
+    // Check if the user is updating their own data
+    const isSelf = currentUserId.toString() === id.toString(); 
+
+    // Get allowed fields based on role and whether it's self-update
+    const allowedFields = getUserEditableFields(currentUserRole, isSelf);
+
+    // Filter body to only include allowed fields
+    const updates = {};
+    for (const key of Object.keys(body)) {
+        if (allowedFields.includes(key)) {
+            updates[key] = body[key];
+        }
+    }
+
+    console.log('Allowed fields for update:', allowedFields);
+    console.log('Updates to be applied:', updates);
+    console.log('User before update:', user);
+
+    // Apply changes
+    Object.assign(user, updates);
+
+    // Save and return updated user
+    await user.save();
+
+    return user;
+}
+
+// Static update password by id
+userSchema.statics.updatePasswordById = async function (id, body, currentUserData) {
+    const user = await this.findById(id);
+    if(!user) return false;
+
+    // Extract current user ID and role
+    const { _id: currentUserId, role: currentUserRole } = currentUserData;
+
+    // Check if the user is updating their own password
+    const isSelf = currentUserId.toString() === id.toString();
+
+    // Extract old and new passwords from body
+    const { oldPassword, newPassword } = body;
+
+    // Validate password change
+    await validatePasswordChange({isSelf, currentUserRole, oldPassword, userPasswordHash: user.password});
+
+    // Encrypt and set the new password
+    user.password = newPassword;
+    await user.save();
+
+    return user;
+}
 
 //Pre-save hook to hash the password before saving
 userSchema.pre('save', function(next) {

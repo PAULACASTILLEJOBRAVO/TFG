@@ -46,7 +46,7 @@ const sessionSchema = new Schema({
         type: Boolean, 
         default: false 
     }, // Soft delete flag
-    deleteAt: { 
+    deletedAt: { 
         type: Date 
     }, // Timestamp for when the session was soft deleted
     deletedBy: { 
@@ -94,6 +94,8 @@ sessionSchema.query.notDeleted = function() {
 sessionSchema.methods.startSession = async function() {
     if(this.status !== 'pending') throw new Error('Only pending sessions can be started.');
 
+    if(this.status === 'active') return debug(`Session ${this}._id} is already active.`);
+
     this.status = 'active';
     this.startTime = new Date();
     await this.save();
@@ -102,9 +104,11 @@ sessionSchema.methods.startSession = async function() {
 }
 
 // Instance method to pause the session
-sessionSchema.methods.resumeSession = async function() {
+sessionSchema.methods.pauseSession = async function() {
     if(this.status !== 'active') throw new Error('Only active sessions can be paused.');
     
+    if(this.status === 'paused') return debug(`Session ${this}._id} is already paused.`);
+
     this.status = 'paused';
     await this.save();
 
@@ -112,19 +116,23 @@ sessionSchema.methods.resumeSession = async function() {
 }
 
 // Instance method to resumed the session
-sessionSchema.methods.pauseSession = async function() {
+sessionSchema.methods.resumeSession = async function() {
     if(this.status !== 'paused') throw new Error('Only paused sessions can be resumed.');
     
-    this.status = 'paused';
+    if(this.status === 'active') return debug(`Session ${this}._id} is already active.`);
+
+    this.status = 'active';
     await this.save();
     
-    debug(`Session ${this._id} paused.`);
+    debug(`Session ${this._id} resumed.`);
 }
 
 // Instance method to completed the session
 sessionSchema.methods.completeSession = async function() {
     if(this.status !== 'active' && this.status !== 'paused') throw new Error('Only active or paused sessions can be completed.');
     
+    if(this.status === 'completed') return debug(`Session ${this}._id} is already completed.`);
+
     this.status = 'completed';
     this.endTime = new Date();
     await this.save();
@@ -135,6 +143,8 @@ sessionSchema.methods.completeSession = async function() {
 // Instance method to cancel the session
 sessionSchema.methods.cancelSession = async function(reason = null) {
     if(this.status !== 'pending' && this.status !== 'active' && this.status !== 'paused') throw new Error('Only pending, active or paused sessions can be cancelled.');
+
+    if(this.status === 'cancelled') return debug(`Session ${this}._id} is already cancelled.`);
 
     this.status = 'cancelled';
     if(reason) this.cancelReason = reason;
@@ -158,10 +168,16 @@ sessionSchema.methods.archiveSession = async function() {
 // Instance method to delete the session
 sessionSchema.methods.softDelete = async function({by = null, reason = null} = {}) {
     this.isDeleted = true;
-    this.deleteAt = new Date();
+    this.deletedAt = new Date();
 
     if(by) this.deletedBy = by;
     if(reason) this.deleteReason = reason;
+
+    // If it is not finished, archive it
+    if(!this.status === 'completed' && !this.status === 'cancelled' && !this.status === 'archived'){
+        this.status = 'archived';
+        this.endTime = new Date();
+    }
 
     await this.save();
     debug(`Session ${this._id} soft-deleted.`);
@@ -170,13 +186,90 @@ sessionSchema.methods.softDelete = async function({by = null, reason = null} = {
 // Instance method to restore the session
 sessionSchema.methods.restore = async function() {
     this.isDeleted = false;
-    this.deleteAt = null;
+    this.deletedAt = null;
     this.deletedBy = null;
     this.deleteReason = null;
 
     await this.save();
     debug(`Session ${this._id} restored.`);
 };
+
+// Static helper to soft-delete by id (useful in services)
+sessionSchema.statics.softDeleteById = async function(id, { by = null, reason = null } = {}) {
+  const session = await this.findById(id);
+  
+  if (!session) return false;
+  
+  await session.softDelete({ by, reason });
+
+  return true;
+};
+
+// Static restore by id
+sessionSchema.statics.restoreById = async function(id) {
+  const session = await this.findById(id);
+  
+  if (!session) return false;
+
+  await session.restore();
+
+  return true;
+};
+
+// Static complete by id
+sessionSchema.statics.completeById = async function(id){
+    const session = await this.findById(id);
+
+    if(!session) return false;
+
+    await session.completeSession();
+
+    return true;
+}
+
+// Static cancel by id
+sessionSchema.statics.cancelById = async function(id, reason = null){
+    const session = await this.findById(id);
+
+    if(!session) return false;
+
+    await session.cancelSession(reason);
+
+    return true;
+}
+
+// Static archive by id
+sessionSchema.statics.archiveById = async function(id){
+    const session = await this.findById(id);
+    
+    if(!session) return false;
+
+    await session.archiveSession();
+    
+    return true;
+}
+
+// Static start by id
+sessionSchema.statics.startById = async function(id){
+    const session = await this.findById(id);
+
+    if(!session) return false;
+
+    await session.startSession();
+
+    return true;
+}
+
+// Static pause by id
+sessionSchema.statics.pauseById = async function(id){
+    const session = await this.findById(id);
+
+    if(!session) return false;
+
+    await session.pauseSession();
+
+    return true;
+}
 
 //Export the model
 module.exports = mongoose.model('Session', sessionSchema);

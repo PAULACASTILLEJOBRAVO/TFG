@@ -60,6 +60,45 @@ const updatePasswordById = async (id, body, _id, role) => {
     }
 }
 
+// Service to update an user's email by ID
+const updateEmailById = async (id, body, _id, role) => {
+    try{
+        const user = await getUserById(id);
+        if(!user) return false;
+
+        const updateEmail = await User.updateEmailById(id, body, { _id, role });
+        return updateEmail;
+    }catch(error){
+        throw new Error(error.message);
+    }
+}
+
+// Service to update an user's role by ID
+const updateUserRoleById = async (id, body, _id, role) => {
+    try{
+        const user = await getUserById(id);
+        if(!user) return false;
+
+        const updateRole = await User.updateRoleById(id, body.newRole, { _id, role });
+        return updateRole;
+    }catch(error){
+        throw new Error(error.message);
+    }
+}
+
+// Service to update an user's status by ID
+const updateUserStatusById = async (id, body, _id, role) => {
+    try{
+        const user = await getUserById(id).select('-password');
+        if(!user) return false;
+
+        const updateStatus = await User.updateStatusById(id, body.newStatus, { _id, role });
+        return updateStatus;
+    }catch(error){
+        throw new Error(error.message);
+    }
+}
+
 // Export service functions
 module.exports = {
     getAllUsers,
@@ -69,6 +108,9 @@ module.exports = {
 
     updateUserById,
     updatePasswordById,
+    updateEmailById,
+    updateUserRoleById,
+    updateUserStatusById,
 
     deleteUserById,
 };

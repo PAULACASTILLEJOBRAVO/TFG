@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 
 // Import constants
 const { getUserEditableFields } = require('../utils/checkRolePermissions');
-const { validatePasswordChange } = require('../utils/validatePasswordChange');
+const { validatePasswordChange, validateEmailChange } = require('../utils/validatePasswordChange');
 
 // Define the number of salt rounds for bcrypt
 const SALT_WORK_FACTOR = 10;
@@ -124,7 +124,7 @@ userSchema.methods.generateAuthToken = async function() {
     }, 
     secretKey, 
     { 
-      expiresIn: '1h' // Token valid for 1 hour
+      expiresIn: '7d' //'1h' // Token valid for 1 hour
     });   
 
     return token;  
@@ -152,12 +152,12 @@ userSchema.statics.restoreById = async function(id) {
 
   await user.restore();
 
-  return true;
+  return user;
 };
 
 // Static update by id
 userSchema.statics.updateById = async function(id, body, currentUserData) {
-    const user = await this.findById(id);
+    const user = await this.findById(id).select('-password');
     if (!user) return false;
 
     // Extract current user ID and role
@@ -177,9 +177,7 @@ userSchema.statics.updateById = async function(id, body, currentUserData) {
         }
     }
 
-    console.log('Allowed fields for update:', allowedFields);
-    console.log('Updates to be applied:', updates);
-    console.log('User before update:', user);
+    debug('Allowed fields for update:', allowedFields);
 
     // Apply changes
     Object.assign(user, updates);
@@ -207,8 +205,72 @@ userSchema.statics.updatePasswordById = async function (id, body, currentUserDat
     // Validate password change
     await validatePasswordChange({isSelf, currentUserRole, oldPassword, userPasswordHash: user.password});
 
-    // Encrypt and set the new password
+    // Set new password
     user.password = newPassword;
+    await user.save();  // Triggers pre-save hook to hash the password
+
+    return user;
+}
+
+// Static update email by id
+userSchema.statics.updateEmailById = async function (id, body, currentUserData) {
+  const user = await this.findById(id).select('-password'); // Ensure password is not selected
+    if(!user) return false;
+
+    // Extract current user ID and role
+    const { _id: currentUserId, role: currentUserRole } = currentUserData;
+
+    // Check if the user is updating their own email
+    const isSelf = currentUserId.toString() === id.toString();
+
+    // Extract old and new email from body
+    const { oldEmail, newEmail } = body;
+
+    // Validate email change
+    await validateEmailChange({isSelf, currentUserRole, oldEmail, userEmail: user.email});
+
+    // Set the new email
+    user.email = newEmail;
+    await user.save();  
+
+    return user;
+}
+
+// Static update role by id
+userSchema.statics.updateRoleById = async function (id, newRole, currentUserData) {
+    if(currentUserData.role !== 'admin')  throw new Error('Only admins can change user roles');
+
+    const user = await this.findById(id).select('-password');
+    if(!user) return false;
+
+    // Validate new role
+    if(!['student','teacher','admin'].includes(newRole)) throw new Error('Invalid role');
+
+    // Set new role
+    user.role = newRole;
+    await user.save();
+
+    return user;
+}
+
+// Static method status by id
+userSchema.statics.updateStatusById = async function (id, newStatus, currentUserData) {
+    const { role } = currentUserData;
+
+    if(role !== 'admin' && role !== 'teacher') throw new Error('Only admins and teachers can change user status');
+
+    const user = await this.findById(id).select('-password');
+    if(!user) return false;
+
+    if(typeof newStatus !== 'boolean') throw new Error('Status must be true or false');
+
+    // If soft-deleted, restore before updating status
+    if (user.isDeleted && newStatus === true) {
+        await user.restore();
+    }
+
+    // Set new status
+    user.isActive = newStatus;
     await user.save();
 
     return user;
@@ -244,7 +306,7 @@ userSchema.methods.comparePassword = async function(candidatePassword) {
 userSchema.pre('save', async function(next) {
   try {
     // Case 1: Soft-delete
-    if (this.isModified('isDeleted') && this.isDeleted === true) {   // Only act if the user is being soft-deleted
+    if (this.isModified('isDeleted') && this.isDeleted === true && this.role !== 'student') {   // Only act if the user is being soft-deleted
       const Course = mongoose.model('Course');
       const Quiz = mongoose.model('Quiz');
       const Session = mongoose.model('Session');
@@ -271,7 +333,7 @@ userSchema.pre('save', async function(next) {
     }
 
     // Case 2: Restore
-    if (this.isModified('isDeleted') && this.isDeleted === false) {
+    if (this.isModified('isDeleted') && this.isDeleted === false && this.role !== 'student') {
       await Course.updateMany(
         { teacherId: this._id },
         { isActive: true }

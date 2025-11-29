@@ -242,5 +242,14 @@ router.patch('/:id', authenticate, userController.updateUserById);
 // Route to update a user's password by ID
 router.patch('/password/:id/', authenticate, userController.updatePasswordById);
 
+// Route to update user's email by ID
+router.patch('/email/:id', authenticate, userController.updateEmailById);
+
+// Route to update user's role by ID
+router.patch('/role/:id', authenticate, userController.updateUserRoleById);
+
+// Route to update an user's status by ID
+router.patch('/status/:id', authenticate, userController.updateUserStatusById);
+
 //Export the module
 module.exports = router;

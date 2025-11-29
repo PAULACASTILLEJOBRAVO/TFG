@@ -1,11 +1,11 @@
 // Editable fields by role
 const editableFields = {
   user: {
-    student: ['username', 'fullname', 'email', 'password', 'bio'],
-    teacher: ['username', 'fullname', 'email', 'password', 'bio'],
+    student: ['username', 'fullname', 'bio'],
+    teacher: ['username', 'fullname', 'bio'],
     admin: [
-        'username', 'fullname', 'email', 'password', 'bio', 
-        'role', 'isActive',  'lastLogin',
+        'username', 'fullname', 'bio',
+        'lastLogin',
         'isDeleted', 'deletedAt', 'deletedBy', 'deleteReason'
       ]
   },

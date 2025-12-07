@@ -49,26 +49,31 @@ const getUserById = async (req, res) => {
 
 // Controller to create a new user
 const createUser = async (req, res) => {
-    const {body} = req;
+    const { body } = req;
+    const { email, username, password } = req.body;
 
-    if (!body) return res.status(400).json({ message: 'Body is required' });
+    // Si no hay body, devuelve 400
+    if (!req.body) return res.status(400).json({ message: 'Username, email and password are required' });
+
+    // Check required fields
+    if (!email || !username || !password) return res.status(400).json({ message: 'Username, email and password are required' });
 
     try{
-        if (await checkExists(User, 'email', req.body.email)) {
+        if (await checkExists(User, 'email', email)) {
             return res.status(409).json({ message: 'The user alredy exists' });
         }
 
-        const newUser = await userServices.createUser(body);
+        const newUser = await userServices.createUser({email, username, password});
 
         res.status(201).json({
             message: 'User created successfully', 
             data: newUser
         });    
     } catch(error){
-        if(error.code === 11000) return res.status(400).json({
-            message: 'Username is in use',
-            error: error.message
-        })
+        // if(error.code === 11000) return res.status(400).json({
+        //     message: 'Username is in use',
+        //     error: error.message
+        // })
 
         res.status(500).json({ 
             message: 'Error creating user', 

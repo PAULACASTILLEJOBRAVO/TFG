@@ -30,7 +30,7 @@ const getResultById = async (req, res) => {
           if (!result) return res.status(404).json({ message: 'Result not found' });
           
           res.status(200).json({
-              message: 'result fetched successfully', 
+              message: 'Result fetched successfully', 
               data: result
           });
       } catch (error){

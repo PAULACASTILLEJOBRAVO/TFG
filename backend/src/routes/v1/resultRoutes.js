@@ -72,7 +72,7 @@ router.get('/', resultController.getAllResults);
  *               properties:
  *                 message:
  *                   type: string
- *                   example: result fetched successfully
+ *                   example: Result fetched successfully
  *                 data: 
  *                   $ref: '#/components/schemas/Result'
  *       400:

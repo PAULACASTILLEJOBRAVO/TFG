@@ -126,7 +126,7 @@ router.get('/:id', responseController.getResponseById);
  *             $ref: '#/components/schemas/ResponseInput'
  *     responses:
  *       201:
- *         description: Resposne created successfully
+ *         description: Response created successfully
  *         content:
  *           application/json:
  *             schema:

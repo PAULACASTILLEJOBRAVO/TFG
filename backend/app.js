@@ -1,6 +1,5 @@
 //Import necessary modules
 const express = require('express');
-const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const path = require('path');
@@ -12,7 +11,6 @@ const debug = require('debug')('backend:app');
 
 //Configure enviroment variables
 dotenv.config();
-const MONGO_URI = process.env.MONGO_URI;
 
 //Configure Express
 const app = express();
@@ -30,13 +28,6 @@ const userRoutes = require('./src/routes/v1/userRoutes');
 
 // Import swagger configuration
 const {swaggerUi, swaggerSpec} = require('./src/config/swagger.js');
-
-//Connect to database
-mongoose.connect(MONGO_URI).then(() => {
-    debug('MongoDB connected!');
-}).catch(err => {
-    debug(Error,'Error connecting to database! \n', err);
-});
 
 //Configure middlewares
 app.use(cors());

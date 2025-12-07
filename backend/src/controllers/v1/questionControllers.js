@@ -7,7 +7,7 @@ const getAllQuestions = async (req, res) => {
     try {
         const questions = await questionServices.getAllQuestions();
         res.status(200).json({
-            message: 'Questions fetched successful', 
+            message: 'Questions fetched successfully', 
             data: questions
         });
     } catch (error) {

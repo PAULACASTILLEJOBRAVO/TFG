@@ -12,7 +12,7 @@ const getAllResponses = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ 
-        message: 'Error fetching quizzes', 
+        message: 'Error fetching responses', 
         error: error.message 
     });
   }

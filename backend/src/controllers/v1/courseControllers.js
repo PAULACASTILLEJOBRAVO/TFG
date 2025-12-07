@@ -7,7 +7,7 @@ const getAllCourses = async (req, res) => {
     try {
         const courses = await courseServices.getAllCourses();
         res.status(200).json({
-            message: 'Courses fetched successful', 
+            message: 'Courses fetched successfully', 
             data: courses
         });
     } catch (error) {

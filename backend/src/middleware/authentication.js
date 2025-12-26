@@ -36,7 +36,7 @@ const authenticate = async (req, res, next) => {
 
         debug(`Authenticated user with role: ${user.role}`);
 
-        // Attch the authenticated user to the request object
+        // Attach the authenticated user to the request object
         req.user = {
             _id: user._id,
             role: user.role,

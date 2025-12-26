@@ -2,6 +2,9 @@
 const express = require('express');
 const router = express.Router();
 
+// Import middleware
+const { authenticate } = require('../../middleware/authentication');
+
 // Import controllers
 const sessionController = require('../../controllers/v1/sessionControllers');
 
@@ -12,6 +15,7 @@ const sessionController = require('../../controllers/v1/sessionControllers');
  *   name: Sessions
  *   description: Session management and retrieval
  */
+router.use(authenticate);
 
 // Route to get all sessions
 /**

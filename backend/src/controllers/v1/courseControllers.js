@@ -44,6 +44,7 @@ const getCourseById = async (req, res) => {
 // Controller to create a new course
 const createCourse = async (req, res) => {
     const {body} = req;
+    const { _id, role } = req.user;
 
     if (!body) return res.status(400).json({ message: 'Invalid course data. Body is required' });
 

@@ -6,7 +6,11 @@ const jwt = require('jsonwebtoken');
 
 // Import constants
 const { getUserEditableFields } = require('../utils/checkRolePermissions');
-const { validatePasswordChange, validateEmailChange } = require('../utils/validatePasswordChange');
+
+// Import utils functions
+const { validatePasswordChange, validateEmailChange } = require('../utils/validateChange');
+const { validateAdminRole } = require('../middleware/validationRole');
+const { checkExists } = require('../utils/checkExists');
 
 // Define the number of salt rounds for bcrypt
 const SALT_WORK_FACTOR = 10;
@@ -154,6 +158,13 @@ userSchema.statics.restoreById = async function(id) {
 
   return user;
 };
+
+// Static permissions to create new user 
+userSchema.static.canCreateUser = async function(currentUser) {
+  await validateAdminRole(currentUser);
+
+  return true;
+}
 
 // Static update by id
 userSchema.statics.updateById = async function(id, body, currentUserData) {

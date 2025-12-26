@@ -2,6 +2,9 @@
 const express = require('express');
 const router = express.Router();
 
+// Import middleware
+const { authenticate } = require('../../middleware/authentication');
+
 // Import controllers
 const resultController = require('../../controllers/v1/resultControllers');
 
@@ -12,6 +15,8 @@ const resultController = require('../../controllers/v1/resultControllers');
  *   name: Results
  *   description: Result management and retrieval
  */
+router.use(authenticate);
+
 // Route to get all results
 /**
  * @swagger

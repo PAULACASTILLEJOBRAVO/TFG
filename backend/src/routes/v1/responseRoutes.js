@@ -2,6 +2,9 @@
 const express = require('express');
 const router = express.Router();
 
+// Import middleware
+const { authenticate } = require('../../middleware/authentication');
+
 // Import controllers
 const responseController = require('../../controllers/v1/responseControllers');
 
@@ -12,6 +15,7 @@ const responseController = require('../../controllers/v1/responseControllers');
  *   name: Responses
  *   description: Response management and retrieval
  */
+router.use(authenticate);
 
 // Route to get all responses
 /**

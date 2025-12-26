@@ -49,16 +49,19 @@ const getUserById = async (req, res) => {
 
 // Controller to create a new user
 const createUser = async (req, res) => {
-    const { body } = req;
+    const { body} = req;
     const { email, username, password } = req.body;
+    const currentUser = req.user;
 
-    // Si no hay body, devuelve 400
-    if (!req.body) return res.status(400).json({ message: 'Username, email and password are required' });
+    // Check parameters
+    if (!body) return res.status(400).json({ message: 'Username, email and password are required' });
 
     // Check required fields
     if (!email || !username || !password) return res.status(400).json({ message: 'Username, email and password are required' });
 
     try{
+        await User.canCreateUser(currentUser);
+
         if (await checkExists(User, 'email', email)) {
             return res.status(409).json({ message: 'The user alredy exists' });
         }

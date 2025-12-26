@@ -2,6 +2,9 @@
 const express = require('express');
 const router = express.Router();
 
+// Import middleware
+const {authenticate} = require('../../middleware/authentication');
+
 // Import controllers
 const questionController = require('../../controllers/v1/questionControllers');
 
@@ -12,6 +15,7 @@ const questionController = require('../../controllers/v1/questionControllers');
  *   name: Questions
  *   description: Question management and retrieval
  */
+router.use(authenticate);
 
 // Route to get all questions
 /**

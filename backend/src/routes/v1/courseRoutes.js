@@ -2,6 +2,9 @@
 const express = require('express');
 const router = express.Router();
 
+// Import middleware
+const { authenticate } = require('../../middleware/authentication');
+
 // Import controllers
 const courseController = require('../../controllers/v1/courseControllers');
 
@@ -12,6 +15,7 @@ const courseController = require('../../controllers/v1/courseControllers');
  *   name: Courses
  *   description: Course management and retrieval
  */
+router.use(authenticate);
 
 // Route to get all courses
 /**

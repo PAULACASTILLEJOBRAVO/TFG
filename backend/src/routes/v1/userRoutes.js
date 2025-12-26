@@ -15,6 +15,7 @@ const userController = require('../../controllers/v1/userControllers');
  *   name: Users
  *   description: User management and retrieval
  */
+router.use(authenticate);
 
 // Route to get all users
 /**
@@ -237,19 +238,19 @@ router.post('/', userController.createUser);
 router.delete('/:id', userController.deleteUserById);
 
 // Route to update an user by ID
-router.patch('/:id', authenticate, userController.updateUserById);
+router.patch('/:id', userController.updateUserById);
 
 // Route to update a user's password by ID
-router.patch('/password/:id/', authenticate, userController.updatePasswordById);
+router.patch('/password/:id/', userController.updatePasswordById);
 
 // Route to update user's email by ID
-router.patch('/email/:id', authenticate, userController.updateEmailById);
+router.patch('/email/:id', userController.updateEmailById);
 
 // Route to update user's role by ID
-router.patch('/role/:id', authenticate, userController.updateUserRoleById);
+router.patch('/role/:id',  userController.updateUserRoleById);
 
 // Route to update an user's status by ID
-router.patch('/status/:id', authenticate, userController.updateUserStatusById);
+router.patch('/status/:id', userController.updateUserStatusById);
 
 //Export the module
 module.exports = router;

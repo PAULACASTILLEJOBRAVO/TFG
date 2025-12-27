@@ -12,25 +12,25 @@ const AuthInput = ({label, ...props}) => {
                     peer 
                     h-12 
                     w-full 
-                    border border-black rounded 
-                    px-3 pt-4 
+                    border border-black rounded-2xl
+                    px-4 pt-6 
                     bg-white 
                     text-black 
                     placeholder-transparent 
-                    focus:outline-none"
-            />
+                    focus:outline-none
+                "/>
                 <Label 
                     htmlFor={props.id}
                     className="
                         absolute 
-                        left-3 top-3 
+                        left-3 top-[0.9rem] 
                         z-10
                         origin-left
                         text-gray-500 text-sm 
                         transition-all 
                         duration-200
                         peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 
-                        peer-focus:top-2 peer-focus:translate-y-0 peer-focus:text-sm peer-focus:text-black"
+                        peer-focus:top-1 peer-focus:translate-y-0 peer-focus:text-sm peer-focus:text-black"
                 >
                     {label}
                 </Label>

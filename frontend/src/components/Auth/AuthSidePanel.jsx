@@ -3,7 +3,7 @@ import AuthButton from "@/components/Auth/AuthButton";
 const AuthSidePanel = ({position = "left", onToggle}) => {
 
     return (
-        <div className={`absolute inset-0 sm:flex hidden`}>
+        <div className={`absolute h-full inset-0 sm:flex hidden`}>
 
             <div className={`
                 w-1/2 
@@ -19,7 +19,7 @@ const AuthSidePanel = ({position = "left", onToggle}) => {
                     <img 
                         src="/LogoClicklass.png"
                         alt="Clicklass"
-                        className="w-16 h-16 mx-auto"
+                        className="w-20 h-20 mx-auto"
                     />
                 </div>
 
@@ -55,7 +55,7 @@ const AuthSidePanel = ({position = "left", onToggle}) => {
                     <img 
                         src="/LogoClicklass.png"
                         alt="Clicklass"
-                        className="w-16 h-16 mx-auto"
+                        className="w-20 h-20 mx-auto"
                     />
                 </div>
 

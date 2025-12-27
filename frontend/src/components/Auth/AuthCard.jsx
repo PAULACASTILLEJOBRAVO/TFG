@@ -5,6 +5,7 @@ const AuthCard = ({mode = "login", children}) => {
         <div className={`
             absolute
             w-[46%]
+            
             top-1/2
             right-1/2
             -translate-y-1/2

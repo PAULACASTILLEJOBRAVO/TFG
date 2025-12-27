@@ -17,7 +17,7 @@ const RegisterForm = () => {
         <div className="h-full flex flex-col">
             <div className="flex-1"/>
 
-            <h1 className="text-center text-2xl font-bold text-white mb-6">
+            <h1 className="text-center text-3xl font-bold text-white mb-6">
                 SING UP
             </h1>
 

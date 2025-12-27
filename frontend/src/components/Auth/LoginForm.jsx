@@ -39,7 +39,7 @@ const LoginForm = () => {
             {messages && <p>{messages}</p>}                   
             <div className="flex-1"/>
 
-            <h1 className="text-center text-2xl font-bold text-white mb-14">
+            <h1 className="text-center text-3xl font-bold text-white mb-14">
                 SING IN
             </h1>
 

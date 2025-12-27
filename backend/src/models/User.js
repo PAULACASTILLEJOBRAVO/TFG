@@ -19,7 +19,6 @@ const SALT_WORK_FACTOR = 10;
 const userSchema = new Schema({
     username: { 
         type: String, 
-        required: true, 
         unique: true,
         trim: true,                     // Delete spaces before and after the value before saving in the database
     },

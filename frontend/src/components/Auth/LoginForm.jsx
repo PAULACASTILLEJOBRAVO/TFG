@@ -21,13 +21,14 @@ const LoginForm = ({onToggle}) => {
         
         setLoading(true);
         setError(null);
+        setMessages("");
 
         try{
             const { message, data } = await loginRequest(form);
             login(data);
             setMessages(message);
         }catch(err){
-            const errorMessage = err.response?.data?.message || "Error al iniciar sesión";
+            const errorMessage = err.response?.data?.message || "Error to login";
             setError(errorMessage);
         }finally{
             setLoading(false);
@@ -71,7 +72,7 @@ const LoginForm = ({onToggle}) => {
             </button>
 
             <div className="flex-1"/>
-            {error && <p>{error}</p>}
+            {error && <p className="text-red-500">{error}</p>}
         </div>
     );
 }

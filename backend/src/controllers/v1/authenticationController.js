@@ -2,6 +2,10 @@ const debug = require('debug')('app:authenticationController');
 
 // Import model
 const User = require('../../models/User');
+const { checkExists } = require('../../utils/checkExists');
+
+// Import services
+const authenticationServices = require('../../services/v1/authenticationService');
 
 // Controller to login an user
 const loginUser = async (req, res) => {

@@ -10,7 +10,6 @@ const { getUserEditableFields } = require('../utils/checkRolePermissions');
 // Import utils functions
 const { validatePasswordChange, validateEmailChange } = require('../utils/validateChange');
 const { validateAdminRole } = require('../middleware/validationRole');
-const { checkExists } = require('../utils/checkExists');
 
 // Define the number of salt rounds for bcrypt
 const SALT_WORK_FACTOR = 10;
@@ -19,6 +18,7 @@ const SALT_WORK_FACTOR = 10;
 const userSchema = new Schema({
     username: { 
         type: String, 
+        required: true, 
         unique: true,
         trim: true,                     // Delete spaces before and after the value before saving in the database
     },

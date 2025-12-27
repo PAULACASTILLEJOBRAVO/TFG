@@ -5,7 +5,7 @@ const User = require('../../models/User');
 // Service to login an user
 
 // Service to register an user
-const register = async (body) => {
+const registerUser = async (body) => {
     try{
         return await User.create(body);
     }catch (error){
@@ -15,5 +15,5 @@ const register = async (body) => {
 
 // Export service functions
 module.exports = {
-    register
+    registerUser
 }

@@ -3,7 +3,7 @@ import AuthButton from "@/components/Auth/AuthButton";
 const AuthSidePanel = ({position = "left", onToggle}) => {
 
     return (
-        <div className={`absolute inset-0 flex`}>
+        <div className={`absolute inset-0 sm:flex hidden`}>
 
             <div className={`
                 w-1/2 

@@ -6,7 +6,7 @@ import { useAuth } from "../../auth/AuthContext";
 import AuthButton from '@/components/Auth/AuthButton';
 import AuthInput from "@/components/Auth/AuthInput";
 
-const LoginForm = () => {
+const LoginForm = ({onToggle}) => {
     const [form, setForm] = useState({email: "", password: ""});
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -63,6 +63,13 @@ const LoginForm = () => {
                 LOGIN
             </AuthButton>
             
+            <button 
+                className="mt-4 text-sm text-white underline sm:hidden"
+                onClick={onToggle}
+            >
+                Don't have an account? Sign Up
+            </button>
+
             <div className="flex-1"/>
             {error && <p>{error}</p>}
         </div>

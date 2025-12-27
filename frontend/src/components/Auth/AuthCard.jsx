@@ -4,13 +4,12 @@ const AuthCard = ({mode = "login", children}) => {
     return(
         <div className={`
             absolute
-            w-[46%]
-            
-            top-1/2
-            right-1/2
-            -translate-y-1/2
-            transition-transform duration-1000 ease-in-out          
-            ${mode === "login" ? "translate-x-full" : "translate-x-0"}
+            w-full sm:w-[46%]
+            sm:top-1/2
+            sm:right-1/2
+            sm:-translate-y-1/2
+            sm:transition-transform sm:duration-1000 sm:ease-in-out          
+            ${mode === "login" ? "sm:translate-x-full" : "sm:translate-x-0"}
             z-10
         `}>
             <Card className="

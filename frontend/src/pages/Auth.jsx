@@ -20,7 +20,7 @@ const Auth = () => {
                     <AuthSidePanel onToggle={handleToggle}/>
 
                     <AuthCard mode = {mode}>
-                        {mode === "login" ? <LoginForm /> : <RegisterForm />}
+                        {mode === "login" ? <LoginForm onToggle={handleToggle} /> : <RegisterForm onToggle={handleToggle}/>}
                     </AuthCard>
             </AuthContainer> 
         </AuthLayout>

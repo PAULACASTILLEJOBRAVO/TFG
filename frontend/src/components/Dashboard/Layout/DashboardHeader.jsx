@@ -1,6 +1,7 @@
 import { headerConfig } from "../config/header.config";
 import HeaderSearch from "./Header/HeaderSearch";
 import HeaderActions from "./Header/HeaderActions";
+import Logo from "@/components/Common/Logo";
 
 const DashboardHeader = ({ userRole }) => {
     const config = headerConfig[userRole];
@@ -9,11 +10,7 @@ const DashboardHeader = ({ userRole }) => {
         <header className="h-16 border-b bg-background px-6 flex items-center justify-between">
 
             {/** Logo */}
-            <div className="flex items-center gap-2 font-semibold text-lg text-red-700" >
-                <img src="/LogoClicklass.png" alt="Clicklass Logo" className="h-9 w-9" />
-                <span ></span>
-                Clicklass
-            </div>
+            <Logo size="10"/>
 
             {/** Search */}
             <div className="flex-1 max-w-md">

@@ -1,53 +1,127 @@
-import { href } from "react-router-dom";
-
 export const sidebarConfig = {
+    share: [],
     student: [
         {
-            label: "",
+            label: "Inicio",
+            icon: "",
+            href: "/dashboard_student"
+        },
+        {
+            label: "Cursos",
             icon: "",
             href: ""
         },
         {
-            label: "",
+            label: "Ranking",
             icon: "",
             href: ""
         },
         {
-            label: "",
+            label: "Estadísticas",
+            icon: "",
+            href: ""
+        },
+        {
+            label: "Perfil",
+            icon: "",
+            href: ""
+        },
+        {
+            label: "Ajustes",
+            icon: "",
+            href: ""
+        },
+        {
+            label: "Tutorial",
+            icon: "",
+            href: ""
+        },
+        {
+            label: "Log out",
             icon: "",
             href: ""
         }
     ],
     teacher: [
         {
-            label: "",
+            label: "Inicio",
+            icon: "",
+            href: "/dashboard_teacher"
+        },
+        {
+            label: "Cursos",
             icon: "",
             href: ""
         },
         {
-            label: "",
+            label: "Cuestionarios",
             icon: "",
             href: ""
         },
         {
-            label: "",
+            label: "Histórico",
+            icon: "",
+            href: ""
+        },
+        {
+            label: "Perfil",
+            icon: "",
+            href: ""
+        },
+        {
+            label: "Ajustes",
+            icon: "",
+            href: ""
+        },
+        {
+            label: "Tutorial",
+            icon: "",
+            href: ""
+        },
+        {
+            label: "Log out",
             icon: "",
             href: ""
         }
     ],
     admin: [
         {
-            label: "",
+            label: "Inicio",
+            icon: "",
+            href: "/dashboard_admin"
+        },
+        {
+            label: "Usuarios",
             icon: "",
             href: ""
         },
         {
-            label: "",
+            label: "Clickers",
             icon: "",
             href: ""
         },
         {
-            label: "",
+            label: "Estadísticas",
+            icon: "",
+            href: ""
+        },
+        {
+            label: "Perfil",
+            icon: "",
+            href: ""
+        },
+        {
+            label: "Ajustes",
+            icon: "",
+            href: ""
+        },
+        {
+            label: "Tutorial",
+            icon: "",
+            href: ""
+        },
+        {
+            label: "Log out",
             icon: "",
             href: ""
         }

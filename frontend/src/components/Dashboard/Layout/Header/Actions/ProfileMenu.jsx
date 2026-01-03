@@ -1,0 +1,63 @@
+import { useState, useRef } from "react";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+    DropdownMenuSeparator
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { User } from "lucide-react";
+
+const ProfileMenu = () => {
+    const [open, setOpen] = useState(false);
+    const timeoutRef = useRef();
+
+    const handleMouseEnter = () => {
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        setOpen(true);
+    }
+
+    const handleMouseLeave = () => {
+        timeoutRef.current = setTimeout(() => setOpen(false), 200);
+    }
+
+    const handleLogout = () => {
+        // Implement logout functionality here
+        console.log("User logged out");
+    }
+
+    return (
+        <DropdownMenu open={open} onOpenChange={setOpen}>
+            <DropdownMenuTrigger asChild onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+                <Button variant="ghost" size="icon">
+                    <User />
+                </Button>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent 
+                align="end" 
+                className="w-30" 
+                onMouseEnter={handleMouseEnter} 
+                onMouseLeave={handleMouseLeave}
+                onClick={() => setOpen(false)}
+            >
+                <DropdownMenuItem>
+                    Profile
+                </DropdownMenuItem>
+
+                <DropdownMenuItem>
+                    Settings
+                </DropdownMenuItem>
+
+                <DropdownMenuSeparator/>
+
+                <DropdownMenuItem onClick={handleLogout} className="text-red-600 focus:text-red-600">
+                    Logout
+                </DropdownMenuItem>
+            </DropdownMenuContent>
+        </DropdownMenu>
+    );
+}
+
+export default ProfileMenu;

@@ -27,6 +27,8 @@ const LoginForm = ({onToggle}) => {
             const { message, data } = await loginRequest(form);
             login(data);
             setMessages(message);
+
+            navigate(`/dashboard_${data.role}`);
         }catch(err){
             const errorMessage = err.response?.data?.message || "Error to login";
             setError(errorMessage);

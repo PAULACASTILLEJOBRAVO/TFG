@@ -11,6 +11,7 @@ import LanguageMenu from "./Actions/LanguageMenu";
 import ProfileMenu from "./Actions/ProfileMenu";
 import ActionMenu from "./Actions/ActionMenu";
 import NotificationMenu from "./Actions/NotificationMenu";
+import { useAuth } from "@/auth/AuthContext";
 
 const icons = {
     trophy: Trophy,
@@ -18,8 +19,12 @@ const icons = {
     file: FileText,
 }
 
-const HeaderActions = ({userRole}) => {
-    const config = headerConfig[userRole];
+const HeaderActions = () => {
+    const { user } = useAuth();
+
+    if(!user) return null;
+
+    const config = headerConfig[user.role];
     const ActionIcon = config?.actionIcon ? icons[config.actionIcon] : null;
 
     return (
@@ -31,7 +36,7 @@ const HeaderActions = ({userRole}) => {
             )}
 
             {ActionIcon && config?.actionType === "menu" && (
-                <ActionMenu userRole={userRole} icon={ActionIcon} />
+                <ActionMenu icon={ActionIcon} />
             )}
 
             <NotificationMenu unreadCount="2"/>

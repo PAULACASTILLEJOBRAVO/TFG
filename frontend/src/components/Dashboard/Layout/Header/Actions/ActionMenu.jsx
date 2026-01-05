@@ -7,8 +7,13 @@ import {
     DropdownMenuSeparator
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/auth/AuthContext";
 
-const ActionMenu = ({userRole, icon}) => {
+const ActionMenu = ({icon}) => {
+    const user = useAuth();
+
+    if(!user) return null;
+
     const [open, setOpen] = useState(false);
     const timeoutRef = useRef();
     const Icon = icon;
@@ -42,7 +47,7 @@ const ActionMenu = ({userRole, icon}) => {
                 onClick={() => setOpen(false)}
             >
 
-                {userRole === "teacher" && (
+                {user.role === "teacher" && (
                     <>
                         <DropdownMenuItem>
                             Crear curso
@@ -54,7 +59,7 @@ const ActionMenu = ({userRole, icon}) => {
                     </>
                 )}
 
-                {userRole === "admin" && (
+                {user.role === "admin" && (
                     <>
                         <DropdownMenuItem>
                             Usuarios

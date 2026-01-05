@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginRequest } from "../../services/auth.service";
 import { useAuth } from "../../auth/AuthContext";
+import { Spinner } from "../ui/spinner";
 
 import AuthButton from '@/components/Auth/AuthButton';
 import AuthInput from "@/components/Auth/AuthInput";
@@ -38,8 +39,7 @@ const LoginForm = ({onToggle}) => {
     };
 
     return (
-        <div className="h-full flex flex-col">
-            {messages && <p>{messages}</p>}                   
+        <div className="h-full flex flex-col">                 
             <div className="flex-1"/>
 
             <h1 className="text-center text-3xl font-bold text-white mb-14">
@@ -63,7 +63,7 @@ const LoginForm = ({onToggle}) => {
             </div>
             
             <AuthButton onClick={handleLogin} disabled={loading}>
-                LOGIN
+                {loading ? <Spinner /> : "LOGIN"}
             </AuthButton>
             
             <button 
@@ -74,7 +74,7 @@ const LoginForm = ({onToggle}) => {
             </button>
 
             <div className="flex-1"/>
-            {error && <p className="text-red-500">{error}</p>}
+            {error && <p className="text-white">ERROR: {error}</p>}
         </div>
     );
 }

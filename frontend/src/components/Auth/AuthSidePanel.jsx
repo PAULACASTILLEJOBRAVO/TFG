@@ -1,6 +1,6 @@
 import AuthButton from "@/components/Auth/AuthButton";
 
-const AuthSidePanel = ({position = "left", onToggle}) => {
+const AuthSidePanel = ({onToggle}) => {
 
     return (
         <div className={`absolute h-full inset-0 sm:flex hidden`}>
@@ -34,7 +34,7 @@ const AuthSidePanel = ({position = "left", onToggle}) => {
 
                 <div className="px-4 w-full">
                     <AuthButton variant="outline" className="mt-4" onClick={onToggle}>
-                        {position === "left" ? "SING UP" : "SING IN"}
+                        SING UP
                     </AuthButton> 
                 </div>       
 
@@ -70,7 +70,7 @@ const AuthSidePanel = ({position = "left", onToggle}) => {
 
                 <div className="px-4 w-full">
                     <AuthButton variant="outline" className="mt-4" onClick={onToggle}>
-                        {position === "left" ? "SING UP" : "SING IN"}
+                        SING IN
                     </AuthButton>  
                 </div>          
 

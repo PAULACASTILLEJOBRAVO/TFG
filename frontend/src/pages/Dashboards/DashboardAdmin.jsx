@@ -4,8 +4,8 @@ import DashboardSidebar from '@/components/Dashboard/Layout/DashboardSidebard';
 const DashboardAdmin = () => {
   return(
     <>
-      <DashboardHeader userRole="admin" />
-      <DashboardSidebar userRole="admin" />
+      <DashboardHeader />
+      <DashboardSidebar />
     </>
   );
 };

@@ -4,8 +4,8 @@ import DashboardSidebar from '@/components/Dashboard/Layout/DashboardSidebard';
 const DashboardStudent = () => {
   return (
     <>
-      <DashboardHeader userRole="student" />
-      <DashboardSidebar userRole="student" />
+      <DashboardHeader />
+      <DashboardSidebar />
     </>
   );
 };

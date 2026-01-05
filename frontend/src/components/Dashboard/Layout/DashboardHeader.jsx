@@ -2,25 +2,42 @@ import { headerConfig } from "../config/header.config";
 import HeaderSearch from "./Header/HeaderSearch";
 import HeaderActions from "./Header/HeaderActions";
 import Logo from "@/components/Common/Logo";
+import { useAuth } from "@/auth/AuthContext";
 
-const DashboardHeader = ({ userRole }) => {
-    const config = headerConfig[userRole];
+const DashboardHeader = () => {
+    const { user } = useAuth();
+
+    if(!user) return null;
+
+    const config = headerConfig[user.role];
 
     return(
-        <header className="h-16 border-b bg-background px-6 flex items-center justify-between">
+        <header className="
+            h-16 
+            border-b 
+            bg-background 
+            px-4 sm:px-6 
+            flex items-center 
+        ">
 
             {/** Logo */}
-            <Logo size="10"/>
+            <div className="shrink-0">
+                <Logo />
+            </div>
 
             {/** Search */}
-            <div className="flex-1 max-w-md">
-                <HeaderSearch 
-                    placeholder={config?.searchPlaceholder}
-                />
+            <div className="flex-1 sm:flex justify-center hidden px-4">
+                <div className="w-full max-w-md">
+                    <HeaderSearch 
+                        placeholder={config?.searchPlaceholder}
+                    />
+                </div>
             </div>
 
             {/** Actions */}
-            <HeaderActions userRole={userRole} />
+            <div className="shrink-0">
+                <HeaderActions />
+            </div>
 
         </header>
     );

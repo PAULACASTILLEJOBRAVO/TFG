@@ -2,6 +2,7 @@ import { useState } from "react";
 import { registerRequest, loginRequest } from "../../services/auth.service";
 import { useAuth } from "../../auth/AuthContext";
 import { validatePassword } from "../../utils/validators";
+import { Spinner } from "../ui/spinner";
 
 import AuthButton from '@/components/Auth/AuthButton';
 import AuthInput from "@/components/Auth/AuthInput";
@@ -60,7 +61,6 @@ const RegisterForm = ({onToggle}) => {
     return(
         <div className="h-full flex flex-col">
             <div className="flex-1"/>
-            {messages && <p>{messages}</p>}
 
             <h1 className="text-center text-3xl font-bold text-white sm:mb-6 mb-5">
                 SING UP
@@ -96,7 +96,7 @@ const RegisterForm = ({onToggle}) => {
             </div>
         
             <AuthButton onClick={handleRegister} disabled={loading}>
-                CREATE ACCOUNT
+                {loading ? <Spinner/> : "CREATE ACCOUNT"}
             </AuthButton>
 
             <button 
@@ -106,7 +106,7 @@ const RegisterForm = ({onToggle}) => {
                 Have an account? Sign In
             </button>
 
-            {error && <p className="text-red-500">{error}</p>}
+            {error && <p className="text-white">ERROR: {error}</p>}
 
             <div className="flex-1"/>
         </div>

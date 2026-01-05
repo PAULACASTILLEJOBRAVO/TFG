@@ -4,8 +4,8 @@ import DashboardSidebar from '@/components/Dashboard/Layout/DashboardSidebard';
 const DashboardTeacher = () => {
   return (
     <>
-      <DashboardHeader userRole="teacher" />
-      <DashboardSidebar userRole="teacher" />
+      <DashboardHeader />
+      <DashboardSidebar />
     </>
   )
 };

@@ -14,9 +14,14 @@ import {
     SidebarSeparator 
 } from "@/components/ui/sidebar";
 import SidebarUserFooter from "@/components/Dashboard/Layout/Sidebar/SidebarUserFooter"
+import { useAuth } from "@/auth/AuthContext";
 
-const DashboardSidebar = ({userRole}) => {
-    const config = sidebarConfig[userRole];
+const DashboardSidebar = () => {
+    const {user} = useAuth();
+
+    if(!user) return null;
+
+    const config = sidebarConfig[user.role];
 
     return(
         <SidebarProvider>            
@@ -25,8 +30,8 @@ const DashboardSidebar = ({userRole}) => {
                  <SidebarHeader>
                     <SidebarMenu>
                         <SidebarMenuItem>
-                            <div className="px-6 py-4">
-                                <Logo size="10"/>
+                            <div className="flex flex-col items-center justify-center py-6 gap-2">
+                                <Logo/>
                             </div>
                         </SidebarMenuItem>
                     </SidebarMenu>
@@ -50,8 +55,6 @@ const DashboardSidebar = ({userRole}) => {
                         </SidebarGroupContent>
                     </SidebarGroup>
                 </SidebarContent>
-
-                <SidebarSeparator/>
 
                 {/** Footer */}
                 <SidebarUserFooter />

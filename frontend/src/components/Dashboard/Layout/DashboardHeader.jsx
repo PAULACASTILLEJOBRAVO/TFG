@@ -16,8 +16,9 @@ const DashboardHeader = () => {
             h-16 
             border-b 
             bg-background 
-            px-4 sm:px-6 
+            px-6 
             flex items-center 
+            gap-2
         ">
 
             {/** Logo */}
@@ -26,7 +27,7 @@ const DashboardHeader = () => {
             </div>
 
             {/** Search */}
-            <div className="flex-1 sm:flex justify-center hidden px-4">
+            <div className="flex-1 md:flex justify-center hidden px-4">
                 <div className="w-full max-w-md">
                     <HeaderSearch 
                         placeholder={config?.searchPlaceholder}

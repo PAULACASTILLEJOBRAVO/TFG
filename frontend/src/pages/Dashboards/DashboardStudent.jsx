@@ -1,11 +1,15 @@
-import DashboardHeader from '@/components/Dashboard/Layout/DashboardHeader';
-import DashboardSidebar from '@/components/Dashboard/Layout/DashboardSidebard';
+import DashboardLayout from '@/components/Dashboard/Layout/DashboardLayout';
+import DashboardContent from '@/components/Dashboard/Layout/DashboardContent';
+import StudentOverview from '@/components/Dashboard/Sections/StudentOverview';
 
 const DashboardStudent = () => {
   return (
     <>
-      <DashboardHeader />
-      <DashboardSidebar />
+      <DashboardLayout>
+        <DashboardContent>
+          <StudentOverview />
+        </DashboardContent>
+      </DashboardLayout>
     </>
   );
 };

@@ -39,7 +39,7 @@ export const sidebarConfig = {
         {
             label: "Log out",
             icon: "",
-            href: ""
+            action: "logout"
         }
     ],
     teacher: [
@@ -81,7 +81,7 @@ export const sidebarConfig = {
         {
             label: "Log out",
             icon: "",
-            href: ""
+            action: "logout"
         }
     ],
     admin: [
@@ -123,7 +123,7 @@ export const sidebarConfig = {
         {
             label: "Log out",
             icon: "",
-            href: ""
+            action: "logout"
         }
     ]
 }

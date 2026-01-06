@@ -1,13 +1,17 @@
-import DashboardHeader from '@/components/Dashboard/Layout/DashboardHeader';
-import DashboardSidebar from '@/components/Dashboard/Layout/DashboardSidebard';
+import DashboardLayout from '@/components/Dashboard/Layout/DashboardLayout';
+import DashboardContent from '@/components/Dashboard/Layout/DashboardContent';
+import TeacherOverview from '@/components/Dashboard/Sections/TeacherOverview';
 
 const DashboardTeacher = () => {
   return (
     <>
-      <DashboardHeader />
-      <DashboardSidebar />
+      <DashboardLayout>
+        <DashboardContent>
+          <TeacherOverview />
+        </DashboardContent>
+      </DashboardLayout>
     </>
-  )
+  );
 };
 
 export default DashboardTeacher;

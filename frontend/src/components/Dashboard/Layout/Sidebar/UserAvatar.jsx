@@ -9,7 +9,6 @@ const sizeMap = {
 
 const UserAvatar = ({ name, avatar, size = "md" }) => {
     const bgColor = stringToHlsColor(name, 50);
-    console.log(bgColor);
 
     return(
         <Avatar className={sizeMap[size]}>

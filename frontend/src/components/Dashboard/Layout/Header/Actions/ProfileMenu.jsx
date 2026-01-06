@@ -8,10 +8,16 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { User } from "lucide-react";
+import { useAuth } from "@/auth/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const ProfileMenu = () => {
+    const { logout } = useAuth();
+
     const [open, setOpen] = useState(false);
     const timeoutRef = useRef();
+
+    const navigate = useNavigate();
 
     const handleMouseEnter = () => {
         if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -23,8 +29,8 @@ const ProfileMenu = () => {
     }
 
     const handleLogout = () => {
-        // Implement logout functionality here
-        console.log("User logged out");
+        logout();
+        navigate("/");
     }
 
     return (

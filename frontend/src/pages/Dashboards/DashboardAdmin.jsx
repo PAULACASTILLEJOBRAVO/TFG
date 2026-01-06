@@ -1,11 +1,15 @@
-import DashboardHeader from '@/components/Dashboard/Layout/DashboardHeader';
-import DashboardSidebar from '@/components/Dashboard/Layout/DashboardSidebard';
+import DashboardLayout from '@/components/Dashboard/Layout/DashboardLayout';
+import DashboardContent from '@/components/Dashboard/Layout/DashboardContent';
+import AdminOverview from '@/components/Dashboard/Sections/AdminOverview';
 
 const DashboardAdmin = () => {
-  return(
+  return (
     <>
-      <DashboardHeader />
-      <DashboardSidebar />
+      <DashboardLayout>
+        <DashboardContent>
+          <AdminOverview />
+        </DashboardContent>
+      </DashboardLayout>
     </>
   );
 };

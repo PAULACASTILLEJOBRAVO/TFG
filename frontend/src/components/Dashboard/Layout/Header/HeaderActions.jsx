@@ -28,7 +28,7 @@ const HeaderActions = () => {
     const ActionIcon = config?.actionIcon ? icons[config.actionIcon] : null;
 
     return (
-        <div className="flex items-center gap-1 sm:gap-3">            
+        <div className="flex items-center gap-3">            
             {ActionIcon && config?.actionType === "button" && (
                 <Button variant="ghost" size="icon">
                     <ActionIcon />

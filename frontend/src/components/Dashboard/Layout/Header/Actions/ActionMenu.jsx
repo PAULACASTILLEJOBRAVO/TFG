@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/auth/AuthContext";
 
 const ActionMenu = ({icon}) => {
-    const user = useAuth();
+    const { user } = useAuth();
 
     if(!user) return null;
 

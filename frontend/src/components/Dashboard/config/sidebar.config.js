@@ -9,32 +9,32 @@ export const sidebarConfig = {
         {
             label: "Cursos",
             icon: "",
-            href: ""
+            href: "/courses"
         },
         {
             label: "Ranking",
             icon: "",
-            href: ""
+            href: "/ranking"
         },
         {
             label: "Estadísticas",
             icon: "",
-            href: ""
+            href: "/stadistics"
         },
         {
             label: "Perfil",
             icon: "",
-            href: ""
+            href: "/profile"
         },
         {
             label: "Ajustes",
             icon: "",
-            href: ""
+            href: "/settings"
         },
         {
             label: "Tutorial",
             icon: "",
-            href: ""
+            href: "/tutorial"
         },
         {
             label: "Log out",
@@ -51,32 +51,32 @@ export const sidebarConfig = {
         {
             label: "Cursos",
             icon: "",
-            href: ""
+            href: "/courses"
         },
         {
             label: "Cuestionarios",
             icon: "",
-            href: ""
+            href: "/quizzes"
         },
         {
             label: "Histórico",
             icon: "",
-            href: ""
+            href: "/historic"
         },
         {
             label: "Perfil",
             icon: "",
-            href: ""
+            href: "/profile"
         },
         {
             label: "Ajustes",
             icon: "",
-            href: ""
+            href: "/settings"
         },
         {
             label: "Tutorial",
             icon: "",
-            href: ""
+            href: "/tutorial"
         },
         {
             label: "Log out",
@@ -93,32 +93,32 @@ export const sidebarConfig = {
         {
             label: "Usuarios",
             icon: "",
-            href: ""
+            href: "/users"
         },
         {
             label: "Clickers",
             icon: "",
-            href: ""
+            href: "/clickers"
         },
         {
             label: "Estadísticas",
             icon: "",
-            href: ""
+            href: "/stadistics"
         },
         {
             label: "Perfil",
             icon: "",
-            href: ""
+            href: "/profile"
         },
         {
             label: "Ajustes",
             icon: "",
-            href: ""
+            href: "/settings"
         },
         {
             label: "Tutorial",
             icon: "",
-            href: ""
+            href: "/tutorial"
         },
         {
             label: "Log out",

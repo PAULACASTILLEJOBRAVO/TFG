@@ -5,8 +5,6 @@ const DashboardTitle = () => {
 
     if(!user) return null;
 
-    console.log(user.role);
-
     return(
         <>
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-center font-bold my-4 md:my-6">

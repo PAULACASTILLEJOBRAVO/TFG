@@ -14,23 +14,21 @@ import {
 } from "@/components/ui/sidebar";
 import SidebarUserFooter from "@/components/Dashboard/Layout/Sidebar/SidebarUserFooter"
 import { useAuth } from "@/auth/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const DashboardSidebar = () => {
     const {user, logout} = useAuth();
 
     if(!user) return null;
-    
-    const [activeItem, setActiveItem] = useState("Inicio");
 
     const config = sidebarConfig[user.role];
 
+    const location = useLocation();
     const navigate = useNavigate();
 
-
-    const baseClasses = "justify-start hover:bg-gray-300";
-    const activeClasses = "bg-black text-white";
-    const logoutClasses = "text-red-500 hover:bg-red-50 hover:text-red-500";
+    const baseItems = "justify-start hover:bg-gray-300";
+    const activeItem = "bg-black text-white";
+    const logoutItem = "text-red-500 hover:bg-red-50 hover:text-red-500";
 
 
     const handleLogout = () => {
@@ -59,17 +57,18 @@ const DashboardSidebar = () => {
                         <SidebarGroupContent>
                             <SidebarMenu>
                                 {config.map((item, index) => {
-                                    const isActive = activeItem === item.label;
+                                    const isActive = location.pathname.startsWith(item.href); // Subroutes
+                                    // const isActive = location.pathname === item.href;
 
                                     return(
                                         <SidebarMenuItem key={index}>
                                             <SidebarMenuButton 
                                                 className={`
-                                                    ${baseClasses}
-                                                    ${isActive ? activeClasses : ""}
-                                                    ${item.action === "logout" ? logoutClasses : ""}
+                                                    ${baseItems}
+                                                    ${isActive ? activeItem : ""}
+                                                    ${item.action === "logout" ? logoutItem : ""}
                                                 `}
-                                                onClick={item.action === "logout" ? handleLogout : () => setActiveItem(item.label)}
+                                                onClick={item.action === "logout" ? handleLogout : () => navigate(item.href)}
                                             >
                                                 {item.label}
                                             </SidebarMenuButton>

@@ -15,6 +15,7 @@ import {
 import SidebarUserFooter from "@/components/Dashboard/Layout/Sidebar/SidebarUserFooter"
 import { useAuth } from "@/auth/AuthContext";
 import { useNavigate, useLocation } from "react-router-dom";
+import { logoutRequest } from "@/services/auth.service";
 
 const DashboardSidebar = () => {
     const {user, logout} = useAuth();
@@ -31,9 +32,10 @@ const DashboardSidebar = () => {
     const logoutItem = "text-red-500 hover:bg-red-50 hover:text-red-500";
 
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
+        await logoutRequest();
         logout();
-        navigate("/")
+        navigate("/");
     }
 
     return(

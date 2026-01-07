@@ -53,7 +53,7 @@ const getTotalUsersStats = async (req, res) => {
 
     try {
         const canAccess = await User.canGetAdminStats(currentUser);
-        if(!canAccess) return res.status(403).json({message: "Not authorized"})
+        if(!canAccess) return res.status(403).json({message: "Unauthorized"})
 
         const users = await userServices.getTotalUsersStats();
         res.status(200).json({
@@ -74,7 +74,7 @@ const getTotalEstudentsStatsForTeacher = async (req, res) => {
 
     try {
         const canAccess = await User.canGetTeacherStats(currentUser);
-        if(!canAccess) return res.status(403).json({message: "Not authorized"});
+        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
 
         const students = await userServices.getTotalStudentsStatsForTeacher(currentUser._id);
         res.status(200).json({
@@ -103,7 +103,7 @@ const createUser = async (req, res) => {
 
     try{
         const canAccess = await User.canCreateUser(currentUser);
-        if(canAccess) return res.status(403).json({message: "Not authorized"})
+        if(canAccess) return res.status(403).json({message: "Unauthorized"})
 
 
         if (await checkExists(User, 'email', email)) {

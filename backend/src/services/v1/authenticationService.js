@@ -2,8 +2,6 @@
 const User = require('../../models/User');
 
 // Authentication services
-// Service to login an user
-
 // Service to register an user
 const registerUser = async (body) => {
     try{

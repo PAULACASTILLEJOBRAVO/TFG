@@ -142,6 +142,20 @@ userSchema.methods.generateAuthToken = async function() {
   }
 }
 
+// Instance method to online user
+userSchema.methods.markOnline = async function () {
+  this.isOnline = true;
+  this.lastLoginAt = new Date();
+  await this.save();
+};
+
+// Instance method to ofline user
+userSchema.methods.markOffline = async function () {
+  this.isOnline = false;
+  this.lastLogoutAt = new Date();
+  await this.save();
+};
+
 // Statics helper to soft-delete by id (useful in services)
 userSchema.statics.softDeleteById = async function(id, { by = null, reason = null } = {}) {
   const user = await this.findById(id);

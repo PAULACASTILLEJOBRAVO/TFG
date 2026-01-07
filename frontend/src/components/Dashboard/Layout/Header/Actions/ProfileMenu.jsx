@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { User } from "lucide-react";
 import { useAuth } from "@/auth/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { logoutRequest } from "@/services/auth.service";
 
 const ProfileMenu = () => {
     const { logout } = useAuth();
@@ -28,7 +29,8 @@ const ProfileMenu = () => {
         timeoutRef.current = setTimeout(() => setOpen(false), 200);
     }
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
+        await logoutRequest();
         logout();
         navigate("/");
     }

@@ -21,6 +21,8 @@ const loginUser = async (req, res) => {
         
         if(!isMatch) return res.status(401).json({ message: 'Invalid password'});
 
+        await user.markOnline();
+
         const token = await user.generateAuthToken();
 
         res.status(200).json({
@@ -37,6 +39,28 @@ const loginUser = async (req, res) => {
         debug('Error logging in user:', error);
         res.status(500).json({
             message: 'Error logging in user',
+            error: error.message
+        });
+    }
+}
+
+// Controller to logout an user
+const logoutUser = async (req, res) => {
+    try{
+        const userLoggin = req.user;
+
+        if(!userLoggin) return res.status(403).json({message: "Unauthorized"});
+
+        const user = await User.findById(userLoggin._id);
+
+        await user.markOffline();
+
+        res.status(200).json({
+            message: 'Logout successful'
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: 'Error logging out user',
             error: error.message
         });
     }
@@ -76,5 +100,6 @@ const registerUser = async (req, res) => {
 // Export the module
 module.exports = {
     loginUser,
+    logoutUser,
     registerUser
 };

@@ -10,6 +10,12 @@ export const getCourseById = async (id) => {
     return response.data;
 }
 
+export const getActiveCoursesStatsForTeacher = async () => {
+    const response = await api.get("/courses/stats/active-courses-for-teacher");
+    return response.data;
+}
+
+
 export const createCourse = async (payload) => {
     const response = await api.post('/courses', payload);
     return response.data;

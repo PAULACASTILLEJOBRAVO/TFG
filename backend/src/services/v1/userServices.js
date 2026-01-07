@@ -1,5 +1,6 @@
 // Import models
 const User = require('../../models/User');
+const Course = require('../../models/Course');
 
 // User services
 // Service to fetch all users
@@ -10,6 +11,38 @@ const getAllUsers = async () => {
 // Service to fetch an user by ID
 const getUserById = async (id) => {
     return await User.findById(id);
+}
+
+// Service to fetch users' stats
+const getTotalUsersStats = async () => {
+    return await User.countDocuments({
+        isActive: true,
+        isDeleted: false
+    });
+}
+
+// Service to fetch users' stats
+const getTotalStudentsStatsForTeacher = async (id) => {
+    const courses = await Course.find({
+        teacherId: id, 
+        isActive: true, 
+        $or: [
+            { isDeleted: false },
+            { isDeleted: { $exists: false } }
+        ],
+    });
+
+    const studentIds = courses.flatMap(course => course.studentIds);
+
+    return await User.countDocuments({
+        _id: { $in: studentIds },
+        isActive: true,
+        $or: [
+            { isDeleted: false },
+            { isDeleted: { $exists: false } }
+        ],
+        role: "student"
+    });
 }
 
 // Service to create a new user
@@ -103,6 +136,8 @@ const updateUserStatusById = async (id, body, _id, role) => {
 module.exports = {
     getAllUsers,
     getUserById,
+    getTotalUsersStats,
+    getTotalStudentsStatsForTeacher,
     
     createUser,
 

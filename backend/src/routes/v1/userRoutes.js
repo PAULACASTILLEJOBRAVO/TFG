@@ -54,6 +54,12 @@ router.use(authenticate);
  */
 router.get('/', userController.getAllUsers);
 
+// Route to get users' stats
+router.get('/stats', userController.getTotalUsersStats);
+
+// Route to get students' stats
+router.get('/students/stats', userController.getTotalEstudentsStatsForTeacher);
+
 // Route to get an user by ID
 /**
  * @swagger

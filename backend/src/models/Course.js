@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const debug = require('debug')('backend:models:course');
 
-const {validateTeacherRole} = require('../middleware/validationRole');
+const {validateTeacherRoleById} = require('../middleware/validationRole');
 
 //Define course schema
 const courseSchema = new Schema({
@@ -188,7 +188,7 @@ courseSchema.pre('deleteOne', { document: true, query: false }, async function(n
 //Pre-save hook to validate that the teacherId corresponds to a user with the 'teacher' role
 courseSchema.pre('save', async function(next) {
     try{
-        await validateTeacherRole(this.teacherId);
+        await validateTeacherRoleById(this.teacherId);
         debug('Teacher role validated for teacherId.');
         next();
     }catch(err){

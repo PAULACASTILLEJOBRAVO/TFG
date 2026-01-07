@@ -1,8 +1,9 @@
 // Import models
 const User = require('../models/User');
 
+// Validations by id
 // Middleware to validate teacher role
-async function validateTeacherRole(userId) {
+async function validateTeacherRoleById(userId) {
     const teacher = await User.findById(userId);
 
     if (!teacher || teacher.role !== 'teacher') throw new Error('Only teachers can perform this action');
@@ -10,6 +11,16 @@ async function validateTeacherRole(userId) {
     return true;
 }
 
+// Middleware to validate admin role
+async function validateAdminRoleById(userId) {
+    const admin = await User.findById(userId);
+
+    if (!admin || admin.role !== 'admin') throw new Error('Only admins can perform this action');
+    
+    return true;
+}
+
+// Validation by current user
 // Middleware to validate admin role
 async function validateAdminRole(currentUser) {
     if (!currentUser) throw new Error('Unauthorized'); 
@@ -19,7 +30,19 @@ async function validateAdminRole(currentUser) {
     return true;
 }
 
+// Middleware to validate teacher role
+async function validateTeacherRole(currentUser) {
+    if (!currentUser) throw new Error('Unauthorized'); 
+
+    if(currentUser.role !== 'teacher') throw new Error('Only teachers can perform this action');
+
+    return true;
+}
+
 module.exports = {
+    validateTeacherRoleById,
+    validateAdminRoleById,
+
+    validateAdminRole,
     validateTeacherRole,
-    validateAdminRole
 };

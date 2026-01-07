@@ -47,6 +47,48 @@ const getUserById = async (req, res) => {
     }
 }
 
+// Controller to get users' stats
+const getTotalUsersStats = async (req, res) => {
+    const currentUser = req.user;
+
+    try {
+        const canAccess = await User.canGetAdminStats(currentUser);
+        if(!canAccess) return res.status(403).json({message: "Not authorized"})
+
+        const users = await userServices.getTotalUsersStats();
+        res.status(200).json({
+            message: "Users' stats fetched successfully", 
+            data: users
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            message: "Error fetching users' stats", 
+            error: error.message 
+        });
+    }
+}
+
+// Controller to get students' stats
+const getTotalEstudentsStatsForTeacher = async (req, res) => {
+    const currentUser = req.user;
+
+    try {
+        const canAccess = await User.canGetTeacherStats(currentUser);
+        if(!canAccess) return res.status(403).json({message: "Not authorized"});
+
+        const students = await userServices.getTotalStudentsStatsForTeacher(currentUser._id);
+        res.status(200).json({
+            message: "Students' stats fetched successfully", 
+            data: students
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            message: "Error fetching students' stats", 
+            error: error.message 
+        });
+    }
+}
+
 // Controller to create a new user
 const createUser = async (req, res) => {
     const { body} = req;
@@ -60,7 +102,9 @@ const createUser = async (req, res) => {
     if (!email || !username || !password) return res.status(400).json({ message: 'Username, email and password are required' });
 
     try{
-        await User.canCreateUser(currentUser);
+        const canAccess = await User.canCreateUser(currentUser);
+        if(canAccess) return res.status(403).json({message: "Not authorized"})
+
 
         if (await checkExists(User, 'email', email)) {
             return res.status(409).json({ message: 'The user alredy exists' });
@@ -73,11 +117,6 @@ const createUser = async (req, res) => {
             data: newUser
         });    
     } catch(error){
-        // if(error.code === 11000) return res.status(400).json({
-        //     message: 'Username is in use',
-        //     error: error.message
-        // })
-
         res.status(500).json({ 
             message: 'Error creating user', 
             error: error.message 
@@ -243,6 +282,8 @@ const updateUserStatusById = async (req, res) => {
 module.exports = {
     getAllUsers,
     getUserById,
+    getTotalUsersStats,
+    getTotalEstudentsStatsForTeacher,
     
     createUser,
 

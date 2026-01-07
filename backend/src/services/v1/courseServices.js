@@ -12,6 +12,18 @@ const getCourseById = async (id) => {
     return await Course.findById(id).populate('teacherId').populate('studentIds').populate('quizIds');
 }
 
+// Service to fetch courses' stats
+const getActiveCoursesStatsForTeacher = async (id) => {
+    return await Course.countDocuments({
+        teacherId: ( $in = id ),
+        isActive: true,
+        $or: [
+            { isDeleted: false },
+            { isDeleted: { $exists: false } }
+        ],
+    });
+}
+
 // Service to create a new course
 const createCourse = async (body) => {
     try{
@@ -38,6 +50,7 @@ const deleteCourseById = async (id, by = null, reason = 'Course deleted via serv
 module.exports = {
     getAllCourses,
     getCourseById,
+    getActiveCoursesStatsForTeacher,
     
     createCourse,
 

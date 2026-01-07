@@ -17,7 +17,6 @@ export const useCourse = (id) => {
 
             try{
                 const data = await getCourseById(id);
-                console.log("Datos de getCourseById:", data); 
                 
                 if(data.error){
                     // Backend return error (400, 404, 500, etc)
@@ -31,7 +30,6 @@ export const useCourse = (id) => {
                 }
             }catch(err) {
                 // Axios's error
-                console.log("Errores de getCourseById:", err); 
                 const errorMessage = err.response?.data?.message || err.message || "Error desconocido";
                 setError(errorMessage);
                 setCourse([]);

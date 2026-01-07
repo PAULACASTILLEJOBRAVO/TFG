@@ -54,6 +54,9 @@ router.use(authenticate);
  */
 router.get('/', courseController.getAllCourses);
 
+// Route to get courses' stats of a teacher
+router.get('/stats/active-courses-for-teacher', courseController.getActiveCoursesStatsForTeacher);
+
 // Route to get a course by ID
 /**
  * @swagger

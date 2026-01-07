@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { getCourses } from "../../services/course.service";
+import { getTotalUsersStats } from "../../services/users.service";
 
-export const useCourses = () => {
-    const [courses, setCourses] = useState([]);
+export const useUsers = () => {
+    const [usersStats, setUsersStats] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [message, setMessage] = useState("");
@@ -12,25 +12,24 @@ export const useCourses = () => {
             setLoading(true);
             setError(null);
             setMessage("");
+            setUsersStats(0);
 
             try{
-                const data = await getCourses(); 
+                const data = await getTotalUsersStats();
 
                 if(data.error){
-                    // Backend return error (400, 404, 500, etc.)
                     setError(data.error);
                     setMessage(data.message || "");
-                    setCourses([]);
+                    setUsersStats([]);
                 } else {
-                    // Backend return success (200, 201, 204)
-                    setCourses(data.data || []);
+                    setUsersStats(data.data || 0);
                     setMessage(data.message || "");
                 }
             }catch(err) {
                 // Axios's error
                 const errorMessage = err.response?.data?.message || err.message || "Unknown error";
                 setError(errorMessage);
-                setCourses([]);
+                setUsersStats(0);
             }finally{
                 setLoading(false);
             }
@@ -39,5 +38,5 @@ export const useCourses = () => {
         fetchCourses();
     }, []);
 
-    return { courses, loading, error, message };
+    return { usersStats, loading, error, message };
 };

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const debug = require('debug')('backend:models:quiz');
 
-const {validateTeacherRole} = require('../middleware/validationRole');
+const {validateTeacherRoleById} = require('../middleware/validationRole');
 
 //Define quiz schema
 const quizSchema = new Schema({
@@ -174,7 +174,7 @@ quizSchema.pre('deleteOne', { document: true, query: false }, async function(nex
 //Pre-save hook to validate that the creatorId corresponds to a user with the 'teacher' role
 quizSchema.pre('save', async function(next) {
     try{
-        await validateTeacherRole(this.creatorId);
+        await validateTeacherRoleById(this.creatorId);
         debug('Teacher role validated for creatorId');
         next();
     }catch(err){

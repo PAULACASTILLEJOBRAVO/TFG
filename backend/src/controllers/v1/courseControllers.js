@@ -1,6 +1,9 @@
 // Import services
 const courseServices = require('../../services/v1/courseServices');
 
+// Import models
+const User = require('../../models/User');
+
 // Course controllers
 // Controller to get all courses
 const getAllCourses = async (req, res) => {
@@ -39,6 +42,27 @@ const getCourseById = async (req, res) => {
             error: error.message 
         });
     } 
+}
+
+// Controller to get courses' stats
+const getActiveCoursesStatsForTeacher = async (req, res) => {
+    const currentUser = req.user;
+
+    try {
+        const canAccess = await User.canGetTeacherStats(currentUser);
+        if(!canAccess) return res.status(403).json({message: "Not authorized"});
+
+        const courses = await courseServices.getActiveCoursesStatsForTeacher(currentUser._id);
+        res.status(200).json({
+            message: "Courses' stats fetched successfully", 
+            data: courses
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            message: "Error fetching courses' stats", 
+            error: error.message 
+        });
+    }
 }
 
 // Controller to create a new course
@@ -91,6 +115,7 @@ const deleteCourseById = async (req, res) => {
 module.exports = {
     getAllCourses,
     getCourseById,
+    getActiveCoursesStatsForTeacher,
 
     createCourse,
 

@@ -9,7 +9,7 @@ const { getUserEditableFields } = require('../utils/checkRolePermissions');
 
 // Import utils functions
 const { validatePasswordChange, validateEmailChange } = require('../utils/validateChange');
-const { validateAdminRole } = require('../middleware/validationRole');
+const { validateAdminRole, validateTeacherRole } = require('../middleware/validationRole');
 
 // Define the number of salt rounds for bcrypt
 const SALT_WORK_FACTOR = 10;
@@ -70,9 +70,15 @@ const userSchema = new Schema({
         type: String,
         trim: true,
     },
+    isOnline: {
+        type: Boolean,
+    },
     lastLogin: { 
         type: Date 
     }, 
+    lastLogoutAt: {
+      type: Date
+    }
 }, 
 { 
     timestamps: true, // Add createdAt and updatedAt fields
@@ -136,7 +142,7 @@ userSchema.methods.generateAuthToken = async function() {
   }
 }
 
-// Static helper to soft-delete by id (useful in services)
+// Statics helper to soft-delete by id (useful in services)
 userSchema.statics.softDeleteById = async function(id, { by = null, reason = null } = {}) {
   const user = await this.findById(id);
   
@@ -147,7 +153,7 @@ userSchema.statics.softDeleteById = async function(id, { by = null, reason = nul
   return true;
 };
 
-// Static restore by id
+// Statics restore by id
 userSchema.statics.restoreById = async function(id) {
   const user = await this.findById(id);
   
@@ -158,14 +164,22 @@ userSchema.statics.restoreById = async function(id) {
   return user;
 };
 
-// Static permissions to create new user 
-userSchema.static.canCreateUser = async function(currentUser) {
-  await validateAdminRole(currentUser);
-
-  return true;
+// Statics permissions to create new user 
+userSchema.statics.canCreateUser = async function(currentUser) {
+  return await validateAdminRole(currentUser);
 }
 
-// Static update by id
+// Statics permissons to fetch total users
+userSchema.statics.canGetAdminStats = async function(currentUser) {
+  return await validateAdminRole(currentUser);
+}
+
+// Statics permissions to fetch total students
+userSchema.statics.canGetTeacherStats = async function(currentUser) {
+  return await validateTeacherRole(currentUser);
+}
+
+// Statics update by id
 userSchema.statics.updateById = async function(id, body, currentUserData) {
     const user = await this.findById(id).select('-password');
     if (!user) return false;
@@ -198,7 +212,7 @@ userSchema.statics.updateById = async function(id, body, currentUserData) {
     return user;
 }
 
-// Static update password by id
+// Statics update password by id
 userSchema.statics.updatePasswordById = async function (id, body, currentUserData) {
     const user = await this.findById(id);
     if(!user) return false;
@@ -222,7 +236,7 @@ userSchema.statics.updatePasswordById = async function (id, body, currentUserDat
     return user;
 }
 
-// Static update email by id
+// Statics update email by id
 userSchema.statics.updateEmailById = async function (id, body, currentUserData) {
   const user = await this.findById(id).select('-password'); // Ensure password is not selected
     if(!user) return false;
@@ -246,7 +260,7 @@ userSchema.statics.updateEmailById = async function (id, body, currentUserData) 
     return user;
 }
 
-// Static update role by id
+// Statics update role by id
 userSchema.statics.updateRoleById = async function (id, newRole, currentUserData) {
     if(currentUserData.role !== 'admin')  throw new Error('Only admins can change user roles');
 
@@ -263,7 +277,7 @@ userSchema.statics.updateRoleById = async function (id, newRole, currentUserData
     return user;
 }
 
-// Static method status by id
+// Statics method status by id
 userSchema.statics.updateStatusById = async function (id, newStatus, currentUserData) {
     const { role } = currentUserData;
 

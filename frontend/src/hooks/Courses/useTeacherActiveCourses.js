@@ -1,36 +1,40 @@
 import { useState, useEffect } from "react";
-import { getCourses } from "../../services/course.service";
+import { getActiveCoursesStatsForTeacher } from "../../services/course.service";
+import { useAuth } from "@/auth/AuthContext";
 
-export const useCourses = () => {
-    const [courses, setCourses] = useState([]);
+export const useTeacherActiveCourses = () => {
+    const {user} = useAuth();
+
+    const [activeCoursesForTeacher, setActiveCoursesForTeacher] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [message, setMessage] = useState("");
 
     useEffect(() => {
+        if(!user) return;
+
         const fetchCourses = async () => {
             setLoading(true);
             setError(null);
             setMessage("");
+            setActiveCoursesForTeacher(0);
 
             try{
-                const data = await getCourses(); 
+                const data = await getActiveCoursesStatsForTeacher(); 
 
                 if(data.error){
-                    // Backend return error (400, 404, 500, etc.)
                     setError(data.error);
                     setMessage(data.message || "");
-                    setCourses([]);
+                    setActiveCoursesForTeacher([]);
                 } else {
-                    // Backend return success (200, 201, 204)
-                    setCourses(data.data || []);
+                    setActiveCoursesForTeacher(data.data || 0);
                     setMessage(data.message || "");
                 }
             }catch(err) {
                 // Axios's error
                 const errorMessage = err.response?.data?.message || err.message || "Unknown error";
                 setError(errorMessage);
-                setCourses([]);
+                setActiveCoursesForTeacher(0);
             }finally{
                 setLoading(false);
             }
@@ -39,5 +43,5 @@ export const useCourses = () => {
         fetchCourses();
     }, []);
 
-    return { courses, loading, error, message };
+    return { activeCoursesForTeacher, loading, error, message };
 };

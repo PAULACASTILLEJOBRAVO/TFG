@@ -17,9 +17,9 @@ const AuthSidePanel = ({onToggle}) => {
 
                 <div className="mb-8">
                     <img 
-                        src="/LogoClicklass.png"
+                        src="/ClicklassLogo.png"
                         alt="Clicklass"
-                        className="w-20 h-20 mx-auto"
+                        className="w-auto h-20 mx-auto"
                     />
                 </div>
 
@@ -53,9 +53,9 @@ const AuthSidePanel = ({onToggle}) => {
 
                 <div className="mb-8">
                     <img 
-                        src="/LogoClicklass.png"
+                        src="/ClicklassLogo.png"
                         alt="Clicklass"
-                        className="w-20 h-20 mx-auto"
+                        className="w-auto h-20 mx-auto"
                     />
                 </div>
 

@@ -4,6 +4,7 @@ import DashboardInformationCard from "../Layout/Content/DashboardInformationCard
 import DashboardContentInformationCard from "../Layout/Content/DashboardContentInformationCard";
 import { useUsers } from "@/hooks/Users/useUsers";
 import { Spinner } from "@/components/ui/spinner";
+import ManagementSection from "../Layout/Content/Management/ManagementSection";
 
 const AdminOverview = () => {
     const { usersStats, loading } = useUsers();
@@ -22,7 +23,8 @@ const AdminOverview = () => {
             </DashboardContentInformationCard>
 
             <Separator/>
-           
+
+            <ManagementSection />           
         </>
     );
 }

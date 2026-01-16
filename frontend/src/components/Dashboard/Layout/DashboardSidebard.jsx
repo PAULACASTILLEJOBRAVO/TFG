@@ -59,8 +59,8 @@ const DashboardSidebar = () => {
                         <SidebarGroupContent>
                             <SidebarMenu>
                                 {config.map((item, index) => {
-                                    const isActive = location.pathname.startsWith(item.href); // Subroutes
-                                    // const isActive = location.pathname === item.href;
+                                    // const isActive = location.pathname.startsWith(item.href); // Subroutes?
+                                    const isActive = location.pathname === item.href;
 
                                     return(
                                         <SidebarMenuItem key={index}>

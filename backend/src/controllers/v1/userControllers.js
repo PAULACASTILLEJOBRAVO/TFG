@@ -127,13 +127,13 @@ const createUser = async (req, res) => {
 // Controller to delete an user by ID
 const deleteUserById = async (req, res) => {
     const { id } = req.params;
-    const { by, reason } = req.body;
+    const { reason } = req.body;
+    const { _id } = req.user;
 
     if(!id) return res.status(400).json({ message: 'User ID is required'});
-    if(!by && !reason) return res.status(400).json({ message: 'Deletion metadata is required'});
 
     try{
-        const deleted = await userServices.deleteUserById(id, by, reason);
+        const deleted = await userServices.deleteUserById({id, by: _id, reason});
 
         if (!deleted) return res.status(404).json({ message: 'User not found' });
 
@@ -143,6 +143,28 @@ const deleteUserById = async (req, res) => {
     }catch(error){
         res.status(500).json({
             message: 'Error deleting user',
+            error: error.message
+        })
+    }
+}
+
+// Controller to delete an user by ID
+const restoreUserById = async (req, res) => {
+    const { id } = req.params;
+
+    if(!id) return res.status(400).json({ message: 'User ID is required'});
+
+    try{
+        const restored = await userServices.restoreUserById(id);
+
+        if (!restored) return res.status(404).json({ message: 'User not found' });
+
+        res.status(200).json({
+         message: 'User restored successfully'
+        });
+    }catch(error){
+        res.status(500).json({
+            message: 'Error restoring user',
             error: error.message
         })
     }
@@ -184,7 +206,7 @@ const updatePasswordById = async (req, res) => {
     if (!body.newPassword) return res.status(400).json({ message: 'New password is required' });
     
     try {
-        const updatedUser = await userServices.updatePasswordById(id, body, _id, role);
+        const updatedUser = await userServices.updatePasswordById({id, body, _id, role});
 
         if (!updatedUser) return res.status(404).json({ message: 'User not found' });
 
@@ -292,6 +314,8 @@ module.exports = {
     updateEmailById,
     updateUserRoleById,
     updateUserStatusById,
+
+    restoreUserById,
 
     deleteUserById
 };  

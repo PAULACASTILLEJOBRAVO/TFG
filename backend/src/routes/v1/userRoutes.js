@@ -55,10 +55,86 @@ router.use(authenticate);
 router.get('/', userController.getAllUsers);
 
 // Route to get users' stats
-router.get('/stats', userController.getTotalUsersStats);
+router.get('/stats/total', userController.getTotalUsersStats);
 
 // Route to get students' stats
-router.get('/students/stats', userController.getTotalEstudentsStatsForTeacher);
+router.get('/students/stats/total', userController.getTotalEstudentsStatsForTeacher);
+
+// Route to post an user
+/**
+ * @swagger
+ * /v1/users:
+ *   post:
+ *     summary: Create a new user
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UserInput'
+ *     responses:
+ *       201:
+ *         description: User created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'User created successfully'
+ *                 data:
+ *                   $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Invalid input or duplicate entry
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Invalid user data'
+ *                 error:
+ *                   type: string
+ *       500:
+ *         description: Server error while creating user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Error creating user'
+ *                 error:
+ *                   type: string
+ */
+router.post('/', userController.createUser);
+
+
+// Route to restore an user by ID
+// router.patch('/:id/restore', userController.restoreUserById);
+router.patch('/restore/:id', userController.restoreUserById);
+
+// Route to update an user's password by ID
+// router.patch('/:id/password', userController.updatePasswordById);
+router.patch('/password/:id', userController.updatePasswordById);
+
+// // Route to update an user's email by ID
+// // router.patch('/:id/email', userController.updateEmailById);
+// router.patch('/email/:id', userController.updateEmailById);
+
+// // Route to update an user's role by ID
+// // router.patch('/:id/role',  userController.updateUserRoleById);
+// router.patch('/role/:id',  userController.updateUserRoleById);
+
+// // Route to update an user's status by ID
+// // router.patch('/:id/status', userController.updateUserStatusById);
+// router.patch('/status/:id', userController.updateUserStatusById);
+
+// IMPORTANT: All "/:id" routes at the end of the document
 
 // Route to get an user by ID
 /**
@@ -122,59 +198,6 @@ router.get('/students/stats', userController.getTotalEstudentsStatsForTeacher);
  *                   type: string
  */
 router.get('/:id', userController.getUserById);
-
-// Route to post an user
-/**
- * @swagger
- * /v1/users:
- *   post:
- *     summary: Create a new user
- *     tags: [Users]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/UserInput'
- *     responses:
- *       201:
- *         description: User created successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: 'User created successfully'
- *                 data:
- *                   $ref: '#/components/schemas/User'
- *       400:
- *         description: Invalid input or duplicate entry
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: 'Invalid user data'
- *                 error:
- *                   type: string
- *       500:
- *         description: Server error while creating user
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: 'Error creating user'
- *                 error:
- *                   type: string
- */
-router.post('/', userController.createUser);
 
 // Route to delete an user by ID
 /**
@@ -244,19 +267,7 @@ router.post('/', userController.createUser);
 router.delete('/:id', userController.deleteUserById);
 
 // Route to update an user by ID
-router.patch('/:id', userController.updateUserById);
-
-// Route to update a user's password by ID
-router.patch('/password/:id/', userController.updatePasswordById);
-
-// Route to update user's email by ID
-router.patch('/email/:id', userController.updateEmailById);
-
-// Route to update user's role by ID
-router.patch('/role/:id',  userController.updateUserRoleById);
-
-// Route to update an user's status by ID
-router.patch('/status/:id', userController.updateUserStatusById);
+// router.patch('/:id', userController.updateUserById);
 
 //Export the module
 module.exports = router;

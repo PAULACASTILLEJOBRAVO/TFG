@@ -1,42 +1,42 @@
 import { useState, useEffect } from "react";
-import { getTotalUsersStats } from "../../services/users.service";
+import { getTotalUsers } from "../../services/users.service";
 
-export const useUsers = () => {
-    const [usersStats, setUsersStats] = useState(0);
+export const useUsersManagement = () => {
+    const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [message, setMessage] = useState("");
+        
+    const fetchUsers = async () => {
+        setLoading(true);
+        setError(null);
+        setMessage("");
+        setUsers([]);
+
+        try{
+            const data = await getTotalUsers();
+
+            if(data.error){
+                setError(data.error);
+                setMessage(data.message || "");
+                setUsers([]);
+            } else {
+                setUsers(data.data || []);
+                setMessage(data.message || "");
+            }
+        }catch(err) {
+            // Axios's error
+            const errorMessage = err.response?.data?.message || err.message || "Unknown error";
+            setError(errorMessage);
+            setUsers([]);
+        }finally{
+            setLoading(false);
+        }
+    }
 
     useEffect(() => {
-        const fetchCourses = async () => {
-            setLoading(true);
-            setError(null);
-            setMessage("");
-            setUsersStats(0);
-
-            try{
-                const data = await getTotalUsersStats();
-
-                if(data.error){
-                    setError(data.error);
-                    setMessage(data.message || "");
-                    setUsersStats([]);
-                } else {
-                    setUsersStats(data.data || 0);
-                    setMessage(data.message || "");
-                }
-            }catch(err) {
-                // Axios's error
-                const errorMessage = err.response?.data?.message || err.message || "Unknown error";
-                setError(errorMessage);
-                setUsersStats(0);
-            }finally{
-                setLoading(false);
-            }
-        }
-
-        fetchCourses();
+        fetchUsers();
     }, []);
 
-    return { usersStats, loading, error, message };
+    return { users, loading, error, message, refetch: fetchUsers };
 };

@@ -93,32 +93,32 @@ export const sidebarConfig = {
         {
             label: "Usuarios",
             icon: "",
-            href: "/users"
+            href: "/dashboard_admin/users"
         },
         {
             label: "Clickers",
             icon: "",
-            href: "/clickers"
+            href: "/dashboard_admin/clickers"
         },
         {
             label: "Estadísticas",
             icon: "",
-            href: "/stadistics"
+            href: "/dashboard_admin/stadistics"
         },
         {
             label: "Perfil",
             icon: "",
-            href: "/profile"
+            href: "/dashboard_admin/profile"
         },
         {
             label: "Ajustes",
             icon: "",
-            href: "/settings"
+            href: "/dashboard_admin/settings"
         },
         {
             label: "Tutorial",
             icon: "",
-            href: "/tutorial"
+            href: "/dashboard_admin/tutorial"
         },
         {
             label: "Log out",

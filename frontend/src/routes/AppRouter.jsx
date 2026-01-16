@@ -5,6 +5,7 @@ import Auth from '@/pages/Auth';
 import DashboardStudent from '@/pages/Dashboards/DashboardStudent';
 import DashboardTeacher from '@/pages/Dashboards/DashboardTeacher';
 import DashboardAdmin from '@/pages/Dashboards/DashboardAdmin';
+import UserManagement from '@/pages/Management/UsersManagement';
 
 const AppRouter = () => {
   return (
@@ -15,6 +16,8 @@ const AppRouter = () => {
         <Route path='/dashboard_student' element={<DashboardStudent/>} />
         <Route path='/dashboard_teacher' element={<DashboardTeacher/>} />
         <Route path='/dashboard_admin' element={<DashboardAdmin/>} />
+
+        <Route path='/dashboard_admin/users' element={<UserManagement/>} />
 
         <Route path="/courses" element={<CourseList />} />
         <Route path='/courses/:id' element={<CourseDetail/>} />

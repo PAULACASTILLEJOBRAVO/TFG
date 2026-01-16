@@ -2,12 +2,12 @@ import DashboardTitle from "../Layout/Content/DashboardTitle";
 import { Separator } from "@/components/ui/separator";
 import DashboardInformationCard from "../Layout/Content/DashboardInformationCard";
 import DashboardContentInformationCard from "../Layout/Content/DashboardContentInformationCard";
-import { useUsers } from "@/hooks/Users/useUsers";
+import { useUsersStats } from "@/hooks/Users/useUsersStats";
 import { Spinner } from "@/components/ui/spinner";
 import ManagementSection from "../Layout/Content/Management/ManagementSection";
 
 const AdminOverview = () => {
-    const { usersStats, loading } = useUsers();
+    const { usersStats, loading } = useUsersStats();
 
     return(
         <>

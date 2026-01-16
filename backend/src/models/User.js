@@ -73,7 +73,7 @@ const userSchema = new Schema({
     isOnline: {
         type: Boolean,
     },
-    lastLogin: { 
+    lastLoginAt: { 
         type: Date 
     }, 
     lastLogoutAt: {
@@ -159,7 +159,7 @@ userSchema.methods.markOffline = async function () {
 // Statics helper to soft-delete by id (useful in services)
 userSchema.statics.softDeleteById = async function(id, { by = null, reason = null } = {}) {
   const user = await this.findById(id);
-  
+
   if (!user) return false;
   
   await user.softDelete({ by, reason });
@@ -170,8 +170,9 @@ userSchema.statics.softDeleteById = async function(id, { by = null, reason = nul
 // Statics restore by id
 userSchema.statics.restoreById = async function(id) {
   const user = await this.findById(id);
-  
+
   if (!user) return false;
+  if(user.isActive) return false;
 
   await user.restore();
 
@@ -343,12 +344,12 @@ userSchema.methods.comparePassword = async function(candidatePassword) {
 // Pre-save hook to cascade actions when user is soft-deleted
 userSchema.pre('save', async function(next) {
   try {
-    // Case 1: Soft-delete
+    const Course = mongoose.model('Course');
+    const Quiz = mongoose.model('Quiz');
+    const Session = mongoose.model('Session');
+    
+      // Case 1: Soft-delete
     if (this.isModified('isDeleted') && this.isDeleted === true && this.role !== 'student') {   // Only act if the user is being soft-deleted
-      const Course = mongoose.model('Course');
-      const Quiz = mongoose.model('Quiz');
-      const Session = mongoose.model('Session');
-
       // Mark courses taught by this user as inactive
       await Course.updateMany(
         { teacherId: this._id },

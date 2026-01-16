@@ -61,7 +61,7 @@ components:
           type: date-time
           description: The date and time when the user was deleted.
           example: "2023-07-20T12:00:00Z"
-        lastLogin:
+        lastLoginAt:
           type: date-time
           description: The date and time when the user last logged in.
           example: "2023-07-18T08:30:00Z"

@@ -55,7 +55,7 @@ const createUser = async (body) => {
 }
 
 // Service to delete an user by ID
-const deleteUserById = async (id, by = null, reason = 'User removed via service') => {
+const deleteUserById = async ({id, by = null, reason = 'User removed via service'}) => {
     try {
         const user = await getUserById(id);
         if (!user) return false; // If the user doesn't exist, return false
@@ -63,6 +63,19 @@ const deleteUserById = async (id, by = null, reason = 'User removed via service'
         await User.softDeleteById(id, { by, reason });
         return true; // Return true if deletion was successful
     } catch (error) {
+        throw new Error(error.message);
+    }
+}
+
+// Service to restore an user by ID
+const restoreUserById =  async (id) => {
+    try {
+        const user = await getUserById(id);
+        if(!user) return false;
+
+        await User.restoreById(id);
+        return true;
+    }catch (error) {
         throw new Error(error.message);
     }
 }
@@ -81,7 +94,7 @@ const updateUserById = async ({id, body, _id, role}) => {
 }
 
 // Service to update an user's password by ID
-const updatePasswordById = async (id, body, _id, role) => {
+const updatePasswordById = async ({id, body, _id, role}) => {
     try{
         const user = await getUserById(id);
         if(!user) return false;
@@ -146,6 +159,8 @@ module.exports = {
     updateEmailById,
     updateUserRoleById,
     updateUserStatusById,
+
+    restoreUserById,
 
     deleteUserById,
 };

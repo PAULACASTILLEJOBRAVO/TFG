@@ -1,42 +1,43 @@
 import { useState, useEffect } from "react";
-import { getTotalStudentsStats } from "../../services/user.service";
+import { getTotalRoles } from "../../services/role.service";
 
-export const useStudents = () => {
-    const [studentsStats, setStudentsStats] = useState(0);
+export const useRoles = () => {
+    const [roles, setRoles] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [message, setMessage] = useState("");
 
     useEffect(() => {
-        const fetchCourses = async () => {
-            setLoading(true);
-            setError(null);
-            setMessage("");
-            setStudentsStats(0);
+           
+    const fetchRoles = async () => {
+        setLoading(true);
+        setError(null);
+        setMessage("");
+        setRoles([]);
 
-            try{
-                const data = await getTotalStudentsStats();
+        try{
+            const data = await getTotalRoles();
 
                 if(data.error){
                     setError(data.error);
                     setMessage(data.message || "");
-                    setStudentsStats([]);
+                    setRoles([]);
                 } else {
-                    setStudentsStats(data.data || 0);
+                    setRoles(data.data || []);
                     setMessage(data.message || "");
                 }
             }catch(err) {
                 // Axios's error
                 const errorMessage = err.response?.data?.message || err.message || "Unknown error";
                 setError(errorMessage);
-                setStudentsStats(0);
+                setRoles([]);
             }finally{
                 setLoading(false);
             }
         }
 
-        fetchCourses();
+        fetchRoles();
     }, []);
 
-    return { studentsStats, loading, error, message };
+    return { roles, loading, error, message };
 };

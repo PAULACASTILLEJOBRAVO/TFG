@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getTotalUsersStats } from "../../services/users.service";
+import { getTotalUsersStats } from "../../services/user.service";
 
 export const useUsersStats = () => {
     const [usersStats, setUsersStats] = useState(0);

@@ -23,6 +23,7 @@ async function validateAdminRoleById(userId) {
 // Validation by current user
 // Middleware to validate admin role
 async function validateAdminRole(currentUser) {
+
     if (!currentUser) throw new Error('Unauthorized'); 
 
     if(currentUser.role !== 'admin') throw new Error('Only admins can perform this action');

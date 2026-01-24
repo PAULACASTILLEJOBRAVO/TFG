@@ -31,3 +31,13 @@ export const restoreUser = async (id) => {
     const response = await api.patch(`/users/restore/${id}`);
     return response.data;
 };
+
+export const updateUser = async (id, payload) => {
+    const response = await api.patch(`/users/${id}`, payload);
+    return response.data;
+}
+
+export const createUser = async (payload) => {
+    const response = await api.post('/users', payload);
+    return response.data;
+}

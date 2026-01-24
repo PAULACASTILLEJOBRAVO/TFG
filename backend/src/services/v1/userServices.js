@@ -156,6 +156,7 @@ module.exports = {
 
     updateUserById,
     updatePasswordById,
+    
     updateEmailById,
     updateUserRoleById,
     updateUserStatusById,

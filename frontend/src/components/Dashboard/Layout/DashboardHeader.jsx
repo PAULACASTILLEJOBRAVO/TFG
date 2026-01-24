@@ -1,4 +1,4 @@
-import { headerConfig } from "../config/header.config";
+import { headerConfig } from "../../../config/header.config";
 import HeaderSearch from "./Header/HeaderSearch";
 import HeaderActions from "./Header/HeaderActions";
 import Logo from "@/components/Common/Logo";

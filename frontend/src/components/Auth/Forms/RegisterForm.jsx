@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { registerRequest, loginRequest } from "../../services/auth.service";
-import { useAuth } from "../../auth/AuthContext";
-import { validatePassword } from "../../utils/validators";
-import { Spinner } from "../ui/spinner";
+import { registerRequest, loginRequest } from "../../../services/auth.service";
+import { useAuth } from "../../../auth/AuthContext";
+import { validatePassword } from "../../../utils/validators";
+import { Spinner } from "../../ui/spinner";
 
 import AuthButton from '@/components/Auth/AuthButton';
 import AuthInput from "@/components/Auth/AuthInput";
@@ -16,7 +16,7 @@ const RegisterForm = ({onToggle}) => {
 
     const { login } = useAuth();
 
-    const loginFunction = async (credentials) => {
+    const loginFunction = async () => {
         setLoading(true);
         setError(null);
         setMessages("");
@@ -48,7 +48,7 @@ const RegisterForm = ({onToggle}) => {
         }
 
         try{
-            const { data } = await registerRequest(form);
+            await registerRequest(form);
             await loginFunction({email: form.email, password: form.password});
         }catch(err){
             const errorMessage = err.response?.data?.message || "Error to register";

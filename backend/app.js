@@ -23,6 +23,7 @@ const questionRoutes = require('./src/routes/v1/questionRoutes');
 const quizRoutes = require('./src/routes/v1/quizRoutes');
 const responseRoutes = require('./src/routes/v1/responseRoutes');
 const resultRoutes = require('./src/routes/v1/resultRoutes');
+const roleRoutes = require('./src/routes/v1/roleRoutes');
 const sessionRoutes = require('./src/routes/v1/sessionRoutes');
 const userRoutes = require('./src/routes/v1/userRoutes');
 
@@ -30,11 +31,11 @@ const userRoutes = require('./src/routes/v1/userRoutes');
 const {swaggerUi, swaggerSpec} = require('./src/config/swagger.js');
 
 //Configure middlewares
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, 'src/public')));
 app.use(logger('dev'));
+app.use(cors());
+app.use(express.json({ limit: '20mb' }));
+app.use(express.urlencoded({ extended: true, limit: '20mb' }));
+app.use(express.static(path.join(__dirname, 'src/public')));
 
 // Define Swagger route
 app.use('/swagger-api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
@@ -47,6 +48,7 @@ app.use('/v1/questions', questionRoutes);
 app.use('/v1/quizzes', quizRoutes);
 app.use('/v1/responses', responseRoutes);
 app.use('/v1/results', resultRoutes);
+app.use('/v1/roles', roleRoutes);
 app.use('/v1/sessions', sessionRoutes);
 app.use('/v1/users', userRoutes);
 
@@ -63,7 +65,7 @@ app.use((err, req, res, next) => {
     res.locals.error = req.app.get("env") === "development" ? err : {};
 
     console.error(err.stack);
-    res.status(err.status || 500).send({message: 'Server Error!', error: err.message});
+    res.status(err.status || 500).send({message: err.message || 'Initial Server Error' });
 });
 
 module.exports = app

@@ -5,7 +5,7 @@ import {
     FileText
 } from "lucide-react";
 
-import { headerConfig } from "../../config/header.config";
+import { headerConfig } from "../../../../config/header.config";
 
 import LanguageMenu from "./Actions/LanguageMenu";
 import ProfileMenu from "./Actions/ProfileMenu";

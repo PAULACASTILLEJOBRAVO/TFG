@@ -1,6 +1,5 @@
 import { Table, TableHeader, TableHead, TableBody, TableRow, TableCell } from "@/components/ui/table";
 import UserRow from "./UserRow";
-import { Button } from "@/components/ui/button";
 
 const UserTable = ({users, onEdit, onDelete, onChangePassword, onRestore, loading, onSelect}) => {
     return(
@@ -31,11 +30,13 @@ const UserTable = ({users, onEdit, onDelete, onChangePassword, onRestore, loadin
                     ) : (
                         users.map(user => (
                             <UserRow
+                                key={user._id}
                                 user={user}
                                 onEdit={onEdit}
                                 onDelete={onDelete}
                                 onChangePassword={onChangePassword}
                                 onRestore={onRestore}
+                                onSelect={() => onSelect(user)}
                             />
                         ))
                     )}

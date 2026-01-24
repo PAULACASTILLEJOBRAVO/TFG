@@ -267,7 +267,7 @@ router.get('/:id', userController.getUserById);
 router.delete('/:id', userController.deleteUserById);
 
 // Route to update an user by ID
-// router.patch('/:id', userController.updateUserById);
+router.patch('/:id', userController.updateUserById);
 
 //Export the module
 module.exports = router;

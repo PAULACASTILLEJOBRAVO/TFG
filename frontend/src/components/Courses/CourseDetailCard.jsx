@@ -2,8 +2,7 @@ import { Link } from "react-router-dom";
 import { useCourses } from "../../hooks/Courses/useCourses";
 import CourseCreateForm from "./CourseCreateForm";
 
-
-const CourseList = () => {
+const CourseDetailCard = () => {
     const { courses, loading, error, message } = useCourses();
 
     if (loading) return <p>Cargando...</p>
@@ -12,7 +11,6 @@ const CourseList = () => {
     return (
         <div>
             {message && <p>{message}</p>}
-            <h1>CURSOS</h1>
             <ul>
                 {courses.map(course => (
                     <li key={course._id}>
@@ -27,4 +25,4 @@ const CourseList = () => {
     )
 }
 
-export default CourseList;
+export default CourseDetailCard;

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { getTotalUsers } from "../../services/users.service";
+import { getTotalUsers } from "../../services/user.service";
 
-export const useUsersManagement = () => {
+export const useUsers = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);

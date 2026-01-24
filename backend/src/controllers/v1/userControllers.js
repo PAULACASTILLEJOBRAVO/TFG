@@ -91,8 +91,8 @@ const getTotalEstudentsStatsForTeacher = async (req, res) => {
 
 // Controller to create a new user
 const createUser = async (req, res) => {
-    const { body} = req;
-    const { email, username, password } = req.body;
+    const { body } = req;
+    const { email, username, password } = body;
     const currentUser = req.user;
 
     // Check parameters
@@ -103,14 +103,14 @@ const createUser = async (req, res) => {
 
     try{
         const canAccess = await User.canCreateUser(currentUser);
-        if(canAccess) return res.status(403).json({message: "Unauthorized"})
-
+        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
 
         if (await checkExists(User, 'email', email)) {
             return res.status(409).json({ message: 'The user alredy exists' });
         }
 
-        const newUser = await userServices.createUser({email, username, password});
+
+        const newUser = await userServices.createUser(body);
 
         res.status(201).json({
             message: 'User created successfully', 

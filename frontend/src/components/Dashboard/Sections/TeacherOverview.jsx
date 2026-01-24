@@ -1,7 +1,7 @@
 import DashboardTitle from "../Layout/Content/DashboardTitle";
 import { Separator } from "@/components/ui/separator";
-import DashboardContentInformationCard from "../Layout/Content/DashboardContentInformationCard";
-import DashboardInformationCard from "../Layout/Content/DashboardInformationCard";
+import DashboardContentDetailCard from "../Layout/Content/DashboardContentDetailCard";
+import DashboardDetailCard from "../Layout/Content/DashboardDetailCard";
 import { useStudents } from "@/hooks/Users/useStudents";
 import { Spinner } from "@/components/ui/spinner";
 import { useTeacherActiveCourses } from "@/hooks/Courses/useTeacherActiveCourses";
@@ -16,11 +16,11 @@ const TeacherOverview = () => {
 
             <Separator/>
 
-            <DashboardContentInformationCard cols="3">
-                    <DashboardInformationCard title={loadingStudent ? "" : "estudiantes totales"} value={ loadingStudent ? <Spinner/> : studentsStats} />
-                    <DashboardInformationCard title="estudiantes conectados" value="" />
-                    <DashboardInformationCard title={loadingActiveCourses ? "" : "cursos activos"} value={loadingActiveCourses ? <Spinner/> : activeCoursesForTeacher} />
-            </DashboardContentInformationCard>
+            <DashboardContentDetailCard cols="3">
+                    <DashboardDetailCard title={loadingStudent ? "" : "estudiantes totales"} value={ loadingStudent ? <Spinner/> : studentsStats} />
+                    <DashboardDetailCard title="estudiantes conectados" value="" />
+                    <DashboardDetailCard title={loadingActiveCourses ? "" : "cursos activos"} value={loadingActiveCourses ? <Spinner/> : activeCoursesForTeacher} />
+            </DashboardContentDetailCard>
 
             <Separator/>
         </>

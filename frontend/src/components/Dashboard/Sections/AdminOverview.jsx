@@ -1,7 +1,7 @@
 import DashboardTitle from "../Layout/Content/DashboardTitle";
 import { Separator } from "@/components/ui/separator";
-import DashboardInformationCard from "../Layout/Content/DashboardInformationCard";
-import DashboardContentInformationCard from "../Layout/Content/DashboardContentInformationCard";
+import DashboardDetailCard from "../Layout/Content/DashboardDetailCard";
+import DashboardContentDetailCard from "../Layout/Content/DashboardContentDetailCard";
 import { useUsersStats } from "@/hooks/Users/useUsersStats";
 import { Spinner } from "@/components/ui/spinner";
 import ManagementSection from "../Layout/Content/Management/ManagementSection";
@@ -15,12 +15,12 @@ const AdminOverview = () => {
 
             <Separator/>
 
-            <DashboardContentInformationCard cols="2">
-                <DashboardInformationCard title={loading ? "" : "usuarios totales"} value={loading ? <Spinner/> : usersStats} />
-                <DashboardInformationCard title="usuarios conectados" value="" />
-                <DashboardInformationCard title="clickers totales" value="" />
-                <DashboardInformationCard title="clickers activos" value="" />
-            </DashboardContentInformationCard>
+            <DashboardContentDetailCard cols="2">
+                <DashboardDetailCard title={loading ? "" : "usuarios totales"} value={loading ? <Spinner/> : usersStats} />
+                <DashboardDetailCard title="usuarios conectados" value="" />
+                <DashboardDetailCard title="clickers totales" value="" />
+                <DashboardDetailCard title="clickers activos" value="" />
+            </DashboardContentDetailCard>
 
             <Separator/>
 

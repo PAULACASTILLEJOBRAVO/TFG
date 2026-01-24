@@ -36,7 +36,7 @@ const userSchema = new Schema({
     role: { 
         type: String, 
         enum: ['student', 'teacher', 'admin'], 
-        default: 'student' 
+        default: 'student',
     },
 
     //Secundary optional data
@@ -44,10 +44,10 @@ const userSchema = new Schema({
         type: String, 
         trim: true 
     },
-    // profilePicture: { 
-    //     type: String, // Base64-encoded image
-    //     trim: true 
-    // },
+    profilePicture: { 
+        type: String, // Base64-encoded image
+        trim: true 
+    },
 
     //States and configuration
     isActive: { 
@@ -129,11 +129,11 @@ userSchema.methods.generateAuthToken = async function() {
       _id: this._id,
       username: this.username,
       role: this.role,
-      email: this.email
+      email: this.email,
     }, 
     secretKey, 
     { 
-      expiresIn: '7d' //'1h' // Token valid for 1 hour
+      expiresIn: '5d' // Token valid for 5 days
     });   
 
     return token;  

@@ -17,7 +17,7 @@ const SidebarUserFooter = () => {
                         {/** Avatar */}
                         <UserAvatar
                             name={user.username}
-                            avatar={user.avatar}
+                            avatar={user.profilePicture}
                             size="md"
                         />
 

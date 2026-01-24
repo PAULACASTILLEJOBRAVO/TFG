@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Logo from "@/components/Common/Logo";
-import { sidebarConfig } from "../config/sidebar.config";
+import { sidebarConfig } from "../../../config/sidebar.config";
 import { 
     Sidebar, 
     SidebarHeader, 
@@ -24,13 +24,18 @@ const DashboardSidebar = () => {
 
     const config = sidebarConfig[user.role];
 
-    const location = useLocation();
+    const { pathname } = useLocation();
     const navigate = useNavigate();
 
     const baseItems = "justify-start hover:bg-gray-300";
     const activeItem = "bg-black text-white";
     const logoutItem = "text-red-500 hover:bg-red-50 hover:text-red-500";
 
+    const isSidebarItemActive = (pathname, href) => {
+        if(pathname === href) return true;
+
+        return pathname.startsWith(href + "/");
+    }
 
     const handleLogout = async () => {
         await logoutRequest();
@@ -59,8 +64,7 @@ const DashboardSidebar = () => {
                         <SidebarGroupContent>
                             <SidebarMenu>
                                 {config.map((item, index) => {
-                                    // const isActive = location.pathname.startsWith(item.href); // Subroutes?
-                                    const isActive = location.pathname === item.href;
+                                    const isActive = isSidebarItemActive(pathname, item.href); // Subroutes
 
                                     return(
                                         <SidebarMenuItem key={index}>

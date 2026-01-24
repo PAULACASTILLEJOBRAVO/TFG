@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { deleteUser, changePasswordUser, restoreUser } from "@/services/users.service";
+import { deleteUser, changePasswordUser, restoreUser, updateUser, createUser } from "@/services/user.service";
 
 export const useUserActions = () => {
 
@@ -7,27 +7,27 @@ export const useUserActions = () => {
     const [error, setError] = useState(null);
     const [message, setMessage] = useState("");
 
-    // const create = async (payload) => {
-    //     try {
-    //         setLoading(true);
-    //         const data = await createCourse(payload);
+    const create = async (payload) => {
+        try {
+            setLoading(true);
+            const data = await createUser(payload);
             
-    //         if(data.error){
-    //             setError(data.error);
-    //             setMessage(data.message || "");
-    //             return [];
-    //         }else{
-    //             setMessage(data.message || "");
-    //             return data.data || [];
-    //         }
-    //     }catch(err){
-    //         const errorMessage = err.response?.data?.message || err.message || "Error desconocido";
-    //         setError(errorMessage)
-    //         throw(err);
-    //     }finally{
-    //         setLoading(false);
-    //     }
-    // };
+            if(data.error){
+                setError(data.error);
+                setMessage(data.message || "");
+                return [];
+            }else{
+                setMessage(data.message || "");
+                return data.data || [];
+            }
+        }catch(err){
+            const errorMessage = err.response?.data?.message || err.message || "Error desconocido";
+            setError(errorMessage)
+            throw(err);
+        }finally{
+            setLoading(false);
+        }
+    };
 
     const changePassword = async (id, newPassword) => {
         try {
@@ -96,5 +96,27 @@ export const useUserActions = () => {
         }
     };
 
-    return { /*create, patch,*/ changePassword, remove, restore, loading, error, message };
+    const update = async (id, payload) => {
+        try {
+            setLoading(true);
+            const data = await updateUser(id, payload);
+            
+            if(data.error){
+                setError(data.error);
+                setMessage(data.message || "");
+                return [];
+            }else{
+                setMessage(data.message || "");
+                return data.data || [];
+            }
+        } catch (err) {
+            const errorMessage = err.response?.data?.message || err.message || "Error desconocido";
+            setError(errorMessage);
+            throw err;
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return { create, update, changePassword, remove, restore, loading, error, message };
 }

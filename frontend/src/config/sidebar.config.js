@@ -4,37 +4,37 @@ export const sidebarConfig = {
         {
             label: "Inicio",
             icon: "",
-            href: "/dashboard_student"
+            href: "/dashboard_student/"
         },
         {
             label: "Cursos",
             icon: "",
-            href: "/courses"
+            href: "/dashboard_student/courses"
         },
         {
             label: "Ranking",
             icon: "",
-            href: "/ranking"
+            href: "/dashboard_student/ranking"
         },
         {
             label: "Estadísticas",
             icon: "",
-            href: "/stadistics"
+            href: "/dashboard_student/stadistics"
         },
         {
             label: "Perfil",
             icon: "",
-            href: "/profile"
+            href: "/dashboard_student/profile"
         },
         {
             label: "Ajustes",
             icon: "",
-            href: "/settings"
+            href: "/dashboard_student/settings"
         },
         {
             label: "Tutorial",
             icon: "",
-            href: "/tutorial"
+            href: "/dashboard_student/tutorial"
         },
         {
             label: "Log out",
@@ -46,37 +46,37 @@ export const sidebarConfig = {
         {
             label: "Inicio",
             icon: "",
-            href: "/dashboard_teacher"
+            href: "/dashboard_teacher/"
         },
         {
             label: "Cursos",
             icon: "",
-            href: "/courses"
+            href: "/dashboard_teacher/courses"
         },
         {
             label: "Cuestionarios",
             icon: "",
-            href: "/quizzes"
+            href: "/dashboard_teacher/quizzes"
         },
         {
             label: "Histórico",
             icon: "",
-            href: "/historic"
+            href: "/dashboard_teacher/historic"
         },
         {
             label: "Perfil",
             icon: "",
-            href: "/profile"
+            href: "/dashboard_teacher/profile"
         },
         {
             label: "Ajustes",
             icon: "",
-            href: "/settings"
+            href: "/dashboard_teacher/settings"
         },
         {
             label: "Tutorial",
             icon: "",
-            href: "/tutorial"
+            href: "/dashboard_teacher/tutorial"
         },
         {
             label: "Log out",
@@ -88,7 +88,7 @@ export const sidebarConfig = {
         {
             label: "Inicio",
             icon: "",
-            href: "/dashboard_admin"
+            href: "/dashboard_admin/"
         },
         {
             label: "Usuarios",

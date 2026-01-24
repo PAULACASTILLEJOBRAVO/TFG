@@ -2,7 +2,7 @@ export const headerConfig = {
     student: {
         searchPlaceholder: "Buscar clases o quizzes...",
         actionIcon: "trophy",
-        actionType: "button"
+        actionType: "button",
     },
     teacher: {
         searchPlaceholder: "Buscar clases, quizzes...",

@@ -5,7 +5,7 @@ const colsMap = {
   4: "md:grid-cols-4",
 };
 
-const DashboardContentInformationCard = ({children, cols = 2}) => {
+const DashboardContentDetailCard = ({children, cols = 2}) => {
     return(
         <div className="py-3">
             <div className={`grid grid-cols-1 ${colsMap[cols] ?? "md:grid-cols-2"} gap-2`}>
@@ -15,4 +15,4 @@ const DashboardContentInformationCard = ({children, cols = 2}) => {
     );
 }
 
-export default DashboardContentInformationCard;
+export default DashboardContentDetailCard;

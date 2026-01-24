@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { loginRequest } from "../../services/auth.service";
-import { useAuth } from "../../auth/AuthContext";
-import { Spinner } from "../ui/spinner";
+import { loginRequest } from "../../../services/auth.service";
+import { useAuth } from "../../../auth/AuthContext";
+import { Spinner } from "../../ui/spinner";
 
 import AuthButton from '@/components/Auth/AuthButton';
 import AuthInput from "@/components/Auth/AuthInput";

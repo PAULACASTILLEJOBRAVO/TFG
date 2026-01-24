@@ -19,7 +19,7 @@ const CourseEditForm = ({ courseId, onSuccess }) => {
         try{
             await patch(courseId, {title});
             onSuccess?.();
-        }catch {}
+        }catch{}
     }
 
     return(

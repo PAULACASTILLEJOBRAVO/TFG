@@ -12,16 +12,17 @@ const User = require('../models/User');
 const authenticate = async (req, res, next) => {
     debug('Starting authentication middleware');
     
+    const authHeader = req.headers.authorization;
+
+    if(!authHeader || !authHeader.startsWith('Bearer ')) {
+        debug('No token provided in Authorization header');
+        return res.status(401).json({ message: 'No token provided' });
+    }
+    
+    const token = authHeader.split(' ')[1];
+
+
     try{
-        const authHeader = req.headers.authorization;
-
-        if(!authHeader || !authHeader.startsWith('Bearer ')) {
-            debug('No token provided in Authorization header');
-            return res.status(401).json({ message: 'No token provided' });
-        }
-        
-        const token = authHeader.split(' ')[1];
-
         // Verify token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
@@ -45,6 +46,20 @@ const authenticate = async (req, res, next) => {
         next();
     }catch(error){
         debug('Authentication error:', error);
+
+        if(error.name === "TokenExpiredError") {
+            const decodedToken = jwt.decode(token);
+            const userId = decodedToken?._id;
+
+            debug(`Token expired for userId: ${userId}`);
+            
+            try {
+                await User.markUserOffline(userId);
+            } catch (error) {
+                debug('Error marking user offline:', error);
+            }
+        }
+
         return res.status(401).json({ 
             message: 'Invalid or expired token',
             error: error.message 

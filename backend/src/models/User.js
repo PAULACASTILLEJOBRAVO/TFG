@@ -133,7 +133,7 @@ userSchema.methods.generateAuthToken = async function() {
     }, 
     secretKey, 
     { 
-      expiresIn: '5d' // Token valid for 5 days
+      expiresIn: '5s' // Token valid for 1 hour
     });   
 
     return token;  
@@ -155,6 +155,17 @@ userSchema.methods.markOffline = async function () {
   this.lastLogoutAt = new Date();
   await this.save();
 };
+
+// Statics helper to mark all users offline
+userSchema.statics.markUserOffline = async function (id) {
+  const user = await this.findById(id);
+
+  if (!user) return false;
+
+  await user.markOffline();
+
+  return true;
+}
 
 // Statics helper to soft-delete by id (useful in services)
 userSchema.statics.softDeleteById = async function(id, { by = null, reason = null } = {}) {

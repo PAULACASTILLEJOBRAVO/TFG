@@ -21,3 +21,23 @@ api.interceptors.request.use(
     error => Promise.reject(error)
 );
 
+api.interceptors.response.use(
+    response => response,
+    error => {
+        const status = error.response?.status;
+        const requestUrl = error.config?.url;
+
+        const isAuthRequest =
+            requestUrl?.includes("/auth/login") ||
+            requestUrl?.includes("/auth/register");
+
+        if(status === 401 && !isAuthRequest){
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+
+            window.location.href = "/";
+        }
+
+        return Promise.reject(error);
+    }
+);

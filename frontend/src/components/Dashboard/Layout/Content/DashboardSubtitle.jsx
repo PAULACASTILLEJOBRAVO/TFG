@@ -1,7 +1,7 @@
 const DashboardSubtitle = ({label}) => {
     return (
         <>
-            <h2 className="text-lg font-semibold mb-4">
+            <h2 className="text-lg font-semibold">
                 {label}
             </h2>
         </>

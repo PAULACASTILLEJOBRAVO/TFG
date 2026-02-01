@@ -133,7 +133,7 @@ userSchema.methods.generateAuthToken = async function() {
     }, 
     secretKey, 
     { 
-      expiresIn: '5s' // Token valid for 1 hour
+      expiresIn: '5h' // Token valid for 5 hours
     });   
 
     return token;  

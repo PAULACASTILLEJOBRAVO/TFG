@@ -1,12 +1,12 @@
 import DashboardLayout from "@/components/Dashboard/Layout/DashboardLayout";
 import DashboardContent from "@/components/Dashboard/Layout/DashboardContent";
-import UserTable from "@/components/Users/Management/UserTable";
+import UserTable from "@/components/Users/Layout/UserTable";
 import { useUsers } from "@/hooks/Users/useUsers";
 import { useState } from "react";
-import DeleteUserDialog from "@/components/Users/Management/Dialogs/DeleteUserDialog";
-import ChangePasswordUserDialog from "@/components/Users/Management/Dialogs/ChangePasswordDialog";
+import DeleteUserDialog from "@/components/Users/Dialogs/DeleteUserDialog";
+import ChangePasswordUserDialog from "@/components/Users/Dialogs/ChangePasswordDialog";
 import { useUserActions } from "@/hooks/Users/useUserActions";
-import UserDetailDrawer from "@/components/Users/Management/Drawers/UserDetailDrawer";    
+import UserDetailDrawer from "@/components/Users/Drawers/UserDetailDrawer";    
 import DashboardSubtitle from "@/components/Dashboard/Layout/Content/DashboardSubtitle";
 import CreateButton from "@/components/Common/ActionButtons/CreateButton";
 import { useNavigate } from "react-router-dom";
@@ -34,6 +34,7 @@ const UserManagement = () => {
 
     // DRAWER STATUS
     const handleSelectUser = (user) => {
+        console.log("Selected user:", user);
         setSelectedUser(user);
         setDrawerMode("view");
         setIsDrawerOpen(true);

@@ -6,8 +6,9 @@ import DashboardStudent from '@/pages/Dashboards/DashboardStudent';
 import DashboardTeacher from '@/pages/Dashboards/DashboardTeacher';
 import DashboardAdmin from '@/pages/Dashboards/DashboardAdmin';
 import UserManagement from '@/pages/Management/UsersManagement';
-import QuizzesManagement from '@/pages/Quizzes/QuizzesManagement';
+import QuizzesManagement from '@/pages/Management/QuizzesManagement';
 import UserCreate from '@/pages/Users/UsersCreate';
+import QuizCreate from '@/pages/Quizzes/QuizzesCreate';
 
 const AppRouter = () => {
   return (
@@ -23,6 +24,8 @@ const AppRouter = () => {
         <Route path='/dashboard_admin/users/create' element={<UserCreate />} />
 
         <Route path="/dashboard_teacher/quizzes" element={<QuizzesManagement />} />
+        <Route path='/dashboard_teacher/quizzes/create' element={<QuizCreate />} />
+
         {/* <Route path='/courses/:id' element={<CourseDetail/>} /> */}
         
         <Route path="*" element={<h1>404 - Página no encontrada</h1>} />

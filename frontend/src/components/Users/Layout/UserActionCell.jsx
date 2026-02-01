@@ -1,7 +1,7 @@
 import EditButton from "@/components/Common/ActionButtons/EditButton";
 import DeleteButton from "@/components/Common/ActionButtons/DeleteButton";
-import PasswordButton from "@/components/Users/Management/Buttons/PasswordButton";
-import RestoreButton from "./Buttons/RestoreButton";
+import PasswordButton from "@/components/Users/Buttons/PasswordButton";
+import RestoreButton from "../Buttons/RestoreButton";
 
 const UserActionCell = ({ label, onEdit, onDelete, onChangePassword, onRestore, isDeleted, disabled = false }) => {
     return(

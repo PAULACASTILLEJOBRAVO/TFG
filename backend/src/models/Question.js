@@ -36,7 +36,7 @@ const questionSchema = new Schema({
     correctOptions: [
         { 
             type: Number,
-            required: true
+            // required: true
         }
     ], // Correct options for multiple-choice and true-false questions
 
@@ -45,7 +45,7 @@ const questionSchema = new Schema({
         type: Boolean, 
         default: true 
     },
-    isReusable: {           // Can be used in multiple teachers
+    isReusable: {           // Can be used in multiple quizzes
         type: Boolean, 
         default: true 
     },

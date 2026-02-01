@@ -25,7 +25,7 @@ const quizSchema = new Schema({
     courseId: { 
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'Course',
-        required: true 
+        // required: true 
     },
     questionIds: [{ 
         type: mongoose.Schema.Types.ObjectId, 

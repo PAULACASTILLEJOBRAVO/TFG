@@ -1,6 +1,6 @@
 import InfoBlock from "@/components/Common/InfoBlock";
 import { Separator } from "@/components/ui/separator";
-import UserStatusChip from "../../UserStatusChip";
+import UserStatusChip from "../../Layout/UserStatusChip";
 import { Label } from "@/components/ui/label";
 
 const rolesType = {

@@ -58,7 +58,10 @@ router.get('/', userController.getAllUsers);
 router.get('/stats/total', userController.getTotalUsersStats);
 
 // Route to get students' stats
-router.get('/students/stats/total', userController.getTotalEstudentsStatsForTeacher);
+router.get('/students/stats/total', userController.getTotalStudentsStatsForTeacher);
+
+// Route to get students
+router.get('/students', userController.getAllStudents);
 
 // Route to post an user
 /**

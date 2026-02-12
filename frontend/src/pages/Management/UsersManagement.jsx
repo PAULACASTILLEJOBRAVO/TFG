@@ -34,7 +34,6 @@ const UserManagement = () => {
 
     // DRAWER STATUS
     const handleSelectUser = (user) => {
-        console.log("Selected user:", user);
         setSelectedUser(user);
         setDrawerMode("view");
         setIsDrawerOpen(true);

@@ -1,42 +1,43 @@
 import { useState, useEffect } from "react";
-import { getTotalStudentsStats } from "../../services/user.service";
+import { getTotalDifficulties } from "../../services/difficulty.service";
 
-export const useStudents = () => {
-    const [studentsStats, setStudentsStats] = useState(0);
+export const useDifficulties = () => {
+    const [difficulties, setDifficulties] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [message, setMessage] = useState("");
 
     useEffect(() => {
-        const fetchCourses = async () => {
-            setLoading(true);
-            setError(null);
-            setMessage("");
-            setStudentsStats(0);
+           
+    const fetchDifficulties = async () => {
+        setLoading(true);
+        setError(null);
+        setMessage("");
+        setDifficulties([]);
 
-            try{
-                const data = await getTotalStudentsStats();
+        try{
+            const data = await getTotalDifficulties();
 
                 if(data.error){
                     setError(data.error);
                     setMessage(data.message || "");
-                    setStudentsStats([]);
+                    setDifficulties([]);
                 } else {
-                    setStudentsStats(data.data || 0);
+                    setDifficulties(data.data || []);
                     setMessage(data.message || "");
                 }
             }catch(err) {
                 // Axios's error
                 const errorMessage = err.response?.data?.message || err.message || "Unknown error";
                 setError(errorMessage);
-                setStudentsStats(0);
+                setDifficulties([]);
             }finally{
                 setLoading(false);
             }
         }
 
-        fetchCourses();
+        fetchDifficulties();
     }, []);
 
-    return { studentsStats, loading, error, message };
+    return { difficulties, loading, error, message };
 };

@@ -201,9 +201,11 @@ userSchema.statics.canGetAdminStats = async function(currentUser) {
 }
 
 // Statics permissions to fetch total students
-userSchema.statics.canGetTeacherStats = async function(currentUser) {
+userSchema.statics.canGetTeacherStudents = async function(currentUser) {
   return await validateTeacherRole(currentUser);
 }
+
+// 
 
 // Statics update by id
 userSchema.statics.updateById = async function(id, body, currentUserData) {

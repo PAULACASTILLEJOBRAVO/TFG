@@ -71,7 +71,6 @@ const UserDetailDrawer = ({open, user, drawerMode, onView, onClose, onEdit, onSa
                             onChangePassword={() => onChangePassword(user)}
                             onRestore={() => onRestore(user)}
                             label="usuario"
-                            disabled={user.isDeleted}
                             isDeleted={user.isDeleted}
                         />
                     )}

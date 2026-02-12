@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Pencil } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
-const EditButton = ({ onClick, disabled = false, label }) => {
+const EditButton = ({ onClick, label }) => {
     return(
         <Tooltip>
             <TooltipTrigger asChild>
@@ -11,7 +11,6 @@ const EditButton = ({ onClick, disabled = false, label }) => {
                     variant="ghost"
                     size="icon"
                     onClick={onClick}
-                    disabled={disabled}
                 >
                     <Pencil />
                 </Button>

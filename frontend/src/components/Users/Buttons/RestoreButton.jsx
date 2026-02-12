@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { RotateCcw } from 'lucide-react'  
 
-const RestoreButton = ({onClick, label, disabled}) => {
+const RestoreButton = ({onClick, label }) => {
     return(
         onClick && (
             <Tooltip>   
@@ -12,7 +12,6 @@ const RestoreButton = ({onClick, label, disabled}) => {
                         variant="ghost"
                         size="icon"
                         onClick={onClick}
-                        disabled={disabled}
                     >
                         <RotateCcw />
                     </Button>

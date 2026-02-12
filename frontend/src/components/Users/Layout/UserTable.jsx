@@ -2,6 +2,8 @@ import { Table, TableHeader, TableHead, TableBody, TableRow, TableCell } from "@
 import UserRow from "./UserRow";
 
 const UserTable = ({users, onEdit, onDelete, onChangePassword, onRestore, loading, onSelect}) => {
+    if(loading) return <div className="flex justify-center"><Spinner className="h-10 w-10" color="blue" /></div>;
+
     return(
         <div className="w-full rounded-md border">
             <Table>

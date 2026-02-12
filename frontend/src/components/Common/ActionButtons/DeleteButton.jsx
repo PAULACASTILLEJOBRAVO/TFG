@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
-const DeleteButton = ({ onClick, disabled = false, label }) => {
+const DeleteButton = ({ onClick, label }) => {
     return(
         <Tooltip>
             <TooltipTrigger asChild>
@@ -11,7 +11,6 @@ const DeleteButton = ({ onClick, disabled = false, label }) => {
                     variant="ghost"
                     size="icon"
                     onClick={onClick}
-                    disabled={disabled}
                 >
                     <Trash2 />
                 </Button>

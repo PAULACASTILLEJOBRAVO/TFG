@@ -38,24 +38,28 @@ const responseSchema = new Schema({
         ref: 'Question',
         required: true 
     }, 
+    // questionClickerId: {
+    //     type: Number,
+    //     required: true
+    // },
     //studentQuestioId: { 
     //    type: mongoose.Schema.Types.ObjectId,
     //    required: true 
     //}, //Unique identifier for all of a student's answers to the same question
 
     //states and configuration
-    attemptNumber: { 
-        type: Number,
-        default: 1
-    },
-    isFirstAttempt: { 
-        type: Boolean,
-        default: true
-    },
-    isFinalAttempt: { 
-        type: Boolean,
-        default: false
-    },
+    // attemptNumber: { 
+    //     type: Number,
+    //     default: 1
+    // },
+    // isFirstAttempt: { 
+    //     type: Boolean,
+    //     default: true
+    // },
+    // isFinalAttempt: { 
+    //     type: Boolean,
+    //     default: false
+    // },
 }, { 
     timestamps: true, // Add createdAt and updatedAt fields
     versionKey: false, // Disable the __v version key

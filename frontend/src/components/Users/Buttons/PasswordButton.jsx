@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { KeyRound } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
-const PasswordButton = ({ onClick, disabled = false }) => {
+const PasswordButton = ({ onClick }) => {
     return(
         <div className="flex justify-center items-center gap-2">
             <Tooltip>
@@ -12,7 +12,6 @@ const PasswordButton = ({ onClick, disabled = false }) => {
                         variant="ghost"
                         size="icon"
                         onClick={onClick}
-                        disabled={disabled}
                     >
                         <KeyRound />
                     </Button>

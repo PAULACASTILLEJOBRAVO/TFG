@@ -20,7 +20,6 @@ const UserCreate = () => {
     }
 
     const handleCreateUser = async (newUser) => {
-        
         try {
             await create(newUser);
             navigate("/dashboard_admin/users");

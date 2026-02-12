@@ -45,6 +45,18 @@ const getTotalStudentsStatsForTeacher = async (id) => {
     });
 }
 
+// Service to fetch all students 
+const getAllStudents = async () => {
+    return await User.find({ 
+        isActive: true, 
+        $or: [ 
+            { isDeleted: false }, 
+            { isDeleted: { $exists: false } } 
+        ], 
+        role: "student" 
+    }).select('-password');
+}
+
 // Service to create a new user
 const createUser = async (body) => {
     try{
@@ -151,6 +163,7 @@ module.exports = {
     getUserById,
     getTotalUsersStats,
     getTotalStudentsStatsForTeacher,
+    getAllStudents,
     
     createUser,
 

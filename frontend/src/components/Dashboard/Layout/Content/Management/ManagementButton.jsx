@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
-import { User } from "lucide-react";
 
 const ManagementButton = ({icon: Icon, label, to}) => {
     const navigate = useNavigate();

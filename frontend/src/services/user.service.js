@@ -5,6 +5,11 @@ export const getTotalUsers = async () => {
     return response.data;
 }
 
+export const getTotalStudents = async () => {
+    const response = await api.get('users/students');
+    return response.data;
+}
+
 export const getTotalUsersStats = async () => {
     const response = await api.get("/users/stats/total");
     return response.data;

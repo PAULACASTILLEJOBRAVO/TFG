@@ -1,9 +1,9 @@
-import { useState } from "react";
-import Logo from "@/components/Common/Logo";
+// import { useState } from "react";
+// import Logo from "@/components/Common/Logo";
 import { sidebarConfig } from "../../../config/sidebar.config";
 import { 
     Sidebar, 
-    SidebarHeader, 
+    // SidebarHeader, 
     SidebarMenu, 
     SidebarMenuItem,  
     SidebarMenuButton, 
@@ -16,6 +16,22 @@ import SidebarUserFooter from "@/components/Dashboard/Layout/Sidebar/SidebarUser
 import { useAuth } from "@/auth/AuthContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import { logoutRequest } from "@/services/auth.service";
+import { House, Trophy, User, Settings, LogOut, Calculator, UserRoundPen, NotebookPen } from "lucide-react";
+
+const icons = {
+    house: House,
+    profile: UserRoundPen,
+    settings: Settings,
+    logout: LogOut,
+
+    trophy: Trophy,
+
+    quiz: NotebookPen,
+
+    user: User,
+    clicker: Calculator,
+
+}
 
 const DashboardSidebar = () => {
     const {user, logout} = useAuth();
@@ -44,9 +60,9 @@ const DashboardSidebar = () => {
     }
 
     return(
-        <Sidebar className="w-60">
+        <Sidebar className="w-60 fixed top-16 left-0 h-[calc(100vh-4rem)]">
                  {/** Logo */}
-                 <SidebarHeader>
+                 {/* <SidebarHeader>
                     <SidebarMenu>
                         <SidebarMenuItem>
                             <div className="flex flex-col items-center justify-center py-6 gap-2">
@@ -54,7 +70,7 @@ const DashboardSidebar = () => {
                             </div>
                         </SidebarMenuItem>
                     </SidebarMenu>
-                 </SidebarHeader>
+                 </SidebarHeader> */}
                 
                 <SidebarSeparator/>
 
@@ -65,6 +81,7 @@ const DashboardSidebar = () => {
                             <SidebarMenu>
                                 {config.map((item, index) => {
                                     const isActive = isSidebarItemActive(pathname, item.href); // Subroutes
+                                    const ActionIcon = item?.icon ? icons[item.icon] : null;
 
                                     return(
                                         <SidebarMenuItem key={index}>
@@ -76,6 +93,7 @@ const DashboardSidebar = () => {
                                                 `}
                                                 onClick={item.action === "logout" ? handleLogout : () => navigate(item.href)}
                                             >
+                                                {ActionIcon && <ActionIcon />}
                                                 {item.label}
                                             </SidebarMenuButton>
                                         </SidebarMenuItem>

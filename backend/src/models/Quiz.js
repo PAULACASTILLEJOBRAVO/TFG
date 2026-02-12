@@ -31,6 +31,10 @@ const quizSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'Question' 
     }],
+    playerIds: [{ 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'User' 
+    }],
 
     //States and configuration
     isActive: { 
@@ -52,18 +56,18 @@ const quizSchema = new Schema({
         type: String, 
         trim: true 
     },
-    dificulty: { 
+    difficulty: { 
         type: String, 
         enum: ['easy', 'medium', 'hard'], 
-        default: 'medium' 
+        default: 'easy' 
     },
 
     //Access control
-    isPublic: { 
-        type: String, 
-        enum: ['private', 'public'], 
-        default: 'private' 
-    },
+    // isPublic: { 
+    //     type: String, 
+    //     enum: ['private', 'public'], 
+    //     default: 'private' 
+    // },
 }, 
 { 
     timestamps: true, // Add createdAt and updatedAt fields

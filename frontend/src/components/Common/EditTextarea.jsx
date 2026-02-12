@@ -11,7 +11,7 @@ const EditTextarea = ({ label, value, ...props }) => {
         placeholder=" "
         className="
           peer
-          min-h-[6rem]
+          min-h-[4rem]
           w-full
           px-3 pt-6
           bg-transparent

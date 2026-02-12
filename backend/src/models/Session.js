@@ -19,10 +19,10 @@ const sessionSchema = new Schema({
         ref: 'Quiz',
         required: true 
     },
-    courseId: { 
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: 'Course' 
-    },
+    // courseId: { 
+    //     type: mongoose.Schema.Types.ObjectId, 
+    //     ref: 'Course' 
+    // },
     // currentQuestionId: { 
     //     type: mongoose.Schema.Types.ObjectId, 
     //     ref: 'Question' 

@@ -12,16 +12,20 @@ import QuestionSettingsPanel from "@/components/Quizzes/Sections/QuestionSetting
 import { Card } from "@/components/ui/card";
 import QuizzCreateFooter from "@/components/Quizzes/Layout/QuizzCreateFooter";
 import { useAuth } from "@/auth/AuthContext";
+import { useDifficulties } from "@/hooks/Difficulties/useDifficulties";
+import { createNewQuestion } from "@/utils/questions";
+import QuizSearchStudents from "@/components/Quizzes/Layout/QuizSearchStudents";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const QuizCreate = () => {
   const { user } = useAuth();
+  const { difficulties } = useDifficulties();
 
   // Data
-  const [createQuiz, setCreateQuiz] = useState({ title: "", description: "", creatorId: user ? user._id : null, dificulty: "", isPublic: "", isActive: false });
+  const [createQuiz, setCreateQuiz] = useState({ title: "", description: "", creatorId: user ? user._id : null, playerIds: [], difficulty: "easy", isActive: false });
 
   const handleUpdate = (field, value) => {
     setCreateQuiz(prev => ({...prev, [field]: value}));
-    console.log("Updated quiz data:", createQuiz);
   }
 
   const handlePublish = () => {
@@ -33,7 +37,7 @@ const QuizCreate = () => {
   }
 
   // Question Panel
-  const [questionsList, setQuestionsList] = useState([{ text: "", type: "multiple-choice", options: [] }]);
+  const [questionsList, setQuestionsList] = useState([ createNewQuestion() ]);
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0);
 
   const handleAddQuestion = (newQuestion) => {
@@ -63,6 +67,42 @@ const QuizCreate = () => {
     setSelectedQuestionIndex(index);
   }
 
+  // Question Editor
+  const activeQuestion = selectedQuestionIndex !== null ? questionsList[selectedQuestionIndex] : null;
+
+  const handleUpdateQuestion = (updateFields) => {
+    setQuestionsList(prev => 
+      prev.map((question, index) => 
+        index === selectedQuestionIndex 
+        ? {...question, ...updateFields}
+        : question
+      ));
+  }
+
+  // Student List Section
+  const [selectedStudents, setSelectedStudents] = useState([]); 
+
+  const handleToggleStudent = (student) => {
+    setCreateQuiz(prev => {
+      const exist = prev.playerIds.includes(student._id);
+      
+      return {
+        ...prev, 
+        playerIds: exist 
+        ? prev.playerIds.filter(id => id !== student._id) // Remove if exist
+        : [...prev.playerIds, student._id] // Add if not exist
+      }
+    });
+
+    setSelectedStudents(prev => {
+      const exist = prev.includes(student);
+
+      return exist 
+        ? prev.filter(id => id._id !== student._id) // Remove if exist
+        : [...prev, student]; // Add if not exist
+    });
+  }
+
   return (
     <DashboardLayout>
       <DashboardContent>
@@ -73,21 +113,41 @@ const QuizCreate = () => {
         <CreateHeader onBack="/dashboard_teacher/quizzes" label="cuestionarios" title="Crear nuevo cuestionario" />
 
         <Card>
-          <QuizCreateHeader newQuiz={createQuiz} onChange={handleUpdate} />
+          <QuizCreateHeader newQuiz={createQuiz} difficulties={difficulties} onChange={handleUpdate} />
 
           <Separator />
+          
+          {/** Tabs */}
+          <Tabs defaultValue="questions" className="w-full">
+            <TabsList className="w-full flex">
+              <TabsTrigger value="questions" className="flex-1">Preguntas</TabsTrigger>
+              <TabsTrigger value="students" className="flex-1">Estudiantes</TabsTrigger>
+            </TabsList>
+            {/** TAB 1 - Questions */}
+            <TabsContent value="questions">
+              <QuizCreateEditorLayout>
+                <QuestionListPanel 
+                  displayQuestions={questionsList} 
+                  selectedQuestion={selectedQuestionIndex} 
+                  onSelect={handleSelectQuestion} 
+                  onAdd={handleAddQuestion} 
+                  onDelete={handleDeleteQuestion}
+                />
+                <QuestionEditorPanel 
+                  question={activeQuestion} 
+                  onChange={handleUpdateQuestion}
+                />
+                <QuestionSettingsPanel 
+                  question={activeQuestion} 
+                  onChange={handleUpdateQuestion} 
+                />
+              </QuizCreateEditorLayout>
+            </TabsContent>
 
-          <QuizCreateEditorLayout>
-            <QuestionListPanel 
-              displayQuestions={questionsList} 
-              selectedQuestion={selectedQuestionIndex} 
-              onSelect={handleSelectQuestion} 
-              onAdd={handleAddQuestion} 
-              onDelete={handleDeleteQuestion}/>
-            <QuestionEditorPanel />
-            <QuestionSettingsPanel />
-          </QuizCreateEditorLayout>
-
+            <TabsContent value="students">
+              <QuizSearchStudents selectedIdStudents={createQuiz.playerIds} selectedStudents={selectedStudents} onToggle={handleToggleStudent} />
+            </TabsContent>
+          </Tabs>
           
           <QuizzCreateFooter onPublish={handlePublish} onDraft={handleSaveDraft} />
          

@@ -13,7 +13,6 @@ const QuizzesManagement = () => {
     return (
         <DashboardLayout>
             <DashboardContent>
-                
                 <div className="flex items-center mb-4 justify-between">
                     <DashboardSubtitle label="Mis cuestionarios" />
                        
@@ -21,9 +20,6 @@ const QuizzesManagement = () => {
                         <CreateButton label="cuestionario" onClick={() => navigate("/dashboard_teacher/quizzes/create")}/>
                     </div>
                 </div>
-
-
-                
             </DashboardContent>
         </DashboardLayout>
     );

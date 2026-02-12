@@ -8,6 +8,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/auth/AuthContext";
+import { Calculator, NotebookPen, PlayCircle, User, Book, MessageSquareWarning } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const ActionMenu = ({icon}) => {
     const { user } = useAuth();
@@ -17,6 +19,8 @@ const ActionMenu = ({icon}) => {
     const [open, setOpen] = useState(false);
     const timeoutRef = useRef();
     const Icon = icon;
+
+    const navigate = useNavigate();
 
     const handleMouseEnter = () => {
         if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -49,37 +53,44 @@ const ActionMenu = ({icon}) => {
 
                 {user.role === "teacher" && (
                     <>
-                        <DropdownMenuItem>
-                            Crear curso
-                        </DropdownMenuItem>     
-
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => navigate("/dashboard_teacher/quizzes/create")}>
+                            <NotebookPen />
                             Crear quiz
-                        </DropdownMenuItem>               
+                        </DropdownMenuItem> 
+                        
+                        <DropdownMenuItem onClick={() => navigate("/dashboard_teacher/courses/create")}>
+                            <Book />
+                            Crear curso
+                        </DropdownMenuItem>      
                     </>
                 )}
 
                 {user.role === "admin" && (
                     <>
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => navigate("/dashboard_admin/users")}>
+                            <User />
                             Usuarios
                         </DropdownMenuItem>     
 
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => navigate("/dashboard_admin/clickers")}>
+                            <Calculator />
                             Clickers
                         </DropdownMenuItem> 
 
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => navigate("/dashboard_admin/courses")}>
+                            <Book />
                             Cursos
                         </DropdownMenuItem>     
 
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => navigate("/dashboard_admin/sessions")}>
+                            <PlayCircle />
                             Sesiones
                         </DropdownMenuItem> 
 
                         <DropdownMenuSeparator/>
 
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => navigate("/dashboard_admin/reports")}>
+                            <MessageSquareWarning />
                             Reportes
                         </DropdownMenuItem>     
                     </>

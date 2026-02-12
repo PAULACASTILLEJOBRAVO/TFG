@@ -5,6 +5,7 @@ import AuthInput from "@/components/Auth/AuthInput";
 
 const ChangePasswordUserDialog = ({open, user, onConfirm, onClose}) => {
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
 
     if(!user) return null;
 
@@ -25,6 +26,13 @@ const ChangePasswordUserDialog = ({open, user, onConfirm, onClose}) => {
                     type="password"
                     value={password}
                     onChange={(e) => setPassword( e.target.value)}
+                />
+
+                <AuthInput
+                    label="Confirmar contraseña"
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                 />
 
                 <DialogFooter className="gap-2">

@@ -32,27 +32,21 @@ const questionSchema = new Schema({
             type: String, 
             trim: true
         } // Feedback for the option
-    }], // Array of options for multiple-choice and true-false questions
-    correctOptions: [
-        { 
-            type: Number,
-            // required: true
-        }
-    ], // Correct options for multiple-choice and true-false questions
+    }], // Array of options for multiple-choice and true-false questions 
 
     //States and configuration
     isActive: {             // true = published, false = draft
         type: Boolean, 
         default: true 
     },
-    isReusable: {           // Can be used in multiple quizzes
-        type: Boolean, 
-        default: true 
-    },
-    isPublic: {
-        type: Boolean,
-        default: false // true = shared with all teachers, false = private to creator
-    },
+    // isReusable: {           // Can be used in multiple quizzes
+    //     type: Boolean, 
+    //     default: true 
+    // },
+    // isPublic: {
+    //     type: Boolean,
+    //     default: false // true = shared with all teachers, false = private to creator
+    // },
     isDeleted: {
         type: Boolean,
         default: false
@@ -75,13 +69,13 @@ const questionSchema = new Schema({
     },
     timeLimit: { 
         type: Number, // Time limit in seconds
-        default: 60,
+        default: -1, // Without time limit
         min: 10
     },
-    allowMultipleSelections: { // Only for multiple-choice questions
-        type: Boolean, 
-        default: false 
-    },
+    // allowMultipleSelections: { // Only for multiple-choice questions
+    //     type: Boolean, 
+    //     default: false 
+    // },
 }, 
 { 
     timestamps: true, // Add createdAt and updatedAt fields

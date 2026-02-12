@@ -15,7 +15,7 @@ components:
           type: string
           description: A brief description of the quiz.
           example: "This quiz covers topics from chapters 1 to 5."
-        dificulty:
+        difficulty:
           type: enum
           description: The difficulty level of the quiz.
           enum: [Easy, Medium, Hard]

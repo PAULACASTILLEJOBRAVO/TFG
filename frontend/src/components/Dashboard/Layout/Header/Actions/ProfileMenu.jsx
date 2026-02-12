@@ -7,7 +7,7 @@ import {
     DropdownMenuSeparator
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { User } from "lucide-react";
+import { LogOut, Settings, User, UserRoundPen } from "lucide-react";
 import { useAuth } from "@/auth/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { logoutRequest } from "@/services/auth.service";
@@ -51,16 +51,19 @@ const ProfileMenu = () => {
                 onClick={() => setOpen(false)}
             >
                 <DropdownMenuItem>
+                    <UserRoundPen />
                     Profile
                 </DropdownMenuItem>
 
                 <DropdownMenuItem>
+                    <Settings />
                     Settings
                 </DropdownMenuItem>
 
                 <DropdownMenuSeparator/>
 
                 <DropdownMenuItem onClick={handleLogout} className="text-red-600 focus:text-red-600">
+                    <LogOut />
                     Logout
                 </DropdownMenuItem>
             </DropdownMenuContent>

@@ -13,6 +13,9 @@ const DashboardHeader = () => {
 
     return(
         <header className="
+            sticky 
+            top-0 
+            z-40
             h-16 
             border-b 
             bg-background 

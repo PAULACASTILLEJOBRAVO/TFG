@@ -16,24 +16,43 @@ import { useDifficulties } from "@/hooks/Difficulties/useDifficulties";
 import { createNewQuestion } from "@/utils/questions";
 import QuizSearchStudents from "@/components/Quizzes/Layout/QuizSearchStudents";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useQuizActions } from "@/hooks/Quizzes/useQuizActions";
+import { useNavigate } from "react-router-dom";
 
 const QuizCreate = () => {
   const { user } = useAuth();
   const { difficulties } = useDifficulties();
+  const { create } = useQuizActions();
 
   // Data
   const [createQuiz, setCreateQuiz] = useState({ title: "", description: "", creatorId: user ? user._id : null, playerIds: [], difficulty: "easy", isActive: false });
+
+  const navigate = useNavigate();
 
   const handleUpdate = (field, value) => {
     setCreateQuiz(prev => ({...prev, [field]: value}));
   }
 
-  const handlePublish = () => {
+  const handlePublish = async () => {
     setCreateQuiz(prev => ({...prev, isActive: true}));
+
+    try {
+      await create({quizFields: createQuiz, questions: questionsList});
+      navigate("/dashboard_teacher/quizzes");
+    } catch (error) {
+      console.error("Error creating quiz:", error);
+    }
   }
 
-  const handleSaveDraft = () => {
+  const handleSaveDraft = async () => {
     setCreateQuiz(prev => ({...prev, isActive: false}));
+
+    try {
+      await create({quizFields: createQuiz, questions: questionsList});
+      navigate("/dashboard_teacher/quizzes");
+    } catch (error) {
+      console.error("Error creating quiz:", error);
+    }
   }
 
   // Question Panel

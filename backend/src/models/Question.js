@@ -26,7 +26,7 @@ const questionSchema = new Schema({
         }, // Indicates if the option is correct
         order: {
             type: Number, 
-            required: true
+            // required: true
         }, // Order of the option in the list
         feedback: {
             type: String, 
@@ -65,12 +65,12 @@ const questionSchema = new Schema({
     points: { 
         type: Number, 
         default: 10,
-        min: 0
+        min: -1
     },
     timeLimit: { 
         type: Number, // Time limit in seconds
         default: -1, // Without time limit
-        min: 10
+        min: -1
     },
     // allowMultipleSelections: { // Only for multiple-choice questions
     //     type: Boolean, 

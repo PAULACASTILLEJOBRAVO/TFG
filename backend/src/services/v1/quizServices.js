@@ -1,5 +1,6 @@
 // Import models
 const Quiz = require('../../models/Quiz');
+const Question = require('../../models/Question');
 
 // Quiz services
 // Service to fetch all quizzes
@@ -14,9 +15,37 @@ const getQuizById = async (id) => {
 
 // Service to create a new user
 const createQuiz = async (body) => {
+    const { questions, quizFields } = body;
+    console.log('Received body:', body);
+
+        // Create a transaction to ensure atomicity
+        const session = await Quiz.startSession();
+        session.startTransaction();
+
     try{
-        return await Quiz.create(body);
+        // First, create questions and get their IDs
+        const createdQuestions = await Question.insertMany(questions, { session });
+
+        const questionIds = createdQuestions.map(q => q._id);
+
+        // Then, create the quiz with the question IDs
+        const quizData = { ...quizFields, questionIds: questionIds };
+        console.log('Quiz fields:', quizFields);
+        console.log('Created questions with IDs:', questionIds);
+        console.log('Creating quiz with data:', quizData);
+
+        // Finnaly, create the quiz
+        const createdQuiz = await Quiz.create([quizData], { session });
+        console.log('Created quiz:', createdQuiz);
+        
+        await session.commitTransaction();
+        session.endSession();
+
+        return createdQuiz[0]; // insertMany returns an array of created documents
     } catch(error){
+        await session.abortTransaction();
+        session.endSession();
+
         throw error.message;
     }
 }

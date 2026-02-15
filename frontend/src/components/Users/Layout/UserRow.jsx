@@ -40,7 +40,6 @@ const UserRow = ({user, onEdit, onDelete, onChangePassword, onRestore, onSelect}
                         onRestore(user)
                     }}
                     label="usuario"
-                    disabled={user.isDeleted}
                     isDeleted={user.isDeleted}
                 />
             </TableCell>

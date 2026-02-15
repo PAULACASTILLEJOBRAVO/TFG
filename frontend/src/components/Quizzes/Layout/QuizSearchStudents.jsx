@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import StudentList from "@/components/Users/Layout/Students/StudentList";
 
 const QuizSearchStudents = ({ selectedIdStudents, selectedStudents, onToggle }) => {
+
     return (
         <div className="w-full p-2 gap-2">
             <Card className="w-full">

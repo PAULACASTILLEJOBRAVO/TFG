@@ -195,17 +195,15 @@ userSchema.statics.canCreateUser = async function(currentUser) {
   return await validateAdminRole(currentUser);
 }
 
-// Statics permissons to fetch total users
-userSchema.statics.canGetAdminStats = async function(currentUser) {
+// Statics permissons to fetch total users for admin
+userSchema.statics.canGetAdminUsers = async function(currentUser) {
   return await validateAdminRole(currentUser);
 }
 
-// Statics permissions to fetch total students
+// Statics permissions to fetch total students for a teacher
 userSchema.statics.canGetTeacherStudents = async function(currentUser) {
   return await validateTeacherRole(currentUser);
 }
-
-// 
 
 // Statics update by id
 userSchema.statics.updateById = async function(id, body, currentUserData) {
@@ -260,70 +258,6 @@ userSchema.statics.updatePasswordById = async function (id, body, currentUserDat
     // Set new password
     user.password = newPassword;
     await user.save();  // Triggers pre-save hook to hash the password
-
-    return user;
-}
-
-// Statics update email by id
-userSchema.statics.updateEmailById = async function (id, body, currentUserData) {
-  const user = await this.findById(id).select('-password'); // Ensure password is not selected
-    if(!user) return false;
-
-    // Extract current user ID and role
-    const { _id: currentUserId, role: currentUserRole } = currentUserData;
-
-    // Check if the user is updating their own email
-    const isSelf = currentUserId.toString() === id.toString();
-
-    // Extract old and new email from body
-    const { oldEmail, newEmail } = body;
-
-    // Validate email change
-    await validateEmailChange({isSelf, currentUserRole, oldEmail, userEmail: user.email});
-
-    // Set the new email
-    user.email = newEmail;
-    await user.save();  
-
-    return user;
-}
-
-// Statics update role by id
-userSchema.statics.updateRoleById = async function (id, newRole, currentUserData) {
-    if(currentUserData.role !== 'admin')  throw new Error('Only admins can change user roles');
-
-    const user = await this.findById(id).select('-password');
-    if(!user) return false;
-
-    // Validate new role
-    if(!['student','teacher','admin'].includes(newRole)) throw new Error('Invalid role');
-
-    // Set new role
-    user.role = newRole;
-    await user.save();
-
-    return user;
-}
-
-// Statics method status by id
-userSchema.statics.updateStatusById = async function (id, newStatus, currentUserData) {
-    const { role } = currentUserData;
-
-    if(role !== 'admin' && role !== 'teacher') throw new Error('Only admins and teachers can change user status');
-
-    const user = await this.findById(id).select('-password');
-    if(!user) return false;
-
-    if(typeof newStatus !== 'boolean') throw new Error('Status must be true or false');
-
-    // If soft-deleted, restore before updating status
-    if (user.isDeleted && newStatus === true) {
-        await user.restore();
-    }
-
-    // Set new status
-    user.isActive = newStatus;
-    await user.save();
 
     return user;
 }

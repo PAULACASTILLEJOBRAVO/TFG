@@ -1,9 +1,10 @@
 import EditButton from "@/components/Common/ActionButtons/EditButton";
 import DeleteButton from "@/components/Common/ActionButtons/DeleteButton";
-import PasswordButton from "@/components/Users/Buttons/PasswordButton";
-import RestoreButton from "../../Common/ActionButtons/RestoreButton";
+import RestoreButton from "@/components/Common/ActionButtons/RestoreButton";
+import StartSessionButton from "../Buttons/StartSessionButton";
+import PublishButton from "../Buttons/PublishButton";
 
-const UserActionCell = ({ label, onEdit, onDelete, onChangePassword, onRestore, isDeleted }) => {
+const QuizActionCell = ({ label, onEdit, onDelete, onRestore, onPublish, onStartSession, isDeleted, isPublished }) => {
     return(
         <div className="flex justify-center items-center gap-2">
             {onEdit && (
@@ -13,9 +14,18 @@ const UserActionCell = ({ label, onEdit, onDelete, onChangePassword, onRestore, 
                 />
             )}
 
-            {onChangePassword && (
-                <PasswordButton
-                    onClick={onChangePassword}
+            {isPublished === "published" && onStartSession && (
+                <StartSessionButton
+                    onClick={onStartSession}
+                    label={label}
+                />
+            )}
+
+
+            {isPublished === "draft" && onPublish && (
+                <PublishButton
+                    onClick={onPublish}
+                    label={label}
                 />
             )}
 
@@ -38,4 +48,4 @@ const UserActionCell = ({ label, onEdit, onDelete, onChangePassword, onRestore, 
     );
 }
 
-export default UserActionCell;
+export default QuizActionCell;

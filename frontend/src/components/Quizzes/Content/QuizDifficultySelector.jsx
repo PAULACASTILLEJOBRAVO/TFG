@@ -13,17 +13,17 @@ const QuizDifficultySelector = ({value, onChange, difficulties}) => {
                         text-gray-500 text-xs
                          
                     `}>
-                    Difficulty
+                    Dificultad
                 </Label>
             </div>
             <Select value={value ? value : difficulties[0].value} onValueChange={onChange}>
                 <SelectTrigger>
-                    <SelectValue placeholder="Select a difficulty" />
+                    <SelectValue placeholder="Selecciona dificultad" />
                 </SelectTrigger>
 
                 <SelectContent>
                     <SelectGroup>
-                        <SelectLabel>Difficulty</SelectLabel>
+                        <SelectLabel>Dificultad</SelectLabel>
                         {difficulties.map(difficulty => (   
                             <SelectItem key={difficulty._id} value={difficulty.value}>
                                 {difficulty.label}

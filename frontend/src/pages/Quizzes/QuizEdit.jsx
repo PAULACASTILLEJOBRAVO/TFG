@@ -3,49 +3,42 @@ import DashboardContent from "@/components/Dashboard/Layout/DashboardContent";
 import AppBreadcrumb from "@/components/Common/AppBreadcrumb";
 import { Separator } from "@/components/ui/separator";
 import CreateHeader from "@/components/Common/CreateHeader";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/auth/AuthContext";
 import { useDifficulties } from "@/hooks/Difficulties/useDifficulties";
 import { createNewQuestion } from "@/utils/questions";
 import { useQuizActions } from "@/hooks/Quizzes/useQuizActions";
 import { useNavigate } from "react-router-dom";
 import QuizForm from "@/components/Quizzes/Form/QuizForm";
+import { useParams } from "react-router-dom";
+import { useQuiz } from "@/hooks/Quizzes/useQuiz";
+import { Spinner } from "@/components/ui/spinner";
 
-const QuizCreate = () => {
+const QuizEdit = () => {
   const { user } = useAuth();
   if(!user) return null;
 
+  const { id } = useParams();
+  const { quiz, loading } = useQuiz(id);
+
   const { difficulties } = useDifficulties();
-  const { create } = useQuizActions();
+  const { update } = useQuizActions();
 
   // Data
-  const [createQuiz, setCreateQuiz] = useState({ title: "", description: "", creatorId: user ? user._id : null, playerIds: [], difficulty: "easy", isActive: false, status: "draft" });
+  const [editQuiz, setEditQuiz] = useState({ ...quiz });
 
   const navigate = useNavigate();
 
   const handleUpdate = (field, value) => {
-    setCreateQuiz(prev => ({...prev, [field]: value}));
+    setEditQuiz(prev => ({...prev, [field]: value}));
   }
 
-  const handlePublish = async () => {
-    setCreateQuiz(prev => ({...prev, isActive: true, status: "published"}));
-
+  const handleEditQuiz = async () => {
     try {
-      await create({quizFields: createQuiz, questions: questionsList});
+      await update(id, {quizFields: editQuiz, questions: questionsList});
       navigate("/dashboard_teacher/quizzes");
     } catch (error) {
-      console.error("Error creating quiz:", error);
-    }
-  }
-
-  const handleSaveDraft = async () => {
-    setCreateQuiz(prev => ({...prev, isActive: false, status: "draft"}));
-
-    try {
-      await create({quizFields: createQuiz, questions: questionsList});
-      navigate("/dashboard_teacher/quizzes");
-    } catch (error) {
-      console.error("Error creating quiz:", error);
+      console.error("Error updating quiz:", error);
     }
   }
 
@@ -93,10 +86,10 @@ const QuizCreate = () => {
   }
 
   // Student List Section
-  const [selectedStudents, setSelectedStudents] = useState([]); 
+  const [selectedStudents, setSelectedStudents] = useState([]);
 
   const handleToggleStudent = (student) => {
-    setCreateQuiz(prev => {
+    setEditQuiz(prev => {
       const exist = prev.playerIds.includes(student._id);
       
       return {
@@ -116,6 +109,29 @@ const QuizCreate = () => {
     });
   }
 
+  // Effects
+  useEffect(() => {
+    if(quiz) {
+      // Normalize playerIds to ensure it's an array of IDs, and extract populated student objects
+      const normalizedPlayerIds = (quiz.playerIds || []).map(player =>
+        typeof player === "string" ? player : player._id
+      );
+
+      // Extract populated student objects for the selectedStudents state
+      const populatedStudents = (quiz.playerIds || []).filter(
+        player => typeof player === "object"
+      );
+
+      setEditQuiz({
+        ...quiz,
+        playerIds: normalizedPlayerIds // Ensure playerIds is an array of IDs, not objects
+      });
+
+      setQuestionsList(quiz.questionIds || [createNewQuestion()]);
+      setSelectedStudents(populatedStudents);
+    }
+  }, [quiz]);
+
   return (
     <DashboardLayout>
       <DashboardContent>
@@ -123,28 +139,34 @@ const QuizCreate = () => {
 
         <Separator />
 
-        <CreateHeader onBack="/dashboard_teacher/quizzes" label="cuestionarios" title="Crear nuevo cuestionario" />
+        <CreateHeader onBack="/dashboard_teacher/quizzes" label="cuestionarios" title="Editar cuestionario" />
 
-        <QuizForm 
-          difficulties={difficulties} 
-          quiz={createQuiz} 
-          questionsList={questionsList}
-          selectedQuestionIndex={selectedQuestionIndex} 
-          activeQuestion={activeQuestion} 
-          selectedStudents={selectedStudents}
-          onUpdate={handleUpdate}  
-          onSelectQuestion={handleSelectQuestion} 
-          onAddQuestion={handleAddQuestion} 
-          onDeleteQuestion={handleDeleteQuestion} 
-          onUpdateQuestion={handleUpdateQuestion}
-          onToggleStudent={handleToggleStudent}
-          onPublish={handlePublish}
-          onSaveDraft={handleSaveDraft}
-        />
+        {loading ? (
+          <div className="w-full h-64 flex items-center justify-center">
+              <Spinner />
+          </div>
+        ) : (
+          <QuizForm 
+            difficulties={difficulties} 
+            quiz={editQuiz} 
+            questionsList={questionsList}
+            selectedQuestionIndex={selectedQuestionIndex} 
+            activeQuestion={activeQuestion} 
+            selectedStudents={selectedStudents}
+            viewMode="edit"
+            onUpdate={handleUpdate}  
+            onSelectQuestion={handleSelectQuestion} 
+            onAddQuestion={handleAddQuestion} 
+            onDeleteQuestion={handleDeleteQuestion} 
+            onUpdateQuestion={handleUpdateQuestion}
+            onToggleStudent={handleToggleStudent}
+            onEdit={handleEditQuiz}
+          />
+        )}
         
       </DashboardContent>
     </DashboardLayout>
   );
 };  
 
-export default QuizCreate;
+export default QuizEdit;

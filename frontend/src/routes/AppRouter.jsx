@@ -2,13 +2,19 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 // import CourseList from '@/components/Courses/CourseList';
 // import CourseDetail from '@/components/Courses/CourseDetails';
 import Auth from '@/pages/Auth';
+
 import DashboardStudent from '@/pages/Dashboards/DashboardStudent';
 import DashboardTeacher from '@/pages/Dashboards/DashboardTeacher';
 import DashboardAdmin from '@/pages/Dashboards/DashboardAdmin';
+
 import UserManagement from '@/pages/Management/UsersManagement';
 import QuizzesManagement from '@/pages/Management/QuizzesManagement';
+
 import UserCreate from '@/pages/Users/UsersCreate';
 import QuizCreate from '@/pages/Quizzes/QuizzesCreate';
+
+import QuizEdit from '@/pages/Quizzes/QuizEdit';
+
 
 const AppRouter = () => {
   return (
@@ -25,6 +31,7 @@ const AppRouter = () => {
 
         <Route path="/dashboard_teacher/quizzes" element={<QuizzesManagement />} />
         <Route path='/dashboard_teacher/quizzes/create' element={<QuizCreate />} />
+        <Route path='/dashboard_teacher/quizzes/:id/edit' element={<QuizEdit />} />
 
         {/* <Route path='/courses/:id' element={<CourseDetail/>} /> */}
         

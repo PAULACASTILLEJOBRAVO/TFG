@@ -9,9 +9,21 @@ const editableFields = {
         'isDeleted', 'deletedAt', 'deletedBy', 'deleteReason'
       ]
   },
-  course: {},
-  question: {},
-  quiz: {},
+  // course: {},
+  question: {
+    teacher: ['text', 'options', 'correctOption', 'explanation', 'difficulty'],
+    admin: ['text', 'options', 'correctOption', 'explanation', 'difficulty']
+  },
+  quiz: {
+    teacher: [
+      'title', 'description', 'creatorId', 'playerIds', 'questionIds', 'difficulty', 'status', 'isActive',
+      'isDeleted', 'deletedAt', 'deletedBy', 'deleteReason'
+    ],
+    admin: [
+      'title', 'description', 'creatorId', 'playerIds', 'questionIds', 'difficulty', 'status', 'isActive',
+      'isDeleted', 'deletedAt', 'deletedBy', 'deleteReason'
+    ]
+  },
   response: {},
   result: {},
   session: {}

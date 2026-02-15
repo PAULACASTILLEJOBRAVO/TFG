@@ -1,3 +1,6 @@
+// Import models
+const Quiz = require('../../models/Quiz');
+
 // Import services
 const quizServices = require('../../services/v1/quizServices');
 
@@ -41,6 +44,28 @@ const getQuizById = async (req, res) => {
     }
 }
 
+// Controller to get all quizzes created by a specific teacher
+const getAllQuizzesForTeacher = async (req, res) => {
+
+    const currentUser = req.user;
+
+    try {
+        const canAccess = await Quiz.canGetTeacherQuizzes(currentUser);
+        if (!canAccess) return res.status(403).json({message: "Unauthorized"});
+
+        const quizzes = await quizServices.getAllQuizzesForTeacher(currentUser._id);
+        res.status(200).json({
+            message: 'Quizzes fetched successfully', 
+            data: quizzes
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            message: 'Error fetching quizzes', 
+            error: error.message 
+        });
+    }
+};
+
 // Controller to create a new quiz
 const createQuiz = async (req, res) => {
     const {body} = req;
@@ -64,14 +89,14 @@ const createQuiz = async (req, res) => {
 
 // Controller to delete a quiz by ID
 const deleteQuizById = async (req, res) => {
-    const {id} = req.params;
-    const { by, reason } = req.body;
+    const { id } = req.params;
+    const { reason } = req.body;
+    const {_id } = req.user;
 
     if(!id) return res.status(400).json({ message: 'Quiz ID is required'});
-    if(!by && !reason) return res.status(400).json({ message: 'Deletion metadata is required'});
 
     try{
-        const deleted = await quizServices.deleteQuizById(id, by, reason);
+        const deleted = await quizServices.deleteQuizById(id, _id, reason);
 
         if (!deleted) return res.status(404).json({ message: 'Quiz not found' });
 
@@ -86,12 +111,86 @@ const deleteQuizById = async (req, res) => {
     }
 }
 
+// Controller to restore a quiz by ID
+const restoreQuizById = async (req, res) => {
+    const { id } = req.params;
+
+    if(!id) return res.status(400).json({ message: 'Quiz ID is required'});
+
+    try{
+        const restored = await quizServices.restoreQuizById(id);
+
+        if (!restored) return res.status(404).json({ message: 'Quiz not found' });
+
+        res.status(200).json({
+         message: 'Quiz restored successfully'
+        });
+    }catch(error){
+        res.status(500).json({
+            message: 'Error restoring quiz',
+            error: error.message
+        })
+    }
+}
+
+const publishQuizById = async (req, res) => {
+    const { id } = req.params;
+
+    if(!id) return res.status(400).json({ message: 'Quiz ID is required'});
+
+    try{
+        const published = await quizServices.publishQuizById(id);
+
+        if (!published) return res.status(404).json({ message: 'Quiz not found' });
+
+        res.status(200).json({
+         message: 'Quiz published successfully'
+        });
+    }catch(error){
+        res.status(500).json({
+            message: 'Error publishing quiz',
+            error: error.message
+        })
+    }
+}
+
+// Controller to update a quiz by ID
+const updateQuizById = async (req, res) => {
+    const {id} = req.params;
+    const {body} = req;
+    const { _id, role } = req.user;
+
+    if(!id) return res.status(400).json({ message: 'Quiz ID is required'});
+    if(!body) return res.status(400).json({ message: 'Body is required'});
+
+    try{
+        const updatedQuiz = await quizServices.updateQuizById({id, body, _id, role});
+
+        if(!updatedQuiz) return res.status(404).json({ message: 'Quiz not found'});
+
+        res.status(200).json({
+            message: 'Quiz updated successfully',
+            data: updatedQuiz
+        })
+    }catch(error){
+        res.status(500).json({
+            message: 'Error updating quiz',
+            error: error.message
+        })
+    }
+}
+
 // Export controllers functions
 module.exports = {
     getAllQuizzes,
     getQuizById,
+    getAllQuizzesForTeacher,
 
     createQuiz,
     
+    restoreQuizById,
+    publishQuizById,
+    updateQuizById,
+
     deleteQuizById,
 };

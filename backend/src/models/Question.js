@@ -35,7 +35,7 @@ const questionSchema = new Schema({
     }], // Array of options for multiple-choice and true-false questions 
 
     //States and configuration
-    isActive: {             // true = published, false = draft
+    isActive: {             
         type: Boolean, 
         default: true 
     },

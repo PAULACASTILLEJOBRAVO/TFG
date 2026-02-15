@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const debug = require('debug')('backend:models:quiz');
 
-const {validateTeacherRoleById} = require('../middleware/validationRole');
+const {validateTeacherRoleById, validateTeacherRole} = require('../middleware/validationRole');
+const { getQuizEditableFields } = require('../utils/checkRolePermissions');
 
 //Define quiz schema
 const quizSchema = new Schema({
@@ -37,6 +38,11 @@ const quizSchema = new Schema({
     }],
 
     //States and configuration
+    status: {
+        type: String,
+        enum: ['draft', 'published', 'archived'],
+        default: 'draft'
+    },
     isActive: { 
         type: Boolean, 
         default: false 
@@ -91,6 +97,7 @@ quizSchema.methods.softDelete = async function({ by = null, reason = null } = {}
   if (this.isPublic === 'public') throw new Error('Cannot delete a public quiz.');
 
   this.isDeleted = true;
+  this.status = 'archived'; // Set status to archived when deleted
   this.deletedAt = new Date();
   this.isActive = false; // Set isActive = false so quiz can't be used
 
@@ -107,16 +114,25 @@ quizSchema.methods.restore = async function() {
   this.deletedBy = null;
   this.deleteReason = null;
   this.isActive = true; // or leave it as previous state if you track it
+  this.status = 'draft'; // Set status to draft when restored, or keep previous status if you track it
 
   return this.save();
 };
+
+// Instance method to publish
+quizSchema.methods.publish = async function() {
+    this.status = 'published';
+    this.isActive = true; // Set isActive = true so quiz can be used
+
+    return this.save();
+}
 
 // Static helper to soft-delete by id (useful in services)
 quizSchema.statics.softDeleteById = async function(id, { by = null, reason = null } = {}) {
   const quiz = await this.findById(id);
   
   if (!quiz) return false;
-  if (this.isPublic === 'public') throw new Error('Cannot delete public quizzes');
+  if (quiz.isPublic === 'public') throw new Error('Cannot delete public quizzes');
   
   await quiz.softDelete({ by, reason });
 
@@ -133,6 +149,56 @@ quizSchema.statics.restoreById = async function(id) {
 
   return true;
 };
+
+// Static publish by id
+quizSchema.statics.publishById = async function(id) {
+    const quiz = await this.findById(id);
+  
+    if (!quiz) return false;
+
+    await quiz.publish();
+
+    return true;
+}
+
+// Static update by id
+quizSchema.statics.updateById = async function(id, body, currentUserData, session) {
+    const quiz = await this.findById(id).session(session);
+  
+    if (!quiz) return false;
+
+    // Extract current user ID and role
+    const { _id: currentUserId, role: currentUserRole } = currentUserData; 
+
+    // Check if the user is updating their own data
+    const isSelf = currentUserId.toString() === quiz.creatorId.toString(); 
+
+    // Get allowed fields based on role and whether it's self-update
+    const allowedFields = getQuizEditableFields(currentUserRole, isSelf);
+
+    // Filter body to only include allowed fields
+    const updates = {};
+    for (const key of Object.keys(body)) {
+        if (allowedFields.includes(key)) {
+            updates[key] = body[key];
+        }
+    }
+
+    debug('Allowed fields for update:', allowedFields);
+
+    // Apply changes
+    Object.assign(quiz, updates);
+
+    // Save and return updated quiz
+    await quiz.save({session});
+
+    return quiz;
+}
+
+// Statics permissions to fetch total quizzes for a teacher
+quizSchema.statics.canGetTeacherQuizzes = async function(currentUser) {
+    return await validateTeacherRole(currentUser);
+}
 
 // Soft-delete related questions before deleting the quiz
 quizSchema.pre('deleteOne', { document: true, query: false }, async function(next) {

@@ -116,26 +116,11 @@ router.get('/students', userController.getAllStudents);
  */
 router.post('/', userController.createUser);
 
-
 // Route to restore an user by ID
-// router.patch('/:id/restore', userController.restoreUserById);
 router.patch('/restore/:id', userController.restoreUserById);
 
 // Route to update an user's password by ID
-// router.patch('/:id/password', userController.updatePasswordById);
 router.patch('/password/:id', userController.updatePasswordById);
-
-// // Route to update an user's email by ID
-// // router.patch('/:id/email', userController.updateEmailById);
-// router.patch('/email/:id', userController.updateEmailById);
-
-// // Route to update an user's role by ID
-// // router.patch('/:id/role',  userController.updateUserRoleById);
-// router.patch('/role/:id',  userController.updateUserRoleById);
-
-// // Route to update an user's status by ID
-// // router.patch('/:id/status', userController.updateUserStatusById);
-// router.patch('/status/:id', userController.updateUserStatusById);
 
 // IMPORTANT: All "/:id" routes at the end of the document
 

@@ -1,7 +1,7 @@
 import { CardDescription, CardHeader, CardTitle } from "../../ui/card";
 import EditInput from "../../Common/EditInput";
 import EditTextarea from "../../Common/EditTextarea";
-import QuizDifficultySelector from "@/components/Quizzes/QuizDifficultySelector";
+import QuizDifficultySelector from "@/components/Quizzes/Content/QuizDifficultySelector";
 
 const QuizCreateHeader = ({ newQuiz, difficulties, onChange }) => {
 

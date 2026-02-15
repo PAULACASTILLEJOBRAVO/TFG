@@ -49,7 +49,7 @@ const getActiveCoursesStatsForTeacher = async (req, res) => {
     const currentUser = req.user;
 
     try {
-        const canAccess = await User.canGetTeacherStats(currentUser);
+        const canAccess = await User.canGetTeacherStudents(currentUser);
         if(!canAccess) return res.status(403).json({message: "Unauthorized"});
 
         const courses = await courseServices.getActiveCoursesStatsForTeacher(currentUser._id);

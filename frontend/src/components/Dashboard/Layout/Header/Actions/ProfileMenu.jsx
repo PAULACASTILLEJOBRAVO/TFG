@@ -52,12 +52,12 @@ const ProfileMenu = () => {
             >
                 <DropdownMenuItem>
                     <UserRoundPen />
-                    Profile
+                    Perfil
                 </DropdownMenuItem>
 
                 <DropdownMenuItem>
                     <Settings />
-                    Settings
+                    Ajustes
                 </DropdownMenuItem>
 
                 <DropdownMenuSeparator/>

@@ -52,8 +52,8 @@ const getTotalUsersStats = async (req, res) => {
     const currentUser = req.user;
 
     try {
-        const canAccess = await User.canGetAdminStats(currentUser);
-        if(!canAccess) return res.status(403).json({message: "Unauthorized"})
+        const canAccess = await User.canGetAdminUsers(currentUser);
+        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
 
         const users = await userServices.getTotalUsersStats();
         res.status(200).json({
@@ -243,84 +243,6 @@ const updatePasswordById = async (req, res) => {
     }
 }
 
-// Controller to update user's email by ID
-const updateEmailById = async (req, res) => {
-    const { id } = req.params;
-    const { body } = req;
-    const { _id, role } = req.user;
-
-    if (!id) return res.status(400).json({ message: 'User ID is required' });
-    if (!body.newEmail) return res.status(400).json({ message: 'New email is required' });
-
-    try {
-        const updatedUser = await userServices.updateEmailById(id, body, _id, role);
-
-        if (!updatedUser) return res.status(404).json({ message: 'User not found' });
-
-        res.status(200).json({
-            message: 'User email updated successfully',
-            data: updatedUser
-        });
-    } catch (error) {
-        res.status(500).json({
-            message: 'Error updating user email',
-            error: error.message
-        });
-    }
-}
-
-// Controller to update user's role by ID
-const updateUserRoleById = async (req, res) => {
-    const { id } = req.params;
-    const { body } = req;
-    const { _id, role } = req.user;
-
-    if (!id) return res.status(400).json({ message: 'User ID is required' });
-    if (!body.newRole) return res.status(400).json({ message: 'New role is required' });
-
-    try {
-        const updatedUser = await userServices.updateUserRoleById(id, body, _id, role);
-
-        if (!updatedUser) return res.status(404).json({ message: 'User not found' });
-
-        res.status(200).json({
-            message: 'User role updated successfully',
-            data: updatedUser
-        });
-    } catch (error) {
-        res.status(500).json({
-            message: 'Error updating user role',
-            error: error.message
-        });
-    }
-}
-
-// Controller to update user's status by ID
-const updateUserStatusById = async (req, res) => {
-    const { id } = req.params;
-    const { body } = req;
-    const { _id, role } = req.user;
-
-    if (!id) return res.status(400).json({ message: 'User ID is required' });
-    if (!body.newStatus) return res.status(400).json({ message: 'New status is required' });
-
-    try {
-        const updatedUser = await userServices.updateUserStatusById(id, body, _id, role);
-
-        if (!updatedUser) return res.status(404).json({ message: 'User not found' });
-
-        res.status(200).json({
-            message: 'User status updated successfully',
-            data: updatedUser
-        });
-    } catch (error) {
-        res.status(500).json({
-            message: 'Error updating user status',
-            error: error.message
-        });
-    }
-}
-
 //Export controller functions
 module.exports = {
     getAllUsers,
@@ -333,10 +255,6 @@ module.exports = {
 
     updateUserById,
     updatePasswordById,
-    updateEmailById,
-    updateUserRoleById,
-    updateUserStatusById,
-
     restoreUserById,
 
     deleteUserById

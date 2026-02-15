@@ -14,6 +14,7 @@ const DashboardLayout = ({children}) => {
           <DashboardSidebar />
           <SidebarTrigger/>
           
+          
           {/** Main content */}
               {children}
         </SidebarProvider> 

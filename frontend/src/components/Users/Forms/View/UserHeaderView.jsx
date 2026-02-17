@@ -1,6 +1,6 @@
 
-import {SheetTitle} from "@/components/ui/sheet";
-import UserAvatar from "@/components/Dashboard/Layout/Sidebar/UserAvatar";
+import { SheetTitle } from "@/components/ui/sheet";
+import { UserAvatar } from "@/components/Dashboard/Layout/Sidebar";
 
 const UserHeaderView = ({user}) => {
     return(

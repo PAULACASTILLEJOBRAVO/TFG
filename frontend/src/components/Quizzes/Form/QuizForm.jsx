@@ -1,19 +1,33 @@
 
-import QuizCreateHeader from "@/components/Quizzes/Layout/QuizCreateHeader";
-import QuizCreateEditorLayout from "@/components/Quizzes/Layout/QuizCreateEditorLayout";
-import QuestionListPanel from "@/components/Quizzes/Sections/QuestionListPanel";
-import QuestionEditorPanel from "@/components/Quizzes/Sections/QuestionEditorPanel";
-import QuestionSettingsPanel from "@/components/Quizzes/Sections/QuestionSettingsPanel";
+import {
+  QuizCreateHeader, 
+  QuizCreateEditorLayout
+} from "@/components/Quizzes/Layout/";
+import {
+  QuestionListPanel, 
+  QuestionEditorPanel, 
+  QuestionSettingsPanel
+} from "@/components/Quizzes/Sections/";
+
 import { Card } from "@/components/ui/card";
-import QuizzCreateFooter from "@/components/Quizzes/Layout/QuizzCreateFooter";
-import QuizSearchStudents from "@/components/Quizzes/Layout/QuizSearchStudents";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { 
+  QuizzCreateFooter, 
+  QuizSearchStudents 
+} from "@/components/Quizzes/Layout/";
+import { 
+  Tabs, 
+  TabsContent, 
+  TabsList, 
+  TabsTrigger 
+} from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 
-const QuizForm = ({ difficulties, quiz, selectedStudents, questionsList, selectedQuestionIndex, viewMode = "create", onUpdate, onSelectQuestion, onAddQuestion, onDeleteQuestion, activeQuestion, onUpdateQuestion, onToggleStudent, onSaveDraft, onPublish, onEdit }) => {        
+const QuizForm = ({ difficulties, quiz, selectedStudents, questionsList, selectedQuestionIndex, quizError, questionError, touched, submitted, onUpdate, onSelectQuestion, onAddQuestion, onDeleteQuestion, activeQuestion, onUpdateQuestion, onToggleStudent, onSaveDraft, onPublish, onEdit, onBlur }) => {          
+  console.log("QuizForm render", { quizError, questionError, touched, submitted });
+  
   return (
     <Card>
-      <QuizCreateHeader newQuiz={quiz} difficulties={difficulties} onChange={onUpdate} />
+      <QuizCreateHeader newQuiz={quiz} quizError={quizError} touched={touched} submitted={submitted} difficulties={difficulties} onChange={onUpdate} onBlur={onBlur} />
 
       <Separator />
       
@@ -36,6 +50,10 @@ const QuizForm = ({ difficulties, quiz, selectedStudents, questionsList, selecte
             <QuestionEditorPanel 
               question={activeQuestion} 
               onChange={onUpdateQuestion}
+              questionError={questionError}
+              touched={touched?.question[selectedQuestionIndex]}
+              submitted={submitted}
+              onBlur={onBlur}
             />
             <QuestionSettingsPanel 
               question={activeQuestion} 

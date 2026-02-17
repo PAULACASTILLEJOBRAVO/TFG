@@ -1,7 +1,6 @@
-import AuthButton from "@/components/Auth/AuthButton";
+import { AuthButton } from "@/components/Auth";
 
 const AuthSidePanel = ({onToggle}) => {
-
     return (
         <div className={`absolute h-full inset-0 sm:flex hidden`}>
 

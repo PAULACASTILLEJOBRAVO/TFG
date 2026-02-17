@@ -1,8 +1,12 @@
-import EditButton from "@/components/Common/ActionButtons/EditButton";
-import DeleteButton from "@/components/Common/ActionButtons/DeleteButton";
-import RestoreButton from "@/components/Common/ActionButtons/RestoreButton";
-import StartSessionButton from "../Buttons/StartSessionButton";
-import PublishButton from "../Buttons/PublishButton";
+import { 
+    EditButton, 
+    DeleteButton, 
+    RestoreButton 
+} from "@/components/Common/ActionButtons";
+import { 
+    StartSessionButton, 
+    PublishButton 
+} from "../Buttons";
 
 const QuizActionCell = ({ label, onEdit, onDelete, onRestore, onPublish, onStartSession, isDeleted, isPublished }) => {
     return(

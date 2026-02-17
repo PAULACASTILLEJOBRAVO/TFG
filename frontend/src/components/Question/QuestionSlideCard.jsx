@@ -1,8 +1,10 @@
-import { Card, CardContent } from "../ui/card";
-import DeleteButton from "../Common/ActionButtons/DeleteButton";
+import { 
+    Card, 
+    CardContent 
+} from "../ui/card";
+import { DeleteButton } from "../Common/ActionButtons";
 
 const QuestionSlideCard = ({ index, onSelect, isSelected, onDelete }) => {
-
     return (
         <Card  onClick={onSelect} className={
             `relative group cursor-pointer transition-colors 

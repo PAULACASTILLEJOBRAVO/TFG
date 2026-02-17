@@ -1,11 +1,12 @@
 import { Separator } from "@/components/ui/separator";
-import EditInput from "@/components/Common/EditInput";
+import { EditInput } from "@/components/Common";
 import { useRoles } from "@/hooks/Roles/useRoles";
-import UserRoleSelector from "./UserRoleSelector";
+import { UserRoleSelector } from ".";
+import { Spinner } from "@/components/ui/spinner";
 
 const UserFormEdit = ({data, onChange}) => {
     const { roles, loading } = useRoles();
-    if(loading) return null;
+    if (loading) return <div className="flex justify-center"><Spinner className="h-10 w-10" color="blue" /></div>;
 
     return(
         <div className="space-y-3 text-center sm:text-left">

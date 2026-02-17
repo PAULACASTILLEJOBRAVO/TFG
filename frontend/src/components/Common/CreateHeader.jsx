@@ -1,5 +1,5 @@
-import BackButton from "./ActionButtons/BackButton";
-import DashboardSubtitle from "../Dashboard/Layout/Content/DashboardSubtitle";
+import { BackButton } from "./ActionButtons";
+import { DashboardSubtitle } from "../Dashboard/Layout/Content";
 
 const CreateHeader = ({ title, label, onBack }) => {
     return (

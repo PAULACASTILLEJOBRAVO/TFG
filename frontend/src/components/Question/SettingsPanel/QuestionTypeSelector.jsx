@@ -1,10 +1,14 @@
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SelectLabel, SelectGroup } from "@/components/ui/select";
+import { 
+    Select, 
+    SelectContent, 
+    SelectItem, 
+    SelectTrigger, 
+    SelectValue, 
+    SelectLabel, 
+    SelectGroup 
+} from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-
-const typesQuestion = [
-    { value: "multiple-choice", label: "Multiple Choice" },
-    { value: "true-false", label: "True/False" },
-]
+import { typesQuestion } from "@/utils/constants";
 
 const QuestionTypeSelector = ({value, onChange}) => { 
     return(
@@ -17,17 +21,17 @@ const QuestionTypeSelector = ({value, onChange}) => {
                         origin-left
                         text-gray-500 text-xs 
                     `}>
-                    Question type
+                    Tipo de pregunta
                 </Label>
             </div>
             <Select value={value} onValueChange={onChange}>
                 <SelectTrigger>
-                    <SelectValue placeholder="Select a type" />
+                    <SelectValue placeholder="Selecciona un tipo" />
                 </SelectTrigger>
 
                 <SelectContent>
                     <SelectGroup>
-                        <SelectLabel>Type</SelectLabel>
+                        <SelectLabel>Tipo</SelectLabel>
                         {typesQuestion.map(type => (   
                             <SelectItem key={type.value} value={type.value}>
                                 {type.label}

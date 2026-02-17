@@ -15,7 +15,7 @@ const QuestionPoint = ({ points, onChange }) => {
                         origin-left
                         text-gray-500 text-xs 
                     `}>
-                    Points
+                    Puntos (por pregunta)
                 </Label>
                 <Switch
                     checked={isActive}
@@ -33,7 +33,7 @@ const QuestionPoint = ({ points, onChange }) => {
                     step="10"
                     value={points}
                     onChange={e => onChange({ "points": Number(e.target.value) })}
-                    placeholder="Enter points"
+                    placeholder="Introduce los puntos para esta pregunta"
                 />
             )}
         </div>

@@ -1,22 +1,22 @@
-import DashboardSubtitle from "@/components/Dashboard/Layout/Content/DashboardSubtitle";
-import DashboardContent from "@/components/Dashboard/Layout/DashboardContent";
-import DashboardLayout from "@/components/Dashboard/Layout/DashboardLayout";
-import { useAuth } from "@/auth/AuthContext";
-import CreateButton from "@/components/Common/ActionButtons/CreateButton";
+import { DashboardSubtitle } from "@/components/Dashboard/Layout/Content";
+import { 
+    DashboardContent, 
+    DashboardLayout 
+} from "@/components/Dashboard/Layout/";
+import { CreateButton } from "@/components/Common/ActionButtons/";
 import { useNavigate } from "react-router-dom";
 import { useQuizzes } from "@/hooks/Quizzes/useQuizzes";
-import QuizDetailsCard from "@/components/Quizzes/Content/QuizDetailsCard";
+import { QuizDetailsCard } from "@/components/Quizzes/Content/";
 import { useDifficulties } from "@/hooks/Difficulties/useDifficulties";
-import DeleteQuizDialog from "@/components/Quizzes/Dialogs/DeleteQuizDialog";
-import PublishQuizDialog from "@/components/Quizzes/Dialogs/PublishQuizDialog";
+import { 
+    DeleteQuizDialog, 
+    PublishQuizDialog 
+} from "@/components/Quizzes/Dialogs";
 import { useState } from "react";
 import { useQuizActions } from "@/hooks/Quizzes/useQuizActions";
 import { Spinner } from "@/components/ui/spinner";
 
 const QuizzesManagement = () => {
-    const { user } = useAuth();
-    if (!user) return null;
-
     const { quizzes, loading, refetch } = useQuizzes();
     const { remove, restore, publish } = useQuizActions();
     const { difficulties } = useDifficulties();
@@ -57,7 +57,7 @@ const QuizzesManagement = () => {
             closeDialogs();
             refetch();
         }catch(error){
-            console.log("Error deleting quiz", error);
+            console.error("Error deleting quiz", error);
         }
     }
 
@@ -66,7 +66,7 @@ const QuizzesManagement = () => {
             await restore(quiz._id);
             refetch();
         }catch(error){
-            console.log("Error restoring quiz", error);
+            console.error("Error restoring quiz", error);
         }
     }
 
@@ -76,7 +76,7 @@ const QuizzesManagement = () => {
             closeDialogs();
             refetch();
         }catch(error){
-            console.log("Error publishing quiz", error);
+            console.error("Error publishing quiz", error);
         }
     }
 

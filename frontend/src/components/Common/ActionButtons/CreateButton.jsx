@@ -1,6 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { 
+    Tooltip, 
+    TooltipContent, 
+    TooltipTrigger 
+} from "@/components/ui/tooltip";
 
 const CreateButton = ({ onClick, label }) => {
     return(

@@ -7,7 +7,12 @@ import {
     DropdownMenuSeparator
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { LogOut, Settings, User, UserRoundPen } from "lucide-react";
+import { 
+    LogOut, 
+    Settings, 
+    User, 
+    UserRoundPen 
+} from "lucide-react";
 import { useAuth } from "@/auth/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { logoutRequest } from "@/services/auth.service";
@@ -32,7 +37,7 @@ const ProfileMenu = () => {
     const handleLogout = async () => {
         await logoutRequest();
         logout();
-        navigate("/");
+        navigate("/", { replace: true });
     }
 
     return (

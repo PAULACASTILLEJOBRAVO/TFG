@@ -1,4 +1,12 @@
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SelectLabel, SelectGroup } from "@/components/ui/select";
+import { 
+    Select, 
+    SelectContent, 
+    SelectItem, 
+    SelectTrigger, 
+    SelectValue, 
+    SelectLabel, 
+    SelectGroup 
+} from "@/components/ui/select";
 
 const QuestionTypeSelector = ({value, onChange}) => { 
     return(

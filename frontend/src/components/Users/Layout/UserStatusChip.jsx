@@ -8,12 +8,6 @@ const UserStatusChip = ({ isActive, isDelete }) => {
             </Badge>
         );
     }
-
-    return(
-        <Badge className="bg-green-500 hover:bg-green-500">
-            Activo
-        </Badge>
-    );
 }
 
 export default UserStatusChip;

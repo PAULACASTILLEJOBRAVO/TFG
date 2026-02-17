@@ -23,11 +23,10 @@ const quizSchema = new Schema({
         ref: 'User',
         required: true 
     },
-    courseId: { 
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: 'Course',
-        // required: true 
-    },
+    // courseId: { 
+    //     type: mongoose.Schema.Types.ObjectId, 
+    //     ref: 'Course',
+    // },
     questionIds: [{ 
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'Question' 

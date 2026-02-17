@@ -1,14 +1,17 @@
-import DashboardLayout from "@/components/Dashboard/Layout/DashboardLayout";
-import DashboardContent from "@/components/Dashboard/Layout/DashboardContent";
-import UserTable from "@/components/Users/Layout/UserTable";
+import { 
+    DashboardLayout, 
+    DashboardContent
+} from "@/components/Dashboard/Layout/";
+import { UserTable } from "@/components/Users/Layout";
 import { useUsers } from "@/hooks/Users/useUsers";
 import { useState } from "react";
-import DeleteUserDialog from "@/components/Users/Dialogs/DeleteUserDialog";
-import ChangePasswordUserDialog from "@/components/Users/Dialogs/ChangePasswordDialog";
+import { 
+    DeleteUserDialog, ChangePasswordUserDialog
+} from "@/components/Users/Dialogs";
 import { useUserActions } from "@/hooks/Users/useUserActions";
-import UserDetailDrawer from "@/components/Users/Drawers/UserDetailDrawer";    
-import DashboardSubtitle from "@/components/Dashboard/Layout/Content/DashboardSubtitle";
-import CreateButton from "@/components/Common/ActionButtons/CreateButton";
+import { UserDetailDrawer } from "@/components/Users/Drawers";    
+import { DashboardSubtitle } from "@/components/Dashboard/Layout/Content";
+import { CreateButton } from "@/components/Common/ActionButtons";
 import { useNavigate } from "react-router-dom";
 
 const UserManagement = () => {
@@ -78,8 +81,8 @@ const UserManagement = () => {
             await update(selectedUser._id, updateUser);
             handleCloseDrawer();
             refetch();
-        }catch{
-            console.log("Error updating user");
+        }catch(error){
+            console.error("Error updating user:", error);
         }
     }
 
@@ -89,8 +92,8 @@ const UserManagement = () => {
             await remove(selectedUser._id, {reason: reason});
             closeDialogs();
             refetch();
-        }catch{
-            console.log("Error deleting user");
+        }catch(error){
+            console.error("Error deleting user:", error);
         }
     }
 
@@ -98,8 +101,8 @@ const UserManagement = () => {
         try {
             await changePassword(selectedUser._id, newPassword);
             closeDialogs();
-        }catch{
-            console.log("Error changing password");
+        }catch(error){
+            console.error("Error changing password:", error);
         }
     }
 
@@ -107,8 +110,8 @@ const UserManagement = () => {
         try {
             await restore(user._id);
             refetch();
-        }catch{
-            console.log("Error restoring user");
+        }catch(error){
+            console.error("Error restoring user:", error);
         }
     }
 

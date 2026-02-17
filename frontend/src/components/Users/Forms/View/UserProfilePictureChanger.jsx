@@ -1,9 +1,9 @@
 import { useRef } from "react";
 import { Pencil } from "lucide-react";
-import UserAvatar from "@/components/Dashboard/Layout/Sidebar/UserAvatar";
+import { UserAvatar } from "@/components/Dashboard/Layout/Sidebar";
 import { Button } from '@/components/ui/button';
 
-const UserProfilePictureChange = ({avatar, username, onChange}) => {
+const UserProfilePictureChanger = ({avatar, username, onChange}) => {
     const inputRef = useRef(null);
 
     const handleFileChange = (event) => {
@@ -50,4 +50,4 @@ const UserProfilePictureChange = ({avatar, username, onChange}) => {
     );
 }
 
-export default UserProfilePictureChange;
+export default UserProfilePictureChanger;

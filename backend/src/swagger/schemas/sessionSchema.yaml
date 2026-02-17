@@ -64,8 +64,3 @@ components:
           description: Unique identifier for the quiz
           items:
             $ref: '#/components/schemas/Quiz'
-        courseId:
-          type: array
-          description: Unique identifier for the course
-          items:
-            $ref: '#/components/schemas/Course'

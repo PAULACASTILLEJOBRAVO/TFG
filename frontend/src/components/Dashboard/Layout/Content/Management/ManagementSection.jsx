@@ -1,6 +1,6 @@
-import ManagementButton from "./ManagementButton";
+import { ManagementButton } from ".";
 import { User } from "lucide-react";
-import DashboardSubtitle from "../DashboardSubtitle";
+import { DashboardSubtitle } from "..";
 
 const ManagementSection = () => {
     return (

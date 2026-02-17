@@ -1,11 +1,14 @@
 import { useState } from "react";
-
-import AuthLayout from "@/components/Auth/AuthLayout";
-import AuthContainer from "@/components/Auth/AuthContainer";
-import AuthSidePanel from "@/components/Auth/AuthSidePanel";
-import AuthCard from "@/components/Auth/AuthCard";
-import LoginForm from "@/components/Auth/Forms/LoginForm";
-import RegisterForm from "@/components/Auth/Forms/RegisterForm";
+import { 
+    AuthLayout, 
+    AuthContainer, 
+    AuthSidePanel, 
+    AuthCard 
+} from "@/components/Auth";
+import { 
+    LoginForm, 
+    RegisterForm
+}  from "@/components/Auth/Forms";
 
 const Auth = () => {
     const [mode, setMode] = useState("login"); // "login" | "register"

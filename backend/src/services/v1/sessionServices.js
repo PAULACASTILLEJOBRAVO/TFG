@@ -4,12 +4,12 @@ const Session = require('../../models/Session');
 // Session services
 // Service to get all sessions
 const getAllSessions = async () => {
-  return await Session.find().populate('teacherId').populate('playerIds').populate('quizId').populate('courseId');
+  return await Session.find().populate('teacherId').populate('playerIds').populate('quizId');
 };
 
 // Service to get a session by ID
 const getSessionById = async (id) => {
-  return await Session.findById(id).populate('teacherId').populate('playerIds').populate('quizId').populate('courseId');
+  return await Session.findById(id).populate('teacherId').populate('playerIds').populate('quizId');
 };
 
 // Service to create a new session

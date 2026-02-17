@@ -1,6 +1,11 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import CreateButton from "@/components/Common/ActionButtons/CreateButton";
-import QuestionSlideCard from "@/components/Question/QuestionSlideCard";
+import { 
+    Card, 
+    CardContent, 
+    CardHeader, 
+    CardTitle 
+} from "@/components/ui/card";
+import { CreateButton } from "@/components/Common/ActionButtons";
+import { QuestionSlideCard } from "@/components/Question";
 import { createNewQuestion } from "@/utils/questions";
 
 const QuestionListPanel = ({ displayQuestions, selectedQuestion, onSelect, onAdd, onDelete, maxHeight }) => {

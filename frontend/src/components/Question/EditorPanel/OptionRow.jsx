@@ -1,7 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { RadioGroupItem } from "@/components/ui/radio-group";
 
-const OptioRow = ({ label, color, value, index, onChange }) => {
+const OptionRow = ({ label, color, value, index, onChange, onBlur }) => {
     return (
         <div className={`${color} flex items-center gap-3 p-3 rounded-md `}>
             <div className="flex items-center gap-3 w-full">
@@ -28,8 +28,9 @@ const OptioRow = ({ label, color, value, index, onChange }) => {
                         focus-visible:ring-offset-0
                         focus-visible:border-black"
                     type="text"
-                    value={value}
+                    value={value ?? ""}
                     onChange={onChange}
+                    onBlur={onBlur}
                 />
 
                 {/** RADIO */}
@@ -42,4 +43,4 @@ const OptioRow = ({ label, color, value, index, onChange }) => {
     );
 }
 
-export default OptioRow;
+export default OptionRow;

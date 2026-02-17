@@ -1,13 +1,8 @@
-import InfoBlock from "@/components/Common/InfoBlock";
+import { InfoBlock } from "@/components/Common";
 import { Separator } from "@/components/ui/separator";
-import UserStatusChip from "../../Layout/UserStatusChip";
+import { UserStatusChip } from "../../Layout";
 import { Label } from "@/components/ui/label";
-
-const rolesType = {
-  student: "Estudiante",
-  teacher: "Profesor",
-  admin: "Administrador"
-};
+import { rolesType } from "@/utils/constants";
 
 const UserFormView = ({user}) => {
     return (

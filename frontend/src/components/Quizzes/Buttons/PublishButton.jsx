@@ -1,6 +1,10 @@
 import { ArrowUpFromLine } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { 
+    Tooltip, 
+    TooltipContent,
+    TooltipTrigger 
+} from "@/components/ui/tooltip";
 
 const PublishButton = ({ onClick, label }) => {
     return (

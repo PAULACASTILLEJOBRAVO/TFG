@@ -1,9 +1,16 @@
-import { Card, CardHeader, CardTitle,CardContent } from "@/components/ui/card";
-import QuestionTypeSelector from "@/components/Question/SettingsPanel/QuestionTypeSelector";
-import QuestionTimeLimit from "@/components/Question/SettingsPanel/QuestionTimeLimit";
-import QuestionPoint from "@/components/Question/SettingsPanel/QuestionPoint";
+import { 
+    Card, 
+    CardHeader,
+    CardTitle,
+    CardContent 
+} from "@/components/ui/card";
+import {
+    QuestionTypeSelector,
+    QuestionTimeLimit,
+    QuestionPoint,
+    QuestionOptionsSelector
+} from "@/components/Question/SettingsPanel";
 import { createDefaultOptions } from "@/utils/questions";
-import QuestionOptionsSelector from "@/components/Question/SettingsPanel/QuestionOptionsSelector";
 
 const QuestionSettingsPanel = ({ question, onChange }, maxHeight) => {
     if(!question) return null;

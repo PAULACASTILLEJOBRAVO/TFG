@@ -1,13 +1,13 @@
-import { headerConfig } from "../../../config/header.config";
-import HeaderSearch from "./Header/HeaderSearch";
-import HeaderActions from "./Header/HeaderActions";
-import Logo from "@/components/Common/Logo";
+import { headerConfig } from "@/config/header.config";
+import { 
+    HeaderSearch, 
+    HeaderActions 
+} from "./Header/";
+import { Logo } from "@/components/Common";
 import { useAuth } from "@/auth/AuthContext";
 
 const DashboardHeader = () => {
     const { user } = useAuth();
-
-    if(!user) return null;
 
     const config = headerConfig[user.role];
 

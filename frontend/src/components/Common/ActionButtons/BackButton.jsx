@@ -1,6 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Undo2 } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { 
+    Tooltip, 
+    TooltipContent, 
+    TooltipTrigger 
+} from "@/components/ui/tooltip";
 import { Link } from "react-router-dom";
 
 const BackButton = ({ href, label }) => {

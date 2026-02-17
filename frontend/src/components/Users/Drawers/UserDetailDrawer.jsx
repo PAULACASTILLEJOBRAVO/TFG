@@ -1,11 +1,22 @@
-import { Sheet, SheetHeader, SheetContent, SheetDescription, SheetFooter } from "@/components/ui/sheet";
-import UserActionCell from "../Layout/UserActionCell";
-import UserFormView from "../Forms/View/UserFormView";
-import UserFormEdit from "../Forms/Edit/UserFormEdit";
-import UserHeaderView from "../Forms/View/UserHeaderView";
-import UserHeaderEdit from "../Forms/Edit/UserHeaderEdit";
-import { useState, useEffect } from "react";
-import UserFooterEdit from "../Forms/Edit/UserFooterEdit";
+import { 
+    Sheet, 
+    SheetHeader, 
+    SheetContent, 
+    SheetDescription, SheetFooter } from "@/components/ui/sheet";
+import { UserActionCell } from "../Layout";
+import { 
+    UserFormView, 
+    UserHeaderView 
+} from "../Forms/View";
+import {
+    UserFormEdit, 
+    UserHeaderEdit,
+    UserFooterEdit
+} from "../Forms/Edit";
+import { 
+    useState, 
+    useEffect 
+} from "react";
 
 const UserDetailDrawer = ({open, user, drawerMode, onView, onClose, onEdit, onSave, onDelete, onChangePassword, onRestore }) => {
     const [editUser, setEditUser] = useState({ fullname: "", username: "", email: "", role: "", profilePicture: "" });

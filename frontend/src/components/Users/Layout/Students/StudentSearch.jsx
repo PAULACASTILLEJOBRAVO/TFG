@@ -1,11 +1,17 @@
-import { Command, CommandEmpty, CommandInput, CommandList, CommandItem } from "@/components/ui/command";
+import { 
+    Command, 
+    CommandEmpty, 
+    CommandInput, 
+    CommandList, 
+    CommandItem 
+} from "@/components/ui/command";
 import { Spinner } from "@/components/ui/spinner";
 import { useStudents } from "@/hooks/Users/useStudents";
 
 const StudentSearch = ({ placeholder = "Buscar...", selectedIdStudents = [], onSelect }) => {
     const { students, loading } = useStudents();
 
-    if(loading) return <div className="flex justify-center"><Spinner className="h-10 w-10" color="blue" /></div>;
+    if (loading) return <div className="flex justify-center"><Spinner className="h-10 w-10" color="blue" /></div>;
 
     return (
         <div className="relative flex items-center">

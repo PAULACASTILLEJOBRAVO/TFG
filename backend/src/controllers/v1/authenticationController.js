@@ -17,7 +17,6 @@ const loginUser = async (req, res) => {
         if(!user) return res.status(404).json({ message: 'User does not exist'});
         if(user.isDeleted) return res.status(403).json({ message: 'User account is deleted'});
         if(!user.isActive) return res.status(403).json({ message: 'User account is not active'});
-        // if(!user.password) return res.status(401).json({ message: 'User has no password set'});
 
         const isMatch = await user.comparePassword(password);
         

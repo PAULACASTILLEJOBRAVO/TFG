@@ -1,60 +1,36 @@
 import { useState } from "react";
-import { registerRequest, loginRequest } from "../../../services/auth.service";
-import { useAuth } from "../../../auth/AuthContext";
-import { validatePassword } from "../../../utils/validators";
 import { Spinner } from "../../ui/spinner";
 
-import AuthButton from '@/components/Auth/AuthButton';
-import AuthInput from "@/components/Auth/AuthInput";
+import { useRegister } from "@/hooks/Auth/useRegister";
+
+import { AuthButton, AuthInput } from '@/components/Auth';
+
+import { InfoToast, ErrorToast } from "@/components/Common/Toasts";
+
+import { validatePassword, validateUsername, validateEmail } from "@/utils/validators";
 
 const RegisterForm = ({onToggle}) => {
     const [form, setForm] = useState({username: "",email: "", password: ""});
+    const [touched, setTouched] = useState({username: false, email: false, password: false, confirmPassword: false});
+    const [submitted, setSubmitted] = useState(false);
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [messages, setMessages] = useState("");
 
-    const { login } = useAuth();
+    const passwordError = validatePassword(form.password, confirmPassword);
+    const usernameError = validateUsername(form.username);
+    const emailError = validateEmail(form.email);
 
-    const loginFunction = async () => {
-        setLoading(true);
-        setError(null);
-        setMessages("");
+    const { registerUser, loading: registerLoading, feedback: registerFeedback } = useRegister();
 
-        try{
-            const { message, data } = await loginRequest(form);
-            login(data);
-            setMessages(message);
-        }catch(err){
-            const errorMessage = err.response?.data?.message || "Error to login";
-            setError(errorMessage);
-        }finally{
-            setLoading(false);
-        }
-    }
+    const handleRegister = async (event) => {
+        event.preventDefault();
+        setSubmitted(true);
 
-    const handleRegister = async (e) => {
-        e.preventDefault();
-        
-        setLoading(true);
-        setError(null);
-        setMessages("");
-
-        const validationError = validatePassword(form.password, confirmPassword);
-        if(validationError){
-            setError(validationError);
-            setLoading(false);
-            return;
-        }
+        if(usernameError || emailError || passwordError) return;
 
         try{
-            await registerRequest(form);
-            await loginFunction({email: form.email, password: form.password});
+            await registerUser(form);
         }catch(err){
-            const errorMessage = err.response?.data?.message || "Error to register";
-            setError(errorMessage);
-        }finally{
-            setLoading(false);
+            console.error("Register error:", err);
         }
     }
 
@@ -62,41 +38,75 @@ const RegisterForm = ({onToggle}) => {
         <div className="h-full flex flex-col">
             <div className="flex-1"/>
 
-            <h1 className="text-center text-3xl font-bold text-white sm:mb-6 mb-5">
+            <h1 className={`text-center 
+            ${
+                (submitted || Object.values(touched).some(Boolean)) && (passwordError || usernameError || emailError) ? "text-xl font-semibold" : "text-3xl font-bold"
+            }
+            text-white 
+            ${
+               (submitted || Object.values(touched).some(Boolean)) && (passwordError || usernameError || emailError) ? "" : "sm:mb-6 mb-5"
+            }`}>
                 SING UP
             </h1>
             
-            <div className="flex flex-col gap-2 sm:mb-6 mb-3">
+            <div className={`flex flex-col gap-2 ${
+                (submitted || Object.values(touched).some(Boolean)) && (passwordError || usernameError || emailError) ? "" : "sm:mb-6 mb-3"
+            }`}>
                 
-                <AuthInput
+                <AuthInput  
+                    id="username"
                     label="Username"
                     value={form.username}
                     onChange={(e) => setForm({...form, username: e.target.value})}
+                    onBlur={() => setTouched(prev => ({...prev, username: true}))}
+                    error={(touched.username || submitted) && !!usernameError?.username}
+                    errorMessage={usernameError?.username}
+                    modeAuth={true}
+                    isRequired={true}
                 />
 
                 <AuthInput
+                    id="email"
                     label="Email"
+                    type="email"
                     value={form.email}
                     onChange={(e) => setForm({...form, email: e.target.value})}
+                    onBlur={() => setTouched(prev => ({...prev, email: true}))}
+                    error={(touched.email || submitted) && !!emailError?.email}
+                    errorMessage={emailError?.email}
+                    modeAuth={true}
+                    isRequired={true}
                 />
 
                 <AuthInput
+                    id="password"
                     label="Password"
                     type="password"
                     value={form.password}
                     onChange={(e) => setForm({...form, password: e.target.value})}
+                    onBlur={() => setTouched(prev => ({...prev, password: true}))}
+                    error={(touched.password || submitted) && !!passwordError?.password}
+                    errorMessage={passwordError?.password}
+                    modeAuth={true}
+                    isRequired={true}
                 />
 
                 <AuthInput
+                    id="confirm-password"
                     label="Confirm password"
                     type="password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
+                    onBlur={() => setTouched(prev => ({...prev, confirmPassword: true}))}
+                    error={(touched.confirmPassword || submitted) && !!passwordError?.confirmPassword}
+                    errorMessage={passwordError?.confirmPassword}
+                    modeAuth={true}
+                    isRequired={true}
                 />
             </div>
         
-            <AuthButton onClick={handleRegister} disabled={loading}>
-                {loading ? <Spinner/> : "CREATE ACCOUNT"}
+            <AuthButton onClick={handleRegister} disabled={registerLoading}>
+                {registerLoading ? <Spinner/> : "CREATE ACCOUNT"}
             </AuthButton>
 
             <button 
@@ -106,9 +116,10 @@ const RegisterForm = ({onToggle}) => {
                 Have an account? Sign In
             </button>
 
-            {error && <p className="text-white">ERROR: {error}</p>}
-
             <div className="flex-1"/>
+
+            {registerFeedback && registerFeedback.type === "error" && <ErrorToast message={registerFeedback.message} mode={true}/>}  
+            {registerFeedback && registerFeedback.type === "info" && <InfoToast message={registerFeedback.message} mode={true}/>}
         </div>
     );
 }

@@ -1,40 +1,44 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { loginRequest } from "../../../services/auth.service";
-import { useAuth } from "../../../auth/AuthContext";
 import { Spinner } from "../../ui/spinner";
 
-import AuthButton from '@/components/Auth/AuthButton';
-import AuthInput from "@/components/Auth/AuthInput";
+import { 
+    AuthButton, 
+    AuthInput 
+} from '@/components/Auth';
+import { useLogin } from "@/hooks/Auth/useLogin";
+
+import { 
+    InfoToast, 
+    ErrorToast 
+} from "@/components/Common/Toasts";
+
+import { 
+    validatePassword, 
+    validateEmail 
+} from "@/utils/validators";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const LoginForm = ({onToggle}) => {
     const [form, setForm] = useState({email: "", password: ""});
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [messages, setMessages] = useState("");
+    const [rememberMe, setRememberMe] = useState(false);
+    const [submitted, setSubmitted] = useState(false);
+    const [touched, setTouched] = useState({email: false, password: false});
 
-    const { login } = useAuth();
+    const passwordError = validatePassword(form.password);
+    const emailError = validateEmail(form.email);
 
-    const navigate = useNavigate();
+    const { loginUser, loading: loginLoading, feedback: loginFeedback } = useLogin();
 
-    const handleLogin = async (e) => {
-        e.preventDefault();
+    const handleLogin = async (event) => {
+        event.preventDefault();
         
-        setLoading(true);
-        setError(null);
-        setMessages("");
-
+        setSubmitted(true);
+        if(emailError || passwordError) return;
+        
         try{
-            const { message, data } = await loginRequest(form);
-            login(data);
-            setMessages(message);
-
-            navigate(`/dashboard_${data.role}`);
+            await loginUser(form, rememberMe);
         }catch(err){
-            const errorMessage = err.response?.data?.message || "Error to login";
-            setError(errorMessage);
-        }finally{
-            setLoading(false);
+            console.error("Login error:", err);
         }
     };
 
@@ -49,21 +53,41 @@ const LoginForm = ({onToggle}) => {
             <div className="flex flex-col gap-2 mb-8">
                 
                 <AuthInput
+                    id="email"
                     label="Email"
                     value={form.email}
                     onChange={(e) => setForm({...form, email: e.target.value})}
+                    onBlur={() => setTouched(prev => ({...prev, email: true}))}
+                    error={(touched.email || submitted) && !!emailError?.email}
+                    errorMessage={emailError?.email}
+                    modeAuth={true}
+                    isRequired={true}
                 />
 
                 <AuthInput
+                    id="password"
                     label="Password"
                     type="password"
                     value={form.password}
                     onChange={(e) => setForm({...form, password: e.target.value})}
+                    onBlur={() => setTouched(prev => ({...prev, password: true}))}
+                    error={(touched.password || submitted) && !!passwordError?.password}
+                    errorMessage={passwordError?.password}
+                    modeAuth={true}
+                    isRequired={true}
                 />
+
+           
+                <div className="flex items-center gap-2">
+                    <Checkbox className="bg-white" checked={rememberMe} onCheckedChange={(checked) => setRememberMe(checked)} />
+                    <span className="text-sm text-white select-none">Remember me</span>
+                </div>
             </div>
+
+ 
             
-            <AuthButton onClick={handleLogin} disabled={loading}>
-                {loading ? <Spinner /> : "LOGIN"}
+            <AuthButton onClick={handleLogin} disabled={loginLoading}>
+                {loginLoading ? <Spinner /> : "LOGIN"}
             </AuthButton>
             
             <button 
@@ -74,7 +98,9 @@ const LoginForm = ({onToggle}) => {
             </button>
 
             <div className="flex-1"/>
-            {error && <p className="text-white">ERROR: {error}</p>}
+
+            {loginFeedback && loginFeedback.type === "error" && <ErrorToast message={loginFeedback.message} mode={true}/>}  
+            {loginFeedback && loginFeedback.type === "info" && <InfoToast message={loginFeedback.message} mode={true}/>}
         </div>
     );
 }

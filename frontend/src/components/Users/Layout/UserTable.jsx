@@ -1,9 +1,16 @@
-import { Table, TableHeader, TableHead, TableBody, TableRow, TableCell } from "@/components/ui/table";
-import UserRow from "./UserRow";
+import { 
+    Table, 
+    TableHeader, 
+    TableHead, 
+    TableBody, 
+    TableRow, 
+    TableCell 
+} from "@/components/ui/table";
+import { UserRow } from ".";
 import { Spinner } from "@/components/ui/spinner";
 
 const UserTable = ({users, onEdit, onDelete, onChangePassword, onRestore, loading, onSelect}) => {
-    if(loading) return <div className="flex justify-center"><Spinner className="h-10 w-10" color="blue" /></div>;
+    if (loading) return <div className="flex justify-center"><Spinner className="h-10 w-10" color="blue" /></div>;
 
     return(
         <div className="w-full rounded-md border">

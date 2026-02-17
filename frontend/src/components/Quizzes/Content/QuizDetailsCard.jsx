@@ -1,6 +1,5 @@
-import QuizStatusChip from "./QuizStatusChip";
-// import QuizDifficultyChip from "./QuizDifficultyChip";
-import QuizActionCell from "../Layout/QuizActionCell";
+import { QuizStatusChip } from ".";
+import { QuizActionCell } from "../Layout";
 
 const QuizDetailsCard = ({ quiz, onEdit, onDelete, onRestore, onPublish, onStartSession }) => {
     if (!quiz) return null;
@@ -14,7 +13,6 @@ const QuizDetailsCard = ({ quiz, onEdit, onDelete, onRestore, onPublish, onStart
             <div className="flex items-center justify-between mb-3">
                 <div className="text-lg font-semibold">{quiz.title}</div>
 
-                {/* <QuizDifficultyChip difficulty={quiz.difficulty} /> */}
                <QuizStatusChip status={quiz.status}/>
             </div>
 

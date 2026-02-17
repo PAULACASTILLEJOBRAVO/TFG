@@ -12,31 +12,17 @@ import {
     SidebarGroupContent,
     SidebarSeparator 
 } from "@/components/ui/sidebar";
-import SidebarUserFooter from "@/components/Dashboard/Layout/Sidebar/SidebarUserFooter"
+import { SidebarUserFooter } from "@/components/Dashboard/Layout/Sidebar"
 import { useAuth } from "@/auth/AuthContext";
-import { useNavigate, useLocation } from "react-router-dom";
+import { 
+    useNavigate, 
+    useLocation 
+} from "react-router-dom";
 import { logoutRequest } from "@/services/auth.service";
-import { House, Trophy, User, Settings, LogOut, Calculator, UserRoundPen, NotebookPen } from "lucide-react";
-
-const icons = {
-    house: House,
-    profile: UserRoundPen,
-    settings: Settings,
-    logout: LogOut,
-
-    trophy: Trophy,
-
-    quiz: NotebookPen,
-
-    user: User,
-    clicker: Calculator,
-
-}
+import { icons } from "@/utils/constants";
 
 const DashboardSidebar = () => {
-    const {user, logout} = useAuth();
-
-    if(!user) return null;
+    const {user, logout } = useAuth();
 
     const config = sidebarConfig[user.role];
 
@@ -56,7 +42,7 @@ const DashboardSidebar = () => {
     const handleLogout = async () => {
         await logoutRequest();
         logout();
-        navigate("/");
+        navigate("/", { replace: true });
     }
 
     return(

@@ -1,5 +1,7 @@
-import DashboardHeader from '@/components/Dashboard/Layout/DashboardHeader';
-import DashboardSidebar from '@/components/Dashboard/Layout/DashboardSidebard';
+import { 
+  DashboardHeader, 
+  DashboardSidebar 
+} from '@/components/Dashboard/Layout';
 import { 
     SidebarProvider,
     SidebarTrigger,

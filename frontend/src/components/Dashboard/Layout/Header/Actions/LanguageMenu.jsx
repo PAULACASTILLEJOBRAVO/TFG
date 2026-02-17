@@ -6,11 +6,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-
-const languages = [
-    { code: "es", label: "Español", flag:"🇪🇸" },
-    { code: "en", label: "English", flag:"🇬🇧" },
-]
+import { languages } from "@/utils/constants";
 
 const LanguageMenu = () => {
     const [currentLanguage, setCurrentLanguage] = useState(languages[0]);

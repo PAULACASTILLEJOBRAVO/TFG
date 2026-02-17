@@ -1,6 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { KeyRound } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { 
+    Tooltip, 
+    TooltipContent, 
+    TooltipTrigger 
+} from "@/components/ui/tooltip";
 
 const PasswordButton = ({ onClick }) => {
     return(

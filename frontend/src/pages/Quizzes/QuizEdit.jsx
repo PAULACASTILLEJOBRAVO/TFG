@@ -1,23 +1,31 @@
-import DashboardLayout from "@/components/Dashboard/Layout/DashboardLayout";
-import DashboardContent from "@/components/Dashboard/Layout/DashboardContent";
-import AppBreadcrumb from "@/components/Common/AppBreadcrumb";
+import { 
+  DashboardLayout, 
+  DashboardContent 
+} from "@/components/Dashboard/Layout";
+import { 
+  AppBreadcrumb, 
+  CreateHeader 
+} from "@/components/Common";
 import { Separator } from "@/components/ui/separator";
-import CreateHeader from "@/components/Common/CreateHeader";
-import { useEffect, useState } from "react";
-import { useAuth } from "@/auth/AuthContext";
+import { 
+  act,
+  useEffect, 
+  useState 
+} from "react";
 import { useDifficulties } from "@/hooks/Difficulties/useDifficulties";
 import { createNewQuestion } from "@/utils/questions";
 import { useQuizActions } from "@/hooks/Quizzes/useQuizActions";
 import { useNavigate } from "react-router-dom";
-import QuizForm from "@/components/Quizzes/Form/QuizForm";
+import { QuizForm } from "@/components/Quizzes/Form";
 import { useParams } from "react-router-dom";
 import { useQuiz } from "@/hooks/Quizzes/useQuiz";
 import { Spinner } from "@/components/ui/spinner";
+import { 
+  validateQuiz, 
+  validateQuestion 
+} from "@/utils/validators";
 
 const QuizEdit = () => {
-  const { user } = useAuth();
-  if(!user) return null;
-
   const { id } = useParams();
   const { quiz, loading } = useQuiz(id);
 
@@ -27,6 +35,16 @@ const QuizEdit = () => {
   // Data
   const [editQuiz, setEditQuiz] = useState({ ...quiz });
 
+  const [submitted, setSubmitted] = useState(false);
+  const [touched, setTouched] = useState({ 
+    quiz: {title: false}, 
+    question: [
+      { text: false, options: [], isCorrect: false },
+    ]
+  });
+
+  const quizError = validateQuiz(editQuiz);
+
   const navigate = useNavigate();
 
   const handleUpdate = (field, value) => {
@@ -34,6 +52,9 @@ const QuizEdit = () => {
   }
 
   const handleEditQuiz = async () => {
+    setSubmitted(true);
+    if(quizError || questionError.some(error => error)) return;
+
     try {
       await update(id, {quizFields: editQuiz, questions: questionsList});
       navigate("/dashboard_teacher/quizzes");
@@ -46,11 +67,21 @@ const QuizEdit = () => {
   const [questionsList, setQuestionsList] = useState([ createNewQuestion() ]);
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0);
 
+  const questionError = questionsList.length > 0 ? questionsList.map(question => validateQuestion(question)) : [];
+
   const handleAddQuestion = (newQuestion) => {
     setQuestionsList(prev => {
       setSelectedQuestionIndex(prev.length);
       return [...prev, newQuestion];
     });
+
+    setTouched(prev => ({ 
+      ...prev, 
+      question: [
+        ...prev.question, 
+        { text: false, options: [false, false, false, false], isCorrect: false }
+      ] 
+    }));
   }
 
   const handleDeleteQuestion = (indexToDelete) => {
@@ -64,6 +95,12 @@ const QuizEdit = () => {
       } else if(selectedQuestionIndex > indexToDelete) {
         setSelectedQuestionIndex(prev => prev - 1);
       }
+
+      setTouched(prev => {
+        const updatedQuestionsTouched = prev.question.filter((_, index) => index !== indexToDelete);
+
+        return {...prev, question: updatedQuestionsTouched};
+      });
 
       return updatedQuestions;
     })
@@ -82,7 +119,30 @@ const QuizEdit = () => {
         index === selectedQuestionIndex 
         ? {...question, ...updateFields}
         : question
-      ));
+      )
+    );
+    if(updateFields.options) {
+      setTouched(prev => {
+        const updatedQuestions = [...prev.question];
+        const currentQuestionTouched = { ...updatedQuestions[selectedQuestionIndex] };
+
+        const newLength = updateFields.options.length;
+        let newOptionsTouched = currentQuestionTouched.options || [];
+
+        while(newOptionsTouched.length < newLength) newOptionsTouched.push(false);
+
+        while(newOptionsTouched.length > newLength) newOptionsTouched.pop();
+
+        currentQuestionTouched.options = newOptionsTouched;
+        updatedQuestions[selectedQuestionIndex] = currentQuestionTouched;
+
+        return {
+          ...prev,
+          question: updatedQuestions
+        };
+
+      });
+    }
   }
 
   // Student List Section
@@ -109,6 +169,44 @@ const QuizEdit = () => {
     });
   }
 
+  // Validation
+  const handleBlur = (section, field, optionIndex = null) => {
+    setTouched(prev => {
+      // For question fields (text, options, isCorrect)
+      if (section === "question") {
+        // If it's an option field, we need to specify which option is being updated
+        const updatedQuestions = [...prev.question];
+        // Get the current touched state for the selected question
+        const currentQuestionTouched = { ...updatedQuestions[selectedQuestionIndex] };
+
+        // If it's an option field, update the touched state for that specific option
+        if (field === "options" && optionIndex !== null) {
+          const newOptions = [...currentQuestionTouched.options];
+          newOptions[optionIndex] = true;
+          currentQuestionTouched.options = newOptions;
+        } else { // For text or isCorrect fields, update the touched state for that field
+          currentQuestionTouched[field] = true;
+        }
+
+        updatedQuestions[selectedQuestionIndex] = currentQuestionTouched;
+
+        return {
+          ...prev,
+          question: updatedQuestions
+        };
+      }
+
+      // For quiz (title)
+      return {
+        ...prev,
+        [section]: {
+          ...prev[section],
+          [field]: true
+        }
+      };
+    });
+  };
+
   // Effects
   useEffect(() => {
     if(quiz) {
@@ -127,7 +225,19 @@ const QuizEdit = () => {
         playerIds: normalizedPlayerIds // Ensure playerIds is an array of IDs, not objects
       });
 
-      setQuestionsList(quiz.questionIds || [createNewQuestion()]);
+      const loadedQuestions = quiz.questionIds || [createNewQuestion()];
+
+      setQuestionsList(loadedQuestions);
+
+      // Initialize touched state for questions based on the loaded quiz questions (and their options)
+      const initialTouched = loadedQuestions.map(question => ({
+        text: !!question.text,
+        options: question.options.map(option => !!option.text),
+        isCorrect: question.options.some(option => option.isCorrect)
+      }));
+
+      setTouched({ quiz: { title: !!quiz.title }, question: initialTouched });
+
       setSelectedStudents(populatedStudents);
     }
   }, [quiz]);
@@ -153,7 +263,10 @@ const QuizEdit = () => {
             selectedQuestionIndex={selectedQuestionIndex} 
             activeQuestion={activeQuestion} 
             selectedStudents={selectedStudents}
-            viewMode="edit"
+            quizError={quizError}
+            questionError={questionError}
+            touched={touched}
+            submitted={submitted}
             onUpdate={handleUpdate}  
             onSelectQuestion={handleSelectQuestion} 
             onAddQuestion={handleAddQuestion} 
@@ -161,6 +274,7 @@ const QuizEdit = () => {
             onUpdateQuestion={handleUpdateQuestion}
             onToggleStudent={handleToggleStudent}
             onEdit={handleEditQuiz}
+            onBlur={handleBlur}
           />
         )}
         

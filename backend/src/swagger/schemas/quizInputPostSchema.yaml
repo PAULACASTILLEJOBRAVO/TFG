@@ -5,7 +5,6 @@ components:
       required:
         - title
         - creatorId
-        - courseId
       properties:
         title:
           type: string
@@ -33,7 +32,3 @@ components:
           type: ObjectId
           description: The user ID who created the quiz.
           example: '64a7f0c2e4b0c8b1a1e4d3f2'
-        courseId:
-          type: ObjectId
-          description: The course ID to which the quiz belongs.
-          example: '63a7f0c2e4b0c8b1a1e4d3f2'

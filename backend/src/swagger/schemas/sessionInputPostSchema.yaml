@@ -25,7 +25,3 @@ components:
           type: objectId
           description: Unique identifier for the quiz
           example: '63a7f0c2e4b0c8b1a1e4d3f3'
-        courseId:
-          type: objectId
-          description: Unique identifier for the course
-          example: '63a7f0c2e4b0c8b1a1e4d3f2'

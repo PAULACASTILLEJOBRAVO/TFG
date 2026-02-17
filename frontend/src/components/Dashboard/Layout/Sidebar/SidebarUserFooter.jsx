@@ -1,13 +1,15 @@
 import { Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { SidebarFooter, SidebarMenu, SidebarMenuItem } from "@/components/ui/sidebar";
+import { 
+    SidebarFooter, 
+    SidebarMenu, 
+    SidebarMenuItem 
+} from "@/components/ui/sidebar";
 import { useAuth } from "@/auth/AuthContext";
-import UserAvatar from "./UserAvatar";
+import { UserAvatar } from ".";
 
 const SidebarUserFooter = () => {
     const {user} = useAuth();
-
-    if(!user) return null;
 
     return(
         <SidebarFooter className="border-t">

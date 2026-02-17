@@ -1,4 +1,12 @@
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SelectLabel, SelectGroup } from "@/components/ui/select";
+import { 
+    Select, 
+    SelectContent, 
+    SelectItem, 
+    SelectTrigger, 
+    SelectValue, 
+    SelectLabel, 
+    SelectGroup 
+} from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 
 const UserRoleSelector = ({value, onChange, roles}) => { 
@@ -12,12 +20,12 @@ const UserRoleSelector = ({value, onChange, roles}) => {
                         origin-left
                         text-gray-500 text-xs 
                     `}>
-                    Roles
+                    Rol
                 </Label>
             </div>
-            <Select value={value} onValueChange={onChange}>
+            <Select value={value ? value : roles[1].value } onValueChange={onChange}>
                 <SelectTrigger>
-                    <SelectValue placeholder="Select a role" />
+                    <SelectValue placeholder="Selecciona un rol" />
                 </SelectTrigger>
 
                 <SelectContent>

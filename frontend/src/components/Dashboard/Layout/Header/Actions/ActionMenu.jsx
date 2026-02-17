@@ -1,4 +1,7 @@
-import { useState, useRef } from "react";
+import { 
+    useState, 
+    useRef 
+} from "react";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -8,13 +11,18 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/auth/AuthContext";
-import { Calculator, NotebookPen, PlayCircle, User, Book, MessageSquareWarning } from "lucide-react";
+import { 
+    Calculator, 
+    NotebookPen, 
+    PlayCircle, 
+    User, 
+    Book, 
+    MessageSquareWarning 
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const ActionMenu = ({icon}) => {
     const { user } = useAuth();
-
-    if(!user) return null;
 
     const [open, setOpen] = useState(false);
     const timeoutRef = useRef();

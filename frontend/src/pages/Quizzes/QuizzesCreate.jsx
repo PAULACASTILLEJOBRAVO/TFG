@@ -1,25 +1,41 @@
-import DashboardLayout from "@/components/Dashboard/Layout/DashboardLayout";
-import DashboardContent from "@/components/Dashboard/Layout/DashboardContent";
-import AppBreadcrumb from "@/components/Common/AppBreadcrumb";
+import { 
+  DashboardLayout, 
+  DashboardContent 
+} from "@/components/Dashboard/Layout";
+import { 
+  AppBreadcrumb, 
+  CreateHeader 
+} from "@/components/Common";
 import { Separator } from "@/components/ui/separator";
-import CreateHeader from "@/components/Common/CreateHeader";
 import { useState } from "react";
 import { useAuth } from "@/auth/AuthContext";
 import { useDifficulties } from "@/hooks/Difficulties/useDifficulties";
 import { createNewQuestion } from "@/utils/questions";
 import { useQuizActions } from "@/hooks/Quizzes/useQuizActions";
 import { useNavigate } from "react-router-dom";
-import QuizForm from "@/components/Quizzes/Form/QuizForm";
+import { QuizForm } from "@/components/Quizzes/Form";
+import { 
+  validateQuiz,
+  validateQuestion
+} from "@/utils/validators";
 
 const QuizCreate = () => {
   const { user } = useAuth();
-  if(!user) return null;
-
   const { difficulties } = useDifficulties();
   const { create } = useQuizActions();
 
   // Data
   const [createQuiz, setCreateQuiz] = useState({ title: "", description: "", creatorId: user ? user._id : null, playerIds: [], difficulty: "easy", isActive: false, status: "draft" });
+
+  const [submitted, setSubmitted] = useState(false);
+  const [touched, setTouched] = useState({ 
+    quiz: {title: false}, 
+    question: [
+      { text: false, options: [false, false, false, false], isCorrect: false },
+    ]
+  });
+
+  const quizError = validateQuiz(createQuiz);
 
   const navigate = useNavigate();
 
@@ -29,6 +45,10 @@ const QuizCreate = () => {
 
   const handlePublish = async () => {
     setCreateQuiz(prev => ({...prev, isActive: true, status: "published"}));
+
+    setSubmitted(true);
+
+    if(quizError || questionError.some(error => error)) return;
 
     try {
       await create({quizFields: createQuiz, questions: questionsList});
@@ -40,6 +60,10 @@ const QuizCreate = () => {
 
   const handleSaveDraft = async () => {
     setCreateQuiz(prev => ({...prev, isActive: false, status: "draft"}));
+
+    setSubmitted(true);
+    
+    if(quizError || questionError.some(error => error)) return;
 
     try {
       await create({quizFields: createQuiz, questions: questionsList});
@@ -53,11 +77,22 @@ const QuizCreate = () => {
   const [questionsList, setQuestionsList] = useState([ createNewQuestion() ]);
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0);
 
+  const questionError = questionsList.length > 0 ? questionsList.map(question => validateQuestion(question)) : [];
+
   const handleAddQuestion = (newQuestion) => {
     setQuestionsList(prev => {
       setSelectedQuestionIndex(prev.length);
+
       return [...prev, newQuestion];
     });
+
+    setTouched(prev => ({ 
+      ...prev, 
+      question: [
+        ...prev.question, 
+        { text: false, options: [false, false, false, false], isCorrect: false }
+      ] 
+    }));
   }
 
   const handleDeleteQuestion = (indexToDelete) => {
@@ -70,10 +105,16 @@ const QuizCreate = () => {
         setSelectedQuestionIndex(indexToDelete > 0 ? indexToDelete - 1 : 0); 
       } else if(selectedQuestionIndex > indexToDelete) {
         setSelectedQuestionIndex(prev => prev - 1);
-      }
+      } 
+      
+      setTouched(prev => {
+        const updatedQuestionsTouched = prev.question.filter((_, index) => index !== indexToDelete);
+
+        return {...prev, question: updatedQuestionsTouched};
+      });
 
       return updatedQuestions;
-    })
+    });
   }
 
   const handleSelectQuestion = (index) => {
@@ -116,6 +157,44 @@ const QuizCreate = () => {
     });
   }
 
+  // Validation
+  const handleBlur = (section, field, optionIndex = null) => {
+    setTouched(prev => {
+      // For question fields (text, options, isCorrect)
+      if (section === "question") {
+        // If it's an option field, we need to specify which option is being updated
+        const updatedQuestions = [...prev.question];
+        // Get the current touched state for the selected question
+        const currentQuestionTouched = { ...updatedQuestions[selectedQuestionIndex] };
+
+        // If it's an option field, update the touched state for that specific option
+        if (field === "options" && optionIndex !== null) {
+          const newOptions = [...currentQuestionTouched.options];
+          newOptions[optionIndex] = true;
+          currentQuestionTouched.options = newOptions;
+        } else { // For text or isCorrect fields, update the touched state for that field
+          currentQuestionTouched[field] = true;
+        }
+
+        updatedQuestions[selectedQuestionIndex] = currentQuestionTouched;
+
+        return {
+          ...prev,
+          question: updatedQuestions
+        };
+      }
+
+      // For quiz (title)
+      return {
+        ...prev,
+        [section]: {
+          ...prev[section],
+          [field]: true
+        }
+      };
+    });
+  };
+
   return (
     <DashboardLayout>
       <DashboardContent>
@@ -132,6 +211,10 @@ const QuizCreate = () => {
           selectedQuestionIndex={selectedQuestionIndex} 
           activeQuestion={activeQuestion} 
           selectedStudents={selectedStudents}
+          quizError={quizError}
+          questionError={questionError[selectedQuestionIndex]}
+          touched={touched}
+          submitted={submitted}
           onUpdate={handleUpdate}  
           onSelectQuestion={handleSelectQuestion} 
           onAddQuestion={handleAddQuestion} 
@@ -140,6 +223,7 @@ const QuizCreate = () => {
           onToggleStudent={handleToggleStudent}
           onPublish={handlePublish}
           onSaveDraft={handleSaveDraft}
+          onBlur={handleBlur}
         />
         
       </DashboardContent>

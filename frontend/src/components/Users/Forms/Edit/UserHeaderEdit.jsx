@@ -1,11 +1,11 @@
 
-import EditInput from "@/components/Common/EditInput";
-import UserProfilePictureChange from "../View/UserProfilePictureChange";
+import { EditInput } from "@/components/Common";
+import { UserProfilePictureChanger } from "../View";
 
 const UserHeaderEdit = ({onChange, data}) => {
     return(
         <>
-            <UserProfilePictureChange
+            <UserProfilePictureChanger
                 username={data.username}
                 avatar={data.profilePicture}
                 onChange={onChange}

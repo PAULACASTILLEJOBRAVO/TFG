@@ -1,28 +1,19 @@
 import { Button } from "@/components/ui/button";
+
+import { headerConfig } from "@/config/header.config";
+
 import { 
-    Plus,
-    Trophy,
-    FileText
-} from "lucide-react";
+    LanguageMenu, 
+    ProfileMenu, 
+    ActionMenu, 
+    NotificationMenu
+} from "./Actions";
 
-import { headerConfig } from "../../../../config/header.config";
-
-import LanguageMenu from "./Actions/LanguageMenu";
-import ProfileMenu from "./Actions/ProfileMenu";
-import ActionMenu from "./Actions/ActionMenu";
-import NotificationMenu from "./Actions/NotificationMenu";
 import { useAuth } from "@/auth/AuthContext";
-
-const icons = {
-    trophy: Trophy,
-    plus: Plus,
-    file: FileText,
-}
+import { icons } from "@/utils/constants";
 
 const HeaderActions = () => {
     const { user } = useAuth();
-
-    if(!user) return null;
 
     const config = headerConfig[user.role];
     const ActionIcon = config?.actionIcon ? icons[config.actionIcon] : null;

@@ -15,7 +15,7 @@ const QuestionTimeLimit = ({ timeLimit, onChange }) => {
                         origin-left
                         text-gray-500 text-xs 
                     `}>
-                    Time Limit (seconds)
+                    Límite de tiempo (segundos)
                 </Label>
                 <Switch
                     checked={isActive}
@@ -32,7 +32,7 @@ const QuestionTimeLimit = ({ timeLimit, onChange }) => {
                     step="5"
                     value={timeLimit}
                     onChange={e => onChange({ "timeLimit": Number(e.target.value) })}
-                    placeholder="Enter time limit in seconds"
+                    placeholder="Introduce el límite de tiempo en segundos"
                 />
             )}
         </div>

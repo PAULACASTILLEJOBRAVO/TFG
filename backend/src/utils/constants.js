@@ -4,7 +4,7 @@ const editableFields = {
     student: ['username', 'fullname', 'bio'],
     teacher: ['username', 'fullname', 'bio'],
     admin: [
-        'username', 'fullname', 'bio', 'profilePicture', 'role',
+        'username', 'fullname', 'bio', 'profilePicture', 'role', 'email',
         'lastLoginAt',
         'isDeleted', 'deletedAt', 'deletedBy', 'deleteReason'
       ]

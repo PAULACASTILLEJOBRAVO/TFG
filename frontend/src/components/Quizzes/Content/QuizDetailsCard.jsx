@@ -21,8 +21,7 @@ const QuizDetailsCard = ({ quiz, onEdit, onDelete, onRestore, onPublish, onStart
             </div>
 
             <div className="flex justify-between items-center text-xs text-gray-500">
-                
-                <span>Última edición: {quiz.lastUpdateAt ? new Date(quiz.lastUpdatedAt).toLocaleDateString() : new Date(quiz.createdAt).toLocaleDateString()}</span>
+                <span>Última edición: {quiz.updatedAt ? new Date(quiz.updatedAt).toLocaleDateString() : new Date(quiz.createdAt).toLocaleDateString()}</span>
             </div>
 
             <QuizActionCell

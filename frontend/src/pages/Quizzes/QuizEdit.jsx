@@ -264,7 +264,7 @@ const QuizEdit = () => {
             activeQuestion={activeQuestion} 
             selectedStudents={selectedStudents}
             quizError={quizError}
-            questionError={questionError}
+            questionError={questionError[selectedQuestionIndex]}
             touched={touched}
             submitted={submitted}
             onUpdate={handleUpdate}  

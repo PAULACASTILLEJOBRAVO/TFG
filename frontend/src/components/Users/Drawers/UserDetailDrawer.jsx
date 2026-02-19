@@ -17,9 +17,20 @@ import {
     useState, 
     useEffect 
 } from "react";
+import { validateEmail, validateUsername } from "@/utils/validators";
 
 const UserDetailDrawer = ({open, user, drawerMode, onView, onClose, onEdit, onSave, onDelete, onChangePassword, onRestore }) => {
     const [editUser, setEditUser] = useState({ fullname: "", username: "", email: "", role: "", profilePicture: "" });
+
+    const [submitted, setSubmitted] = useState(false);
+    const [touched, setTouched] = useState({ username: false, email: false });
+
+    const emailError = validateEmail(editUser.email);
+    const usernameError = validateUsername(editUser.username);
+
+    const handleBlur = (field) => {
+        setTouched(prev => ({...prev, [field]: true}));
+    }
 
     useEffect(() => {
         if(drawerMode === "edit" && user) {
@@ -30,6 +41,8 @@ const UserDetailDrawer = ({open, user, drawerMode, onView, onClose, onEdit, onSa
                 role: user?.role || "",
                 profilePicture: user?.profilePicture || ""
             }));
+
+            setTouched({ username: !!user?.username, email: !!user?.email });
         }
     }, [drawerMode]);
 
@@ -56,7 +69,7 @@ const UserDetailDrawer = ({open, user, drawerMode, onView, onClose, onEdit, onSa
 
                     {drawerMode === "edit" && (
                         <>
-                            <UserHeaderEdit data={editUser} onChange={handleUpdate}  />
+                            <UserHeaderEdit data={editUser} touched={touched} submitted={submitted} usernameError={usernameError} onChange={handleUpdate} onBlur={handleBlur} />
 
                             <SheetDescription className="text-center text-base">
                                     Edición del usuario
@@ -70,7 +83,7 @@ const UserDetailDrawer = ({open, user, drawerMode, onView, onClose, onEdit, onSa
                 {drawerMode === "view" && (<UserFormView user={user}/>)}
 
                 {drawerMode === "edit" && (
-                    <UserFormEdit data={editUser} onChange={handleUpdate}/> 
+                    <UserFormEdit data={editUser} touched={touched} submitted={submitted} emailError={emailError} onChange={handleUpdate}  onBlur={handleBlur}/> 
                 )} 
 
                 {/** FOOTER */}

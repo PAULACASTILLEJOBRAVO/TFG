@@ -12,7 +12,7 @@ import UserManagement from '@/pages/Management/UsersManagement';
 import QuizzesManagement from '@/pages/Management/QuizzesManagement';
 
 import UserCreate from '@/pages/Users/UsersCreate';
-import QuizCreate from '@/pages/Quizzes/QuizzesCreate';
+import QuizCreate from '@/pages/Quizzes/QuizCreate';
 
 import QuizEdit from '@/pages/Quizzes/QuizEdit';
 import RedirectIfAuth from '@/auth/RedirectIfAuth';

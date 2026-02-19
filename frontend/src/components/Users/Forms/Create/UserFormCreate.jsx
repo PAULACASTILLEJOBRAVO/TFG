@@ -1,6 +1,5 @@
 import { EditInput } from "@/components/Common";
 import { UserRoleSelector } from "../Edit";
-import { useRoles } from "@/hooks/Roles/useRoles";
 import { 
     Card, 
     CardContent, 
@@ -17,8 +16,6 @@ import {
 import { useState } from "react";
 
 const UserFormCreate = ({newUser, onChange, onSubmit}) => {
-    const {roles} = useRoles();
-
     const [submitted, setSubmitted] = useState(false);
     const [touched, setTouched] = useState({email: false, password: false});
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -95,7 +92,7 @@ const UserFormCreate = ({newUser, onChange, onSubmit}) => {
                     isRequired={true}  
                 />
                 
-                <UserRoleSelector roles={roles} onChange={value => onChange("role", value)} />
+                <UserRoleSelector onChange={value => onChange("role", value)} />
 
                 <div className="pt-4">
                     <Button className="bg-green-500 hover:bg-green-500 w-full" onClick={handleConfirm}>

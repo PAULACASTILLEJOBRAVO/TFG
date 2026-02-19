@@ -8,8 +8,16 @@ import {
     SelectGroup 
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
+import { useRoles } from "@/hooks/Roles/useRoles";
+import { Spinner } from "@/components/ui/spinner";
 
-const UserRoleSelector = ({value, onChange, roles}) => { 
+const UserRoleSelector = ({value, onChange}) => { 
+    const {roles, loading} = useRoles();
+
+    if(loading) return <div className="flex justify-center"><Spinner color="blue" /></div>;
+
+    const safeValue = value ?? (roles.length > 0 ? roles[1].value : "");
+
     return(
         <div className="w-full">
             <div className="px-3 bg-transparent text-black">
@@ -23,7 +31,7 @@ const UserRoleSelector = ({value, onChange, roles}) => {
                     Rol
                 </Label>
             </div>
-            <Select value={value ? value : roles[1].value } onValueChange={onChange}>
+            <Select value={ safeValue } onValueChange={onChange}>
                 <SelectTrigger>
                     <SelectValue placeholder="Selecciona un rol" />
                 </SelectTrigger>

@@ -23,8 +23,6 @@ import {
 import { Separator } from "@/components/ui/separator";
 
 const QuizForm = ({ difficulties, quiz, selectedStudents, questionsList, selectedQuestionIndex, quizError, questionError, touched, submitted, onUpdate, onSelectQuestion, onAddQuestion, onDeleteQuestion, activeQuestion, onUpdateQuestion, onToggleStudent, onSaveDraft, onPublish, onEdit, onBlur }) => {          
-  console.log("QuizForm render", { quizError, questionError, touched, submitted });
-  
   return (
     <Card>
       <QuizCreateHeader newQuiz={quiz} quizError={quizError} touched={touched} submitted={submitted} difficulties={difficulties} onChange={onUpdate} onBlur={onBlur} />

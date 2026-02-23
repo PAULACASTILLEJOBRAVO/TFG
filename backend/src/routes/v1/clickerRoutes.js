@@ -6,27 +6,27 @@ const router = express.Router();
 const { authenticate } = require('../../middleware/authentication');
 
 // Import controllers
-const courseController = require('../../controllers/v1/courseControllers');
+const clickerController = require('../../controllers/v1/clickerControllers');
 
-// Course routes
+// Clicker routes
 /**
  * @swagger
  * tags:
- *   name: Courses
- *   description: Course management and retrieval
+ *   name: Clickers
+ *   description: Clicker management and retrieval
  */
 router.use(authenticate);
 
-// Route to get all courses
+// Route to get all clickers
 /**
  * @swagger
- * /v1/courses:
+ * /v1/clickers:
  *   get:
- *      summary: Retrieve a list of all courses
- *      tags: [Courses]
+ *      summary: Retrieve a list of all clickers
+ *      tags: [Clickers]
  *      responses:
  *          200:
- *              description: A list of all courses.
+ *              description: A list of all clickers.
  *              content:
  *                 application/json:
  *                     schema:
@@ -34,13 +34,13 @@ router.use(authenticate);
  *                          properties:
  *                              message:    
  *                                  type: string
- *                                  example: 'Course fetched successfully'
+ *                                  example: 'Clickers fetched successfully'
  *                              data:
  *                                  type: array
  *                                  items:
- *                                      $ref: '#/components/schemas/Course'
+ *                                      $ref: '#/components/schemas/Clicker'
  *          500:
- *              description: Server error while fetching course
+ *              description: Server error while fetching clickers
  *              content:
  *                  application/json:
  *                      schema:
@@ -48,23 +48,26 @@ router.use(authenticate);
  *                          properties:
  *                              message:
  *                                  type: string
- *                                  example: Error fetching course
+ *                                  example: Error fetching clickers
  *                              error:
  *                                  type: string
  */
-router.get('/', courseController.getAllCourses);
+router.get('/', clickerController.getAllClickers);
 
-// Route to get courses' stats of a teacher
-router.get('/stats/active-courses-for-teacher', courseController.getActiveCoursesStatsForTeacher);
+// Route to get clickers' stats of a teacher
+router.get('/stats/active-clickers', clickerController.getActiveClickersStats);
 
-// Route to get a course by ID
+// Route to restore an clicker by ID
+router.patch('/restore/:id', clickerController.restoreClickerById);
+
+// Route to get a clicker by ID
 /**
  * @swagger
- * /v1/courses/{id}:
+ * /v1/clickers/{id}:
  *   get:
- *     summary: Retrieve a course by ID
- *     description: Retrieve a specific course by their unique MongoDB ObjectId.
- *     tags: [Courses]
+ *     summary: Retrieve a clicker by ID
+ *     description: Retrieve a specific clicker by their unique MongoDB ObjectId.
+ *     tags: [Clickers]
  *     parameters:
  *       - in: path
  *         name: id
@@ -74,7 +77,7 @@ router.get('/stats/active-courses-for-teacher', courseController.getActiveCourse
  *           example: "68e28801d9eaff29b0c84538"
  *     responses:
  *       200:
- *         description: Course fetched successfully
+ *         description: Clicker fetched successfully
  *         content:
  *           application/json:
  *             schema:
@@ -82,11 +85,11 @@ router.get('/stats/active-courses-for-teacher', courseController.getActiveCourse
  *               properties:
  *                 message:
  *                   type: string
- *                   example: Course fetched successfully
+ *                   example: Clicker fetched successfully
  *                 data: 
- *                   $ref: '#/components/schemas/Course'
+ *                   $ref: '#/components/schemas/Clicker'
  *       400:
- *         description: Missing or invalid course ID
+ *         description: Missing or invalid clicker ID
  *         content:
  *           application/json:
  *             schema:
@@ -94,9 +97,9 @@ router.get('/stats/active-courses-for-teacher', courseController.getActiveCourse
  *               properties:
  *                 message:
  *                   type: string
- *                   example: Course ID is required
+ *                   example: Clicker ID is required
  *       404:
- *         description: Course not found
+ *         description: Clicker not found
  *         content:
  *           application/json:
  *             schema:
@@ -104,9 +107,9 @@ router.get('/stats/active-courses-for-teacher', courseController.getActiveCourse
  *               properties:
  *                 message:
  *                   type: string
- *                   example: Course not found
+ *                   example: Clicker not found
  *       500:
- *         description: Server error while fetching course
+ *         description: Server error while fetching clicker
  *         content:
  *           application/json:
  *             schema:
@@ -114,28 +117,28 @@ router.get('/stats/active-courses-for-teacher', courseController.getActiveCourse
  *               properties:
  *                 message:
  *                   type: string
- *                   example: Error fetching course
+ *                   example: Error fetching clicker
  *                 error:
  *                   type: string
  */
-router.get('/:id', courseController.getCourseById);
+router.get('/:id', clickerController.getClickerById);
 
-// Route to post an course
+// Route to post an clicker
 /**
  * @swagger
- * /v1/courses:
+ * /v1/clickers:
  *   post:
- *     summary: Create a new course
- *     tags: [Courses]
+ *     summary: Create a new clicker
+ *     tags: [Clickers]
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/CourseInput'
+ *             $ref: '#/components/schemas/ClickerInput'
  *     responses:
  *       201:
- *         description: Course created successfully
+ *         description: Clicker created successfully
  *         content:
  *           application/json:
  *             schema:
@@ -143,9 +146,9 @@ router.get('/:id', courseController.getCourseById);
  *               properties:
  *                 message:
  *                   type: string
- *                   example: 'Course created successfully'
+ *                   example: 'Clicker created successfully'
  *                 data:
- *                   $ref: '#/components/schemas/Course'
+ *                   $ref: '#/components/schemas/Clicker'
  *       400:
  *         description: Invalid input entry
  *         content:
@@ -155,11 +158,11 @@ router.get('/:id', courseController.getCourseById);
  *               properties:
  *                 message:
  *                   type: string
- *                   example: 'Invalid course data. Body is required'
+ *                   example: 'Invalid clicker data. Body is required'
  *                 error:
  *                   type: string
  *       500:
- *         description: Server error while creating course
+ *         description: Server error while creating clicker
  *         content:
  *           application/json:
  *             schema:
@@ -167,20 +170,20 @@ router.get('/:id', courseController.getCourseById);
  *               properties:
  *                 message:
  *                   type: string
- *                   example: 'Error creating course'
+ *                   example: 'Error creating clicker'
  *                 error:
  *                   type: string
  */
-router.post('/', courseController.createCourse);
+router.post('/', clickerController.createClicker);
 
-// Route to delete a course by ID
+// Route to delete a clicker by ID
 /**
  * @swagger
- * /v1/courses/{id}:
+ * /v1/clickers/{id}:
  *   delete:
- *     summary: Delete a course by ID
- *     description: Permanently removes a course from the database using its unique MongoDB ObjectId.
- *     tags: [Courses]
+ *     summary: Delete a clicker by ID
+ *     description: Permanently removes a clicker from the database using its unique MongoDB ObjectId.
+ *     tags: [Clickers]
  *     parameters:
  *       - in: path
  *         name: id
@@ -193,10 +196,10 @@ router.post('/', courseController.createCourse);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/CourseDeletionMetadata'
+ *             $ref: '#/components/schemas/ClickerDeletionMetadata'
  *     responses:
  *       200:
- *         description: Course deleted successfully
+ *         description: Clicker deleted successfully
  *         content:
  *           application/json:
  *             schema:
@@ -204,9 +207,9 @@ router.post('/', courseController.createCourse);
  *               properties:
  *                 message:
  *                   type: string
- *                   example: Course deleted successfully
+ *                   example: Clicker deleted successfully
  *       400:
- *         description: Missing or invalid course ID
+ *         description: Missing or invalid clicker ID
  *         content:
  *           application/json:
  *             schema:
@@ -214,9 +217,9 @@ router.post('/', courseController.createCourse);
  *               properties:
  *                 message:
  *                   type: string
- *                   example: Course ID is required
+ *                   example: Clicker ID is required
  *       404:
- *         description: Course not found
+ *         description: Clicker not found
  *         content:
  *           application/json:
  *             schema:
@@ -224,9 +227,9 @@ router.post('/', courseController.createCourse);
  *               properties:
  *                 message:
  *                   type: string
- *                   example: Course not found
+ *                   example: Clicker not found
  *       500:
- *         description: Server error while deleting course
+ *         description: Server error while deleting clicker
  *         content:
  *           application/json:
  *             schema:
@@ -234,12 +237,15 @@ router.post('/', courseController.createCourse);
  *               properties:
  *                 message:
  *                   type: string
- *                   example: Error deleting course
+ *                   example: Error deleting clickerclicker
  *                 error:
  *                   type: string
  */
 
-router.delete('/:id', courseController.deleteCourseById);
+router.delete('/:id', clickerController.deleteClickerById);
+
+// Route to update a clicker by ID
+router.patch('/:id', clickerController.updateClickerById);
 
 // Export the module
 module.exports = router;

@@ -23,6 +23,5 @@ const difficultySchema = new Schema({
     collection: 'Difficulty' // Specify the collection name
 }); 
 
-
 //Export the model
 module.exports = mongoose.model('Difficulty', difficultySchema);

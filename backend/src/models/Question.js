@@ -39,14 +39,6 @@ const questionSchema = new Schema({
         type: Boolean, 
         default: true 
     },
-    // isReusable: {           // Can be used in multiple quizzes
-    //     type: Boolean, 
-    //     default: true 
-    // },
-    // isPublic: {
-    //     type: Boolean,
-    //     default: false // true = shared with all teachers, false = private to creator
-    // },
     isDeleted: {
         type: Boolean,
         default: false
@@ -72,10 +64,6 @@ const questionSchema = new Schema({
         default: -1, // Without time limit
         min: -1
     },
-    // allowMultipleSelections: { // Only for multiple-choice questions
-    //     type: Boolean, 
-    //     default: false 
-    // },
 }, 
 { 
     timestamps: true, // Add createdAt and updatedAt fields

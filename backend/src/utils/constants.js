@@ -9,10 +9,14 @@ const editableFields = {
         'isDeleted', 'deletedAt', 'deletedBy', 'deleteReason'
       ]
   },
-  // course: {},
+  clicker: {
+    admin: [
+        'deviceCode', 'status', 'assignedToUserId',  
+        'isActive', 'isDeleted', 'deletedAt', 'deletedBy', 'deleteReason'
+      ]
+  },
   question: {
-    teacher: ['text', 'options', 'correctOption', 'explanation', 'difficulty'],
-    admin: ['text', 'options', 'correctOption', 'explanation', 'difficulty']
+    teacher: ['text', 'options', 'correctOption', 'explanation', 'difficulty', 'isDeleted', 'deletedAt', 'deletedBy', 'deleteReason'],
   },
   quiz: {
     teacher: [

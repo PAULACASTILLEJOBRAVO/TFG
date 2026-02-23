@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken');
 const { getUserEditableFields } = require('../utils/checkRolePermissions');
 
 // Import utils functions
-const { validatePasswordChange, validateEmailChange } = require('../utils/validateChange');
+const { validatePasswordChange } = require('../utils/validateChange');
 const { validateAdminRole, validateTeacherRole } = require('../middleware/validationRole');
 
 // Define the number of salt rounds for bcrypt
@@ -205,6 +205,11 @@ userSchema.statics.canGetTeacherStudents = async function(currentUser) {
   return await validateTeacherRole(currentUser);
 }
 
+// Statics permissions to fetch total students for a teacher or admin
+userSchema.statics.canGetAdminStudents = async function(currentUser) {
+  return await validateAdminRole(currentUser);
+}
+
 // Statics update by id
 userSchema.statics.updateById = async function(id, body, currentUserData) {
     const user = await this.findById(id).select('-password');
@@ -291,18 +296,11 @@ userSchema.methods.comparePassword = async function(candidatePassword) {
 // Pre-save hook to cascade actions when user is soft-deleted
 userSchema.pre('save', async function(next) {
   try {
-    const Course = mongoose.model('Course');
     const Quiz = mongoose.model('Quiz');
     const Session = mongoose.model('Session');
     
       // Case 1: Soft-delete
     if (this.isModified('isDeleted') && this.isDeleted === true && this.role !== 'student') {   // Only act if the user is being soft-deleted
-      // Mark courses taught by this user as inactive
-      await Course.updateMany(
-        { teacherId: this._id },
-        { isActive: false }
-      );
-
       // Mark quizzes created by this user as inactive
       await Quiz.updateMany(
         { teacherId: this._id, isPublic: "private" }, // Only non-public quizzes
@@ -320,11 +318,6 @@ userSchema.pre('save', async function(next) {
 
     // Case 2: Restore
     if (this.isModified('isDeleted') && this.isDeleted === false && this.role !== 'student') {
-      await Course.updateMany(
-        { teacherId: this._id },
-        { isActive: true }
-      );
-      
       await Quiz.updateMany(
         { teacherId: this._id },
         { isActive: true }

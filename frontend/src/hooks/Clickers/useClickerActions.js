@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { createQuiz, deleteQuiz, restoreQuiz, publishQuiz, updateQuiz } from "@/services/quizzes.service";
+import { deleteClicker, restoreClicker, updateClicker, createClicker } from "@/services/clicker.service";
 
-export const useQuizActions = () => {
+export const useClickerActions = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [message, setMessage] = useState("");
@@ -9,7 +9,7 @@ export const useQuizActions = () => {
     const create = async (payload) => {
         try {
             setLoading(true);
-            const data = await createQuiz(payload);
+            const data = await createClicker(payload);
             
             if(data.error){
                 setError(data.error);
@@ -31,7 +31,7 @@ export const useQuizActions = () => {
     const remove = async (id, payload) => {
         try {
             setLoading(true);
-            const data = await deleteQuiz(id, payload);
+            const data = await deleteClicker(id, payload);
 
             if(data.error){
                 setError(data.error);
@@ -53,31 +53,7 @@ export const useQuizActions = () => {
     const restore = async (id) => {
         try {
             setLoading(true);
-            const data = await restoreQuiz(id);
-
-            if (data.error) {
-                setError(data.error);
-                setMessage(data.message || "");
-                return null;
-            }
-
-            setMessage(data.message || "");
-            return data.data;
-        } catch (err) {
-            const errorMessage =
-            err.response?.data?.message || err.message || "Error desconocido";
-            setError(errorMessage);
-            throw err;
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const publish = async (id) => {
-        try {
-            setLoading(true);
-
-            const data = await publishQuiz(id);
+            const data = await restoreClicker(id);
 
             if (data.error) {
                 setError(data.error);
@@ -100,7 +76,7 @@ export const useQuizActions = () => {
     const update = async (id, payload) => {
         try {
             setLoading(true);
-            const data = await updateQuiz(id, payload);
+            const data = await updateClicker(id, payload);
             
             if(data.error){
                 setError(data.error);
@@ -119,5 +95,5 @@ export const useQuizActions = () => {
         }
     };
 
-    return { create, update, remove, restore, publish, loading, error, message };
+    return { create, update, remove, restore, loading, error, message };
 }

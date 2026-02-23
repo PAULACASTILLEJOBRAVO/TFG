@@ -1,6 +1,7 @@
 // Import models
 const User = require('../../models/User');
 const Quiz = require('../../models/Quiz');
+const Clicker = require('../../models/Clicker');
 
 // User services
 // Service to fetch all users
@@ -46,7 +47,7 @@ const getTotalStudentsStatsForTeacher = async (id) => {
     });
 }
 
-// Service to fetch all students 
+// Service to fetch all students
 const getAllStudents = async () => {
     return await User.find({ 
         isActive: true, 
@@ -56,6 +57,28 @@ const getAllStudents = async () => {
         ], 
         role: "student" 
     }).select('-password');
+}
+
+// Service to fetch all students without clicker
+const getAllStudentsWithoutClicker = async () => {
+    const studentsWithClicker = await Clicker.distinct('assignedToUserId', {
+        isActive: true, 
+        status: "assigned",
+        $or: [
+            { isDeleted: false },
+            { isDeleted: { $exists: false } }
+        ],
+    });
+
+    return await User.find({
+        _id: { $nin: studentsWithClicker },
+        isActive: true,
+        $or: [
+            { isDeleted: false },
+            { isDeleted: { $exists: false } }
+        ],
+        role: "student"
+    }).select('-password'); 
 }
 
 // Service to create a new user
@@ -99,8 +122,8 @@ const updateUserById = async ({id, body, _id, role}) => {
         const user = await getUserById(id);
         if(!user) return false;
 
-        const updateUSer = await User.updateById(id, body, { _id, role });
-        return updateUSer;
+        const updateUser = await User.updateById(id, body, { _id, role });
+        return updateUser;
     }catch(error){
         throw new Error(error.message);
     }
@@ -126,6 +149,7 @@ module.exports = {
     getTotalUsersStats,
     getTotalStudentsStatsForTeacher,
     getAllStudents,
+    getAllStudentsWithoutClicker,
     
     createUser,
 

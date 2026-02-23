@@ -11,6 +11,7 @@ import {
 }  from "@/components/Auth/Forms";
 
 const Auth = () => {
+
     const [mode, setMode] = useState("login"); // "login" | "register"
 
     const handleToggle = () => {

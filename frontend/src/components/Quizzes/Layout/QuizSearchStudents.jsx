@@ -13,7 +13,7 @@ const QuizSearchStudents = ({ selectedIdStudents, selectedStudents, onToggle }) 
         <div className="w-full p-2 gap-2">
             <Card className="w-full">
                 <CardHeader className="font-bold">
-                    <StudentSearch placeholder="Buscar estudiantes..." selectedIdStudents={selectedIdStudents} onSelect={onToggle} />
+                    <StudentSearch placeholder="Buscar estudiantes..." selectedIdStudents={selectedIdStudents} onSelect={onToggle} showStatus="forTeacher" />
                 </CardHeader>
 
                 <CardContent>

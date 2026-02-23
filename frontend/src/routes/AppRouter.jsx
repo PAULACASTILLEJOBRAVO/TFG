@@ -1,21 +1,28 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import RequireAuth from '@/auth/RequireAuth'; 
-
 import Auth from '@/pages/Auth';
 
-import DashboardStudent from '@/pages/Dashboards/DashboardStudent';
-import DashboardTeacher from '@/pages/Dashboards/DashboardTeacher';
-import DashboardAdmin from '@/pages/Dashboards/DashboardAdmin';
+import RequireAuth from '@/auth/RequireAuth'; 
+import RedirectIfAuth from '@/auth/RedirectIfAuth';
 
-import UserManagement from '@/pages/Management/UsersManagement';
-import QuizzesManagement from '@/pages/Management/QuizzesManagement';
+import NotFound from '@/pages/Errors/NotFound';
+
+import {
+  DashboardStudent,
+  DashboardTeacher,
+  DashboardAdmin
+} from '@/pages/Dashboards';
+
+import {
+  UserManagement, 
+  QuizzesManagement,
+  ClickersManagement
+} from '@/pages/Management';
 
 import UserCreate from '@/pages/Users/UsersCreate';
 import QuizCreate from '@/pages/Quizzes/QuizCreate';
 
 import QuizEdit from '@/pages/Quizzes/QuizEdit';
-import RedirectIfAuth from '@/auth/RedirectIfAuth';
 
 
 const AppRouter = () => {
@@ -54,6 +61,11 @@ const AppRouter = () => {
             <UserCreate />
           </RequireAuth>
           } />
+        <Route path='/dashboard_admin/clickers' element={
+          <RequireAuth allowedRoles={["admin"]}>
+            <ClickersManagement />
+          </RequireAuth>
+          } />
 
         <Route path="/dashboard_teacher/quizzes" element={
           <RequireAuth allowedRoles={["teacher"]}>
@@ -72,7 +84,8 @@ const AppRouter = () => {
           } />
 
         
-        <Route path="*" element={<h1>404 - Página no encontrada</h1>} />
+        {/* <Route path="*" element={<h1>404 - Página no encontrada</h1>} /> */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );

@@ -6,10 +6,10 @@ import {
     TableRow, 
     TableCell 
 } from "@/components/ui/table";
-import { UserRow } from ".";
+import { ClickerRow } from ".";
 import { Spinner } from "@/components/ui/spinner";
 
-const UserTable = ({users, onEdit, onDelete, onChangePassword, onRestore, loading, onSelect}) => {
+const ClickerTable = ({clickers, loading, editClicker, editClickerId, onEdit, onDelete, onRestore, onSaveEdit, onCancelEdit, onEditChange, onToggleStudent}) => {
     if (loading) return <div className="flex justify-center"><Spinner className="h-10 w-10" color="blue" /></div>;
 
     return(
@@ -17,36 +17,38 @@ const UserTable = ({users, onEdit, onDelete, onChangePassword, onRestore, loadin
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Nombre</TableHead>
-                        <TableHead className="hidden md:table-cell">Email</TableHead>
-                        <TableHead>Rol</TableHead>
-                        <TableHead className="hidden md:table-cell">Estado</TableHead>
-                        <TableHead className="hidden md:table-cell">Último acceso</TableHead>
+                        <TableHead>Código del dispositivo</TableHead>
+                        <TableHead>Usuario asignado</TableHead>
+                        <TableHead>Estado</TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                     
                 </TableHeader>
 
                 <TableBody>
-                    {users.length === 0 ? (
+                    {clickers.length === 0 ? (
                         <TableRow>
                             <TableCell
                                 colSpan={6}
                                 className="text-center py-6 text-muted-foreground"
                             >
-                                No hay usuarios registrados.
+                                No hay clickers registrados.
                             </TableCell>
                         </TableRow>
                     ) : (
-                        users.map(user => (
-                            <UserRow
-                                key={user._id}
-                                user={user}
+                        clickers.map(clicker => (
+                            <ClickerRow
+                                key={clicker._id}
+                                clicker={clicker}
+                                editClicker={editClicker}
+                                editClickerId={editClickerId}
                                 onEdit={onEdit}
                                 onDelete={onDelete}
-                                onChangePassword={onChangePassword}
                                 onRestore={onRestore}
-                                onSelect={() => onSelect(user)}
+                                onSaveEdit={onSaveEdit}
+                                onCancelEdit={onCancelEdit}
+                                onEditChange={onEditChange}
+                                onToggle={onToggleStudent}
                             />
                         ))
                     )}
@@ -56,4 +58,4 @@ const UserTable = ({users, onEdit, onDelete, onChangePassword, onRestore, loadin
     );
 }
 
-export default UserTable;
+export default ClickerTable;

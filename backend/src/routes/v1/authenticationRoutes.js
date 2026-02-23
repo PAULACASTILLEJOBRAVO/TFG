@@ -14,6 +14,7 @@ router.post('/login', authenticationController.loginUser);
 // Route to register an user
 router.post('/register', authenticationController.registerUser);
 
+// Route to logout an user
 router.post('/logout', authenticate, authenticationController.logoutUser);
 
 //Export the module

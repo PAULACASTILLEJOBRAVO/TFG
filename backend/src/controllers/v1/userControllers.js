@@ -90,7 +90,7 @@ const getTotalStudentsStatsForTeacher = async (req, res) => {
 }
 
 // Controller to get students for teacher
-const getAllStudents = async (req, res) => {
+const getAllStudentsForTeacher = async (req, res) => {
     const currentUser = req.user;
 
     try {
@@ -98,6 +98,27 @@ const getAllStudents = async (req, res) => {
         if(!canAccess) return res.status(403).json({message: "Unauthorized"});
 
         const students = await userServices.getAllStudents();
+        res.status(200).json({
+            message: "Students fetched successfully", 
+            data: students
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            message: "Error fetching students", 
+            error: error.message 
+        });
+    }
+}
+
+// Controller to get students for admin
+const getAllStudentsForAdmin = async (req, res) => {
+    const currentUser = req.user;
+
+    try {
+        const canAccess = await User.canGetAdminStudents(currentUser);
+        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
+
+        const students = await userServices.getAllStudentsWithoutClicker();
         res.status(200).json({
             message: "Students fetched successfully", 
             data: students
@@ -249,7 +270,8 @@ module.exports = {
     getUserById,
     getTotalUsersStats,
     getTotalStudentsStatsForTeacher,
-    getAllStudents,
+    getAllStudentsForTeacher,
+    getAllStudentsForAdmin,
     
     createUser,
 

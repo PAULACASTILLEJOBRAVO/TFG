@@ -1,32 +1,32 @@
 import { Button } from "@/components/ui/button";
-import { KeyRound } from "lucide-react";
 import { 
     Tooltip, 
     TooltipContent, 
     TooltipTrigger 
 } from "@/components/ui/tooltip";
+import { Save } from 'lucide-react'  
 
-const PasswordButton = ({ onClick }) => {
+const SaveButton = ({ onClick }) => {
     return(
-        <div className="flex justify-center items-center gap-2">
-            <Tooltip>
+        onClick && (
+            <Tooltip>   
                 <TooltipTrigger asChild>
-                    <Button 
-                        className="[&_svg]:size-4 hover:text-yellow-500 hover:bg-yellow-100"
+                    <Button
+                        className="[&_svg]:size-4 text-green-500 hover:text-green-600 hover:bg-green-100 "
                         variant="ghost"
                         size="icon"
                         onClick={onClick}
                     >
-                        <KeyRound />
+                        <Save />
                     </Button>
                 </TooltipTrigger>
 
                 <TooltipContent>
-                    Cambiar contraseña
+                    Guardar
                 </TooltipContent>
             </Tooltip>
-        </div>
+        )
     );
 }
 
-export default PasswordButton;
+export default SaveButton;

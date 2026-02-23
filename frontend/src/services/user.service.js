@@ -5,8 +5,13 @@ export const getTotalUsers = async () => {
     return response.data;
 }
 
-export const getTotalStudents = async () => {
-    const response = await api.get('users/students');
+export const getTotalStudentsForTeacher = async () => {
+    const response = await api.get('users/students-for-teacher');
+    return response.data;
+}
+
+export const getTotalStudentsForAdmin = async () => {
+    const response = await api.get('users/students-for-admin');
     return response.data;
 }
 
@@ -28,8 +33,8 @@ export const deleteUser = async (id, payload) => {
 }
 
 export const changePasswordUser = async (id, payload) => {
-    const respose = await api.patch(`/users/password/${id}`, payload);
-    return respose.data;
+    const response = await api.patch(`/users/password/${id}`, payload);
+    return response.data;
 }
 
 export const restoreUser = async (id) => {

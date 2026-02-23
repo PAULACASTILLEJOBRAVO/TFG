@@ -1,8 +1,15 @@
 import { useState, useEffect } from "react";
-import { getTotalStudents } from "../../services/user.service";
+import { 
+    getTotalStudentsForTeacher, 
+    getTotalStudentsForAdmin 
+} from "../../services/user.service";
+import { useAuth } from "@/auth/AuthContext";
 
 export const useStudents = () => {
-    const [students, setStudents] = useState([]);
+    const { user } = useAuth();
+
+    const [studentsForTeacher, setStudentsForTeacher] = useState([]);
+    const [studentsForAdmin, setStudentsForAdmin] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [message, setMessage] = useState("");
@@ -11,24 +18,36 @@ export const useStudents = () => {
         setLoading(true);
         setError(null);
         setMessage("");
-        setStudents([]);
+        setStudentsForTeacher([]);
+        setStudentsForAdmin([]);
 
         try{
-            const data = await getTotalStudents();
+            if(!user) throw new Error("User not authenticated");
+
+            let data = null;
+
+            if(user.role === 'teacher') data = await getTotalStudentsForTeacher();
+
+            if(user.role === 'admin') data = await getTotalStudentsForAdmin();
 
             if(data.error){
                 setError(data.error);
                 setMessage(data.message || "");
-                setStudents([]);
+                setStudentsForTeacher([]);
+                setStudentsForAdmin([]);
             } else {
-                setStudents(data.data || []);
+                if(user.role === 'teacher') {
+                    setStudentsForTeacher(data.data || []);
+                } else if(user.role === 'admin') {
+                    setStudentsForAdmin(data.data || []);
+                }
                 setMessage(data.message || "");
             }
         }catch(err) {
             // Axios's error
             const errorMessage = err.response?.data?.message || err.message || "Unknown error";
             setError(errorMessage);
-            setStudents([]);
+            setStudentsForTeacher([]);
         }finally{
             setLoading(false);
         }
@@ -38,5 +57,5 @@ export const useStudents = () => {
         fetchStudents();
     }, []);
 
-    return { students, loading, error, message, refetch: fetchStudents };
+    return { studentsForTeacher, studentsForAdmin, loading, error, message, refetch: fetchStudents };
 };

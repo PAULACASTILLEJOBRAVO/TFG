@@ -8,8 +8,9 @@ import {
 import { Spinner } from "@/components/ui/spinner";
 import { useStudents } from "@/hooks/Users/useStudents";
 
-const StudentSearch = ({ placeholder = "Buscar...", selectedIdStudents = [], onSelect }) => {
-    const { students, loading } = useStudents();
+const StudentSearch = ({ placeholder = "Buscar...", selectedIdStudents = [], selectedIdStudent = null, onSelect, showStatus = false }) => {
+    const { studentsForTeacher, studentsForAdmin, loading } = useStudents();
+    const students = showStatus === "forTeacher" ? studentsForTeacher : showStatus === "forAdmin" ? studentsForAdmin : [];
 
     if (loading) return <div className="flex justify-center"><Spinner className="h-10 w-10" color="blue" /></div>;
 
@@ -20,7 +21,7 @@ const StudentSearch = ({ placeholder = "Buscar...", selectedIdStudents = [], onS
                 <CommandEmpty>No se encontraron estudiantes.</CommandEmpty>
                 <CommandList className="max-h-60 overflow-y-auto">
                     {students.map(student => {
-                        const isSelected = selectedIdStudents.includes(student._id);
+                        const isSelected = selectedIdStudents.includes(student._id) || selectedIdStudent === student._id;
 
                         return(
                             <CommandItem key={student._id} onSelect={() => onSelect(student)} className={`flex cursor-pointer items-center ${isSelected ? 'opacity-60' : ''}`}>

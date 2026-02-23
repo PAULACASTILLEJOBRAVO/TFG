@@ -14,7 +14,7 @@ const UserRow = ({user, onEdit, onDelete, onChangePassword, onRestore, onSelect}
             <TableCell className="font-medium capitalize">{user.username}</TableCell>
             <TableCell className="hidden md:table-cell">{user.email}</TableCell>
             <TableCell className="capitalize">{rolesType[user.role]}</TableCell>
-            <TableCell>
+            <TableCell className="hidden md:table-cell">
                 <UserStatusChip 
                     isActive={user.isActive}
                     isDelete={user.isDelete}

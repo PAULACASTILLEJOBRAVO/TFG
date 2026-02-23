@@ -116,56 +116,53 @@ const UserManagement = () => {
     }
 
     return(
-        <>
-            <DashboardLayout>
-                <DashboardContent>
-                    <div className="flex items-center mb-4 justify-between">
-                        <DashboardSubtitle label="Gestión de usuarios" />
-                        <div className="pr-6 md:pr-16">
-                            <CreateButton label="usuario" onClick={() => navigate("/dashboard_admin/users/create")}/>
-                        </div>
+        <DashboardLayout>
+            <DashboardContent>
+                <div className="flex items-center mb-4 justify-between">
+                    <DashboardSubtitle label="Gestión de usuarios" />
+                    <div className="pr-6 md:pr-16">
+                        <CreateButton label="usuario" onClick={() => navigate("/dashboard_admin/users/create")}/>
                     </div>
+                </div>
 
-                    <UserTable
-                        users={users}
-                        loading={loadingManagement}
-                        onSelect={handleSelectUser}
-                        onEdit={handleEditUser}
-                        onDelete={openDeleteDialog}
-                        onChangePassword={openChangePasswordDialog}
-                        onRestore={handleRestoreUser}
-                    />
+                <UserTable
+                    users={users}
+                    loading={loadingManagement}
+                    onSelect={handleSelectUser}
+                    onEdit={handleEditUser}
+                    onDelete={openDeleteDialog}
+                    onChangePassword={openChangePasswordDialog}
+                    onRestore={handleRestoreUser}
+                />
 
-                    <UserDetailDrawer 
-                        open={isDrawerOpen}
-                        user={selectedUser}
-                        drawerMode={drawerMode}
-                        onView={handleCloseEditForm}
-                        onClose={handleCloseDrawer}
-                        onEdit={handleEditUser}
-                        onSave={handleUpdateUser}
-                        onDelete={openDeleteDialog}
-                        onChangePassword={openChangePasswordDialog}
-                        onRestore={handleRestoreUser}
-                    />
+                <UserDetailDrawer 
+                    open={isDrawerOpen}
+                    user={selectedUser}
+                    drawerMode={drawerMode}
+                    onView={handleCloseEditForm}
+                    onClose={handleCloseDrawer}
+                    onEdit={handleEditUser}
+                    onSave={handleUpdateUser}
+                    onDelete={openDeleteDialog}
+                    onChangePassword={openChangePasswordDialog}
+                    onRestore={handleRestoreUser}
+                />
 
-                    {selectedUser && <DeleteUserDialog
-                        open={dialogs.delete}
-                        user={selectedUser}
-                        onConfirm={handleConfirmDelete}
-                        onClose={closeDialogs}
-                    />}
+                {selectedUser && <DeleteUserDialog
+                    open={dialogs.delete}
+                    user={selectedUser}
+                    onConfirm={handleConfirmDelete}
+                    onClose={closeDialogs}
+                />}
 
-                    {selectedUser && <ChangePasswordUserDialog
-                        open={dialogs.changePassword}
-                        user={selectedUser}
-                        onConfirm={handleConfirmChangePassword}
-                        onClose={closeDialogs}
-                    />}
-                </DashboardContent>
-                
-            </DashboardLayout>   
-        </>
+                {selectedUser && <ChangePasswordUserDialog
+                    open={dialogs.changePassword}
+                    user={selectedUser}
+                    onConfirm={handleConfirmChangePassword}
+                    onClose={closeDialogs}
+                />}
+            </DashboardContent>
+        </DashboardLayout>   
     );
 }
 

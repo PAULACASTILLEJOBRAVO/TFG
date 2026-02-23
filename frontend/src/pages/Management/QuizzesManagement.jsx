@@ -15,11 +15,13 @@ import {
 import { useState } from "react";
 import { useQuizActions } from "@/hooks/Quizzes/useQuizActions";
 import { Spinner } from "@/components/ui/spinner";
+import { useCoordinatorSerial } from "@/hooks/Hardware/useCoordinatorSerial";
 
 const QuizzesManagement = () => {
     const { quizzes, loading, refetch } = useQuizzes();
     const { remove, restore, publish } = useQuizActions();
     const { difficulties } = useDifficulties();
+    const { connect, disconnect, reconnect, send, listen, stopListening } = useCoordinatorSerial();
 
     const [selectedQuiz, setSelectedQuiz] = useState(null);
 
@@ -84,6 +86,42 @@ const QuizzesManagement = () => {
         navigate(`/dashboard_teacher/quizzes/${quiz._id}/edit`);
     }
 
+    const handleStartQuiz = async (quiz) => {
+        // navigate(`/dashboard_teacher/quizzes/${quiz._id}/session`);
+        try{
+            await connect(); 
+
+            listen((event) => {
+                switch(event.type) {
+                    case "SUCCESS":
+                        console.log(event.raw);
+                        break;
+
+                    case "QUESTION_ACK":
+                        console.log(event.raw);
+                        break;
+
+                    case "ANSWER":
+                        console.log(event.raw);
+                        break;
+
+                    case "TIMEOUT":
+                        console.log(event.raw);
+                        break;
+
+                    case "ERROR":
+                        console.error(event.raw);
+                        break;
+                }
+            });
+
+            console.log("Listening started...");
+
+        }catch(error){
+            console.error("Error connecting to coordinator", error);
+        }
+    }
+
     return (
         <DashboardLayout>
             <DashboardContent>
@@ -96,6 +134,30 @@ const QuizzesManagement = () => {
                 </div>
 
                 <div className="mb-4">
+
+                <button onClick={() => send("qa send_question 1 1 2 -1")}>
+                    Test coordinator send command question with id 1, difficulty 1, and options 2, with no time limit
+                </button>
+
+                <button onClick={() => send("qa stop_question")}>
+                    Test coordinator send command to stop current question
+                </button>
+
+                 <button onClick={() => send("qa send_question 2 2 4 30")}>
+                    Test coordinator send command with question id 2, difficulty 2, and options 4, with a time limit of 30 seconds
+                </button>
+
+                <button onClick={() => send("qa status")}>
+                    Test coordinator send command to get status
+                </button>
+
+                 {/* <button onClick={() => send("qa get_answers")}>
+                    Test coordinator send command to get answers
+                </button>
+
+                 <button onClick={() => send("qa get_answers_csv")}>
+                    Test coordinator send command to get answers in CSV format
+                </button> */}
                   
                 {loading ? (
                     <div className="flex justify-center">
@@ -115,6 +177,7 @@ const QuizzesManagement = () => {
                             onRestore={handleRestoreQuiz}
                             onPublish={openPublishDialog}
                             onEdit={handleEditQuiz}
+                            onStartSession={handleStartQuiz}
                         />
                     ))}
                 </div>

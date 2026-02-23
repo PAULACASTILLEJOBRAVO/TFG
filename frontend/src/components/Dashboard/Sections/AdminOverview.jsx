@@ -17,11 +17,10 @@ const AdminOverview = () => {
 
             <Separator/>
 
-            <DashboardContentDetailCard cols="2">
+            <DashboardContentDetailCard cols="3">
                 <DashboardDetailCard title={loading ? "" : "usuarios totales"} value={loading ? <Spinner/> : usersStats} />
                 <DashboardDetailCard title="usuarios conectados" value="" />
                 <DashboardDetailCard title="clickers totales" value="" />
-                <DashboardDetailCard title="clickers activos" value="" />
             </DashboardContentDetailCard>
 
             <Separator/>

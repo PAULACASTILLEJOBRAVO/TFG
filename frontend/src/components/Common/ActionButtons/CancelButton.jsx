@@ -1,30 +1,29 @@
 import { Button } from "@/components/ui/button";
-import { Pencil } from "lucide-react";
 import { 
     Tooltip, 
     TooltipContent, 
     TooltipTrigger 
 } from "@/components/ui/tooltip";
 
-const EditButton = ({ onClick, label }) => {
+const CancelButton = ({ onClick }) => {
     return(
         <Tooltip>
             <TooltipTrigger asChild>
                 <Button 
-                    className="[&_svg]:size-4 hover:text-blue-600 hover:bg-blue-100"
+                    className="[&_svg]:size-4 text-red-500 hover:text-red-600 hover:bg-red-100"
                     variant="ghost"
                     size="icon"
                     onClick={onClick}
                 >
-                    <Pencil />
+                    X
                 </Button>
             </TooltipTrigger>
 
             <TooltipContent>
-                Editar {label}
+                Cancelar
             </TooltipContent>
         </Tooltip>
     );
 }
 
-export default EditButton;
+export default CancelButton;

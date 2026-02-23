@@ -64,3 +64,10 @@ export const rolesType = {
   teacher: "Profesor",
   admin: "Administrador"
 };
+
+export const statusClicker = [
+    { _id: "assigned", value: "assigned", label: "En uso" },
+    { _id: "available", value: "available", label: "Disponible" },
+    { _id: "damaged", value: "damaged", label: "Dañado" },
+    { _id: "retired", value: "retired", label: "Retirado" },
+];

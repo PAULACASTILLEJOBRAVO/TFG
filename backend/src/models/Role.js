@@ -23,6 +23,5 @@ const roleSchema = new Schema({
     collection: 'Role' // Specify the collection name
 }); 
 
-
 //Export the model
 module.exports = mongoose.model('Role', roleSchema);

@@ -18,7 +18,7 @@ const app = express();
 //Import routes
 const rootRouter = require('./src/routes/root');
 const authenticationRoutes = require('./src/routes/v1/authenticationRoutes');
-const courseRoutes = require('./src/routes/v1/courseRoutes');
+const clickerRoutes = require('./src/routes/v1/clickerRoutes');
 const difficultyRoutes = require('./src/routes/v1/difficultyRoutes');
 const questionRoutes = require('./src/routes/v1/questionRoutes');
 const quizRoutes = require('./src/routes/v1/quizRoutes');
@@ -44,7 +44,7 @@ app.use('/swagger-api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 //Define principals routes 
 app.use("/", rootRouter);
 app.use('/v1/auth', authenticationRoutes);
-app.use('/v1/courses', courseRoutes);
+app.use('/v1/clickers', clickerRoutes);
 app.use('/v1/difficulties', difficultyRoutes);
 app.use('/v1/questions', questionRoutes);
 app.use('/v1/quizzes', quizRoutes);

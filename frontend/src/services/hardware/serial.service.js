@@ -2,7 +2,6 @@ import { cleanAnsi, parseCoordinatorMessage } from "../../utils/serial";
 
 // Variables to manage the serial port connection and data parsing
 let port = null; // Variable to hold the serial port instance
-let parser = null; // Variable to hold the parser instance for reading data from the serial port
 let writer = null; // Variable to hold the writer instance for sending data to the serial port
 let reader = null; // Variable to hold the reader instance for reading data from the serial port
 
@@ -34,7 +33,13 @@ export const connectCoordinator = async () => {
 
 // Service to attempt reconnection to the coordinator device in case of connection loss
 export const attemptReconnect = async () => {
-    if(!port) throw new Error("Coordinator port not initialized"); // If the port is not initialized, do not attempt to reconnect
+    if (!port) {
+        const ports = await navigator.serial.getPorts();
+
+        if (ports.length === 0) throw new Error("Coordinator port not initialized");
+
+        port = ports[0];
+    }
 
     reconnectAttempts = 0; // Reset the reconnection attempts counter
 
@@ -61,30 +66,30 @@ export const disconnectCoordinator = async () => {
     if(!port)  throw new Error("No active serial port to disconnect"); // Close the serial port connection
 
     try {
-        // Cancel any ongoing read or write operations and release locks on the reader and writer
-        if (reader) {
-            await reader.cancel();
-            reader.releaseLock?.();
-            reader = null;
-        }
+        // Cancel any ongoing listening operations and release locks on the reader and writer
+        listening = false;
 
-        // Release the lock on the writer and set it to null
-        if (writer) {
-            writer.releaseLock?.();
-            writer = null;
+        if (reader) {
+            try {
+                await reader.cancel();
+                reader.releaseLock();
+            } catch {
+                console.warn("Reader was already released or canceled");
+            }
+            reader = null;
         }
 
         // Close the serial port if it's open
         if (port.readable || port.writable) {
             await port.close();
         }
+
+        console.log("Coordinator port disconnected successfully");
     }catch(error){
         console.error("Error closing coordinator port", error);
     }
 
     port = null; // Reset the port variable
-    writer = null; // Reset the writer variable
-    parser = null; // Reset the parser variable
 }
 
 // Service to send a command to the coordinator device
@@ -107,17 +112,16 @@ export const listenResponse = async (callback) => {
 
     listening = true; 
 
-    const decoder = new TextDecoderStream(); 
-    port.readable.pipeTo(decoder.writable).catch(err => {
-        console.error("Pipe error:", err);
-    }); 
-    parser = decoder.readable.getReader();
+    reader = port.readable.getReader(); // Get a reader instance to read data from the serial port
+
+    const decoder = new TextDecoder(); // Create a TextDecoder instance to decode incoming data from the serial port
 
     while (listening) {
-        const { value, done } = await parser.read();
+        const { value, done } = await reader.read();
         if (done) break;
+        if(!value) continue;
 
-        buffer += value;
+        buffer += decoder.decode(value, { stream: true }); // Decode the incoming data and append it to the buffer
 
         if (buffer.includes("\n")) { // Wait until we have a complete line of data before processing
             let lines = buffer.split("\n"); // Split the buffer into lines based on the newline character
@@ -173,9 +177,9 @@ export const listenResponse = async (callback) => {
 export const stopListening = async () => {
     listening = false;
 
-    if (parser) {
-       await parser.cancel?.();
-        parser.releaseLock?.();
-        parser = null;
+    if (reader) {
+        await reader.cancel?.();
+        reader.releaseLock?.();
+        reader = null;
     }
 }

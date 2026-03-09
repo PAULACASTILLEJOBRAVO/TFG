@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { Pencil } from "lucide-react";
 import { UserAvatar } from "@/components/Dashboard/Layout/Sidebar";
 import { Button } from '@/components/ui/button';
+import { ChangePhotoButton } from "../../Buttons";
 
 const UserProfilePictureChanger = ({avatar, username, onChange}) => {
     const inputRef = useRef(null);
@@ -37,15 +38,7 @@ const UserProfilePictureChanger = ({avatar, username, onChange}) => {
             />
 
             {/** Button */}
-            <Button
-                type="button"
-                size="icon"
-                variant="secondary"
-                className="absolute bottom-0 right-0 h-8 w-8 rounded-full shadow-md"
-                onClick={() => inputRef.current.click()}
-            >
-                <Pencil />
-            </Button>
+            <ChangePhotoButton onClick={() => inputRef.current?.click()} />
         </div>
     );
 }

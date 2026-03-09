@@ -1,0 +1,266 @@
+{
+    "common": {
+        "language": "Idioma",
+        "spanish": "Español",
+        "english": "Inglés",
+
+        "logout": "Cerrar sesión",
+        "home": "Inicio",
+        "profile": "Perfil",
+        "settings": "Configuración",
+        "tutorial": "Tutorial",
+
+        "create": "Crear",
+        "edit": "Editar",
+        "delete": "Eliminar",
+        "restore": "Restaurar",
+        "confirm": "Confirmar",
+        "cancel": "Cancelar",
+        "cancelEdit": "Cancelar edición",
+        "save": "Guardar",
+        "saveDraft": "Guardar borrador",
+        "changePassword": "Cambiar contraseña",
+        "changePhoto": "Cambiar foto",
+        "update": "Actualizar",
+        "register": "Registrar",
+        "start": "Iniciar",
+        "end": "Finalizar",
+        "publish": "Publicar",
+        "back": "Volver a"
+    },
+    "admin":{
+        "users": "Usuarios",
+        "clickers": "Clickers",
+        "statistics": "Estadísticas",
+        "sessions": "Sesiones",
+        "reports": "Reportes",
+
+        "adminPanel": "Panel de administración",
+
+        "overview": {
+            "title": "Gestión",
+
+            "totalUsers": "usuarios totales",
+            "connectedUsers": "usuarios conectados",
+            "totalClickers": "clickers totales",
+
+            "managementUser": "Usuarios",
+            "managementClicker": "Clickers"
+        },
+
+        "usersManagement": {
+            "title": "Gestión de usuarios",
+            "labelButton": "usuario",
+
+            "table": {
+                "name": "Nombre",
+                "email": "Email",
+                "role": "Rol",
+                "roles": {
+                    "admin": "Administrador",
+                    "teacher": "Profesor",
+                    "student": "Estudiante"
+                },
+                "status": "Estado",
+                "lastAccess": "Último acceso",
+
+                "noUsers": "No hay usuarios registrados.",
+                "neverAccessed": "Nunca"
+            },
+
+            "drawer": {
+                "view": {
+                    "description": "Gestión del usuario",
+
+                    "fullName": "Nombre completo",
+                    "email": "Email",
+                    "role": "Rol",
+                    "lastLogin": "Último login",
+                    "lastLogout": "Último logout",
+                    "deletedAt": "Fecha de eliminación",
+                    "deleteReason": "Motivo de eliminación"
+                },
+                "edit": {
+                    "description": "Edición del usuario",
+
+                    "fullName": "Nombre completo",
+                    "email": "Email",
+                    "role": "Rol",
+                    "selectRole": "Selecciona un rol"
+                }
+            },
+
+            "dialogs": {
+                "delete": {
+                    "title": "Eliminar usuario",
+                    "description": "¿Estás seguro de que deseas eliminar este usuario? Esta acción no se puede deshacer.",
+                    "warning": "El usuario {{username}} no podrá volver a iniciar sesión.",
+                    "reasonLabel": "Motivo de eliminación"
+                },
+                "changePassword": {
+                    "title": "Cambiar contraseña",
+                    "description": "Establece una nueva contraseña para el usuario {{username}}.",
+                    "newPassword": "Nueva contraseña",
+                    "confirmPassword": "Confirmar contraseña"
+                }
+            },
+
+            "createForm": {
+                "title": "Registrar nuevo usuario",
+                "information": "Información del usuario",
+                "fullname": "Nombre completo (Opcional)",
+                "username": "Nombre de usuario",
+                "email": "Correo electrónico",
+                "password": "Contraseña",
+                "confirmPassword": "Confirmar contraseña",
+                "role": "Rol",
+                "selectRole": "Selecciona un rol"
+            }
+        },
+
+        "clickersManagement": {
+            "title": "Gestión de clickers",
+            "labelButton": "clicker",
+
+            "table": {
+                "code": "Código del dispositivo",
+                "assignedUser": "Usuario asignado",
+                "status": "Estado",
+
+                "noClickers": "No hay clickers registrados."
+            },
+
+            "row": {
+                "edit": {
+                    "status": "Estado",
+                    "selectStatus": "Selecciona un estado",
+ 
+                    "assigned": "En uso",
+                    "available": "Disponible",
+                    "damaged": "Dañado",
+                    "retired": "Retirado",
+                    "unknown": "Desconocido"
+                }
+            },
+
+            "dialogs": {
+                "create": {
+                    "title": "Registrar clicker",
+                    "description": "Esta opción registrará un nuevo clicker en el sistema. .",
+                    "nameLabel": "Código del dispositivo",
+                    "namePlaceholder": "Introduce el código del clicker",
+                    "studentLabel": "Asignar estudiante",
+                    "studentPlaceholder": "Introduce el nombre del estudiante que usará este clicker"
+                },
+                "delete": {
+                    "title": "Eliminar clicker",
+                    "description": "¿Estás seguro de que deseas eliminar este clicker? Esta acción no se puede deshacer.",
+                    "warning": "El clicker con código {{code}} no podrá volver a ser utilizado.",
+                    "reasonLabel": "Motivo de eliminación"
+                }
+            }
+        }
+    },
+    "teacher": {
+        "quizzes": "Cuestionarios",
+        "historical": "Histórico",
+        "createQuiz": "Crear cuestionario",
+
+        "greeting": "Hola, {{username}}",
+
+        "overview": {
+            "totalStudents": "estudiantes totales",
+            "connectedStudents": "estudiantes conectados"
+        },
+
+        "quizzesManagement": {
+            "title": "Mis cuestionarios",
+            "labelButton": "cuestionario",
+
+            "detailsCard": {
+                "questions": "preguntas",
+                "players": "jugadores",
+                "lastUpdated": "Última edición",
+
+                "noQuizzes": "No tienes cuestionarios creados.",
+
+                "difficulty": {
+                    "easy": "Fácil",
+                    "medium": "Medio",
+                    "hard": "Difícil",
+                    "unknown": "Sin dificultad"
+                },
+
+                "status": "Estado",
+                "draft": "Borrador",
+                "published": "Publicado",
+                "archived": "Archivado",
+                "unknown": "Sin estado reconocido"
+            },
+            "quizForm":{
+                "create": {
+                    "title": "Crear cuestionario"
+                },
+                "edit": {
+                    "title": "Editar cuestionario"
+                }, 
+
+                "title": "Título",
+                "description": "Descripción",
+
+                "questions": "Preguntas",
+                "students": "Estudiantes",
+
+                "difficulty": {
+                    "label": "Dificultad",
+                    "select": "Selecciona una dificultad"
+                },
+
+                "editor": {
+                    "title": "Escribe una pregunta"
+                },
+
+                "settings": {
+                    "title": "Configuración",
+                    "labelButton": "Pregunta",
+                    "options": "opciones",
+                    "multipleChoice": "Opción múltiple",
+                    "trueFalse": "Verdadero/Falso",
+                    "timeLimit": "Límite de tiempo (segundos)",
+                    "timeLimitPlaceholder": "Introduce el límite de tiempo en segundos",
+                    "points": "Puntos (por pregunta)",
+                    "pointsPlaceholder": "Introduce los puntos para esta pregunta",
+                    "type": "Tipo de pregunta",
+                    "selectType": "Selecciona un tipo"
+                },
+
+                "studentList": {
+                    "title": "Estudiantes participantes: ",
+                    "searchPlaceholder": "Buscar estudiante por nombre",
+                    "noSelectedStudents": "No hay estudiantes seleccionados.",
+                    "noStudents": "No se encontraron estudiantes."
+                }
+            },
+            "dialogs": {
+                "delete": {
+                    "title": "Eliminar cuestionario",
+                    "description": "¿Estás seguro de que deseas eliminar este cuestionario? Esta acción no se puede deshacer.",
+                    "warning": "El cuestionario {{title}} no podrá volver a ser utilizado ni jugado, pero podrás restaurarlo más tarde si lo deseas.",
+                    "reasonLabel": "Motivo de eliminación"
+                },
+                "publish": {
+                    "title": "Publicar cuestionario",
+                    "description": "¿Estás seguro de que deseas publicar este cuestionario? Esta acción hará que el cuestionario esté disponible para los estudiantes.",
+                    "warning": "Los alumnos podrán jugar el cuestionario {{title}} una vez publicado.",
+                    "reasonLabel": "Motivo de publicación"
+                }
+            }
+        }
+    },
+    "student": {
+        "ranking": "Ranking",
+        "stadistics": "Estadísticas",
+
+        "greeting": "Hola, {{username}}"
+    }
+}

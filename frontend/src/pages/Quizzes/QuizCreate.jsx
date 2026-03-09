@@ -18,6 +18,7 @@ import {
   validateQuiz,
   validateQuestion
 } from "@/utils/validators";
+import { useTranslation } from "react-i18next";
 
 const QuizCreate = () => {
   const { user } = useAuth();
@@ -38,6 +39,8 @@ const QuizCreate = () => {
   const quizError = validateQuiz(createQuiz);
 
   const navigate = useNavigate();
+
+  const { t } = useTranslation();
 
   const handleUpdate = (field, value) => {
     setCreateQuiz(prev => ({...prev, [field]: value}));
@@ -202,7 +205,7 @@ const QuizCreate = () => {
 
         <Separator />
 
-        <CreateHeader onBack="/dashboard_teacher/quizzes" label="cuestionarios" title="Crear nuevo cuestionario" />
+        <CreateHeader onBack="/dashboard_teacher/quizzes" label={t('teacher.quizzesManagement.labelButton')} title={t('teacher.quizzesManagement.quizForm.create.title')} />
 
         <QuizForm 
           difficulties={difficulties} 

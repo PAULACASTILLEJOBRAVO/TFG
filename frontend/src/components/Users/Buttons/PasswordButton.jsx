@@ -5,8 +5,11 @@ import {
     TooltipContent, 
     TooltipTrigger 
 } from "@/components/ui/tooltip";
+import { useTranslation } from "react-i18next";
 
 const PasswordButton = ({ onClick }) => {
+    const { t } = useTranslation();
+
     return(
         <div className="flex justify-center items-center gap-2">
             <Tooltip>
@@ -22,7 +25,7 @@ const PasswordButton = ({ onClick }) => {
                 </TooltipTrigger>
 
                 <TooltipContent>
-                    Cambiar contraseña
+                    {t("common.changePassword")}
                 </TooltipContent>
             </Tooltip>
         </div>

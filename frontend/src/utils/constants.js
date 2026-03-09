@@ -32,11 +32,11 @@ export const sizeMap = {
 };
 
 export const languages = [
-    { code: "es", label: "Español", flag:"🇪🇸" },
-    { code: "en", label: "English", flag:"🇬🇧" },
+    { code: "es", labelKey: "common.spanish", flag:"🇪🇸" },
+    { code: "en", labelKey: "common.english", flag:"🇬🇧" },
 ]
 
-import { Trophy, Plus, FileText, House, UserRoundPen, Settings, LogOut, NotebookPen, User, Calculator } from "lucide-react";
+import { Trophy, Plus, FileText, House, UserRoundPen, Settings, LogOut, NotebookPen, User, Calculator, MessageSquareWarning, PlayCircle } from "lucide-react";
 
 export const icons = {
     trophy: Trophy,
@@ -52,22 +52,24 @@ export const icons = {
 
     user: User,
     clicker: Calculator,
+    warning: MessageSquareWarning,
+    play: PlayCircle
 }
 
 export const typesQuestion = [
-    { value: "multiple-choice", label: "Multiple Choice" },
-    { value: "true-false", label: "True/False" },
+    { value: "multiple-choice", labelKey: "teacher.quizzesManagement.quizForm.settings.multipleChoice" },
+    { value: "true-false", labelKey: "teacher.quizzesManagement.quizForm.settings.trueFalse" },
 ]
 
 export const rolesType = {
-  student: "Estudiante",
-  teacher: "Profesor",
-  admin: "Administrador"
+    student: "admin.usersManagement.table.roles.student",
+    teacher: "admin.usersManagement.table.roles.teacher",
+    admin: "admin.usersManagement.table.roles.admin"
 };
 
 export const statusClicker = [
-    { _id: "assigned", value: "assigned", label: "En uso" },
-    { _id: "available", value: "available", label: "Disponible" },
-    { _id: "damaged", value: "damaged", label: "Dañado" },
-    { _id: "retired", value: "retired", label: "Retirado" },
+    { _id: "assigned", value: "assigned", labelKey: "admin.clickersManagement.row.edit.assigned" },
+    { _id: "available", value: "available", labelKey: "admin.clickersManagement.row.edit.available" },
+    { _id: "damaged", value: "damaged", labelKey: "admin.clickersManagement.row.edit.damaged" },
+    { _id: "retired", value: "retired", labelKey: "admin.clickersManagement.row.edit.retired" },
 ];

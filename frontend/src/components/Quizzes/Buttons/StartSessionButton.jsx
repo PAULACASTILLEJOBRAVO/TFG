@@ -5,8 +5,11 @@ import {
     TooltipContent, 
     TooltipTrigger 
 } from "@/components/ui/tooltip";
+import { useTranslation } from "react-i18next";
 
 const StartSessionButton = ({ onClick, label }) => {
+    const { t } = useTranslation();
+
     return (
         onClick && (
             <Tooltip>   
@@ -22,7 +25,7 @@ const StartSessionButton = ({ onClick, label }) => {
                 </TooltipTrigger>
 
                 <TooltipContent>
-                    Iniciar {label}
+                    {t("common.start")} {label}
                 </TooltipContent>
             </Tooltip>
         )

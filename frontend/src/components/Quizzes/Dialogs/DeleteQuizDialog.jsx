@@ -7,30 +7,34 @@ import {
     DialogFooter 
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "react-i18next";
 
 const DeleteQuizDialog = ({open, quiz, onConfirm, onClose}) => {
     if (!quiz) return null;
+
+    const { t } = useTranslation();
 
     return(
         <Dialog open={open} onOpenChange={onClose}>
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>
-                        Eliminar quiz
+                        {t("teacher.quizzesManagement.dialogs.delete.title")}
                     </DialogTitle>
                 </DialogHeader>
                 <DialogDescription>
-                    Esta opción eliminará el quiz <strong>{quiz.title}</strong>. 
-                    No podrá ser publicado ni jugado, pero podrás restaurarlo más tarde si lo deseas.
+                    {t("teacher.quizzesManagement.dialogs.delete.description")}
+                    <br />
+                    <strong>{t("teacher.quizzesManagement.dialogs.delete.warning", {title: quiz.title})}</strong>
                 </DialogDescription>
 
                 <DialogFooter className="gap-2">
                     <Button variant="destructive" onClick={() => onConfirm("Quiz removed by the teacher with id: " + quiz.creatorId)}>
-                        Eliminar
+                        {t("common.delete")}
                     </Button>
 
                     <Button variant="outline" onClick={onClose}>
-                        Cancelar
+                        {t("common.cancel")}
                     </Button>
                 </DialogFooter>
             </DialogContent>

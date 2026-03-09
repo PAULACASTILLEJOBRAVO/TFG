@@ -1,12 +1,11 @@
-import DashboardContent from "@/components/Dashboard/Layout/DashboardContent";
-import DashboardLayout from "@/components/Dashboard/Layout/DashboardLayout";
+import { DashboardLayout,DashboardContent } from "@/components/Dashboard/Layout";
 import { useUserActions } from "@/hooks/Users/useUserActions";
 import { Separator } from "@/components/ui/separator";
-import AppBreadcrumb from "@/components/Common/AppBreadcrumb";
-import UserFormCreate from "@/components/Users/Forms/Create/UserFormCreate";
+import { AppBreadcrumb, CreateHeader } from "@/components/Common";
+import { UserFormCreate } from "@/components/Users/Forms/Create";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import CreateHeader from "@/components/Common/CreateHeader";
+import { useTranslation } from "react-i18next";
 
 const UserCreate = () => {
     const { create } = useUserActions();
@@ -14,6 +13,8 @@ const UserCreate = () => {
     const [createUser, setCreateUser] = useState({ fullname: "", username: "", email: "", password: "", role: "", profilePicture: "" });
     
     const navigate = useNavigate();
+
+    const { t } = useTranslation();
 
     const handleUpdate = (field, value) => {
         setCreateUser(prev => ({...prev, [field]: value}));
@@ -35,7 +36,7 @@ const UserCreate = () => {
 
                 <Separator />
 
-                <CreateHeader onBack="/dashboard_admin/users" label="usuarios" title="Crear nuevo usuario" />
+                <CreateHeader onBack="/dashboard_admin/users" label={t("admin.usersManagement.labelButton")} title={t("admin.usersManagement.createForm.title")} />
                 
                 <UserFormCreate newUser={createUser} onSubmit={handleCreateUser} onChange={handleUpdate} />
                 

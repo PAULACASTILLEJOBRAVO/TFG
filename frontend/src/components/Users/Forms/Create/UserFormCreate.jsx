@@ -14,11 +14,14 @@ import {
     validatePassword 
 } from "@/utils/validators";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const UserFormCreate = ({newUser, onChange, onSubmit}) => {
     const [submitted, setSubmitted] = useState(false);
     const [touched, setTouched] = useState({email: false, password: false});
     const [confirmPassword, setConfirmPassword] = useState("");
+
+    const { t } = useTranslation();
 
     const usernameError = validateUsername(newUser.username);
     const passwordError = validatePassword(newUser.password, confirmPassword);
@@ -35,7 +38,7 @@ const UserFormCreate = ({newUser, onChange, onSubmit}) => {
     return (
         <Card className="max-w-xl mx-auto">
             <CardHeader>
-                <CardTitle>Información del usuario</CardTitle>
+                <CardTitle>{t("admin.usersManagement.createForm.information")}</CardTitle>
             </CardHeader>
 
             <CardContent className="space-y-2">
@@ -44,13 +47,13 @@ const UserFormCreate = ({newUser, onChange, onSubmit}) => {
                 </div>
                 
                 <EditInput 
-                    label="Nombre completo (Opcional)" 
+                    label={t("admin.usersManagement.createForm.fullname")}
                     value={newUser.fullname} 
                     onChange={e => onChange("fullname", e.target.value)} 
                 />
 
                 <EditInput 
-                    label="Nombre de usuario" 
+                    label={t("admin.usersManagement.createForm.username")}
                     value={newUser.username} 
                     onChange={e => onChange("username", e.target.value)} 
                     onBlur={() => setTouched(prev => ({...prev, username: true}))}
@@ -60,7 +63,7 @@ const UserFormCreate = ({newUser, onChange, onSubmit}) => {
                 />
 
                 <EditInput 
-                    label="Email" 
+                    label={t("admin.usersManagement.createForm.email")}
                     type="email" 
                     value={newUser.email} 
                     onChange={e => onChange("email", e.target.value)} 
@@ -71,7 +74,7 @@ const UserFormCreate = ({newUser, onChange, onSubmit}) => {
                 />
                 
                 <EditInput 
-                    label="Contraseña" 
+                    label={t("admin.usersManagement.createForm.password")} 
                     type="password" 
                     value={newUser.password} 
                     onChange={e => onChange("password", e.target.value)} 
@@ -82,7 +85,7 @@ const UserFormCreate = ({newUser, onChange, onSubmit}) => {
                 />
 
                 <EditInput 
-                    label="Confirmar contraseña" 
+                    label={t("admin.usersManagement.createForm.confirmPassword")} 
                     type="password"
                     value={confirmPassword} 
                     onChange={e => setConfirmPassword(e.target.value)}
@@ -96,7 +99,7 @@ const UserFormCreate = ({newUser, onChange, onSubmit}) => {
 
                 <div className="pt-4">
                     <Button className="bg-green-500 hover:bg-green-500 w-full" onClick={handleConfirm}>
-                        Crear usuario
+                        {t("common.create")} {t("admin.usersManagement.labelButton")}
                     </Button>
                 </div>
             </CardContent>

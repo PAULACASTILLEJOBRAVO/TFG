@@ -17,7 +17,11 @@ import {
     useState, 
     useEffect 
 } from "react";
-import { validateEmail, validateUsername } from "@/utils/validators";
+import { 
+    validateEmail, 
+    validateUsername 
+} from "@/utils/validators";
+import { useTranslation } from "react-i18next";
 
 const UserDetailDrawer = ({open, user, drawerMode, onView, onClose, onEdit, onSave, onDelete, onChangePassword, onRestore }) => {
     const [editUser, setEditUser] = useState({ fullname: "", username: "", email: "", role: "", profilePicture: "" });
@@ -27,6 +31,8 @@ const UserDetailDrawer = ({open, user, drawerMode, onView, onClose, onEdit, onSa
 
     const emailError = validateEmail(editUser.email);
     const usernameError = validateUsername(editUser.username);
+
+    const { t } = useTranslation();
 
     const handleBlur = (field) => {
         setTouched(prev => ({...prev, [field]: true}));
@@ -62,7 +68,7 @@ const UserDetailDrawer = ({open, user, drawerMode, onView, onClose, onEdit, onSa
                             <UserHeaderView user={user} />
 
                             <SheetDescription className="text-center text-base">
-                                Gestión del usuario
+                                {t("admin.usersManagement.drawer.view.description")}
                             </SheetDescription>
                         </>
                     )}
@@ -72,7 +78,7 @@ const UserDetailDrawer = ({open, user, drawerMode, onView, onClose, onEdit, onSa
                             <UserHeaderEdit data={editUser} touched={touched} submitted={submitted} usernameError={usernameError} onChange={handleUpdate} onBlur={handleBlur} />
 
                             <SheetDescription className="text-center text-base">
-                                    Edición del usuario
+                                {t("admin.usersManagement.drawer.edit.description")}
                             </SheetDescription>
                         </>
                     )}
@@ -94,7 +100,7 @@ const UserDetailDrawer = ({open, user, drawerMode, onView, onClose, onEdit, onSa
                             onDelete={() => onDelete(user)}
                             onChangePassword={() => onChangePassword(user)}
                             onRestore={() => onRestore(user)}
-                            label="usuario"
+                            label={t("admin.usersManagement.labelButton")}
                             isDeleted={user.isDeleted}
                         />
                     )}

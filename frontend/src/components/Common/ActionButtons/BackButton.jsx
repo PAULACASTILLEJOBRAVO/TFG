@@ -6,8 +6,11 @@ import {
     TooltipTrigger 
 } from "@/components/ui/tooltip";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const BackButton = ({ href, label }) => {
+    const { t } = useTranslation();
+
     return(
         <Tooltip>
             <TooltipTrigger asChild>
@@ -23,7 +26,7 @@ const BackButton = ({ href, label }) => {
             </TooltipTrigger>
 
             <TooltipContent>
-                Volver a {label}
+                {t("common.back")} {label}
             </TooltipContent>
         </Tooltip>
     );

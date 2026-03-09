@@ -7,30 +7,34 @@ import {
     DialogFooter 
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "react-i18next";
 
 const PublishQuizDialog = ({open, quiz, onConfirm, onClose}) => {
     if (!quiz) return null;
+
+    const { t } = useTranslation();
 
     return(
         <Dialog open={open} onOpenChange={onClose}>
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>
-                        Publicar quiz
+                        {t("teacher.quizzesManagement.dialogs.publish.title")}
                     </DialogTitle>
                 </DialogHeader>
                 <DialogDescription>
-                    Esta opción publicará el quiz <strong>{quiz.title}</strong>. 
-                    Los alumnos podrán jugarlo una vez publicado.
+                    {t("teacher.quizzesManagement.dialogs.publish.description")}
+                    <br />
+                    <strong>{t("teacher.quizzesManagement.dialogs.publish.warning", {title: quiz.title})}</strong>
                 </DialogDescription>
 
                 <DialogFooter className="gap-2">
                     <Button className="bg-green-600 hover:bg-green-700" onClick={onConfirm}>
-                        Publicar
+                        {t("common.publish")}
                     </Button>
 
                     <Button variant="outline" onClick={onClose}>
-                        Cancelar
+                        {t("common.cancel")}
                     </Button>
                 </DialogFooter>
             </DialogContent>

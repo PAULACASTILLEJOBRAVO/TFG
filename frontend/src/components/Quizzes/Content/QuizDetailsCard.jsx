@@ -1,8 +1,11 @@
 import { QuizStatusChip } from ".";
 import { QuizActionCell } from "../Layout";
+import { useTranslation } from "react-i18next";
 
 const QuizDetailsCard = ({ quiz, onEdit, onDelete, onRestore, onPublish, onStartSession }) => {
     if (!quiz) return null;
+
+    const { t } = useTranslation();
 
     const emptyPlayer = () => {
         return quiz.playerIds.length === 0;
@@ -17,11 +20,11 @@ const QuizDetailsCard = ({ quiz, onEdit, onDelete, onRestore, onPublish, onStart
             </div>
 
             <div className="text-sm text-gray-600 mb-3">
-                <div>{quiz.questionIds.length} preguntas · {quiz.playerIds.length} jugadores</div>
+                <div>{quiz.questionIds.length} {t("teacher.quizzesManagement.detailsCard.questions")} · {quiz.playerIds.length} {t("teacher.quizzesManagement.detailsCard.players")}</div>
             </div>
 
             <div className="flex justify-between items-center text-xs text-gray-500">
-                <span>Última edición: {quiz.updatedAt ? new Date(quiz.updatedAt).toLocaleDateString() : new Date(quiz.createdAt).toLocaleDateString()}</span>
+                <span>{t("teacher.quizzesManagement.detailsCard.lastUpdated")}: {quiz.updatedAt ? new Date(quiz.updatedAt).toLocaleDateString() : new Date(quiz.createdAt).toLocaleDateString()}</span>
             </div>
 
             <QuizActionCell

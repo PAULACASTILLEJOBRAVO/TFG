@@ -7,27 +7,32 @@ import {
     DialogFooter 
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "react-i18next";
 
 const DeleteClickerDialog = ({open, clicker, onConfirm, onClose}) => {
+    const { t } = useTranslation();
+
     return(
         <Dialog open={open} onOpenChange={onClose}>
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>
-                        Eliminar clicker
+                        {t("admin.clickersManagement.dialogs.delete.title")}
                     </DialogTitle>
                 </DialogHeader>
                 <DialogDescription>
-                    Esta opción eliminará el clicker <strong>{clicker.deviceCode}</strong>. 
+                    {t("admin.clickersManagement.dialogs.delete.description")}
+                    <br />
+                    <strong>{t("admin.clickersManagement.dialogs.delete.warning", { code: clicker.code })}</strong>
                 </DialogDescription>
 
                 <DialogFooter className="gap-2">
                     <Button variant="destructive" onClick={() => onConfirm("Clicker removed by an admin")}>
-                        Eliminar
+                        {t("common.delete")}
                     </Button>
 
                     <Button variant="outline" onClick={onClose}>
-                        Cancelar
+                        {t("common.cancel")}
                     </Button>
                 </DialogFooter>
             </DialogContent>

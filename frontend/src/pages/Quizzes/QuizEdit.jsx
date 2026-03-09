@@ -24,6 +24,7 @@ import {
   validateQuiz, 
   validateQuestion 
 } from "@/utils/validators";
+import { useTranslation } from "react-i18next";
 
 const QuizEdit = () => {
   const { id } = useParams();
@@ -46,6 +47,8 @@ const QuizEdit = () => {
   const quizError = validateQuiz(editQuiz);
 
   const navigate = useNavigate();
+
+  const { t } = useTranslation();
 
   const handleUpdate = (field, value) => {
     setEditQuiz(prev => ({...prev, [field]: value}));
@@ -249,7 +252,7 @@ const QuizEdit = () => {
 
         <Separator />
 
-        <CreateHeader onBack="/dashboard_teacher/quizzes" label="cuestionarios" title="Editar cuestionario" />
+        <CreateHeader onBack="/dashboard_teacher/quizzes" label={t("teacher.quizzesManagement.labelButton")} title={t("teacher.quizzesManagement.quizForm.edit.title")} />
 
         {loading ? (
           <div className="w-full h-64 flex items-center justify-center">

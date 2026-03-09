@@ -1,9 +1,12 @@
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
+import { useTranslation } from "react-i18next";
 
 const QuestionPoint = ({ points, onChange }) => {
     const isActive = points !== null;
+
+    const { t } = useTranslation();
     
     return (
         <div className="w-full flex flex-col gap-2">
@@ -15,7 +18,7 @@ const QuestionPoint = ({ points, onChange }) => {
                         origin-left
                         text-gray-500 text-xs 
                     `}>
-                    Puntos (por pregunta)
+                    {t("teacher.quizzesManagement.quizForm.settings.points")}
                 </Label>
                 <Switch
                     checked={isActive}
@@ -33,7 +36,7 @@ const QuestionPoint = ({ points, onChange }) => {
                     step="10"
                     value={points}
                     onChange={e => onChange({ "points": Number(e.target.value) })}
-                    placeholder="Introduce los puntos para esta pregunta"
+                    placeholder={t("teacher.quizzesManagement.quizForm.settings.pointsPlaceholder")}
                 />
             )}
         </div>

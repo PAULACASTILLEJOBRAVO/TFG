@@ -21,8 +21,11 @@ import {
   TabsTrigger 
 } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
+import { useTranslation } from "react-i18next";
 
 const QuizForm = ({ difficulties, quiz, selectedStudents, questionsList, selectedQuestionIndex, quizError, questionError, touched, submitted, onUpdate, onSelectQuestion, onAddQuestion, onDeleteQuestion, activeQuestion, onUpdateQuestion, onToggleStudent, onSaveDraft, onPublish, onEdit, onBlur }) => {          
+  const { t } = useTranslation();
+
   return (
     <Card>
       <QuizCreateHeader newQuiz={quiz} quizError={quizError} touched={touched} submitted={submitted} difficulties={difficulties} onChange={onUpdate} onBlur={onBlur} />
@@ -32,8 +35,8 @@ const QuizForm = ({ difficulties, quiz, selectedStudents, questionsList, selecte
       {/** Tabs */}
       <Tabs defaultValue="questions" className="w-full">
         <TabsList className="w-full flex">
-          <TabsTrigger value="questions" className="flex-1">Preguntas</TabsTrigger>
-          <TabsTrigger value="students" className="flex-1">Estudiantes</TabsTrigger>
+          <TabsTrigger value="questions" className="flex-1">{t("teacher.quizzesManagement.quizForm.questions")}</TabsTrigger>
+          <TabsTrigger value="students" className="flex-1">{t("teacher.quizzesManagement.quizForm.students")}</TabsTrigger>
         </TabsList>
         {/** TAB 1 - Questions */}
         <TabsContent value="questions">

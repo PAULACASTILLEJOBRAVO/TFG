@@ -16,19 +16,25 @@ import {
     NotebookPen, 
     PlayCircle, 
     User, 
-    Book, 
     MessageSquareWarning 
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { headerActionMenuConfig } from "@/config/headerActionMenu.config";
+import { icons } from "@/utils/constants";
+import { useTranslation } from "react-i18next";
 
 const ActionMenu = ({icon}) => {
     const { user } = useAuth();
+
+    const config = headerActionMenuConfig[user.role];
 
     const [open, setOpen] = useState(false);
     const timeoutRef = useRef();
     const Icon = icon;
 
     const navigate = useNavigate();
+
+    const { t } = useTranslation();
 
     const handleMouseEnter = () => {
         if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -58,52 +64,21 @@ const ActionMenu = ({icon}) => {
                 onMouseLeave={handleMouseLeave} 
                 onClick={() => setOpen(false)}
             >
+                {config.map((item, index) => {
+                    if(item.separator) return <DropdownMenuSeparator key={index} className="my-1" />;
 
-                {user.role === "teacher" && (
-                    <>
-                        <DropdownMenuItem onClick={() => navigate("/dashboard_teacher/quizzes/create")}>
-                            <NotebookPen />
-                            Crear quiz
-                        </DropdownMenuItem> 
-                        
-                        <DropdownMenuItem onClick={() => navigate("/dashboard_teacher/courses/create")}>
-                            <Book />
-                            Crear curso
-                        </DropdownMenuItem>      
-                    </>
-                )}
-
-                {user.role === "admin" && (
-                    <>
-                        <DropdownMenuItem onClick={() => navigate("/dashboard_admin/users")}>
-                            <User />
-                            Usuarios
-                        </DropdownMenuItem>     
-
-                        <DropdownMenuItem onClick={() => navigate("/dashboard_admin/clickers")}>
-                            <Calculator />
-                            Clickers
-                        </DropdownMenuItem> 
-
-                        <DropdownMenuItem onClick={() => navigate("/dashboard_admin/courses")}>
-                            <Book />
-                            Cursos
-                        </DropdownMenuItem>     
-
-                        <DropdownMenuItem onClick={() => navigate("/dashboard_admin/sessions")}>
-                            <PlayCircle />
-                            Sesiones
-                        </DropdownMenuItem> 
-
-                        <DropdownMenuSeparator/>
-
-                        <DropdownMenuItem onClick={() => navigate("/dashboard_admin/reports")}>
-                            <MessageSquareWarning />
-                            Reportes
-                        </DropdownMenuItem>     
-                    </>
-                )}
-
+                    const ItemIcon = item?.icon ? icons[item.icon] : null;
+                    
+                    return(
+                        <DropdownMenuItem 
+                            key={index} 
+                            onClick={() => navigate(item.path)}
+                        >
+                            {ItemIcon && <ItemIcon className="me-2" />}
+                            {t(item.labelKey)}
+                        </DropdownMenuItem>
+                    )
+                })}
             </DropdownMenuContent>
         </DropdownMenu>
     );

@@ -10,8 +10,11 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { AuthInput } from "@/components/Auth";
 import { validatePassword } from "@/utils/validators";
+import { useTranslation } from "react-i18next";
 
 const ChangePasswordUserDialog = ({open, user, onConfirm, onClose}) => {
+    const { t } = useTranslation();
+    
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [touched, setTouched] = useState({password: false, confirmPassword: false});
@@ -32,16 +35,16 @@ const ChangePasswordUserDialog = ({open, user, onConfirm, onClose}) => {
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>
-                       Cambiar contraseña
+                       {t("admin.usersManagement.dialogs.changePassword.title")}
                     </DialogTitle>
                 </DialogHeader>
                 <DialogDescription>
-                    Establece una nueva contraseña para el usuario <strong>{user.username}</strong>. 
+                    <strong>{t("admin.usersManagement.dialogs.changePassword.description", {username: user.username})}</strong>
                 </DialogDescription>
 
                 <AuthInput
                     id="new-password"
-                    label="Nueva Contraseña"
+                    label={t("admin.usersManagement.dialogs.changePassword.newPassword")}
                     type="password"
                     value={password}
                     onChange={(e) => setPassword( e.target.value)}
@@ -53,7 +56,7 @@ const ChangePasswordUserDialog = ({open, user, onConfirm, onClose}) => {
 
                 <AuthInput
                     id="confirm-password"
-                    label="Confirmar contraseña"
+                    label={t("admin.usersManagement.dialogs.changePassword.confirmPassword")}
                     type="password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
@@ -65,11 +68,11 @@ const ChangePasswordUserDialog = ({open, user, onConfirm, onClose}) => {
 
                 <DialogFooter className="gap-2">
                     <Button className="bg-green-500 hover:bg-green-500" onClick={handleConfirm}>
-                        Cambiar contraseña
+                        {t("common.changePassword")}
                     </Button>
 
                     <Button variant="outline" onClick={onClose}>
-                        Cancelar
+                        {t("common.cancel")}
                     </Button>
                 </DialogFooter>
             </DialogContent>

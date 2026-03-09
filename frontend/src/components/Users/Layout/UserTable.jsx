@@ -8,23 +8,25 @@ import {
 } from "@/components/ui/table";
 import { UserRow } from ".";
 import { Spinner } from "@/components/ui/spinner";
+import { useTranslation } from "react-i18next";
 
 const UserTable = ({users, onEdit, onDelete, onChangePassword, onRestore, loading, onSelect}) => {
     if (loading) return <div className="flex justify-center"><Spinner className="h-10 w-10" color="blue" /></div>;
+
+    const { t } = useTranslation();
 
     return(
         <div className="w-full rounded-md border">
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Nombre</TableHead>
-                        <TableHead className="hidden md:table-cell">Email</TableHead>
-                        <TableHead>Rol</TableHead>
-                        <TableHead className="hidden md:table-cell">Estado</TableHead>
-                        <TableHead className="hidden md:table-cell">Último acceso</TableHead>
+                        <TableHead>{t("admin.usersManagement.table.name")}</TableHead>
+                        <TableHead className="hidden md:table-cell">{t("admin.usersManagement.table.email")}</TableHead>
+                        <TableHead>{t("admin.usersManagement.table.role")}</TableHead>
+                        <TableHead className="hidden md:table-cell">{t("admin.usersManagement.table.status")}</TableHead>
+                        <TableHead className="hidden md:table-cell">{t("admin.usersManagement.table.lastAccess")}</TableHead>
                         <TableHead></TableHead>
                     </TableRow>
-                    
                 </TableHeader>
 
                 <TableBody>
@@ -34,7 +36,7 @@ const UserTable = ({users, onEdit, onDelete, onChangePassword, onRestore, loadin
                                 colSpan={6}
                                 className="text-center py-6 text-muted-foreground"
                             >
-                                No hay usuarios registrados.
+                                {t("admin.usersManagement.table.noUsers")}
                             </TableCell>
                         </TableRow>
                     ) : (

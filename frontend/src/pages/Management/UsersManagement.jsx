@@ -13,6 +13,7 @@ import { UserDetailDrawer } from "@/components/Users/Drawers";
 import { DashboardSubtitle } from "@/components/Dashboard/Layout/Content";
 import { CreateButton } from "@/components/Common/ActionButtons";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const UserManagement = () => {
     // DATA
@@ -34,6 +35,9 @@ const UserManagement = () => {
 
     // Navigation
     const navigate = useNavigate();
+
+    // Translation
+    const { t } = useTranslation();
 
     // DRAWER STATUS
     const handleSelectUser = (user) => {
@@ -119,9 +123,9 @@ const UserManagement = () => {
         <DashboardLayout>
             <DashboardContent>
                 <div className="flex items-center mb-4 justify-between">
-                    <DashboardSubtitle label="Gestión de usuarios" />
+                    <DashboardSubtitle label={t("admin.usersManagement.title")} />
                     <div className="pr-6 md:pr-16">
-                        <CreateButton label="usuario" onClick={() => navigate("/dashboard_admin/users/create")}/>
+                        <CreateButton label={t("admin.usersManagement.labelButton")} onClick={() => navigate("/dashboard_admin/users/create")}/>
                     </div>
                 </div>
 

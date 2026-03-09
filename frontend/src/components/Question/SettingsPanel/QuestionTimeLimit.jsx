@@ -1,9 +1,12 @@
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
+import { useTranslation } from "react-i18next";
 
 const QuestionTimeLimit = ({ timeLimit, onChange }) => {
     const isActive = timeLimit !== null;
+
+    const { t } = useTranslation();
     
     return (
         <div className="w-full flex flex-col gap-2">
@@ -15,7 +18,7 @@ const QuestionTimeLimit = ({ timeLimit, onChange }) => {
                         origin-left
                         text-gray-500 text-xs 
                     `}>
-                    Límite de tiempo (segundos)
+                    {t("teacher.quizzesManagement.quizForm.settings.timeLimit")}
                 </Label>
                 <Switch
                     checked={isActive}
@@ -32,7 +35,7 @@ const QuestionTimeLimit = ({ timeLimit, onChange }) => {
                     step="5"
                     value={timeLimit}
                     onChange={e => onChange({ "timeLimit": Number(e.target.value) })}
-                    placeholder="Introduce el límite de tiempo en segundos"
+                    placeholder={t("teacher.quizzesManagement.quizForm.settings.timeLimitPlaceholder")}
                 />
             )}
         </div>

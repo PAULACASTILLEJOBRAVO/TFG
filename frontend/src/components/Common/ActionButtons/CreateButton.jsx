@@ -5,8 +5,11 @@ import {
     TooltipContent, 
     TooltipTrigger 
 } from "@/components/ui/tooltip";
+import { useTranslation } from "react-i18next";
 
 const CreateButton = ({ onClick, label }) => {
+    const { t } = useTranslation();
+
     return(
         <Tooltip>
             <TooltipTrigger asChild>
@@ -21,7 +24,7 @@ const CreateButton = ({ onClick, label }) => {
             </TooltipTrigger>
 
             <TooltipContent>
-                Crear {label}
+                {t("common.create")} {label}
             </TooltipContent>
         </Tooltip>
     );

@@ -14,8 +14,11 @@ import {
 import { useAuth } from "@/auth/AuthContext";
 import { useClickerActions } from "@/hooks/Clickers/useClickerActions";
 import { DecimalToHexadecimal } from "@/utils/clickers";
+import { useTranslation } from "react-i18next";
 
 const ClickersManagement = () => {
+  const { t } = useTranslation();
+
   // DATA
   const { user } = useAuth();
   const { clickers, loading: loadingClickers, refetch } = useClickers();
@@ -159,9 +162,9 @@ const ClickersManagement = () => {
     <DashboardLayout>
       <DashboardContent>
         <div className="flex items-center mb-4 justify-between">
-            <DashboardSubtitle label="Gestión de clickers" />
+            <DashboardSubtitle label={t("admin.clickersManagement.title")} />
             <div className="pr-6 md:pr-16">
-                <CreateButton label="clicker" onClick={openCreateDialog}/>
+                <CreateButton label={t("admin.clickersManagement.labelButton")} onClick={openCreateDialog}/>
             </div>
         </div>
 

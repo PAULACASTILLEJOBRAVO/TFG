@@ -9,9 +9,12 @@ import {
 import { HexadecimalToDecimal } from "@/utils/clickers";
 import { StudentSearch } from "@/components/Users/Layout/Students";
 import { ClickerStatusSelector } from "../Content";
+import { useTranslation } from "react-i18next";
 
 const ClickerRow = ({clicker, editClicker, editClickerId,  onEdit, onDelete, onRestore, onSaveEdit, onCancelEdit, onEditChange, onToggle}) => {
     const isEditing = editClickerId === clicker._id;
+
+    const { t } = useTranslation();
 
     return(
         <TableRow className={`hover:bg-muted ${clicker.isDeleted ? "bg-red-50 hover:bg-red-100 text-gray-500" : isEditing ? "bg-blue-50 hover:bg-blue-100" : ""}`}>
@@ -20,8 +23,8 @@ const ClickerRow = ({clicker, editClicker, editClickerId,  onEdit, onDelete, onR
                 ? editClicker?.status === "assigned" 
                     ? <TableCell>
                         <StudentSearch 
-                            label="Asignar estudiante"
-                            placeholder="Introduce el nombre del estudiante"
+                            label={t("admin.clickersManagement.dialogs.create.studentLabel")}
+                            placeholder={t("admin.clickersManagement.dialogs.create.studentPlaceholder")}
                             selectedIdStudent={editClicker?.assignedToUserId ? editClicker.assignedToUserId : null}
                             onSelect={onToggle} 
                             showStatus="forAdmin"

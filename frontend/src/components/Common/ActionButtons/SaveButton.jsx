@@ -4,9 +4,12 @@ import {
     TooltipContent, 
     TooltipTrigger 
 } from "@/components/ui/tooltip";
-import { Save } from 'lucide-react'  
+import { Save } from 'lucide-react';
+import { useTranslation } from "react-i18next"; 
 
 const SaveButton = ({ onClick }) => {
+    const { t } = useTranslation();
+    
     return(
         onClick && (
             <Tooltip>   
@@ -22,7 +25,7 @@ const SaveButton = ({ onClick }) => {
                 </TooltipTrigger>
 
                 <TooltipContent>
-                    Guardar
+                    {t("common.save")}
                 </TooltipContent>
             </Tooltip>
         )

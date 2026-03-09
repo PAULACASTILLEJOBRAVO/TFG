@@ -7,10 +7,13 @@ import {
 } from "@/components/ui/command";
 import { Spinner } from "@/components/ui/spinner";
 import { useStudents } from "@/hooks/Users/useStudents";
+import { useTranslation } from "react-i18next";
 
 const StudentSearch = ({ placeholder = "Buscar...", selectedIdStudents = [], selectedIdStudent = null, onSelect, showStatus = false }) => {
     const { studentsForTeacher, studentsForAdmin, loading } = useStudents();
     const students = showStatus === "forTeacher" ? studentsForTeacher : showStatus === "forAdmin" ? studentsForAdmin : [];
+
+    const { t } = useTranslation();
 
     if (loading) return <div className="flex justify-center"><Spinner className="h-10 w-10" color="blue" /></div>;
 
@@ -18,7 +21,7 @@ const StudentSearch = ({ placeholder = "Buscar...", selectedIdStudents = [], sel
         <div className="relative flex items-center">
             <Command className="w-full rounded-lg border">
                 <CommandInput placeholder={placeholder} className="pl-9 w-full" />
-                <CommandEmpty>No se encontraron estudiantes.</CommandEmpty>
+                <CommandEmpty>{t("teacher.quizzesManagement.quizForm.studentList.noStudents")}</CommandEmpty>
                 <CommandList className="max-h-60 overflow-y-auto">
                     {students.map(student => {
                         const isSelected = selectedIdStudents.includes(student._id) || selectedIdStudent === student._id;

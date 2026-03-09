@@ -2,126 +2,116 @@ export const sidebarConfig = {
     share: [],
     student: [
         {
-            label: "Inicio",
+            labelKey: "common.home",
             icon: "house",
             href: "/dashboard_student/"
         },
-        // {
-        //     label: "Cursos",
-        //     icon: "book",
-        //     href: "/dashboard_student/courses"
-        // },
         {
-            label: "Ranking",
+            labelKey: "student.ranking",
             icon: "trophy",
             href: "/dashboard_student/ranking"
         },
         // {
-        //     label: "Estadísticas",
+        //     labelKey: "student.stadistics",
         //     icon: "chart-bar",
         //     href: "/dashboard_student/stadistics"
         // },
         {
-            label: "Perfil",
+            labelKey: "common.profile",
             icon: "profile",
             href: "/dashboard_student/profile"
         },
         {
-            label: "Ajustes",
+            labelKey: "common.settings",
             icon: "settings",
             href: "/dashboard_student/settings"
         },
         // {
-        //     label: "Tutorial",
+        //     labelKey: "common.tutorial",
         //     icon: "tutorial",
         //     href: "/dashboard_student/tutorial"
         // },
         {
-            label: "Log out",
+            labelKey: "common.logout",
             icon: "logout",
             action: "logout"
         }
     ],
     teacher: [
         {
-            label: "Inicio",
+            labelKey: "common.home",
             icon: "house",
             href: "/dashboard_teacher/"
         },
-        // {
-        //     label: "Cursos",
-        //     icon: "book",
-        //     href: "/dashboard_teacher/courses"
-        // },
         {
-            label: "Cuestionarios",
+            labelKey: "teacher.quizzes",
             icon: "quiz",
             href: "/dashboard_teacher/quizzes"
         },
         // {
-        //     label: "Histórico",
+        //     labelKey: "teacher.historical",
         //     icon: "clock",
         //     href: "/dashboard_teacher/historic"
         // },
         {
-            label: "Perfil",
+            labelKey: "common.profile",
             icon: "profile",
             href: "/dashboard_teacher/profile"
         },
         {
-            label: "Ajustes",
+            labelKey: "common.settings",
             icon: "settings",
             href: "/dashboard_teacher/settings"
         },
         // {
-        //     label: "Tutorial",
+        //     labelKey: "common.tutorial",
         //     icon: "tutorial",
         //     href: "/dashboard_teacher/tutorial"
         // },
         {
-            label: "Log out",
+            labelKey: "common.logout",
             icon: "logout",
             action: "logout"
         }
     ],
     admin: [
         {
-            label: "Inicio",
+            labelKey: "common.home",
             icon: "house",
             href: "/dashboard_admin/"
         },
         {
-            label: "Usuarios",
+            labelKey: "admin.users",
             icon: "user",
             href: "/dashboard_admin/users"
         },
         {
-            label: "Clickers",
+            labelKey: "admin.clickers",
             icon: "clicker",
             href: "/dashboard_admin/clickers"
         },
         // {
-        //     label: "Estadísticas",
+        //     labelKey: "admin.stadistics",
         //     icon: "chart-bar",
         //     href: "/dashboard_admin/stadistics"
         // },
         {
-            label: "Perfil",
+            labelKey: "common.profile",
             icon: "profile",
             href: "/dashboard_admin/profile"
         },
         {
-            label: "Ajustes",
+            labelKey: "common.settings",
             icon: "settings",
             href: "/dashboard_admin/settings"
         },
         // {
-        //     label: "Tutorial",
+        //     labelKey: "common.tutorial",
         //     icon: "tutorial",
         //     href: "/dashboard_admin/tutorial"
         // },
         {
-            label: "Log out",
+            labelKey: "common.logout",
             icon: "logout",
             action: "logout"
         }

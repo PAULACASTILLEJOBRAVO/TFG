@@ -7,28 +7,32 @@ import {
     DialogFooter 
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "react-i18next";
 
 const DeleteUserDialog = ({open, user, onConfirm, onClose}) => {
+    const { t } = useTranslation();
+
     return(
         <Dialog open={open} onOpenChange={onClose}>
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>
-                        Eliminar usuario
+                        {t("admin.usersManagement.dialogs.delete.title")}
                     </DialogTitle>
                 </DialogHeader>
                 <DialogDescription>
-                    Esta opción eliminará al usuario <strong>{user.username}</strong>. 
-                    No podrá volver a iniciar sesión.
+                    {t("admin.usersManagement.dialogs.delete.description")}
+                    <br />
+                    <strong>{t("admin.usersManagement.dialogs.delete.warning", {username: user.username})}</strong>
                 </DialogDescription>
 
                 <DialogFooter className="gap-2">
                     <Button variant="destructive" onClick={() => onConfirm("User removed by an admin")}>
-                        Eliminar
+                        {t("common.delete")}
                     </Button>
 
                     <Button variant="outline" onClick={onClose}>
-                        Cancelar
+                        {t("common.cancel")}
                     </Button>
                 </DialogFooter>
             </DialogContent>

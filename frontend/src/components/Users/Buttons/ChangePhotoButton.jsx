@@ -7,16 +7,17 @@ import {
 } from "@/components/ui/tooltip";
 import { useTranslation } from "react-i18next";
 
-const EditButton = ({ onClick, label }) => {
+const ChangePhotoButton = ({ onClick }) => {
     const { t } = useTranslation();
 
     return(
         <Tooltip>
             <TooltipTrigger asChild>
-                <Button 
-                    className="[&_svg]:size-4 hover:text-blue-600 hover:bg-blue-100"
-                    variant="ghost"
+                <Button
+                    type="button"
                     size="icon"
+                    variant="secondary"
+                    className="absolute bottom-0 right-0 h-8 w-8 rounded-full shadow-md"
                     onClick={onClick}
                 >
                     <Pencil />
@@ -24,10 +25,10 @@ const EditButton = ({ onClick, label }) => {
             </TooltipTrigger>
 
             <TooltipContent>
-                {t("common.edit")} {label}
+                {t("common.changePhoto")}
             </TooltipContent>
         </Tooltip>
     );
 }
 
-export default EditButton;
+export default ChangePhotoButton;

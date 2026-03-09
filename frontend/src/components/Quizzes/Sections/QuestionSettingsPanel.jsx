@@ -11,9 +11,12 @@ import {
     QuestionOptionsSelector
 } from "@/components/Question/SettingsPanel";
 import { createDefaultOptions } from "@/utils/questions";
+import { useTranslation } from "react-i18next";
 
 const QuestionSettingsPanel = ({ question, onChange }, maxHeight) => {
     if(!question) return null;
+
+    const { t } = useTranslation();
 
     const handleTypeChange = (type) => {
         onChange({ type, options: createDefaultOptions(type) });
@@ -37,7 +40,7 @@ const QuestionSettingsPanel = ({ question, onChange }, maxHeight) => {
     return (
         <Card >
             <CardHeader>
-                <CardTitle className="text-center">Settings</CardTitle>
+                <CardTitle className="text-center">{t("teacher.quizzesManagement.quizForm.settings.title")}</CardTitle>
             </CardHeader>
 
             <CardContent className="flex flex-col gap-2 items-center">

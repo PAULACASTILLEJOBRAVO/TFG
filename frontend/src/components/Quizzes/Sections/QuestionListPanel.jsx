@@ -7,13 +7,16 @@ import {
 import { CreateButton } from "@/components/Common/ActionButtons";
 import { QuestionSlideCard } from "@/components/Question";
 import { createNewQuestion } from "@/utils/questions";
+import { useTranslation } from "react-i18next";
 
 const QuestionListPanel = ({ displayQuestions, selectedQuestion, onSelect, onAdd, onDelete, maxHeight }) => {
+    const { t } = useTranslation();
+
     return (
         <Card className="flex flex-col h-full">
             <CardHeader>
                 <CardTitle className="text-center">
-                   Questions
+                    {t("teacher.quizzesManagement.quizForm.questions")}
                 </CardTitle>
             </CardHeader>
 
@@ -30,7 +33,7 @@ const QuestionListPanel = ({ displayQuestions, selectedQuestion, onSelect, onAdd
                         ); 
                     })}
                 </div> 
-            <CreateButton label="pregunta" onClick={() => onAdd(createNewQuestion())}/>
+            <CreateButton label={t("common.create")} onClick={() => onAdd(createNewQuestion())}/>
             </CardContent>
         </Card>
     );

@@ -1,10 +1,13 @@
 import { Badge } from "@/components/ui/badge";
+import { useTranslation } from "react-i18next";
 
 const QuizStatusChip = ({ status }) => {
+    const { t } = useTranslation();
+
     if(status === 'archived') {
         return (
             <Badge variant="destructive">
-                Archivado
+                {t('teacher.quizzesManagement.detailsCard.archived')}
             </Badge>
         );
     }
@@ -12,7 +15,7 @@ const QuizStatusChip = ({ status }) => {
     if(status === 'draft') {
         return (
             <Badge variant="secondary">
-                Borrador
+                {t('teacher.quizzesManagement.detailsCard.draft')}
             </Badge>
         );
     }
@@ -20,14 +23,14 @@ const QuizStatusChip = ({ status }) => {
     if(status === 'published') {
         return (
             <Badge className="bg-green-500 hover:bg-green-500">
-                Publicado
+                {t('teacher.quizzesManagement.detailsCard.published')}
             </Badge>
         );
     }
 
     return(
         <Badge variant="outline">
-            Sin estado reconocido
+            {t('teacher.quizzesManagement.detailsCard.unknown')}
         </Badge>
     );
 }

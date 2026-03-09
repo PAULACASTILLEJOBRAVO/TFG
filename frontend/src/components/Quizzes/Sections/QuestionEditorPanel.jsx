@@ -9,9 +9,12 @@ import { OptionRow } from "@/components/Question/EditorPanel";
 import { RadioGroup } from "@/components/ui/radio-group";
 import { forwardRef, Fragment } from "react";
 import { colorCard } from "@/utils/constants";
+import { useTranslation } from "react-i18next";
 
 const QuestionEditorPanel = forwardRef(({ question, questionError, touched, submitted, onChange, onBlur }, ref) => {
     if(!question) return null;
+
+    const { t } = useTranslation();
 
     return (
         <Card>
@@ -24,7 +27,7 @@ const QuestionEditorPanel = forwardRef(({ question, questionError, touched, subm
                     <EditInput
                         id="question-text"
                         className="w-full"
-                        label="Escribe una pregunta"
+                        label={t("teacher.quizzesManagement.quizForm.editor.title")}
                         value={question.text ?? ""}
                         onChange={(e) => onChange({"text": e.target.value})}
                         onBlur={() => onBlur("question", "text")}

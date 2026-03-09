@@ -8,18 +8,21 @@ import {
 } from "@/components/ui/table";
 import { ClickerRow } from ".";
 import { Spinner } from "@/components/ui/spinner";
+import { useTranslation } from "react-i18next";
 
 const ClickerTable = ({clickers, loading, editClicker, editClickerId, onEdit, onDelete, onRestore, onSaveEdit, onCancelEdit, onEditChange, onToggleStudent}) => {
     if (loading) return <div className="flex justify-center"><Spinner className="h-10 w-10" color="blue" /></div>;
+
+    const { t } = useTranslation();
 
     return(
         <div className="w-full rounded-md border">
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Código del dispositivo</TableHead>
-                        <TableHead>Usuario asignado</TableHead>
-                        <TableHead>Estado</TableHead>
+                        <TableHead>{t("admin.clickersManagement.table.code")}</TableHead>
+                        <TableHead>{t("admin.clickersManagement.table.assignedUser")}</TableHead>
+                        <TableHead>{t("admin.clickersManagement.table.status")}</TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                     
@@ -32,7 +35,7 @@ const ClickerTable = ({clickers, loading, editClicker, editClickerId, onEdit, on
                                 colSpan={6}
                                 className="text-center py-6 text-muted-foreground"
                             >
-                                No hay clickers registrados.
+                                {t("admin.clickersManagement.table.noClickers")}
                             </TableCell>
                         </TableRow>
                     ) : (

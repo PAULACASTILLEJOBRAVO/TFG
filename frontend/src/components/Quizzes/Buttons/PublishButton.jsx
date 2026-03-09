@@ -5,8 +5,11 @@ import {
     TooltipContent,
     TooltipTrigger 
 } from "@/components/ui/tooltip";
+import { useTranslation } from "react-i18next";
 
 const PublishButton = ({ onClick, label }) => {
+    const { t } = useTranslation();
+
     return (
         onClick && (
             <Tooltip>   
@@ -22,7 +25,7 @@ const PublishButton = ({ onClick, label }) => {
                 </TooltipTrigger>
 
                 <TooltipContent>
-                    Publicar {label}
+                    {t("common.publish")} {label}
                 </TooltipContent>
             </Tooltip>
         )

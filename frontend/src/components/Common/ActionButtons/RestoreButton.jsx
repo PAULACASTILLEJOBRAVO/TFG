@@ -4,9 +4,12 @@ import {
     TooltipContent, 
     TooltipTrigger 
 } from "@/components/ui/tooltip";
-import { RotateCcw } from 'lucide-react'  
+import { RotateCcw } from 'lucide-react';
+import { useTranslation } from "react-i18next";  
 
 const RestoreButton = ({onClick, label }) => {
+    const { t } = useTranslation();
+
     return(
         onClick && (
             <Tooltip>   
@@ -22,7 +25,7 @@ const RestoreButton = ({onClick, label }) => {
                 </TooltipTrigger>
 
                 <TooltipContent>
-                    Restaurar {label}
+                    {t("common.restore")} {label}
                 </TooltipContent>
             </Tooltip>
         )

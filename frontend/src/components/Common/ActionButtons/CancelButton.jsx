@@ -4,8 +4,11 @@ import {
     TooltipContent, 
     TooltipTrigger 
 } from "@/components/ui/tooltip";
+import { useTranslation } from "react-i18next";
 
 const CancelButton = ({ onClick }) => {
+    const { t } = useTranslation();
+
     return(
         <Tooltip>
             <TooltipTrigger asChild>
@@ -20,7 +23,7 @@ const CancelButton = ({ onClick }) => {
             </TooltipTrigger>
 
             <TooltipContent>
-                Cancelar
+                {t("common.cancel")}
             </TooltipContent>
         </Tooltip>
     );

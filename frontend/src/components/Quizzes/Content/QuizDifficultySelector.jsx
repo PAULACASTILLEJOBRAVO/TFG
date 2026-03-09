@@ -4,12 +4,14 @@ import {
     SelectItem, 
     SelectTrigger, 
     SelectValue, 
-    SelectLabel, 
     SelectGroup 
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
+import { useTranslation } from "react-i18next";
 
 const QuizDifficultySelector = ({value, onChange, difficulties}) => { 
+    const { t } = useTranslation();
+
     return(
         <div className="w-full">
             <div className="px-3 bg-transparent text-black">
@@ -21,20 +23,19 @@ const QuizDifficultySelector = ({value, onChange, difficulties}) => {
                         text-gray-500 text-xs
                          
                     `}>
-                    Dificultad
+                    {t('teacher.quizzesManagement.quizForm.difficulty.label')}
                 </Label>
             </div>
             <Select value={value ? value : difficulties[0].value} onValueChange={onChange}>
                 <SelectTrigger>
-                    <SelectValue placeholder="Selecciona dificultad" />
+                    <SelectValue placeholder={t('teacher.quizzesManagement.quizForm.difficulty.select')} />
                 </SelectTrigger>
 
                 <SelectContent>
                     <SelectGroup>
-                        <SelectLabel>Dificultad</SelectLabel>
                         {difficulties.map(difficulty => (   
                             <SelectItem key={difficulty._id} value={difficulty.value}>
-                                {difficulty.label}
+                                {t('teacher.quizzesManagement.detailsCard.difficulty.' + difficulty.value)}
                             </SelectItem>
                         ))}
                     </SelectGroup>

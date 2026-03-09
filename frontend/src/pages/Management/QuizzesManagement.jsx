@@ -15,6 +15,7 @@ import {
 import { useState } from "react";
 import { useQuizActions } from "@/hooks/Quizzes/useQuizActions";
 import { Spinner } from "@/components/ui/spinner";
+import { useTranslation } from "react-i18next";
 
 const QuizzesManagement = () => {
     const { quizzes, loading, refetch } = useQuizzes();
@@ -25,6 +26,9 @@ const QuizzesManagement = () => {
 
     // NAVIGATION
     const navigate = useNavigate();
+
+    // TRANSLATION
+    const { t } = useTranslation();
 
     //DIALOGS
     const [dialogs, setDialogs] = useState({
@@ -97,10 +101,10 @@ const QuizzesManagement = () => {
         <DashboardLayout>
             <DashboardContent>
                 <div className="flex items-center mb-4 justify-between">
-                    <DashboardSubtitle label="Mis cuestionarios" />
+                    <DashboardSubtitle label={t("teacher.quizzesManagement.title")} />
                        
                     <div className="pr-6 md:pr-16">
-                        <CreateButton label="cuestionario" onClick={() => navigate("/dashboard_teacher/quizzes/create")}/>
+                        <CreateButton label={t("teacher.quizzesManagement.labelButton")} onClick={() => navigate("/dashboard_teacher/quizzes/create")}/>
                     </div>
                 </div>
 
@@ -111,7 +115,7 @@ const QuizzesManagement = () => {
                         <Spinner className="h-10 w-10" color="blue" />
                     </div>
                 ) : quizzes.length === 0 && (
-                    <p className="text-gray-500">No tienes cuestionarios creados.</p>
+                    <p className="text-gray-500">{t("teacher.quizzesManagement.detailsCard.noQuizzes")}</p>
                 )}
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

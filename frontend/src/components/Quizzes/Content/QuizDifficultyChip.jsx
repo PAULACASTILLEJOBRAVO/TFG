@@ -1,10 +1,13 @@
 import { Badge } from "@/components/ui/badge";
+import { useTranslation } from "react-i18next";
 
 const QuizDifficultyChip = ({ difficulty }) => {
+    const { t } = useTranslation();
+
     if(difficulty === 'hard') {
         return (
             <Badge variant="destructive">
-                Difícil
+                {t('teacher.quizzesManagement.difficulty.hard')}
             </Badge>
         );
     }
@@ -12,7 +15,7 @@ const QuizDifficultyChip = ({ difficulty }) => {
     if(difficulty === 'medium') {
         return (
             <Badge variant="secondary">
-                Medio
+                {t('teacher.quizzesManagement.difficulty.medium')}
             </Badge>
         );
     }
@@ -20,14 +23,14 @@ const QuizDifficultyChip = ({ difficulty }) => {
     if(difficulty === 'easy') {
         return (
             <Badge className="bg-green-500 hover:bg-green-500">
-                Fácil
+                {t('teacher.quizzesManagement.difficulty.easy')}
             </Badge>
         );
     }
 
     return(
         <Badge variant="outline">
-            Sin dificultad
+            {t('teacher.quizzesManagement.difficulty.unknown')}
         </Badge>
     );
 }

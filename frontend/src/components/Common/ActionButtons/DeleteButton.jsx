@@ -5,8 +5,11 @@ import {
     TooltipContent, 
     TooltipTrigger 
 } from "@/components/ui/tooltip";
+import { useTranslation } from "react-i18next";
 
 const DeleteButton = ({ onClick, label }) => {
+    const { t } = useTranslation();
+
     return(
         <Tooltip>
             <TooltipTrigger asChild>
@@ -21,7 +24,7 @@ const DeleteButton = ({ onClick, label }) => {
             </TooltipTrigger>
 
             <TooltipContent>
-                Eliminar {label}
+                {t("common.delete")} {label}
             </TooltipContent>
         </Tooltip>
     );

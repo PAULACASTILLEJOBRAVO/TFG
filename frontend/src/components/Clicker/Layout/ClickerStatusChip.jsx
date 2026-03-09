@@ -1,10 +1,13 @@
 import { Badge } from "@/components/ui/badge";
+import { useTranslation } from "react-i18next";
 
 const ClickerStatusChip = ({ status }) => {
+    const { t } = useTranslation();
+
     if(status === "damaged") {
         return (
             <Badge variant="destructive">
-                Dañado
+                {t("admin.clickersManagement.row.edit.damaged")}
             </Badge>
         );
     }
@@ -12,7 +15,7 @@ const ClickerStatusChip = ({ status }) => {
     if(status === "assigned") {
         return (
             <Badge variant="outline" className="bg-blue-500 text-white hover:bg-blue-400">
-                En uso
+                {t("admin.clickersManagement.row.edit.assigned")}
             </Badge>
         );
     }
@@ -20,7 +23,7 @@ const ClickerStatusChip = ({ status }) => {
     if(status === "available") {
         return (
             <Badge variant="outline" className="bg-green-500 text-white hover:bg-green-400">
-                Disponible
+                {t("admin.clickersManagement.row.edit.available")}
             </Badge>
         );
     }
@@ -28,14 +31,14 @@ const ClickerStatusChip = ({ status }) => {
     if(status === "retired") {
         return (
             <Badge variant="outline" className="bg-gray-500 text-white hover:bg-gray-400">
-                Retirado
+                {t("admin.clickersManagement.row.edit.retired")}
             </Badge>
         );
     }
 
     return (
         <Badge variant="outline">
-            Desconocido
+            {t("admin.clickersManagement.row.edit.unknown")}
         </Badge>
     );
 }

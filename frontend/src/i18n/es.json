@@ -255,6 +255,55 @@
                     "reasonLabel": "Motivo de publicación"
                 }
             }
+        },
+
+        "sessionControl": {
+            "steps": {
+                "receiverConnection": {
+                    "connectReceiverDescription": "Conecta el receptor de clickers para comenzar el cuestionario.",
+                    "clickersDetectedDescription": "Los clickers se detectarán automáticamente cuando los estudiantes envíen sus respuestas.",
+                    "connected": "✔ Receptor conectado",
+                    "listened": "✔ Oyente de eventos iniciado",
+                    "connectButton": "Conectar receptor de clickers",
+                    "connectingButton": "Conectando al receptor..."
+                },
+                "openPresentation": {
+                    "openPresentationDescription":"Abre la pantalla de presentación para mostrar el cuestionario a los estudiantes.",
+                    "presentationDescription":"La pantalla de presentación mostrará las preguntas y los resultados en tiempo real a medida que los estudiantes envíen sus respuestas.",
+                    "opened": "✔ Ventana de presentación abierta",
+                    "openButton": "Abrir ventana de presentación"
+                },
+                "startSession": {
+                    "startSessionDescription": "Después de abrir la presentación, puedes iniciar la sesión.",
+                    "sessionDescription": "Una vez iniciada la sesión, los estudiantes podrán enviar sus respuestas.",
+                    "started": "✔ Sesión iniciada",
+                    "startButton": "Iniciar sesión"
+                }
+            },
+            "questionControlScreen":{
+                "endQuestion": "Finalizar pregunta",
+                "nextQuestion": "Siguiente pregunta",
+                "showResults": "Mostrar resultados"
+            }
+        },
+        "sessionPresentation": {
+            "waiting": {
+                "title": "Enciende tu dispositivo clicker",
+                "subtitle": "Cuando empiece el cuestionario:",
+                "instructions": [
+                    {
+                        "text": "Usa los botones A a H para preguntas de opción múltiple."
+                    },
+                    {
+                        "text": "Usa los botones A o B para verdadero/falso:",
+                        "subItems": [
+                            "A = Verdadero.",
+                            "B = Falso."
+                        ]
+                    }
+                ],
+                "message": "Esperando al profesor..."
+            }
         }
     },
     "student": {

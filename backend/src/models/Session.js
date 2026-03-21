@@ -19,14 +19,6 @@ const sessionSchema = new Schema({
         ref: 'Quiz',
         required: true 
     },
-    // courseId: { 
-    //     type: mongoose.Schema.Types.ObjectId, 
-    //     ref: 'Course' 
-    // },
-    // currentQuestionId: { 
-    //     type: mongoose.Schema.Types.ObjectId, 
-    //     ref: 'Question' 
-    // }, // To track the current question being asked in the session
 
     //States and configuration
     startTime: { 
@@ -58,18 +50,10 @@ const sessionSchema = new Schema({
     }, // Reason for deletion
 
     // Additional features (commented out for future use)
-    // isLive: { 
-    //     type: Boolean, 
-    //     default: false 
-    // }, // Indicates if the session is currently live
-    // allowLateJoin: { 
-    //     type: Boolean, 
-    //     default: true 
-    // }, // Allow players to join after the session has started
-    //resultsGenerated: { 
-    //     type: Boolean, 
-    //     default: false 
-    // } // Indicates if the results have been generated for the session
+    isLive: { 
+        type: Boolean, 
+        default: false 
+    }, // Indicates if the session is currently live
 }, 
 { 
     timestamps: true, // Add createdAt and updatedAt fields

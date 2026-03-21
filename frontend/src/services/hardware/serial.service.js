@@ -1,8 +1,13 @@
-import { cleanAnsi, parseCoordinatorMessage } from "../../utils/serial";
+import { 
+    cleanAnsi, 
+    parseCoordinatorMessage,
+    parseResultBlock
+} from "../../utils/serial";
 
 // Variables to manage the serial port connection and data parsing
 let port = null; // Variable to hold the serial port instance
 let writer = null; // Variable to hold the writer instance for sending data to the serial port
+let writeQueue = Promise.resolve(); // Queue to ensure that write operations to the serial port are executed sequentially
 let reader = null; // Variable to hold the reader instance for reading data from the serial port
 
 // Variables to control reconnection attempts in case of connection loss
@@ -25,8 +30,10 @@ export const connectCoordinator = async () => {
     port = await navigator.serial.requestPort(); // Request the user to select a serial port
     await port.open({ 
         baudRate: 115200, 
-        timeout: 0.1000,
     }); // Open the selected serial port with the specified baud rate
+
+    // Write the command to the serial port, appending a newline character to indicate the end of the command
+    writer = port.writable.getWriter();
 
     return true;
 }
@@ -69,6 +76,15 @@ export const disconnectCoordinator = async () => {
         // Cancel any ongoing listening operations and release locks on the reader and writer
         listening = false;
 
+        if (writer) {
+            try {
+                writer.releaseLock();
+            } catch {
+                console.warn("Writer was already released or canceled");
+            }
+            writer = null;
+        }
+
         if (reader) {
             try {
                 await reader.cancel();
@@ -95,20 +111,22 @@ export const disconnectCoordinator = async () => {
 // Service to send a command to the coordinator device
 export const sendCommand = async (command) => {
     if (!port) throw new Error("Coordinator not connected");
+    if( !writer) throw new Error("Writer not actived");
 
-    // Write the command to the serial port, appending a newline character to indicate the end of the command
-    writer = port.writable.getWriter();
+    writeQueue = writeQueue.then(() =>
+        writer.write(new TextEncoder().encode(command + "\r\n")) // Encode the command as a Uint8Array and write it to the serial port
+    );
 
-    await writer.write(
-        new TextEncoder().encode(command + "\r\n")
-    ); // Encode the command as a Uint8Array and write it to the serial port
-
-    writer.releaseLock(); 
+    return writeQueue.catch(err => {
+        console.error("Serial write failed", err);
+        throw err;
+    });
 }
 
 // Service to listen for incoming data from the coordinator device
 export const listenResponse = async (callback) => {
     if (!port) throw new Error("Coordinator not connected");
+    if (reader) return; // If a reader is already active, return to avoid multiple listeners
 
     listening = true; 
 
@@ -116,62 +134,58 @@ export const listenResponse = async (callback) => {
 
     const decoder = new TextDecoder(); // Create a TextDecoder instance to decode incoming data from the serial port
 
+    let blockTimer = null; // Timer to detect the end of a multi-line block of data
+
     while (listening) {
         const { value, done } = await reader.read();
         if (done) break;
         if(!value) continue;
 
         buffer += decoder.decode(value, { stream: true }); // Decode the incoming data and append it to the buffer
+       
+        while (buffer.includes("\n")) { // Check if the buffer contains a complete line of data (indicated by a newline character)
+            let index = buffer.indexOf("\n"); // Find the index of the first newline character in the buffer
+            let line = buffer.slice(0, index).trim(); // Extract the line of data from the buffer and trim any whitespace
+            buffer = buffer.slice(index + 1); // Remove the processed line from the buffer
+            
+            line = cleanAnsi(line);
+            if (!line) continue;
+            line = line.replace(/^qa:~\$\s*/, "");
 
-        if (buffer.includes("\n")) { // Wait until we have a complete line of data before processing
-            let lines = buffer.split("\n"); // Split the buffer into lines based on the newline character
-            buffer = lines.pop(); 
-
-            for (let line of lines) {
-                line = cleanAnsi(line.trim());
-                if (!line) continue;
-                line = line.replace(/^qa:~\$\s*/, "");
-
-                accumulatedLines.push(line);
-
-                // Detect the start of a multi-line message based on specific patterns in the incoming data
-                if (
-                    line.startsWith("Respuestas para pregunta") ||
-                    line.endsWith("respuestas:")
-                ) {
-                    processingMultiLine = true;
-                }
+            // Start of multi-line result message, wait for complete response
+            if (line.startsWith("Respuestas para pregunta")) {
+                processingMultiLine = true;
+                accumulatedLines = [line]; // reinicia bloque
+                continue;
             }
 
-            let hasCompleteResponse = false;
-
+            // If we are processing a multi-line block, accumulate lines until we reach the end of the block (indicated by a line that does not start with "Opción ")
             if (processingMultiLine) {
-                let optionsCount = accumulatedLines.filter(l =>
-                    l.startsWith("Opción ")
-                ).length;
+                if (line.startsWith("Opción ")) {
+                    accumulatedLines.push(line);
+                    
+                    clearTimeout(blockTimer);
 
-                if (optionsCount >= 2) {
-                    hasCompleteResponse = true;
+                    blockTimer = setTimeout(() => {
+                        // End of multi-line block, parse only if there are at least 2 options
+                        if (processingMultiLine && accumulatedLines.length > 1) {
+                            const event = parseResultBlock(accumulatedLines);
+                            callback(event);  
+
+                            accumulatedLines = [];
+                            processingMultiLine = false;
+                        }
+                    }, 1000); // Wait for 1 second after the last option line to ensure we have received the complete block before parsing
                 }
-            } else {
-                hasCompleteResponse = true;
+                continue;
             }
 
-            if (hasCompleteResponse) {
-                const parsedEvents = accumulatedLines
-                    .map(parseCoordinatorMessage)
-                    .filter(Boolean);
-
-                parsedEvents.forEach(event => callback(event));
-
-                accumulatedLines = [];
-                processingMultiLine = false;
-            }
+            // Normal line outside of block
+            const parsed = parseCoordinatorMessage(line);
+            if (parsed) callback(parsed);
         }
     }
 }
-
-
 
 // Service to stop listening for incoming data from the coordinator device
 export const stopListening = async () => {

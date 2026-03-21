@@ -1,12 +1,23 @@
 export const colorCard = {
-    0: "bg-red-500",
-    1: "bg-yellow-500",
-    2: "bg-blue-500",
-    3: "bg-green-500",
-    4: "bg-pink-500",
-    5: "bg-orange-500",
-    6: "bg-purple-500",
-    7: "bg-teal-500",
+  0: { normal: "bg-red-500", dim: "bg-red-500/60" },
+  1: { normal: "bg-yellow-500", dim: "bg-yellow-500/60" },
+  2: { normal: "bg-blue-500", dim: "bg-blue-500/60" },
+  3: { normal: "bg-green-500", dim: "bg-green-500/60" },
+  4: { normal: "bg-pink-500", dim: "bg-pink-500/60" },
+  5: { normal: "bg-orange-500", dim: "bg-orange-500/60" },
+  6: { normal: "bg-purple-500", dim: "bg-purple-500/60" },
+  7: { normal: "bg-teal-500", dim: "bg-teal-500/60" },
+};
+
+export const barColorCard = {
+    0: { normal: "bg-red-300", dim: "bg-red-700/70" },
+    1: { normal: "bg-yellow-300", dim: "bg-yellow-700/70" },
+    2: { normal: "bg-blue-300", dim: "bg-blue-700/70" },
+    3: { normal: "bg-green-300", dim: "bg-green-700/70" },
+    4: { normal: "bg-pink-300", dim: "bg-pink-700/70" },
+    5: { normal: "bg-orange-300", dim: "bg-orange-700/70" },
+    6: { normal: "bg-purple-300", dim: "bg-purple-700/70" },
+    7: { normal: "bg-teal-300", dim: "bg-teal-700/70" },
 };
 
 export const colsMap = {

@@ -8,7 +8,6 @@ import {
 } from "@/components/Common";
 import { Separator } from "@/components/ui/separator";
 import { 
-  act,
   useEffect, 
   useState 
 } from "react";

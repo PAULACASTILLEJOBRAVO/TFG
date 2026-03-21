@@ -12,5 +12,13 @@ export const breadcrumbConfig = {
     "/dashboard_teacher/quizzes/create": [
         { label: "Quizzes", href: "/dashboard_teacher/quizzes" },
         { label: "Create Quiz", }
-    ]
+    ],
+    "/dashboard_teacher/quizzes/:id/edit": [
+        { label: "Quizzes", href: "/dashboard_teacher/quizzes" },
+        { label: "Edit Quiz", }
+    ],
+    "/dashboard_teacher/session/:id": [
+        { label: "Quizzes", href: "/dashboard_teacher/quizzes" },
+        { label: "Quiz's Session" }
+    ],
 }   

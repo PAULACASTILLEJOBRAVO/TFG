@@ -55,7 +55,7 @@ const QuestionEditorPanel = forwardRef(({ question, questionError, touched, subm
                                         <Fragment key={index}>
                                         <OptionRow
                                             label={String.fromCharCode(65 + index)}
-                                            color={question.type === "true-false" ? (index === 0 ? "bg-green-500" : "bg-red-500") : (colorCard[index])}
+                                            color={colorCard[index].normal}
                                             value={option.text}
                                             index={index}
                                             onChange={(e) => {

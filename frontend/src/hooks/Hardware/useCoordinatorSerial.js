@@ -81,6 +81,7 @@ export const useCoordinatorSerial = () => {
             await stopListening();
         } catch (err) {
             setError(err.message || "Error stopping listening for responses from coordinator");
+            
         }
     };
 

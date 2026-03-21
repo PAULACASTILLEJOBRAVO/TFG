@@ -12,7 +12,7 @@ import {
     DeleteQuizDialog, 
     PublishQuizDialog 
 } from "@/components/Quizzes/Dialogs";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { useQuizActions } from "@/hooks/Quizzes/useQuizActions";
 import { Spinner } from "@/components/ui/spinner";
 import { useTranslation } from "react-i18next";
@@ -89,12 +89,7 @@ const QuizzesManagement = () => {
     }
 
     const handleStartQuiz = async (quiz) => {
-        // navigate(`/dashboard_teacher/quizzes/${quiz._id}/session`);
-        try{
-            
-        }catch(error){
-            console.error("Error connecting to coordinator", error);
-        }
+        navigate(`/dashboard_teacher/session/${quiz._id}`);
     }
 
     return (
@@ -119,18 +114,35 @@ const QuizzesManagement = () => {
                 )}
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                     {quizzes.map((quiz) => (
-                        <QuizDetailsCard 
-                            key={quiz._id} 
-                            quiz={quiz} 
-                            difficulties={difficulties} 
-                            onDelete={openDeleteDialog}  
-                            onRestore={handleRestoreQuiz}
-                            onPublish={openPublishDialog}
-                            onEdit={handleEditQuiz}
-                            onStartSession={handleStartQuiz}
-                        />
-                    ))}
+                     {quizzes.map((quiz, index) => {
+                        const prevStatus = quizzes[index - 1]?.status;
+                        const showDivider = index === 0 || prevStatus !== quiz.status;
+
+                        return (
+                            <Fragment key={quiz._id}>
+                                {showDivider && (
+                                    <div className="col-span-full flex items-center gap-2 my-2">
+                                        <div className="flex-1 h-px bg-gray-300"></div>
+                                        <span className="text-sm font-medium text-gray-500 capitalize">
+                                        {t("teacher.quizzesManagement.detailsCard." + quiz.status)}
+                                        </span>
+                                        <div className="flex-1 h-px bg-gray-300"></div>
+                                    </div>
+                                )}
+
+                                <QuizDetailsCard 
+                                    key={quiz._id} 
+                                    quiz={quiz} 
+                                    difficulties={difficulties} 
+                                    onDelete={openDeleteDialog}  
+                                    onRestore={handleRestoreQuiz}
+                                    onPublish={openPublishDialog}
+                                    onEdit={handleEditQuiz}
+                                    onStartSession={handleStartQuiz}
+                                />
+                            </Fragment>
+                        )
+                    })}
                 </div>
                   
                 </div>

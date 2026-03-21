@@ -24,6 +24,11 @@ import QuizCreate from '@/pages/Quizzes/QuizCreate';
 
 import QuizEdit from '@/pages/Quizzes/QuizEdit';
 
+import { 
+  SessionControl,
+  SessionPresentation
+} from '@/pages/Sessions';
+
 
 const AppRouter = () => {
   return (
@@ -83,8 +88,17 @@ const AppRouter = () => {
           </RequireAuth>
           } />
 
-        
-        {/* <Route path="*" element={<h1>404 - Página no encontrada</h1>} /> */}
+        <Route path='/dashboard_teacher/session/:id' element={
+          <RequireAuth allowedRoles={["teacher"]}>
+            <SessionControl />
+          </RequireAuth>
+          } />
+        <Route path='/dashboard_teacher/session/:id/presentation' element={
+          <RequireAuth allowedRoles={["teacher"]}>
+            <SessionPresentation />
+          </RequireAuth>
+          } />
+
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>

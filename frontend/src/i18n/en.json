@@ -251,7 +251,55 @@
                     "reasonLabel": "Reason for publication"
                 }
             }
+        },
 
+        "sessionControl": {
+            "steps": {
+                "receiverConnection": {
+                    "connectReceiverDescription": "Connect to clicker receiver to begin the quiz.",
+                    "clickersDetectedDescription": "Clickers will be detected automatically when students submit their answers.",
+                    "connected": "✔ Receiver connected",
+                    "listened": "✔ Listener started",
+                    "connectButton": "Connect clickers receiver",
+                    "connectingButton": "Connecting to receiver..."
+                },
+                "openPresentation": {
+                    "openPresentationDescription":"Open the presentation screen to display the quiz to students.",
+                    "presentationDescription":"The presentation screen will show questions and real-time results as students submit their answers.",
+                    "opened": "✔ Presentation screen opened",
+                    "openButton": "Open presentation"
+                },
+                "startSession": {
+                    "startSessionDescription": "Ready to start the quiz session.",
+                    "sessionDescription": "Once the session is started, students can submit their answers.",
+                    "started": "✔ Session started",
+                    "startButton": "Start session"
+                }
+            },
+            "questionControlScreen":{
+                "endQuestion": "End question",
+                "nextQuestion": "Next question",
+                "showResults": "Show results"
+            },
+            "sessionPresentation": {
+                "waiting": {
+                    "title": "Turn on your clicker device",
+                    "subtitle": "When the quiz starts:",
+                    "instructions": [
+                       {
+                            "text": "Use buttons A to H for multiple option questions."
+                        },
+                        {
+                            "text": "Use buttons A or B for true/false questions:",
+                            "subItems": [
+                                "A = True.",
+                                "B = False."
+                            ]
+                        } 
+                    ],
+                    "message": "Waiting for the teacher..."
+                }
+            }
         }
     },
     "student": {

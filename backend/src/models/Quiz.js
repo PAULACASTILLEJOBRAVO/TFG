@@ -23,10 +23,6 @@ const quizSchema = new Schema({
         ref: 'User',
         required: true 
     },
-    // courseId: { 
-    //     type: mongoose.Schema.Types.ObjectId, 
-    //     ref: 'Course',
-    // },
     questionIds: [{ 
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'Question' 
@@ -251,15 +247,6 @@ quizSchema.pre('save', async function(next) {
         next(err);
     }
 });
-
-//Calculate totalScore before saving
-// quizSchema.pre('save', async function(next) {
-//     if(this.questionIds && this.questionIds.length > 0){
-//         const questions = await Question.find({_id: {$in: this.questionIds}});
-//         this.totalScore = questions.reduce((total, question) => total + (question.points || 0), 0);
-//     }
-//     next();
-// });
 
 //Export the model
 module.exports = mongoose.model('Quiz', quizSchema);

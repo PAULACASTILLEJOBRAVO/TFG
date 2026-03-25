@@ -1,6 +1,7 @@
 import { 
     useState,
-    useEffect
+    useEffect,
+    useRef
 } from "react";
 import { 
     QuestionPagination,
@@ -10,12 +11,13 @@ import {
  } from "../Content/QuestionControlScreen";
  import { useNavigate } from "react-router-dom";
 
-const QuestionControlScreen = ({quiz, results, resultsReady, disconnect, send, setResultsReady, onClosePresentation }) => {
+const QuestionControlScreen = ({quiz, questions, results, resultsReady, disconnect, send, setResultsReady, setCurrentQuestionId, onClosePresentation }) => {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [questionActive, setQuestionActive] = useState(true);
     const [showResult, setShowResult] = useState(false);
 
     const question = quiz?.questionIds[currentQuestionIndex];
+    const questionStats = questions?.find(q => q.questionId === question?._id); // Find stats for the current question
 
     const navigate = useNavigate();
 
@@ -31,8 +33,6 @@ const QuestionControlScreen = ({quiz, results, resultsReady, disconnect, send, s
     }
 
     const handleNextQuestion = async () => {
-        if(!resultsReady) return;
-
         if (currentQuestionIndex < quiz.questionIds.length - 1) {
             setCurrentQuestionIndex(prev => prev + 1);
             setQuestionActive(true);
@@ -50,10 +50,18 @@ const QuestionControlScreen = ({quiz, results, resultsReady, disconnect, send, s
     }
 
     // Communication channel between control and presentation
-    const channel = new BroadcastChannel("quiz-session");
+    const channelRef = useRef(null);
+
+    useEffect(() => {
+        channelRef.current = new BroadcastChannel("quiz-session");
+
+        return () => {
+            channelRef.current.close();
+        };
+    }, []);
 
     const handleStartQuestion = (question) => {
-        channel.postMessage({
+        channelRef.current.postMessage({
             type: "NEW_QUESTION",
             question: question,
             questionIndex: currentQuestionIndex,
@@ -62,7 +70,7 @@ const QuestionControlScreen = ({quiz, results, resultsReady, disconnect, send, s
     };
 
     const handleSendResults = (results) => {
-        channel.postMessage({
+        channelRef.current.postMessage({
             type: "SHOW_RESULTS",
             results: results,
             questionIndex: currentQuestionIndex
@@ -73,10 +81,12 @@ const QuestionControlScreen = ({quiz, results, resultsReady, disconnect, send, s
         if(!question) return;
     
         const sendQuestion = async () => {
+            setCurrentQuestionId(question._id); // Set the current question ID in the parent component
+
             const questionId = currentQuestionIndex+1;
             const numberOptions = question.options?.length ?? 0;
             const time = question?.timeLimit ?? -1;
-            
+
             send(`qa send_question ${questionId} 1 ${numberOptions} ${time}`);
             
             handleStartQuestion(question);
@@ -89,7 +99,7 @@ const QuestionControlScreen = ({quiz, results, resultsReady, disconnect, send, s
         if (resultsReady && results) {
             handleSendResults(results);
         }
-    }, [resultsReady]);
+    }, [resultsReady, results]);
 
     return(
         <div className="flex flex-col items-center gap-4 mt-6 max-w-xl mx-auto">
@@ -103,13 +113,12 @@ const QuestionControlScreen = ({quiz, results, resultsReady, disconnect, send, s
             <QuestionPagination currentIndex={currentQuestionIndex} totalQuestions={quiz?.questionIds.length} />
        
             {/* Information */}
-            <QuestionDisplay question={question} />
+            <QuestionDisplay question={question} totalResponses={questionStats?.totalResponses || 0}/>
 
             {/* Buttons */}
             <ButtonActions 
                 questionActive={questionActive} 
                 showResult={showResult}
-                resultsReady={resultsReady}
                 onEndQuestion={handleEndQuestion}
                 onNextQuestion={handleNextQuestion}
                 onShowResults={handleShowResults}

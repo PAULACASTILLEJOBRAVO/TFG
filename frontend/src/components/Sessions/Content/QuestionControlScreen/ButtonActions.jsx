@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { useTranslation } from 'react-i18next';
 
-const ButtonActions = ({questionActive, showResult, resultsReady, onEndQuestion, onNextQuestion, onShowResults}) => {
+const ButtonActions = ({questionActive, showResult, onEndQuestion, onNextQuestion, onShowResults}) => {
     const { t } = useTranslation();
 
     return (
@@ -25,7 +25,7 @@ const ButtonActions = ({questionActive, showResult, resultsReady, onEndQuestion,
 
             <Button 
                 className="ml-auto bg-green-500 hover:bg-green-600 text-white hover:text-white"
-                disabled={!showResult || !resultsReady}
+                disabled={questionActive}
                 onClick={onNextQuestion}
             >
                 {t('teacher.sessionControl.questionControlScreen.nextQuestion')}

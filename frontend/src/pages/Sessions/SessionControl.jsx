@@ -35,9 +35,11 @@ const SessionControl = () => {
 
     // Refs
     const presentationWindowRef = useRef(null);
+    const currentQuestionRef = useRef(null);
 
     // Data
-    const [session, setSession] = useState({teacherId: user ? user._id : null, quizId: id ? id : null, playerIds: [], startTime: null, endTime: null});
+    const [session, setSession] = useState({teacherId: user ? user._id : null, quizId: id ? id : null, playerIds: [], questions: [], startTime: null, endTime: null});
+    const [questions, setQuestions] = useState([{questionId: null, answers: [], totalResponses: 0}]);
     const [results, setResults] = useState([]);
 
     const startListening = async () => {
@@ -52,7 +54,51 @@ const SessionControl = () => {
                     break;
 
                 case "ANSWER":
-                    console.log(event.raw);
+                    handleUpdateQuestion(prev => {
+                        // If there is nothing yet for this question, create the object
+                        const questionId = currentQuestionRef.current;
+                        const existingQuestion = prev.find(q => q.questionId === questionId);
+
+                        if(existingQuestion) {
+                            // If the option already exists, increment the count, otherwise add it
+                            const existingOption = existingQuestion.answers.find(a => a.option === event.option);
+
+                            let updatedAnswers;
+
+                            if(existingOption) {
+                                // Increment count for existing option
+                                updatedAnswers = existingQuestion.answers.map(a => 
+                                    a.option === event.option
+                                        ? { ...a, count: a.count + 1 }
+                                        : a
+                                );
+                            } else {
+                                // Add new option
+                                updatedAnswers = [...existingQuestion.answers, { option: event.option, count: 1 }];
+                            }
+
+                            // Update total responses
+                            return prev.map(q =>
+                                q.questionId === questionId
+                                    ? { 
+                                        ...q, 
+                                        answers: updatedAnswers, 
+                                        totalResponses: q.totalResponses + 1 
+                                    }
+                                    : q
+                            );
+                        }
+
+                        // If the question didn't exist yet
+                        return [
+                            ...prev,
+                            {
+                                questionId: questionId,
+                                answers: [{ option: event.option, count: 1 }],
+                                totalResponses: 1
+                            }
+                        ];
+                    });
                     break;
 
                 case "TIMEOUT":
@@ -65,7 +111,6 @@ const SessionControl = () => {
 
                 case "RESULT":
                     setResultsReady(true);
-                    console.log(event.raw);
                     setResults(event.options);
                     break;
 
@@ -123,6 +168,10 @@ const SessionControl = () => {
         setSession((prev) => ({ ...prev, startTime: new Date() }));
     };
 
+    const handleUpdateQuestion = (updater) => {
+        setQuestions((prev) => updater(prev));
+    }
+
     return (
         <DashboardContent>
             <AppBreadcrumb />
@@ -148,11 +197,13 @@ const SessionControl = () => {
                 ):(
                     <QuestionControlScreen 
                         quiz={quiz} 
+                        questions={questions}
                         results={results}
-                        resultsReady={resultsReady} 
+                        resultsReady={resultsReady}
                         disconnect={disconnect} 
                         send={send} 
                         setResultsReady={setResultsReady}
+                        setCurrentQuestionId={(id) => currentQuestionRef.current = id} 
                         onClosePresentation={handleClosePresentation}
                     />
                 )

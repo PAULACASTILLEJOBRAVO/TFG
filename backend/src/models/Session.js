@@ -10,15 +10,23 @@ const sessionSchema = new Schema({
         ref: 'User',
         required: true 
     },
-    playerIds: [{ 
+    deviceIds: [{ 
         type: mongoose.Schema.Types.ObjectId, 
-        ref: 'User' 
+        ref: 'Clicker' 
     }],
     quizId: { 
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'Quiz',
         required: true 
     },
+    questions: [{
+        questionId: { type: mongoose.Schema.Types.ObjectId, ref: 'Question', required: true },
+        answers: [{
+            option: { type: String, required: true },
+            count: { type: Number, default: 0 }
+        }],
+        totalResponses: { type: Number, default: 0 }
+    }],
 
     //States and configuration
     startTime: { 
@@ -32,7 +40,7 @@ const sessionSchema = new Schema({
     status: { 
         type: String, 
         enum: ['pending', 'active', 'completed', 'paused', 'cancelled', 'archived'], 
-        default: 'pending' 
+        default: 'active' 
     },
     isDeleted: { 
         type: Boolean, 
@@ -52,7 +60,7 @@ const sessionSchema = new Schema({
     // Additional features (commented out for future use)
     isLive: { 
         type: Boolean, 
-        default: false 
+        default: true 
     }, // Indicates if the session is currently live
 }, 
 { 

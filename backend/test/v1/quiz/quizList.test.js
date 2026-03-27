@@ -1,7 +1,6 @@
 const request = require('supertest');
 const app = require('../../../app'); 
 const User = require('../../../src/models/User');
-const Course = require('../../../src/models/Course');
 const Quiz = require('../../../src/models/Quiz');
 const quizServices = require('../../../src/services/v1/quizServices');
 
@@ -18,7 +17,7 @@ afterEach(async () => { await clearDatabase(); });
 
 describe('GET /v1/quizzes', () => {
 
-    // First, create a teacher, a course and some quizzes in the database
+    // First, create a teacher and some quizzes in the database
     beforeEach(async () => {
         const teacher = await User.create({
             _id: '609e129e1c4ae12f34567890',
@@ -28,27 +27,18 @@ describe('GET /v1/quizzes', () => {
             role: 'teacher'
         });
 
-        const course = await Course.create({ 
-            _id: '609e129e1c4ae12f34567891',
-            title: 'Course 1',
-            teacherId: teacher._id, 
-        });
-
         const quizzes = [
             { 
                 title: 'Quiz 1',
-                creatorId: teacher._id,
-                courseId: course._id
+                creatorId: teacher._id
             },
             { 
                 title: 'Quiz 2',
-                creatorId: teacher._id,
-                courseId: course._id
+                creatorId: teacher._id
             },
             { 
                 title: 'Quiz 3',
-                creatorId: teacher._id, 
-                courseId: course._id
+                creatorId: teacher._id
             },
         ]
 
@@ -90,7 +80,7 @@ describe('GET /v1/quizzes/:id', () => {
 
     let quizId;
 
-    // First, create a teacher, a course and a quiz in the database
+    // First, create a teacher and a quiz in the database
     beforeEach(async () => {
         const teacher = await User.create({
             _id: '609e129e1c4ae12f34567890',
@@ -100,16 +90,9 @@ describe('GET /v1/quizzes/:id', () => {
             role: 'teacher'
         });
 
-        const course = await Course.create({ 
-            _id: '609e129e1c4ae12f34567892',
-            title: 'Course 1',
-            teacherId: teacher._id, 
-        });
-
         const quiz = { 
             _id: '609e129e1c4ae12f34567893',
             title: 'Quiz 1',
-            courseId: course._id,
             creatorId: teacher._id, 
         };
 
@@ -117,7 +100,7 @@ describe('GET /v1/quizzes/:id', () => {
         await Quiz.insertOne(quiz);
     })
 
-    it('200 - should return the course by ID', async () => {
+    it('200 - should return the quiz by ID', async () => {
         const response = await request(app)
             .get(`/v1/quizzes/${quizId}`);
         
@@ -129,7 +112,7 @@ describe('GET /v1/quizzes/:id', () => {
         expect(response.body.data._id).toBe(quizId);
     })
 
-    it('404 - should return 404 if course not found', async () => {
+    it('404 - should return 404 if quiz not found', async () => {
         const nonExistentId = '609e129e1c4ae12f34567899'; 
 
         const response = await request(app)

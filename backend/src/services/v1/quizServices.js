@@ -92,7 +92,7 @@ const publishQuizById =  async (id) => {
 
 // Service to update an quiz by ID
 const updateQuizById = async ({id, body, _id, role}) => {
-    const { questions, quizFields } = body;
+    const { quizFields } = body;
 
     // Create a transaction to ensure atomicity
     const session = await Quiz.startSession();

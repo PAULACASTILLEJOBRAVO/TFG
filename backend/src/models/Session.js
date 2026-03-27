@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const debug = require('debug')('backend:middleware:validationRole');
 const Schema = mongoose.Schema;
 
+const { getSessionCompleteFields } = require('../utils/checkRolePermissions');
+
 //Define session schema
 const sessionSchema = new Schema({
     //Relations
@@ -39,7 +41,7 @@ const sessionSchema = new Schema({
     },
     status: { 
         type: String, 
-        enum: ['pending', 'active', 'completed', 'paused', 'cancelled', 'archived'], 
+        enum: ['active', 'completed', 'paused', 'cancelled', 'archived'], 
         default: 'active' 
     },
     isDeleted: { 
@@ -56,12 +58,6 @@ const sessionSchema = new Schema({
     deleteReason: { 
         type: String 
     }, // Reason for deletion
-
-    // Additional features (commented out for future use)
-    isLive: { 
-        type: Boolean, 
-        default: true 
-    }, // Indicates if the session is currently live
 }, 
 { 
     timestamps: true, // Add createdAt and updatedAt fields
@@ -72,28 +68,12 @@ const sessionSchema = new Schema({
 // Indexes
 sessionSchema.index({ teacherId: 1 });
 sessionSchema.index({ quizId: 1 });
-sessionSchema.index({ courseId: 1 });
 sessionSchema.index({ status: 1 });
-
-sessionSchema.index({ status: "text"});
 
 // Query helper to exclude soft-deleted docs easily
 sessionSchema.query.notDeleted = function() {
   return this.where({ isDeleted: false });
 };
-
-// Instance method to start the session
-sessionSchema.methods.startSession = async function() {
-    if(this.status !== 'pending') throw new Error('Only pending sessions can be started.');
-
-    if(this.status === 'active') return debug(`Session ${this}._id} is already active.`);
-
-    this.status = 'active';
-    this.startTime = new Date();
-    await this.save();
-
-    debug(`Session ${this._id} started.`);
-}
 
 // Instance method to pause the session
 sessionSchema.methods.pauseSession = async function() {
@@ -120,21 +100,25 @@ sessionSchema.methods.resumeSession = async function() {
 }
 
 // Instance method to completed the session
-sessionSchema.methods.completeSession = async function() {
+sessionSchema.methods.completeSession = async function({questions, endTime}) {
     if(this.status !== 'active' && this.status !== 'paused') throw new Error('Only active or paused sessions can be completed.');
     
     if(this.status === 'completed') return debug(`Session ${this}._id} is already completed.`);
 
+    if(!questions || questions.length === 0) return debug(`Session ${this._id} cannot be completed without questions.`);
+
     this.status = 'completed';
-    this.endTime = new Date();
+    this.endTime = endTime ? endTime : new Date();
+    this.questions = questions;
+
     await this.save();
 
-    debug(`Session ${this._id} completed.`);
+    debug(`Completing session ${this._id} with ${questions.length} questions`);
 }
 
 // Instance method to cancel the session
 sessionSchema.methods.cancelSession = async function(reason = null) {
-    if(this.status !== 'pending' && this.status !== 'active' && this.status !== 'paused') throw new Error('Only pending, active or paused sessions can be cancelled.');
+    if(this.status !== 'active' && this.status !== 'paused') throw new Error('Only active or paused sessions can be cancelled.');
 
     if(this.status === 'cancelled') return debug(`Session ${this}._id} is already cancelled.`);
 
@@ -166,7 +150,7 @@ sessionSchema.methods.softDelete = async function({by = null, reason = null} = {
     if(reason) this.deleteReason = reason;
 
     // If it is not finished, archive it
-    if(!this.status === 'completed' && !this.status === 'cancelled' && !this.status === 'archived'){
+    if(this.status !== 'completed' && this.status !== 'cancelled' && this.status !== 'archived'){
         this.status = 'archived';
         this.endTime = new Date();
     }
@@ -209,12 +193,34 @@ sessionSchema.statics.restoreById = async function(id) {
 };
 
 // Static complete by id
-sessionSchema.statics.completeById = async function(id){
+sessionSchema.statics.completeById = async function(id, body, currentUserData) {
     const session = await this.findById(id);
-
     if(!session) return false;
 
-    await session.completeSession();
+    // Extract current user ID and role
+    const { _id: currentUserId, role: currentUserRole } = currentUserData; 
+
+    // Check if the user is updating their own data
+    const isSelf = currentUserId.toString() === session.teacherId.toString(); 
+
+    // Get allowed fields based on role and whether it's self-update
+    const allowedFields = getSessionCompleteFields(currentUserRole, isSelf, body.status);
+
+    // Filter body to only include allowed fields
+    const filteredBody = {};
+    for (const key of Object.keys(body)) {
+        if (allowedFields.includes(key)) {
+            filteredBody[key] = body[key];
+        }
+    }
+
+    debug('Allowed fields for update:', allowedFields);
+
+    // Apply changes
+    await session.completeSession({
+        questions: filteredBody.questions,
+        endTime: filteredBody.endTime
+    });
 
     return true;
 }
@@ -238,17 +244,6 @@ sessionSchema.statics.archiveById = async function(id){
 
     await session.archiveSession();
     
-    return true;
-}
-
-// Static start by id
-sessionSchema.statics.startById = async function(id){
-    const session = await this.findById(id);
-
-    if(!session) return false;
-
-    await session.startSession();
-
     return true;
 }
 

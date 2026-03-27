@@ -30,7 +30,21 @@ const editableFields = {
   },
   response: {},
   result: {},
-  session: {}
+  session: {
+    teacher: {
+      paused: ['status', 'deviceIds', 'questions', 'endTime', 'status'],
+      completed: ['status', 'deviceIds', 'questions', 'endTime'], 
+      cancelled: ['status','questions', 'endTime'],
+      archived: ['status']
+    },
+    admin: {
+      active: ['teacherId', 'deviceIds', 'quizId', 'questions', 'startTime', 'endTime', 'status', 'isDeleted', 'deletedAt', 'deletedBy', 'deleteReason'],
+      paused: ['teacherId', 'deviceIds', 'quizId', 'questions', 'startTime', 'endTime', 'status', 'isDeleted', 'deletedAt', 'deletedBy', 'deleteReason'],
+      completed: ['teacherId', 'deviceIds', 'quizId', 'questions', 'startTime', 'endTime', 'status', 'isDeleted', 'deletedAt', 'deletedBy', 'deleteReason'],
+      cancelled: ['teacherId', 'deviceIds', 'quizId', 'questions', 'startTime', 'endTime', 'status', 'isDeleted', 'deletedAt', 'deletedBy', 'deleteReason'],
+      archived: ['teacherId', 'deviceIds', 'quizId', 'questions', 'startTime', 'endTime', 'status', 'isDeleted', 'deletedAt', 'deletedBy', 'deleteReason']
+    }  
+  }
 };
 
 module.exports = { 

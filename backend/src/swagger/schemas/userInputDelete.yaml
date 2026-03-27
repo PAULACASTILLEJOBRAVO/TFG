@@ -13,4 +13,4 @@ components:
         reason:
           type: string
           description: The reason for deleting the user.
-          example: "Graduated from the course"
+          example: "Graduated from the institution"

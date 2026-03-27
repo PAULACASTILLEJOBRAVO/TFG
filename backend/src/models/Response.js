@@ -13,13 +13,11 @@ const responseSchema = new Schema({
         type: Boolean, 
         required: true 
     },
-    timeTaken: { 
-        type: Number, // Time taken to answer in seconds
-        required: true 
-    },
+    // timeTaken: { 
+    //     type: Number, // Time taken to answer in seconds 
+    // },
     pointsAwarded: { 
-        type: Number, 
-        required: true 
+        type: Number,
     },
 
     //Relations

@@ -10,14 +10,18 @@ import {
     CountdownTimer
  } from "../Content/QuestionControlScreen";
  import { useNavigate } from "react-router-dom";
+ import { useSessionActions } from "@/hooks/Sessions/useSessionActions";
 
-const QuestionControlScreen = ({quiz, questions, results, resultsReady, disconnect, send, setResultsReady, setCurrentQuestionId, onClosePresentation }) => {
+const QuestionControlScreen = ({quiz, questions, results, resultsReady, sessionId, disconnect, send, setResultsReady, setCurrentQuestionId, onClosePresentation }) => {
+    const { complete } = useSessionActions();
+    
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [questionActive, setQuestionActive] = useState(true);
     const [showResult, setShowResult] = useState(false);
 
     const question = quiz?.questionIds[currentQuestionIndex];
-    const questionStats = questions?.find(q => q.questionId === question?._id); // Find stats for the current question
+    const questionStats = questions?.find(q => q.questionId === question?._id) || { totalResponses: 0 }; // Find stats for the current question
+    const totalResponses = questionStats.totalResponses;
 
     const navigate = useNavigate();
 
@@ -40,6 +44,14 @@ const QuestionControlScreen = ({quiz, questions, results, resultsReady, disconne
             setResultsReady(false);
         } else {
             // If it's the last question, end the session
+            if (!sessionId) return;
+
+            await complete(sessionId, {
+                status: "completed",
+                questions: questions,
+                endTime: new Date()
+            });
+
             onClosePresentation();
 
             await disconnect(); // Disconnect from serial to free the port
@@ -113,7 +125,7 @@ const QuestionControlScreen = ({quiz, questions, results, resultsReady, disconne
             <QuestionPagination currentIndex={currentQuestionIndex} totalQuestions={quiz?.questionIds.length} />
        
             {/* Information */}
-            <QuestionDisplay question={question} totalResponses={questionStats?.totalResponses || 0}/>
+            <QuestionDisplay question={question} totalResponses={totalResponses}/>
 
             {/* Buttons */}
             <ButtonActions 

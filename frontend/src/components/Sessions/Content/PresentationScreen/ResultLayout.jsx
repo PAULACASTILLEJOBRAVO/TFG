@@ -16,11 +16,11 @@ const ResultLayout = ({ currentQuestion, results }) => {
     const maxVotes = Math.max(...results.map(result => result.count), 1);
 
     useEffect(() => {
-        setAnimatedCounts(results.map(() => 0));
-        setAnimatedWidths(results.map(() => 2));
+        setAnimatedCounts(results.map(() => 0)); // Start counts at 0 for animation
+        setAnimatedWidths(results.map(() => 2)); // Start widths at 2% for animation because of the min width
 
         results.forEach((result, index) => {
-            const increment = Math.max(Math.floor(result.count / 20), 1); 
+            const increment = Math.max(Math.floor(result.count / 20), 1); // Animate count and width over 400ms (20 intervals of 20ms)
             let current = 0;
 
             const interval = setInterval(() => {
@@ -31,6 +31,7 @@ const ResultLayout = ({ currentQuestion, results }) => {
                     clearInterval(interval);
                 }
 
+                // Update the animated counts and widths
                 setAnimatedCounts(prev => {
                     const updated = [...prev];
                     updated[index] = current;
@@ -43,7 +44,7 @@ const ResultLayout = ({ currentQuestion, results }) => {
                     updated[index] = Math.max(pct, 2);
                     return updated;
                 });
-            }, 20);
+            }, 20); // Update every 20ms for smooth animation
         });
     }, [results, maxVotes]);
 

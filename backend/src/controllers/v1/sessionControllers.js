@@ -86,12 +86,40 @@ const deleteSessionById = async (req, res) => {
     }
 }
 
+// Controller to complete a session by ID
+const completeSessionById = async (req, res) => {
+    const {id} = req.params;
+    const {body} = req;
+    const { _id, role } = req.user;
+
+    if(!id) return res.status(400).json({ message: 'Session ID is required'});
+    if(!body) return res.status(400).json({ message: 'Body is required'});
+
+    try{
+        const updatedSession = await sessionServices.completeSessionById({id, body, _id, role});
+
+        if(!updatedSession) return res.status(404).json({ message: 'Session not found'});
+
+        res.status(200).json({
+            message: 'Session completed successfully',
+            data: updatedSession
+        })
+    }catch(error){
+        res.status(500).json({
+            message: 'Error completing session',
+            error: error.message
+        })
+    }
+}
+
 // Export session controllers
 module.exports = {
   getAllSessions,
   getSessionById,
 
   createSession,
+
+  completeSessionById,
 
   deleteSessionById,
 };

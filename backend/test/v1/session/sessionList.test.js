@@ -1,7 +1,6 @@
 const request = require('supertest');
 const app = require('../../../app'); 
 const User = require('../../../src/models/User');
-const Course = require('../../../src/models/Course');
 const Quiz = require('../../../src/models/Quiz');
 const Session = require('../../../src/models/Session');
 const sessionServices = require('../../../src/services/v1/sessionServices');
@@ -19,7 +18,7 @@ afterEach(async () => { await clearDatabase(); });
 
 describe('GET /v1/sessions', () => {
 
-    // First, create a teacher, a student, a course, a quiz and some sessions in the database
+    // First, create a teacher, a student, a quiz and some sessions in the database
     beforeEach(async () => {
         const teacher = await User.create({
             _id: '609e129e1c4ae12f34567890',
@@ -37,32 +36,23 @@ describe('GET /v1/sessions', () => {
             role: 'student'
         });
 
-        const course = await Course.create({ 
-            _id: '609e129e1c4ae12f34567891',
-            title: 'Course 1',
-            teacherId: teacher._id, 
-        });
-
         const quizzes = [
             { 
                 _id: '609e129e1c4ae12f34567892',
                 title: 'Quiz 1',
-                creatorId: teacher._id,
-                courseId: course._id
+                creatorId: teacher._id
             },
             { 
                 _id: '609e129e1c4ae12f34567893',
                 title: 'Quiz 2',
-                creatorId: teacher._id,
-                courseId: course._id
+                creatorId: teacher._id
             },
         ]
 
         const sessions = [
             {
                 quizId: quizzes[0]._id,
-                teacherId: teacher._id,
-                courseId: course._id,
+                teacherId: teacher._id
             },
             {
                 quizId: quizzes[1]._id,
@@ -111,7 +101,7 @@ describe('GET /v1/sessions/:id', () => {
 
     let sessionId;
 
-    // First, create a teacher, a student, a course, a quiz and a session in the database
+    // First, create a teacher, a student, a quiz and a session in the database
     beforeEach(async () => {
         const teacher = await User.create({
             _id: '609e129e1c4ae12f34567890',
@@ -128,16 +118,9 @@ describe('GET /v1/sessions/:id', () => {
             password: '987654',
         });
 
-        const course = await Course.create({ 
-            _id: '609e129e1c4ae12f34567892',
-            title: 'Course 1',
-            teacherId: teacher._id, 
-        });
-
         const quiz = { 
             _id: '609e129e1c4ae12f34567893',
             title: 'Quiz 1',
-            courseId: course._id,
             creatorId: teacher._id, 
         };
 

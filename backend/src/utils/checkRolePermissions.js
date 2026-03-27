@@ -23,9 +23,17 @@ const getClickerEditableFields = (role, isSelf) => {
     if((role === 'teacher') && isSelf) return editableFields.clicker[role];
 }
 
+const getSessionCompleteFields = (role, isSelf, status) => {
+    // Admins can edit all fields, teachers and students can only edit their own specific fields
+    if(role === 'admin') return editableFields.session[role][status];
+    // Teachers can only edit their own data 
+    if((role === 'teacher') && isSelf) return editableFields.session[role][status];
+}
+
 // Export the function
 module.exports = {
     getUserEditableFields,
     getQuizEditableFields,
-    getClickerEditableFields
+    getClickerEditableFields,
+    getSessionCompleteFields
 };

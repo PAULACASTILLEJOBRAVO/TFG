@@ -175,7 +175,7 @@ export const listenResponse = async (callback) => {
                             accumulatedLines = [];
                             processingMultiLine = false;
                         }
-                    }, 1000); // Wait for 1 second after the last option line to ensure we have received the complete block before parsing
+                    }, 500); // Wait for half a second after the last option line to ensure we have received the complete block before parsing
                 }
                 continue;
             }

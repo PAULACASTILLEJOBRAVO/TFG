@@ -13,6 +13,8 @@ import {
     QuestionControlScreen
 } from "@/components/Sessions/Sections/";
 import { useCoordinatorSerial } from "@/hooks/Hardware/useCoordinatorSerial";
+import { useSessionActions } from "@/hooks/Sessions/useSessionActions";
+import { useResponseActions } from "@/hooks/Response/useResponseActions";
 
 const SessionControl = () => {
     const { id } = useParams();
@@ -27,6 +29,8 @@ const SessionControl = () => {
         loading: loadingSerial,
         error: errorSerial
     } = useCoordinatorSerial();
+    const { create: createSession } = useSessionActions();
+    const { create: createResponse } = useResponseActions();
 
     // State
     const [presentationOpened, setPresentationOpened] = useState(false);
@@ -36,11 +40,13 @@ const SessionControl = () => {
     // Refs
     const presentationWindowRef = useRef(null);
     const currentQuestionRef = useRef(null);
+    const sessionIdRef = useRef(null);
 
     // Data
-    const [session, setSession] = useState({teacherId: user ? user._id : null, quizId: id ? id : null, playerIds: [], questions: [], startTime: null, endTime: null});
-    const [questions, setQuestions] = useState([{questionId: null, answers: [], totalResponses: 0}]);
+    const [sessionId, setSessionId] = useState(null);
+    const [questions, setQuestions] = useState([]);
     const [results, setResults] = useState([]);
+    const [clickers, setClickers] = useState([]);
 
     const startListening = async () => {
         await listen((event) => {
@@ -54,9 +60,12 @@ const SessionControl = () => {
                     break;
 
                 case "ANSWER":
+                    const questionId = currentQuestionRef.current;
+                
                     handleUpdateQuestion(prev => {
                         // If there is nothing yet for this question, create the object
-                        const questionId = currentQuestionRef.current;
+                        if (!questionId) return;
+
                         const existingQuestion = prev.find(q => q.questionId === questionId);
 
                         if(existingQuestion) {
@@ -99,6 +108,18 @@ const SessionControl = () => {
                             }
                         ];
                     });
+
+                    const currentSessionId = sessionIdRef.current;
+
+                    if (!questionId || !currentSessionId) return;
+
+                    createResponse({
+                        sessionId: currentSessionId,
+                        questionId,
+                        deviceId: event.deviceId, 
+                        answer: event.option,
+                    });
+
                     break;
 
                 case "TIMEOUT":
@@ -162,10 +183,23 @@ const SessionControl = () => {
         }
     }; 
 
-    const handleStartSession = () => {
+    const handleStartSession = async () => {
         // Logic to start session
-        setSessionStarted(true);
-        setSession((prev) => ({ ...prev, startTime: new Date() }));
+        try {
+            const newSession = await createSession({
+                teacherId: user?._id,
+                quizId: id,
+                deviceIds: [],
+                questions: [],
+                startTime: new Date()
+            });
+
+            setSessionId(newSession._id);
+            sessionIdRef.current = newSession._id;
+            setSessionStarted(true);
+        } catch (error) {
+            console.error("Error starting session:", error);
+        }
     };
 
     const handleUpdateQuestion = (updater) => {
@@ -200,6 +234,7 @@ const SessionControl = () => {
                         questions={questions}
                         results={results}
                         resultsReady={resultsReady}
+                        sessionId={sessionId}
                         disconnect={disconnect} 
                         send={send} 
                         setResultsReady={setResultsReady}

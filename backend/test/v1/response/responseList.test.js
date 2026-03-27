@@ -2,7 +2,6 @@ const request = require('supertest');
 const app = require('../../../app'); 
 const User = require('../../../src/models/User');
 const Session = require('../../../src/models/Session');
-const Course = require('../../../src/models/Course');
 const Quiz = require('../../../src/models/Quiz');
 const Question = require('../../../src/models/Question');
 const Response = require('../../../src/models/Response');
@@ -21,7 +20,7 @@ afterEach(async () => { await clearDatabase(); });
 
 describe('GET /v1/responses', () => {
 
-    // First, create a teacher, a student, a course, a quiz, a session, a question and some responses in the database
+    // First, create a teacher, a student, a quiz, a session, a question and some responses in the database
     beforeAll(async () => {
         const teacher = await User.create({
             _id: '609e129e1c4ae12f34567890',
@@ -39,24 +38,16 @@ describe('GET /v1/responses', () => {
             role: 'student'
         });
 
-        const course = await Course.create({ 
-            _id: '609e129e1c4ae12f34567891',
-            title: 'Course 1',
-            teacherId: teacher._id, 
-        });
-
         const quiz = await Quiz.create({ 
             _id: '609e129e1c4ae12f34567892',
             title: 'Quiz 1',
-            creatorId: teacher._id,
-            courseId: course._id
+            creatorId: teacher._id
         });
 
         const sessions = await Session.create({
             _id: '609e129e1c4ae12f34567893',
             quizId: quiz._id,
-            teacherId: teacher._id,
-            courseId: course._id,
+            teacherId: teacher._id
         });
 
         const question = await Question.create({
@@ -157,7 +148,7 @@ describe('GET /v1/responses/:id', () => {
 
     let responseId;
 
-    // First, create a teacher, a student, a course, a quiz, a session, a question and some responses in the database
+    // First, create a teacher, a student, a quiz, a session, a question and some responses in the database
     beforeAll(async () => {
         const teacher = await User.create({
             _id: '609e129e1c4ae12f34567890',
@@ -175,24 +166,16 @@ describe('GET /v1/responses/:id', () => {
             role: 'student'
         });
 
-        const course = await Course.create({ 
-            _id: '609e129e1c4ae12f34567891',
-            title: 'Course 1',
-            teacherId: teacher._id, 
-        });
-
         const quiz = await Quiz.create({ 
             _id: '609e129e1c4ae12f34567892',
             title: 'Quiz 1',
-            creatorId: teacher._id,
-            courseId: course._id
+            creatorId: teacher._id
         });
 
         const sessions = await Session.create({
             _id: '609e129e1c4ae12f34567893',
             quizId: quiz._id,
-            teacherId: teacher._id,
-            courseId: course._id,
+            teacherId: teacher._id
         });
 
         const question = await Question.create({

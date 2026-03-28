@@ -29,21 +29,10 @@ const createResponse = async (body) => {
 
         // Convert answer (e.g., "A", "B", "C") to index (0, 1, 2) and check if it's correct
         const answerIndex = answer.toUpperCase().charCodeAt(0) - 65;
-        console.log("Answer index:", answerIndex);
         const selectedOption = question.options[answerIndex];
-        console.log("Selected option:", selectedOption);
 
         const isCorrect = selectedOption?.isCorrect || false;
-        console.log("Is the answer correct?", isCorrect);
         const pointsAwarded = isCorrect ? question.points : 0;
-        console.log("Points awarded:", pointsAwarded);
-
-        console.log("Response details - Question ID:", questionId);
-        console.log("Session ID:", sessionId);
-        console.log("Player ID:", playerId);
-        console.log("Answer:", answer);
-        console.log("Is Correct:", isCorrect);
-        console.log("Points Awarded:", pointsAwarded);
 
         return await Response.create({
             questionId,

@@ -4,7 +4,8 @@ import { useQuiz } from "@/hooks/Quizzes/useQuiz";
 import { useAuth } from "@/auth/AuthContext";
 import { 
     useState,
-    useRef
+    useRef,
+    useEffect
  } from "react";
 import { useParams } from "react-router-dom";
 import { Spinner } from "@/components/ui/spinner";
@@ -41,12 +42,12 @@ const SessionControl = () => {
     const presentationWindowRef = useRef(null);
     const currentQuestionRef = useRef(null);
     const sessionIdRef = useRef(null);
+    const responseQueueRef = useRef([]);
 
     // Data
     const [sessionId, setSessionId] = useState(null);
     const [questions, setQuestions] = useState([]);
     const [results, setResults] = useState([]);
-    const [clickers, setClickers] = useState([]);
 
     const startListening = async () => {
         await listen((event) => {
@@ -113,7 +114,7 @@ const SessionControl = () => {
 
                     if (!questionId || !currentSessionId) return;
 
-                    createResponse({
+                    responseQueueRef.current.push({
                         sessionId: currentSessionId,
                         questionId,
                         deviceId: event.deviceId, 
@@ -205,6 +206,21 @@ const SessionControl = () => {
     const handleUpdateQuestion = (updater) => {
         setQuestions((prev) => updater(prev));
     }
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            if (responseQueueRef.current.length === 0) return;
+
+            const batch = [...responseQueueRef.current];
+            responseQueueRef.current = [];
+
+            // Process the batch of responses
+            batch.forEach(res => createResponse(res));
+
+        }, 500); // Every 500ms
+
+        return () => clearInterval(interval);
+    }, []);
 
     return (
         <DashboardContent>

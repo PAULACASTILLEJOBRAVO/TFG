@@ -5,7 +5,7 @@ const ButtonActions = ({questionActive, showResult, onEndQuestion, onNextQuestio
     const { t } = useTranslation();
 
     return (
-        <div className="flex gap-4">
+        <div className="flex flex-col md:flex-row gap-4">
             <Button 
                 variant="destructive" 
                 disabled={!questionActive}
@@ -16,7 +16,7 @@ const ButtonActions = ({questionActive, showResult, onEndQuestion, onNextQuestio
 
             <Button 
                 variant="outline" 
-                className="ml-auto bg-blue-500 hover:bg-blue-600 text-white hover:text-white"
+                className="md:ml-auto bg-blue-500 hover:bg-blue-600 text-white hover:text-white"
                 disabled={questionActive || showResult}
                 onClick={onShowResults}
             >
@@ -24,7 +24,7 @@ const ButtonActions = ({questionActive, showResult, onEndQuestion, onNextQuestio
             </Button>
 
             <Button 
-                className="ml-auto bg-green-500 hover:bg-green-600 text-white hover:text-white"
+                className="md:ml-auto bg-green-500 hover:bg-green-600 text-white hover:text-white"
                 disabled={questionActive}
                 onClick={onNextQuestion}
             >

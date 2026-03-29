@@ -2,6 +2,9 @@ const mongoose = require('mongoose');
 const debug = require('debug')('backend:middleware:validationRole');
 const Schema = mongoose.Schema;
 
+// Import models
+const Clicker = require('./Clicker');
+
 const { getSessionCompleteFields, getSessionEditableFields } = require('../utils/checkRolePermissions');
 
 //Define session schema
@@ -226,7 +229,7 @@ sessionSchema.statics.completeById = async function(id, body, currentUserData) {
         endTime: filteredBody.endTime
     });
 
-    return true;
+    return session;
 }
 
 // Static cancel by id
@@ -276,8 +279,22 @@ sessionSchema.statics.updateById = async function(id, body, currentUserData) {
     // Get allowed fields based on role and whether it's self-update
     const allowedFields = getSessionEditableFields(currentUserRole, isSelf, session.status);
 
-    // Filter body to only include allowed fields
     const updates = {};
+
+    // Get clicker IDs from the session's deviceIds
+    if (body.deviceIds && body.deviceIds.length > 0) {
+        const clickers = await Clicker.find({
+            deviceCode: { $in: body.deviceIds }
+        });
+
+        if (clickers.length === 0) {
+            throw new Error('No matching clickers found for deviceCodes');
+        }
+
+        body.deviceIds = clickers.map(c => c._id);
+    }
+
+    // Filter body to only include allowed fields
     for (const key of Object.keys(body)) {
         if (allowedFields.includes(key)) {
             updates[key] = body[key];
@@ -285,7 +302,6 @@ sessionSchema.statics.updateById = async function(id, body, currentUserData) {
     }
 
     debug('Allowed fields for update:', allowedFields);
-    debug('Updates to apply:', updates);
 
     // Apply changes
     Object.assign(session, updates);

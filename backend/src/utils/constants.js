@@ -32,7 +32,7 @@ const editableFields = {
   result: {},
   session: {
     teacher: {
-      active: ['questions'],
+      active: ['questions', 'deviceIds'],
       paused: [],
       completed: ['status', 'deviceIds', 'questions', 'endTime'], 
       cancelled: [],

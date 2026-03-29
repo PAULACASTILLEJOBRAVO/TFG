@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const debug = require('debug')('backend:models:response');
 
 //Define response schema
 const responseSchema = new Schema({
@@ -13,9 +12,6 @@ const responseSchema = new Schema({
         type: Boolean, 
         required: true 
     },
-    // timeTaken: { 
-    //     type: Number, // Time taken to answer in seconds 
-    // },
     pointsAwarded: { 
         type: Number,
     },

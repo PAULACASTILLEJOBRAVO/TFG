@@ -1,6 +1,9 @@
 // Import models
 const Session = require('../../models/Session');
 
+// Import services
+const resultServices = require('./resultServices');
+
 // Session services
 // Service to get all sessions
 const getAllSessions = async () => {
@@ -41,6 +44,20 @@ const completeSessionById = async ({id, body, _id, role}) => {
         if(!session) return false;
 
         const updatedSession = await Session.completeById(id, body, { _id, role });
+
+        // Generate results for all devices in the session
+        await Promise.all(
+            session?.deviceIds.map(deviceId =>
+                resultServices.generateResults({
+                    playerId: deviceId.assignedToUserId, 
+                    sessionId: updatedSession._id
+                })
+            )
+        );
+
+        // Calculate ranks after generating results
+        await resultServices.calculateRanks(updatedSession._id);
+        
         return updatedSession;
     }catch(error){
         throw new Error(error.message);
@@ -66,7 +83,6 @@ module.exports = {
   getSessionById,
 
   createSession,
-  
   completeSessionById,
   updateSessionById,
 

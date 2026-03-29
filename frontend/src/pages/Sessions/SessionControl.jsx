@@ -44,6 +44,7 @@ const SessionControl = () => {
     const sessionIdRef = useRef(null);
     const responseQueueRef = useRef([]);
     const questionsRef = useRef([]);
+    const deviceIdsRef = useRef([]);
 
     // Data
     const [sessionId, setSessionId] = useState(null);
@@ -53,13 +54,6 @@ const SessionControl = () => {
     const startListening = async () => {
         await listen((event) => {
             switch(event.type) {
-                case "SUCCESS":
-                    console.log(event.raw);
-                    break;
-
-                case "QUESTION_ACK":
-                    console.log(event.raw);
-                    break;
 
                 case "ANSWER":
                     const questionId = currentQuestionRef.current;
@@ -67,6 +61,10 @@ const SessionControl = () => {
                     handleUpdateQuestion(prev => {
                         // If there is nothing yet for this question, create the object
                         if (!questionId) return;
+
+                        if (!deviceIdsRef.current.includes(event.deviceId)) {
+                            deviceIdsRef.current.push(event.deviceId);
+                        }
 
                         const existingQuestion = prev.find(q => q.questionId === questionId);
 
@@ -125,13 +123,10 @@ const SessionControl = () => {
 
                     break;
 
-                case "TIMEOUT":
-                    console.log(event.raw);
-                    break;
-
                 case "STOP_QUESTION":
                     updateSession(sessionIdRef.current, {
-                        questions: questionsRef.current
+                        questions: questionsRef.current,
+                        deviceIds: deviceIdsRef.current
                     });
                     break;
 

@@ -26,7 +26,8 @@ const resultSchema = new Schema({
     },
     rank: { 
         type: Number, 
-        required: true
+        required: true,
+        default: 0
     },
 
     //Relations
@@ -47,13 +48,12 @@ const resultSchema = new Schema({
     },
 
     //status and configuration
-    status: { 
-        type: String, 
-        enum: ['in-progress', 'complete'], 
-        default: 'in-progress' 
-    },
     timeTaken: { 
         type: Number, // in seconds
+        required: true 
+    },
+    startedAt: { 
+        type: Date, 
         required: true 
     },
     finishedAt: { 

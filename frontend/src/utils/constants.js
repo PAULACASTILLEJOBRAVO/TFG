@@ -1,4 +1,4 @@
-export const colorCard = {
+export const bgColorCard = {
   0: { normal: "bg-red-500", dim: "bg-red-500/60" },
   1: { normal: "bg-yellow-500", dim: "bg-yellow-500/60" },
   2: { normal: "bg-blue-500", dim: "bg-blue-500/60" },
@@ -18,6 +18,17 @@ export const barColorCard = {
     5: { normal: "bg-orange-300", dim: "bg-orange-700/70" },
     6: { normal: "bg-purple-300", dim: "bg-purple-700/70" },
     7: { normal: "bg-teal-300", dim: "bg-teal-700/70" },
+};
+
+export const textColorCard = {
+    0: "text-red-500",
+    1: "text-yellow-500",
+    2: "text-blue-500",
+    3: "text-green-500",
+    4: "text-pink-500",
+    5: "text-orange-500",
+    6: "text-purple-500",
+    7: "text-teal-500"
 };
 
 export const colsMap = {

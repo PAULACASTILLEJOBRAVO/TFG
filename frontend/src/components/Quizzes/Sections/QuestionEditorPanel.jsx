@@ -8,7 +8,7 @@ import { EditInput} from "@/components/Common";
 import { OptionRow } from "@/components/Question/EditorPanel";
 import { RadioGroup } from "@/components/ui/radio-group";
 import { forwardRef, Fragment } from "react";
-import { colorCard } from "@/utils/constants";
+import { bgColorCard } from "@/utils/constants";
 import { useTranslation } from "react-i18next";
 
 const QuestionEditorPanel = forwardRef(({ question, questionError, touched, submitted, onChange, onBlur }, ref) => {
@@ -55,7 +55,7 @@ const QuestionEditorPanel = forwardRef(({ question, questionError, touched, subm
                                         <Fragment key={index}>
                                         <OptionRow
                                             label={String.fromCharCode(65 + index)}
-                                            color={colorCard[index].normal}
+                                            color={bgColorCard[index].normal}
                                             value={option.text}
                                             index={index}
                                             onChange={(e) => {

@@ -284,6 +284,10 @@
                 "endQuestion": "Finalizar pregunta",
                 "nextQuestion": "Siguiente pregunta",
                 "showResults": "Mostrar resultados"
+            },
+            "questionDisplay": {
+                "response": "respuesta",
+                "responses": "respuestas"
             }
         },
         "sessionPresentation": {

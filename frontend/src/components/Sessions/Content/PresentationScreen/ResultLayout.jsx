@@ -3,7 +3,7 @@ import {
     useState 
 } from "react";
 import { 
-    colorCard,
+    bgColorCard,
     barColorCard
  } from "@/utils/constants";
 
@@ -67,9 +67,9 @@ const ResultLayout = ({ currentQuestion, results }) => {
 
                             const isCorrect = option.isCorrect;
 
-                            const baseColor = isCorrect ? colorCard[index].normal : colorCard[index].dim;
+                            const baseColor = isCorrect ? bgColorCard[index].normal : bgColorCard[index].dim;
 
-                            const barColor = isCorrect ? (count > 0 ? colorCard[index].normal : barColorCard[index].normal) : barColorCard[index].dim;
+                            const barColor = isCorrect ? (count > 0 ? bgColorCard[index].normal : barColorCard[index].normal) : barColorCard[index].dim;
 
                             return (
                                 <div

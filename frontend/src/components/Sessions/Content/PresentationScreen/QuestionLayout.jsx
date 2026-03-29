@@ -1,4 +1,4 @@
-import { colorCard } from "@/utils/constants";
+import { bgColorCard } from "@/utils/constants";
 
 const QuestionLayout = ({ currentQuestion, questionIndex, totalQuestions }) => {
     if(!currentQuestion) return null;
@@ -19,7 +19,7 @@ const QuestionLayout = ({ currentQuestion, questionIndex, totalQuestions }) => {
 
                     <div className="grid grid-cols-1 gap-2 xl:gap-8 flex-1">
                         {currentQuestion.options.map((option, index) => {
-                            const bgColor = colorCard[index].normal;
+                            const bgColor = bgColorCard[index].normal;
 
                             return (
                                 <div

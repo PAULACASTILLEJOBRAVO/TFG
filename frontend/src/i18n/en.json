@@ -281,24 +281,28 @@
                 "nextQuestion": "Next question",
                 "showResults": "Show results"
             },
-            "sessionPresentation": {
-                "waiting": {
-                    "title": "Turn on your clicker device",
-                    "subtitle": "When the quiz starts:",
-                    "instructions": [
-                       {
-                            "text": "Use buttons A to H for multiple option questions."
-                        },
-                        {
-                            "text": "Use buttons A or B for true/false questions:",
-                            "subItems": [
-                                "A = True.",
-                                "B = False."
-                            ]
-                        } 
-                    ],
-                    "message": "Waiting for the teacher..."
-                }
+            "questionDisplay": {
+                "response": "respuesta",
+                "responses": "respuestas"
+            }
+        },
+       "sessionPresentation": {
+            "waiting": {
+                "title": "Turn on your clicker device",
+                "subtitle": "When the quiz starts:",
+                "instructions": [
+                    {
+                        "text": "Use buttons A to H for multiple option questions."
+                    },
+                    {
+                        "text": "Use buttons A or B for true/false questions:",
+                        "subItems": [
+                            "A = True.",
+                            "B = False."
+                        ]
+                    } 
+                ],
+                "message": "Waiting for the teacher..."
             }
         }
     },

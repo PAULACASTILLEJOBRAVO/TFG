@@ -47,13 +47,28 @@ const completeSessionById = async ({id, body, _id, role}) => {
     }
 }
 
+// Service to update a session by ID
+const updateSessionById = async ({id, body, _id, role}) => {
+    try{
+        const session = await getSessionById(id);
+        if(!session) return false;
+
+        const updatedSession = await Session.updateById(id, body, { _id, role });
+        return updatedSession;
+    }catch(error){
+        throw new Error(error.message);
+    }
+}
+
 // Export session services
 module.exports = {
   getAllSessions,
   getSessionById,
 
   createSession,
+  
   completeSessionById,
+  updateSessionById,
 
   deleteSessionById
 };

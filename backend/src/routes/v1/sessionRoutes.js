@@ -173,6 +173,9 @@ router.post('/', sessionController.createSession);
 // Route to complete a session by ID
 router.patch('/:id/complete', sessionController.completeSessionById);
 
+// Route to update a session by ID
+router.patch('/:id', sessionController.updateSessionById);
+
 // Route to delete a session by ID
 /**
  * @swagger

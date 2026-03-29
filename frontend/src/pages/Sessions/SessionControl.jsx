@@ -30,7 +30,7 @@ const SessionControl = () => {
         loading: loadingSerial,
         error: errorSerial
     } = useCoordinatorSerial();
-    const { create: createSession } = useSessionActions();
+    const { create: createSession, update: updateSession } = useSessionActions();
     const { create: createResponse } = useResponseActions();
 
     // State
@@ -43,6 +43,7 @@ const SessionControl = () => {
     const currentQuestionRef = useRef(null);
     const sessionIdRef = useRef(null);
     const responseQueueRef = useRef([]);
+    const questionsRef = useRef([]);
 
     // Data
     const [sessionId, setSessionId] = useState(null);
@@ -104,6 +105,7 @@ const SessionControl = () => {
                             ...prev,
                             {
                                 questionId: questionId,
+                                options: quiz.questionIds?.find(q => q._id === questionId)?.options || [],
                                 answers: [{ option: event.option, count: 1 }],
                                 totalResponses: 1
                             }
@@ -128,7 +130,9 @@ const SessionControl = () => {
                     break;
 
                 case "STOP_QUESTION":
-                    console.log(event.raw);
+                    updateSession(sessionIdRef.current, {
+                        questions: questionsRef.current
+                    });
                     break;
 
                 case "RESULT":
@@ -205,18 +209,27 @@ const SessionControl = () => {
 
     const handleUpdateQuestion = (updater) => {
         setQuestions((prev) => updater(prev));
+        questionsRef.current = updater(questionsRef.current);
     }
 
     useEffect(() => {
-        const interval = setInterval(() => {
+        let processing = false;
+
+        const interval = setInterval(async () => {
+            if (processing) return;
             if (responseQueueRef.current.length === 0) return;
+
+            processing = true;
 
             const batch = [...responseQueueRef.current];
             responseQueueRef.current = [];
 
-            // Process the batch of responses
-            batch.forEach(res => createResponse(res));
-
+            try {
+                // Process the batch of responses
+                await Promise.all(batch.map(res => createResponse(res)));
+            } finally {
+                processing = false;
+            }
         }, 500); // Every 500ms
 
         return () => clearInterval(interval);

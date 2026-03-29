@@ -125,7 +125,7 @@ const QuestionControlScreen = ({quiz, questions, results, resultsReady, sessionI
             <QuestionPagination currentIndex={currentQuestionIndex} totalQuestions={quiz?.questionIds.length} />
        
             {/* Information */}
-            <QuestionDisplay question={question} totalResponses={totalResponses}/>
+            <QuestionDisplay question={question} questionStats={questionStats} totalResponses={totalResponses}/>
 
             {/* Buttons */}
             <ButtonActions 
@@ -135,7 +135,6 @@ const QuestionControlScreen = ({quiz, questions, results, resultsReady, sessionI
                 onNextQuestion={handleNextQuestion}
                 onShowResults={handleShowResults}
             />
-
         </div>
     );
 }

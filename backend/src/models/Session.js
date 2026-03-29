@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const debug = require('debug')('backend:middleware:validationRole');
 const Schema = mongoose.Schema;
 
-const { getSessionCompleteFields } = require('../utils/checkRolePermissions');
+const { getSessionCompleteFields, getSessionEditableFields } = require('../utils/checkRolePermissions');
 
 //Define session schema
 const sessionSchema = new Schema({
@@ -23,6 +23,10 @@ const sessionSchema = new Schema({
     },
     questions: [{
         questionId: { type: mongoose.Schema.Types.ObjectId, ref: 'Question', required: true },
+        options: [{ 
+            text: { type: String, required: true },
+            isCorrect: { type: Boolean, required: true }
+        }],
         answers: [{
             option: { type: String, required: true },
             count: { type: Number, default: 0 }
@@ -256,6 +260,40 @@ sessionSchema.statics.pauseById = async function(id){
     await session.pauseSession();
 
     return true;
+}
+
+// Static update by id
+sessionSchema.statics.updateById = async function(id, body, currentUserData) {
+    const session = await this.findById(id);
+    if (!session) return false;
+
+    // Extract current user ID and role
+    const { _id: currentUserId, role: currentUserRole } = currentUserData; 
+
+    // Check if the user is updating their own data
+    const isSelf = currentUserId.toString() === session.teacherId.toString(); 
+
+    // Get allowed fields based on role and whether it's self-update
+    const allowedFields = getSessionEditableFields(currentUserRole, isSelf, session.status);
+
+    // Filter body to only include allowed fields
+    const updates = {};
+    for (const key of Object.keys(body)) {
+        if (allowedFields.includes(key)) {
+            updates[key] = body[key];
+        }
+    }
+
+    debug('Allowed fields for update:', allowedFields);
+    debug('Updates to apply:', updates);
+
+    // Apply changes
+    Object.assign(session, updates);
+
+    // Save and return updated session
+    await session.save();
+
+    return session;
 }
 
 //Export the model

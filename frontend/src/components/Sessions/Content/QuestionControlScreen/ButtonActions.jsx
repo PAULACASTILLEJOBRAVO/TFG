@@ -25,7 +25,7 @@ const ButtonActions = ({questionActive, showResult, onEndQuestion, onNextQuestio
 
             <Button 
                 className="md:ml-auto bg-green-500 hover:bg-green-600 text-white hover:text-white"
-                disabled={questionActive}
+                disabled={questionActive || !showResult}
                 onClick={onNextQuestion}
             >
                 {t('teacher.sessionControl.questionControlScreen.nextQuestion')}

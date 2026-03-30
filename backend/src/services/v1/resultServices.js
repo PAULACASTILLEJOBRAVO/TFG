@@ -35,7 +35,7 @@ const generateResults = async ({playerId, sessionId}) => {
   // Create a map of questionId to response for the player
   const questionMap = new Map();
   quiz.questionIds.forEach(q => {
-    questionMap.set(q._id.toString(), null);
+    questionMap.set(q._id.toString(), q); // Map questionId to question details
   });
 
   let correctAnswers = 0;
@@ -46,9 +46,10 @@ const generateResults = async ({playerId, sessionId}) => {
     const question = questionMap.get(response.questionId.toString());
     if (!question) return; // Skip if the question is not part of the quiz
 
-    const correctOption = question.options.find(option => option.isCorrect);
+    const index = response.answer.charCodeAt(0) - 65; 
+    const selectedOption = question.options[index];
 
-    if (correctOption) {
+    if (selectedOption?.isCorrect) {
       correctAnswers++;
     } else {
       wrongAnswers++;

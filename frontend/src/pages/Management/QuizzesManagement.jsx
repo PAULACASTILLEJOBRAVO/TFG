@@ -16,6 +16,8 @@ import { Fragment, useState } from "react";
 import { useQuizActions } from "@/hooks/Quizzes/useQuizActions";
 import { Spinner } from "@/components/ui/spinner";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
+import { normalizeWord } from "@/utils/search";
 
 const QuizzesManagement = () => {
     const { quizzes, loading, refetch } = useQuizzes();
@@ -26,6 +28,23 @@ const QuizzesManagement = () => {
 
     // NAVIGATION
     const navigate = useNavigate();
+
+    // SEARCH
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search).get("search") || "";
+
+    const words = searchParams.toLowerCase().split(" ").filter(word => word.trim() !== "");;
+    const normalizedWords = words.map(normalizeWord);
+
+    const filteredQuizzes = !normalizedWords.length
+        ? quizzes
+        : quizzes.filter(q =>
+            normalizedWords.every(word =>
+                q.title?.toLowerCase().includes(word) ||
+                q.status?.toLowerCase().includes(word) ||
+                q.difficulty?.toLowerCase().includes(word)
+            )
+        );
 
     // TRANSLATION
     const { t } = useTranslation();
@@ -109,13 +128,13 @@ const QuizzesManagement = () => {
                     <div className="flex justify-center">
                         <Spinner className="h-10 w-10" color="blue" />
                     </div>
-                ) : quizzes.length === 0 && (
+                ) : filteredQuizzes.length === 0 && (
                     <p className="text-gray-500">{t("teacher.quizzesManagement.detailsCard.noQuizzes")}</p>
                 )}
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                     {quizzes.map((quiz, index) => {
-                        const prevStatus = quizzes[index - 1]?.status;
+                     {filteredQuizzes.map((quiz, index) => {
+                        const prevStatus = filteredQuizzes[index - 1]?.status;
                         const showDivider = index === 0 || prevStatus !== quiz.status;
 
                         return (

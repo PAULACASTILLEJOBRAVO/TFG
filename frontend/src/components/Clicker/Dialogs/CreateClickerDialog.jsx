@@ -11,8 +11,9 @@ import { EditInput } from "@/components/Common";
 import { ClickerStatusSelector } from "../Content/";
 import { StudentSearch } from "@/components/Users/Layout/Students";
 import { useTranslation } from "react-i18next";
+import { HexadecimalToDecimal } from "@/utils/clickers";
 
-const CreateClickerDialog = ({ open, clicker, onClose, onSave, onChange, onToggleStudent }) => {
+const CreateClickerDialog = ({ open, clicker, touched, submitted, clickerError, onClose, onSave, onChange, onToggleStudent }) => {
     const { t } = useTranslation();
 
     return(
@@ -29,13 +30,15 @@ const CreateClickerDialog = ({ open, clicker, onClose, onSave, onChange, onToggl
 
                     <EditInput 
                         type="number" 
-                        min="0"
-                        step="1"
+                        min={1}
+                        step={1}
                         label={t("admin.clickersManagement.dialogs.create.nameLabel")} 
                         placeholder={t("admin.clickersManagement.dialogs.create.namePlaceholder")} 
-                        value={clicker.deviceCode}
-                        onChange={e => onChange("deviceCode", Number(e.target.value))}
+                        value={HexadecimalToDecimal(clicker.deviceCode)}
+                        onChange={e => onChange("deviceCode", e.target.value)}
                         isRequired={true}
+                        error={(touched || submitted) && clickerError?.deviceCode}
+                        errorMessage={clickerError?.deviceCode}
                     />
 
                     <ClickerStatusSelector 
@@ -54,7 +57,7 @@ const CreateClickerDialog = ({ open, clicker, onClose, onSave, onChange, onToggl
                         />
                     )}
                     </div>
-              
+
 
                 <DialogFooter className="gap-2">
                     <Button className="bg-green-600 hover:bg-green-700 text-white" onClick={onSave}>

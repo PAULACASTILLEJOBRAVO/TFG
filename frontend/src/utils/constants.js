@@ -95,3 +95,21 @@ export const statusClicker = [
     { _id: "damaged", value: "damaged", labelKey: "admin.clickersManagement.row.edit.damaged" },
     { _id: "retired", value: "retired", labelKey: "admin.clickersManagement.row.edit.retired" },
 ];
+
+export const searchDictionary = {
+    // STATUS
+    published: ["published", "publicado", "p", "pu", "pub", "publ", "publi", "public", "publica", "publicad"],
+    draft: ["draft", "borrador", "b", "bo", "bor", "borr", "borra", "borrad", "borrado"],
+    archive: ["archive", "archivado", "a", "ar", "arc", "arch", "archi", "archiv", "archiva", "archivad", "archivado"],
+    deleted: ["deleted", "eliminado", "e", "el", "eli", "elim", "elimi", "elimin", "elimina", "eliminad", "eliminado"],
+
+    // DIFFICULTY
+    easy: ["easy", "fácil", "facil", "f", "fa", "fac", "faci"],
+    medium: ["medium", "medio", "medi", "med", "me", "m"],
+    hard: ["hard", "difícil", "dificil", "d", "di", "dif", "difi", "difí", "dific", "difíc", "difici", "dificí"],
+
+    // ROLES
+    admin: ["admin", "administrador", "a", "ad", "adm", "admi", "admin", "admini", "adminis", "administ", "administr", "administra", "administrad", "administrado", "administrado"],
+    student: ["student", "estudiante", "e", "es", "est", "estud", "estudi", "estudia", "estudian", "estudiant", "a", "al", "alum", "alumn", "alumno", "alumna"],
+    teacher: ["teacher", "profesor", "profesora", "p", "pr", "pro", "prof", "profe", "profes", "profeso",],
+};

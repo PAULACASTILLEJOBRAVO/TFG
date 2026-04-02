@@ -15,6 +15,7 @@ import { useAuth } from "@/auth/AuthContext";
 import { useClickerActions } from "@/hooks/Clickers/useClickerActions";
 import { DecimalToHexadecimal } from "@/utils/clickers";
 import { useTranslation } from "react-i18next";
+import { validateClicker } from "@/utils/validators";
 
 const ClickersManagement = () => {
   const { t } = useTranslation();
@@ -25,15 +26,16 @@ const ClickersManagement = () => {
   const { remove, restore, create, update } = useClickerActions();
 
   // Create clicker state (for the form in the dialog)
-  const [createClicker, setCreateClicker] = useState({ deviceCode: 0, adminId: user._id ? user._id : null, status: "available", assignedToUserId: null });
+  const [createClicker, setCreateClicker] = useState({ deviceCode: 1, adminId: user._id ? user._id : null, status: "available", assignedToUserId: null });
     
-  const handleUpdateCreateClicker = (field, value) => {
+  const handleUpdateCreateClicker = async (field, value) => {
     // If not is status field, just update the field
     if(field !== "status") {
       if(field === "deviceCode") {
         // Convert decimal to hexadecimal before setting the state
-        const hexValue = DecimalToHexadecimal(value);
-        setCreateClicker(prev => ({ ...prev, [field]: value, deviceCodeHex: hexValue }));
+        const hexValue = await DecimalToHexadecimal(value);
+        setCreateClicker(prev => ({ ...prev, [field]: hexValue }));
+        setTouched(prev => ({ ...prev, deviceCode: true }));
       } else {
         setCreateClicker(prev => ({ ...prev, [field]: value }));
       }
@@ -123,7 +125,12 @@ const ClickersManagement = () => {
   }
 
   const handleRegisterClicker = async () => {
+      setSubmitted(true);
+      
+      if (clickerError) return;
+
       try {
+
           await create(createClicker);
           closeDialogs();
           refetch();
@@ -157,6 +164,11 @@ const ClickersManagement = () => {
       setEditClicker(prev => ({ ...prev, assignedToUserId: student._id, status: "assigned" }));
     }
   }
+
+  // Errors
+  const clickerError = validateClicker(createClicker.deviceCode);
+  const [submitted, setSubmitted] = useState(false);
+  const [touched, setTouched] = useState({deviceCode: false});
 
   return (
     <DashboardLayout>
@@ -192,6 +204,9 @@ const ClickersManagement = () => {
         {dialogs.create && <CreateClickerDialog
           open={dialogs.create}
           clicker={createClicker}
+          touched={touched}
+          submitted={submitted}
+          clickerError={clickerError}
           onClose={closeDialogs}
           onSave={handleRegisterClicker}
           onChange={handleUpdateCreateClicker}

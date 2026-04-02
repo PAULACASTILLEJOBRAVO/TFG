@@ -79,3 +79,16 @@ export const validateQuestion = (question) => {
 
     return Object.keys(errors).length > 0 ? errors : null;
 }
+
+export const validateClicker = (deviceCode) => {
+    const errors = {};
+
+    if(!deviceCode) errors.deviceCode = "Device code is required";
+    if (deviceCode === "" || deviceCode === null || deviceCode === undefined) {
+        errors.deviceCode = "Device code is required";
+    } else if (Number(deviceCode) < 1) {
+        errors.deviceCode = "Device code must be a positive integer; excluding zero";
+    }
+
+    return Object.keys(errors).length > 0 ? errors : null;
+}

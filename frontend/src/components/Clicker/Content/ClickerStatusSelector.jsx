@@ -10,8 +10,10 @@ import { Label } from "@/components/ui/label";
 import { statusClicker } from "@/utils/constants";
 import { useTranslation } from "react-i18next";
 
-const ClickerStatusSelector = ({ value, onChange, isEditing }) => { 
+const ClickerStatusSelector = ({ value, onChange, isEditing = false }) => { 
     const { t } = useTranslation();
+
+    const filteredStatuses = isEditing ? statusClicker : statusClicker.filter(s => s.value === "available" || s.value === "assigned");
 
     return(
         <div className="w-full">
@@ -35,7 +37,7 @@ const ClickerStatusSelector = ({ value, onChange, isEditing }) => {
 
                 <SelectContent>
                     <SelectGroup>
-                        {statusClicker.map(status => (  
+                        {filteredStatuses.map(status => (  
                             <SelectItem key={status._id} value={status.value}>
                                 {t(status.labelKey)}
                             </SelectItem>

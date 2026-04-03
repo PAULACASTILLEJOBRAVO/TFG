@@ -26,13 +26,14 @@ const resultSchema = new Schema({
     },
     rank: { 
         type: Number, 
-        required: true
+        required: true,
+        default: 0
     },
 
     //Relations
     playerId: { 
         type: Schema.Types.ObjectId, 
-        ref: 'Player', 
+        ref: 'User', 
         required: true 
     },
     sessionId: { 
@@ -47,23 +48,23 @@ const resultSchema = new Schema({
     },
 
     //status and configuration
-    status: { 
-        type: String, 
-        enum: ['in-progress', 'complete'], 
-        default: 'in-progress' 
-    },
     timeTaken: { 
         type: Number, // in seconds
         required: true 
     },
-    FinishedAt: { 
+    startedAt: { 
+        type: Date, 
+        required: true 
+    },
+    finishedAt: { 
         type: Date, 
         required: true 
     }
 }, { 
-    timestamps: true,
-    versionKey: false
+    timestamps: true, // Add createdAt and updatedAt fields
+    versionKey: false, // Disable the __v version key
+    collection: 'Result' // Specify the collection name
 });
 
 //Export Result model
-const Result = mongoose.model('Result', resultSchema);
+module.exports = mongoose.model('Result', resultSchema);

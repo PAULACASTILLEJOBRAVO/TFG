@@ -1,0 +1,17 @@
+components:
+  schemas:
+    SessionDeletionMetadata:
+      type: object
+      required:
+        - by
+        - reason
+      properties:
+        by:
+          type: string
+          description: Identifier of the user or system performing the deletion.
+          example: "68e283a0d9eaff29b0c84535"
+        reason:
+          type: string
+          description: Reason for deleting the session.
+          example: "Session data retention period exceeded"
+

@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const debug = require('debug')('backend:models:response');
 
 //Define response schema
 const responseSchema = new Schema({
@@ -13,13 +12,8 @@ const responseSchema = new Schema({
         type: Boolean, 
         required: true 
     },
-    timeTaken: { 
-        type: Number, // Time taken to answer in seconds
-        required: true 
-    },
     pointsAwarded: { 
-        type: Number, 
-        required: true 
+        type: Number,
     },
 
     //Relations
@@ -37,28 +31,11 @@ const responseSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'Question',
         required: true 
-    }, 
-    //studentQuestioId: { 
-    //    type: mongoose.Schema.Types.ObjectId,
-    //    required: true 
-    //}, //Unique identifier for all of a student's answers to the same question
-
-    //states and configuration
-    attemptNumber: { 
-        type: Number,
-        default: 1
-    },
-    isFirstAttempt: { 
-        type: Boolean,
-        default: true
-    },
-    isFinalAttempt: { 
-        type: Boolean,
-        default: false
-    },
+    }
 }, { 
     timestamps: true, // Add createdAt and updatedAt fields
-    versionKey: false // Disable the __v version key
+    versionKey: false, // Disable the __v version key
+    collection: 'Response' // Specify the collection name
 });
 
 //Export the model

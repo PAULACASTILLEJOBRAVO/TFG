@@ -1,0 +1,53 @@
+import { api } from "./api";
+
+export const getTotalUsers = async () => {
+    const response = await api.get('users');
+    return response.data;
+}
+
+export const getTotalStudentsForTeacher = async () => {
+    const response = await api.get('users/students-for-teacher');
+    return response.data;
+}
+
+export const getTotalStudentsForAdmin = async () => {
+    const response = await api.get('users/students-for-admin');
+    return response.data;
+}
+
+export const getTotalUsersStats = async () => {
+    const response = await api.get("/users/stats/total");
+    return response.data;
+}
+
+export const getTotalStudentsStats = async () => {
+    const response = await api.get("/users/students/stats/total");
+    return response.data;
+}
+
+export const deleteUser = async (id, payload) => {
+    const response = await api.delete(`/users/${id}`, {
+        data: payload
+    });
+    return response.data;
+}
+
+export const changePasswordUser = async (id, payload) => {
+    const response = await api.patch(`/users/password/${id}`, payload);
+    return response.data;
+}
+
+export const restoreUser = async (id) => {
+    const response = await api.patch(`/users/restore/${id}`);
+    return response.data;
+};
+
+export const updateUser = async (id, payload) => {
+    const response = await api.patch(`/users/${id}`, payload);
+    return response.data;
+}
+
+export const createUser = async (payload) => {
+    const response = await api.post('/users', payload);
+    return response.data;
+}

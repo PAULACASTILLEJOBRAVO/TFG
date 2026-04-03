@@ -1,0 +1,315 @@
+{
+    "common": {
+        "language": "Language",
+        "spanish": "Spanish",
+        "english": "English",
+
+        "logout": "Log Out",
+        "home": "Home",
+        "profile": "Profile",
+        "settings": "Settings",
+        "tutorial": "Tutorial",
+
+        "create": "Create",
+        "edit": "Edit",
+        "delete": "Delete",
+        "restore": "Restore",
+        "confirm": "Confirm",
+        "cancel": "Cancel",
+        "cancelEdit": "Cancel edit",
+        "save": "Save",
+        "saveDraft": "Save Draft",
+        "changePassword": "Change password",
+        "changePhoto": "Change photo",
+        "update": "Update",
+        "register": "Register",
+        "start": "Start",
+        "end": "End",
+        "publish": "Publish",
+        "back": "Back to"
+    },
+    "admin":{
+        "users": "Users",
+        "clickers": "Clickers",
+        "statistics": "Statistics",
+        "sessions": "Sessions",
+        "reports": "Reports",
+
+        "adminPanel": "Admin Panel",
+
+        "overview": {
+            "title": "Management",
+
+            "totalUsers": "total users",
+            "connectedUsers": "connected users",
+            "totalClickers": "total clickers",
+
+            "managementUser": "Users",
+            "managementClicker": "Clickers"
+        },
+
+        "usersManagement": {
+            "title": "User management",
+            "labelButton": "user",
+
+            "table": {
+                "name": "Name",
+                "email": "Email",
+                "role": "Role",
+                "roles": {
+                    "admin": "Admin",
+                    "teacher": "Teacher",
+                    "student": "Student"
+                },
+                "status": "Status",
+                "lastAccess": "Last access",
+
+                "noUsers": "No users registered.",
+                "neverAccessed": "Never"
+            },
+
+            "drawer": {
+                "view": {
+                    "description": "User management",
+
+                    "fullName": "Full name",
+                    "email": "Email",
+                    "role": "Role",
+                    "lastLogin": "Last login",
+                    "lastLogout": "Last logout",
+                    "deletedAt": "Deletion date",
+                    "deleteReason": "Deletion reason"
+                },
+                "edit": {
+                    "description": "User edition",
+
+                    "fullName": "Full name",
+                    "email": "Email",
+                    "role": "Role",
+                    "selectRole": "Select a role"
+                }
+            },
+
+            "dialogs": {
+                "delete": {
+                    "title": "Delete user",
+                    "description": "Are you sure you want to delete this user? This action cannot be undone.",
+                    "warning": "The user {{username}} will no longer be able to log in.",
+                    "reasonLabel": "Reason for deletion"
+                },
+                "changePassword": {
+                    "title": "Change password",
+                    "description": "Enter a new password for the user {{username}}.",
+                    "newPassword": "New password",
+                    "confirmPassword": "Confirm password"
+                }
+            },
+
+            "createForm": {
+                "title": "Register new user",
+                "information": "User information",
+                "fullname": "Full name (Optional)",
+                "username": "Username",
+                "email": "Email",
+                "password": "Password",
+                "confirmPassword": "Confirm password",
+                "role": "Role",
+                "selectRole": "Select a role"
+            }
+        },
+        "clickersManagement": {
+            "title": "Clickers Management",
+            "labelButton": "clicker",
+            "table": {
+                "code": "Device Code",
+                "assignedUser": "Assigned User",
+                "status": "Status",
+
+                "noClickers": "No clickers registered."
+            },
+            "row": {
+                "edit": {
+                    "status": "Status",
+                    "selectStatus": "Select a status",
+
+                    "assigned": "In use",
+                    "available": "Available",
+                    "damaged": "Damaged",
+                    "retired": "Retired",
+                    "unknown": "Unknown"
+                }
+            },
+            "dialogs": {
+                "create": {
+                    "title": "Register Clicker",
+                    "description": "This option will register a new clicker in the system.",
+                    "nameLabel": "Device Code",
+                    "namePlaceholder": "Enter the clicker code",
+                    "studentLabel": "Assign Student",
+                    "studentPlaceholder": "Enter the name of the student who will use this clicker"
+                },
+                "delete": {
+                    "title": "Delete Clicker",
+                    "description": "Are you sure you want to delete this clicker? This action cannot be undone.",
+                    "warning": "The clicker with code {{code}} will no longer be able to be used.",
+                    "reasonLabel": "Reason for deletion"
+                }
+            }
+        }
+    },
+    "teacher": {
+        "quizzes": "Quizzes",
+        "historical": "Historical",
+        "createQuiz": "Create Quiz",
+
+        "greeting": "Hello, {{username}}",
+
+        "overview": {
+            "totalStudents": "total students",
+            "connectedStudents": "connected students"
+        },
+
+        "quizzesManagement": {
+            "title": "My quizzes",
+            "labelButton": "quiz",
+
+            "detailsCard": {
+                "questions": "questions",
+                "players": "players",
+                "lastUpdated": "Last updated",
+                
+                "noQuizzes": "You don't have any quizzes created.",
+
+                "difficulty": {
+                    "hard": "Hard",
+                    "medium": "Medium",
+                    "easy": "Easy",
+                    "unknown": "No difficulty"
+                },
+
+                "status": "Status",
+                "draft": "Draft",
+                "published": "Published",
+                "archived": "Archived",
+                "unknown": "Without recognized status"
+            },
+            "quizForm":{
+                "create": {
+                    "title": "Create quiz"
+                },
+                "edit": {
+                    "title": "Edit quiz"
+                },
+
+                "title": "Title",
+                "description": "Description",
+
+                "questions": "Questions",
+                "students": "Students",
+
+                "difficulty": {
+                    "label": "Difficulty",
+                    "select": "Select a difficulty"
+                },
+
+                "editor": {
+                    "title": "Write a question"
+                },
+
+                "settings": {
+                    "title": "Settings",
+                    "labelButton": "question",
+                    "options": "options",
+                    "multipleChoice": "Multiple Choice",
+                    "trueFalse": "True/False",
+                    "timeLimit": "Time limit (seconds)",
+                    "timeLimitPlaceholder": "Enter the time limit in seconds",
+                    "points": "Points (per question)",
+                    "pointsPlaceholder": "Enter the points for this question",
+                    "type": "Question type",
+                    "selectType": "Select a type"
+                },
+
+                "studentList": {
+                    "title": "Selected students:",
+                    "searchPlaceholder": "Search student by name",
+                    "noSelectedStudents": "No students selected.",
+                    "noStudents": "No students found."
+                }
+            },
+            "dialogs": {
+                "delete": {
+                    "title": "Delete Quiz",
+                    "description": "Are you sure you want to delete this quiz? This action cannot be undone.",
+                    "warning": "The quiz {{title}} will no longer be able to be used or played, but you can restore it later if you wish.",
+                    "reasonLabel": "Reason for deletion"
+                },
+                "publish": {
+                    "title": "Publish Quiz",
+                    "description": "Are you sure you want to publish this quiz? This action will make the quiz available for students.",
+                    "warning": "Students will be able to play the quiz {{title}} once published.",
+                    "reasonLabel": "Reason for publication"
+                }
+            }
+        },
+
+        "sessionControl": {
+            "steps": {
+                "receiverConnection": {
+                    "connectReceiverDescription": "Connect to clicker receiver to begin the quiz.",
+                    "clickersDetectedDescription": "Clickers will be detected automatically when students submit their answers.",
+                    "connected": "✔ Receiver connected",
+                    "listened": "✔ Listener started",
+                    "connectButton": "Connect clickers receiver",
+                    "connectingButton": "Connecting to receiver..."
+                },
+                "openPresentation": {
+                    "openPresentationDescription":"Open the presentation screen to display the quiz to students.",
+                    "presentationDescription":"The presentation screen will show questions and real-time results as students submit their answers.",
+                    "opened": "✔ Presentation screen opened",
+                    "openButton": "Open presentation"
+                },
+                "startSession": {
+                    "startSessionDescription": "Ready to start the quiz session.",
+                    "sessionDescription": "Once the session is started, students can submit their answers.",
+                    "started": "✔ Session started",
+                    "startButton": "Start session"
+                }
+            },
+            "questionControlScreen":{
+                "endQuestion": "End question",
+                "nextQuestion": "Next question",
+                "showResults": "Show results"
+            },
+            "questionDisplay": {
+                "response": "respuesta",
+                "responses": "respuestas"
+            }
+        },
+       "sessionPresentation": {
+            "waiting": {
+                "title": "Turn on your clicker device",
+                "subtitle": "When the quiz starts:",
+                "instructions": [
+                    {
+                        "text": "Use buttons A to H for multiple option questions."
+                    },
+                    {
+                        "text": "Use buttons A or B for true/false questions:",
+                        "subItems": [
+                            "A = True.",
+                            "B = False."
+                        ]
+                    } 
+                ],
+                "message": "Waiting for the teacher..."
+            }
+        }
+    },
+    "student": {
+        "ranking": "Ranking",
+        "stadistics": "Stadistics",
+
+        "greeting": "Hello, {{username}}"
+    }
+}

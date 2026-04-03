@@ -1,0 +1,88 @@
+import { sidebarConfig } from "../../../config/sidebar.config";
+import { 
+    Sidebar, 
+    SidebarMenu, 
+    SidebarMenuItem,  
+    SidebarMenuButton, 
+    SidebarContent, 
+    SidebarGroup,
+    SidebarGroupContent,
+    SidebarSeparator 
+} from "@/components/ui/sidebar";
+import { SidebarUserFooter } from "@/components/Dashboard/Layout/Sidebar"
+import { useAuth } from "@/auth/AuthContext";
+import { 
+    useNavigate, 
+    useLocation 
+} from "react-router-dom";
+import { logoutRequest } from "@/services/auth.service";
+import { icons } from "@/utils/constants";
+import { useTranslation } from "react-i18next";
+
+const DashboardSidebar = () => {
+    const {user, logout } = useAuth();
+
+    const config = sidebarConfig[user.role];
+
+    const { pathname } = useLocation();
+    const navigate = useNavigate();
+
+    const { t } = useTranslation();
+
+    const baseItems = "justify-start hover:bg-gray-300";
+    const activeItem = "bg-black text-white";
+    const logoutItem = "text-red-500 hover:bg-red-50 hover:text-red-500";
+
+    const isSidebarItemActive = (pathname, href) => {
+        if(pathname === href) return true;
+
+        return pathname.startsWith(href + "/");
+    }
+
+    const handleLogout = async () => {
+        await logoutRequest();
+        logout();
+        navigate("/", { replace: true });
+    }
+
+    return(
+        <Sidebar className="w-60 fixed top-16 left-0 h-[calc(100vh-4rem)]">
+                <SidebarSeparator/>
+
+                {/** Items */}
+                <SidebarContent>
+                    <SidebarGroup>
+                        <SidebarGroupContent>
+                            <SidebarMenu>
+                                {config.map((item, index) => {
+                                    const isActive = isSidebarItemActive(pathname, item.href); // Subroutes
+                                    const ActionIcon = item?.icon ? icons[item.icon] : null;
+
+                                    return(
+                                        <SidebarMenuItem key={`${item.labelKey}-${item.href || item.action}`}>
+                                            <SidebarMenuButton 
+                                                className={`
+                                                    ${baseItems}
+                                                    ${isActive ? activeItem : ""}
+                                                    ${item.action === "logout" ? logoutItem : ""}
+                                                `}
+                                                onClick={item.action === "logout" ? handleLogout : () => navigate(item.href)}
+                                            >
+                                                {ActionIcon && <ActionIcon />}
+                                                {t(item.labelKey)}
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
+                                    )
+                                })}
+                            </SidebarMenu>
+                        </SidebarGroupContent>
+                    </SidebarGroup>
+                </SidebarContent>
+
+                {/** Footer */}
+                <SidebarUserFooter />
+            </Sidebar>
+    );
+}
+
+export default DashboardSidebar;

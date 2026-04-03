@@ -1,0 +1,16 @@
+components:
+  schemas:
+    UserDeletionMetadata:
+      type: object
+      required:
+        - by
+        - reason
+      properties:
+        by:
+          type: string
+          description: The identifier of the user performing the deletion.
+          example: "68e283a0d9eaff29b0c84535"
+        reason:
+          type: string
+          description: The reason for deleting the user.
+          example: "Graduated from the institution"

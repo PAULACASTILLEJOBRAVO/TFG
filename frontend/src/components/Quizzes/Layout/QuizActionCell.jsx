@@ -1,0 +1,55 @@
+import { 
+    EditButton, 
+    DeleteButton, 
+    RestoreButton 
+} from "@/components/Common/ActionButtons";
+import { 
+    StartSessionButton, 
+    PublishButton 
+} from "../Buttons";
+
+const QuizActionCell = ({ label, onEdit, onDelete, onRestore, onPublish, onStartSession, isDeleted, isPublished }) => {
+    return(
+        <div className="flex justify-center items-center gap-2">
+            {onEdit && (
+                <EditButton
+                    onClick={onEdit}
+                    label={label}
+                />
+            )}
+
+            {isPublished === "published" && onStartSession && (
+                <StartSessionButton
+                    onClick={onStartSession}
+                    label={label}
+                />
+            )}
+
+
+            {isPublished === "draft" && onPublish && (
+                <PublishButton
+                    onClick={onPublish}
+                    label={label}
+                />
+            )}
+
+             {isDeleted ? (
+                onRestore && (
+                    <RestoreButton 
+                        onClick={onRestore} 
+                        label={label}
+                    />
+                )
+            ) : (
+                onDelete && (
+                    <DeleteButton
+                        onClick={onDelete}
+                        label={label}
+                    />
+                )
+            )}
+        </div>
+    );
+}
+
+export default QuizActionCell;

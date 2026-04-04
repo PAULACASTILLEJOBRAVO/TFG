@@ -66,6 +66,24 @@ const getAllQuizzesForTeacher = async (req, res) => {
     }
 };
 
+// Controller to get all quizzes created by a specific teacher
+const getAllQuizzesForStudent = async (req, res) => {
+    const currentUser = req.user;
+
+    try {
+        const quizzes = await quizServices.getAllQuizzesForStudent(currentUser._id);
+        res.status(200).json({
+            message: 'Quizzes fetched successfully', 
+            data: quizzes
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            message: 'Error fetching quizzes', 
+            error: error.message 
+        });
+    }
+};
+
 // Controller to create a new quiz
 const createQuiz = async (req, res) => {
     const {body} = req;
@@ -185,6 +203,7 @@ module.exports = {
     getAllQuizzes,
     getQuizById,
     getAllQuizzesForTeacher,
+    getAllQuizzesForStudent,
 
     createQuiz,
     

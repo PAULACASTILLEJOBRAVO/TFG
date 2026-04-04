@@ -5,6 +5,11 @@ export const getQuizzesForTeacher = async () => {
   return response.data;
 };
 
+export const getQuizzesForStudent = async () => {
+    const response = await api.get(`/quizzes/my-student`);
+    return response.data;
+}
+
 export const getQuizById = async (id) => {
     const response = await api.get(`/quizzes/${id}`);
     return response.data;

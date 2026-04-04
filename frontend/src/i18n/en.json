@@ -179,6 +179,9 @@
                 "questions": "questions",
                 "players": "players",
                 "lastUpdated": "Last updated",
+                "lastAttempt": "Last attempt",
+                "average": "average",
+                "sessions": "sessions",
                 
                 "noQuizzes": "You don't have any quizzes created.",
 

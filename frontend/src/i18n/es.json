@@ -183,6 +183,9 @@
                 "questions": "preguntas",
                 "players": "jugadores",
                 "lastUpdated": "Última edición",
+                "lastAttempt": "Último intento",
+                "average": "promedio",
+                "sessions": "sesiones",
 
                 "noQuizzes": "No tienes cuestionarios creados.",
 

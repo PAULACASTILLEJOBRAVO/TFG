@@ -57,6 +57,9 @@ router.get('/', quizController.getAllQuizzes);
 // Route to get all quizzes created by a specific teacher
 router.get('/my-teacher', quizController.getAllQuizzesForTeacher);
 
+// Route to get all quizzes assigned to a specific student
+router.get('/my-student', quizController.getAllQuizzesForStudent);
+
 // Route to post an user
 /**
  * @swagger

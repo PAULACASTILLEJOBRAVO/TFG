@@ -1,6 +1,8 @@
 // Import models
 const Quiz = require('../../models/Quiz');
 const Question = require('../../models/Question');
+const Clicker = require('../../models/Clicker');
+const Session = require('../../models/Session');
 
 // Quiz services
 // Service to fetch all quizzes
@@ -16,6 +18,31 @@ const getQuizById = async (id) => {
 // Service to fetch all quizzes created by a specific teacher
 const getAllQuizzesForTeacher = async (creatorId) => {
     return await Quiz.find({ creatorId: creatorId }).populate('creatorId').populate('playerIds').populate('questionIds').sort({ status: -1, updatedAt: -1 });
+};
+
+// Service to fetch all quizzes assigned to a specific student
+const getAllQuizzesForStudent = async (playerId) => {
+    const clicker = await Clicker.findOne({ assignedToUserId: playerId });
+    if (!clicker) throw new Error("Student doesn't have an assigned clicker"); // If the student doesn't have an assigned clicker, return an empty array
+    
+    const sessions = await Session.find({ deviceIds: clicker._id }).populate({
+        path: 'quizId',
+        populate: [
+            { path: 'creatorId', select: 'username role' },
+            { path: 'questionIds' }
+        ]
+    });
+
+    const data = sessions.map(session => ({
+        sessions: session._id,
+        startTime: session.startTime,
+        endTime: session.endTime,
+        totalTime: session.endTime && session.startTime ? (session.endTime - session.startTime) : null,
+        status: session.status,
+        quiz: session.quizId
+    }));
+
+    return data;
 };
 
 // Service to create a new user
@@ -169,6 +196,7 @@ module.exports = {
     getAllQuizzes,
     getQuizById,
     getAllQuizzesForTeacher,    
+    getAllQuizzesForStudent,
 
     createQuiz,
 

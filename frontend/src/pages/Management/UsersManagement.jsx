@@ -6,7 +6,8 @@ import { UserTable } from "@/components/Users/Layout";
 import { useUsers } from "@/hooks/Users/useUsers";
 import { useState } from "react";
 import { 
-    DeleteUserDialog, ChangePasswordUserDialog
+    DeleteUserDialog, 
+    ChangePasswordUserDialog
 } from "@/components/Users/Dialogs";
 import { useUserActions } from "@/hooks/Users/useUserActions";
 import { UserDetailDrawer } from "@/components/Users/Drawers";    
@@ -14,6 +15,11 @@ import { DashboardSubtitle } from "@/components/Dashboard/Layout/Content";
 import { CreateButton } from "@/components/Common/ActionButtons";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
+import { 
+    matchesRole, 
+    normalizeWord 
+} from "@/utils/search";
 
 const UserManagement = () => {
     // DATA
@@ -35,6 +41,26 @@ const UserManagement = () => {
 
     // Navigation
     const navigate = useNavigate();
+
+    // Search
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search).get("search") || "";
+
+    const words = searchParams.toLowerCase().split(" ").filter(word => word.trim() !== "");;
+    const normalizedWords = words.map(normalizeWord);
+
+    const filteredUsers = users.filter(u => {
+        const username = u.username?.toLowerCase() || "";
+        const fullname = u.fullname?.toLowerCase() || "";
+        const email = u.email?.toLowerCase() || "";
+
+        return normalizedWords.every(word =>
+            username.includes(word) ||
+            fullname.includes(word) ||
+            email.includes(word) ||
+            matchesRole(u.role, word)
+        );
+    });
 
     // Translation
     const { t } = useTranslation();
@@ -130,7 +156,7 @@ const UserManagement = () => {
                 </div>
 
                 <UserTable
-                    users={users}
+                    users={filteredUsers}
                     loading={loadingManagement}
                     onSelect={handleSelectUser}
                     onEdit={handleEditUser}

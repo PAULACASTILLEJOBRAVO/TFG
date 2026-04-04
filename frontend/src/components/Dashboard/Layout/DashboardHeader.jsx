@@ -4,12 +4,10 @@ import {
     HeaderActions 
 } from "./Header/";
 import { Logo } from "@/components/Common";
-import { useAuth } from "@/auth/AuthContext";
+import { useTranslation } from "react-i18next";
 
 const DashboardHeader = () => {
-    const { user } = useAuth();
-
-    const config = headerConfig[user.role];
+    const { t } = useTranslation();
 
     return(
         <header className="
@@ -33,7 +31,7 @@ const DashboardHeader = () => {
             <div className="flex-1 md:flex justify-center hidden px-4">
                 <div className="w-full max-w-md">
                     <HeaderSearch 
-                        placeholder={config?.searchPlaceholder}
+                        placeholder={t("common.search")}
                     />
                 </div>
             </div>

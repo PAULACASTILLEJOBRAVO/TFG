@@ -16,6 +16,11 @@ import { useClickerActions } from "@/hooks/Clickers/useClickerActions";
 import { DecimalToHexadecimal } from "@/utils/clickers";
 import { useTranslation } from "react-i18next";
 import { validateClicker } from "@/utils/validators";
+import { useLocation } from "react-router-dom";
+import { 
+  matchesStatus, 
+  normalizeWord 
+} from "@/utils/search";
 
 const ClickersManagement = () => {
   const { t } = useTranslation();
@@ -24,6 +29,24 @@ const ClickersManagement = () => {
   const { user } = useAuth();
   const { clickers, loading: loadingClickers, refetch } = useClickers();
   const { remove, restore, create, update } = useClickerActions();
+
+  // Search
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search).get("search") || "";
+
+    const words = searchParams.toLowerCase().split(" ").filter(word => word.trim() !== "");;
+    const normalizedWords = words.map(normalizeWord);
+
+    const filteredClickers = clickers.filter(c => {
+        const deviceCode = c.deviceCode?.toLowerCase() || "";
+        const assignedToUserId = c.assignedToUserId?.username?.toLowerCase() || "";
+
+        return normalizedWords.every(word =>
+            deviceCode.includes(word) ||
+            assignedToUserId.includes(word) ||
+            matchesStatus(c.status, word)
+        );
+    });
 
   // Create clicker state (for the form in the dialog)
   const [createClicker, setCreateClicker] = useState({ deviceCode: 1, adminId: user._id ? user._id : null, status: "available", assignedToUserId: null });
@@ -181,7 +204,7 @@ const ClickersManagement = () => {
         </div>
 
         <ClickerTable
-            clickers={clickers}
+            clickers={filteredClickers}
             loading={loadingClickers}
             editClicker={editClicker}
             editClickerId={editClickerId}

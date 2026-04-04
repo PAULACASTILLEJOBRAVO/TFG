@@ -1,4 +1,9 @@
-import { searchDictionary } from "./constants";
+import { 
+    searchDictionary, 
+    roleMap,
+    statusMap,
+    difficultyMap
+} from "./constants";
 
 export const normalizeWord = (word) => {
     word = word.toLowerCase();
@@ -10,4 +15,28 @@ export const normalizeWord = (word) => {
     }
 
     return word;
+}
+
+export const matchesRole = (role, word) => {
+  const variants = roleMap[role] || [role];
+
+  return variants.some(variant =>
+    variant.toLowerCase().includes(word)
+  );
+}
+
+export const matchesStatus = (status, word) => {
+    const variants = statusMap[status] || [status];
+
+    return variants.some(variant =>
+        variant.toLowerCase().includes(word)
+    );
+}
+
+export const matchesDifficulty = (difficulty, word) => {
+    const variants = difficultyMap[difficulty] || [difficulty];
+
+    return variants.some(variant =>
+        variant.toLowerCase().includes(word)
+    );
 }

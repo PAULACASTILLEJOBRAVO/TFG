@@ -96,20 +96,47 @@ export const statusClicker = [
     { _id: "retired", value: "retired", labelKey: "admin.clickersManagement.row.edit.retired" },
 ];
 
+export const roleMap = {
+    admin: ["admin", "administrador", "administradora"],
+    student: ["student", "estudiante", "alumno", "alumna"],
+    teacher: ["teacher", "profesor", "profesora", "docente", "maestro", "maestra"],
+};
+
+export const difficultyMap = {
+    easy: ["easy", "fácil", "facil"],
+    medium: ["medium", "medio", "intermedio"],
+    hard: ["hard", "difícil", "dificil"],
+};
+
+export const statusMap = {
+    published: ["published", "publicado", "publicada"],
+    draft: ["draft", "borrador"],
+    archive: ["archive", "archivado", "archivada"],
+    deleted: ["deleted", "eliminado", "eliminada"],
+    assigned: ["assigned", "asignado", "asignada"],
+    available: ["available", "disponible", "disponible"],
+    damaged: ["damaged", "dañado", "dañada", "averiado", "averiada", "estropeado", "estropeada", "broken", "roto", "rota"],
+    retired: ["retired", "retirado", "retirada"],
+};
+
 export const searchDictionary = {
     // STATUS
-    published: ["published", "publicado", "p", "pu", "pub", "publ", "publi", "public", "publica", "publicad"],
-    draft: ["draft", "borrador", "b", "bo", "bor", "borr", "borra", "borrad", "borrado"],
-    archive: ["archive", "archivado", "a", "ar", "arc", "arch", "archi", "archiv", "archiva", "archivad", "archivado"],
-    deleted: ["deleted", "eliminado", "e", "el", "eli", "elim", "elimi", "elimin", "elimina", "eliminad", "eliminado"],
+    published: ["published", "publicado", "publicada"],
+    draft: ["draft", "borrador"],
+    archive: ["archive", "archivado", "archivada"],
+    deleted: ["deleted", "eliminado", "eliminada"],
+    assigned: ["assigned", "asignado", "asignada"],
+    available: ["available", "disponible", "disponible"],
+    damaged: ["damaged", "dañado", "dañada", "broken", "averiado", "averiada", "estropeado", "estropeada", "roto", "rota"],
+    retired: ["retired", "retirado", "retirada"],
 
     // DIFFICULTY
-    easy: ["easy", "fácil", "facil", "f", "fa", "fac", "faci"],
-    medium: ["medium", "medio", "medi", "med", "me", "m"],
-    hard: ["hard", "difícil", "dificil", "d", "di", "dif", "difi", "difí", "dific", "difíc", "difici", "dificí"],
+    easy: ["easy", "fácil", "facil"],
+    medium: ["medium", "medio", "intermedio"],
+    hard: ["hard", "difícil", "dificil"],
 
     // ROLES
-    admin: ["admin", "administrador", "a", "ad", "adm", "admi", "admin", "admini", "adminis", "administ", "administr", "administra", "administrad", "administrado", "administrado"],
-    student: ["student", "estudiante", "e", "es", "est", "estud", "estudi", "estudia", "estudian", "estudiant", "a", "al", "alum", "alumn", "alumno", "alumna"],
-    teacher: ["teacher", "profesor", "profesora", "p", "pr", "pro", "prof", "profe", "profes", "profeso",],
+    admin: ["admin", "administrador", "administradora"],
+    student: ["student", "estudiante", "alumno", "alumna"],
+    teacher: ["teacher", "profesor", "profesora", "docente", "maestro", "maestra"],
 };

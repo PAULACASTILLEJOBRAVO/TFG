@@ -17,7 +17,7 @@ import { useQuizActions } from "@/hooks/Quizzes/useQuizActions";
 import { Spinner } from "@/components/ui/spinner";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
-import { normalizeWord } from "@/utils/search";
+import { matchesDifficulty, matchesStatus, normalizeWord } from "@/utils/search";
 
 const QuizzesManagement = () => {
     const { quizzes, loading, refetch } = useQuizzes();
@@ -36,15 +36,15 @@ const QuizzesManagement = () => {
     const words = searchParams.toLowerCase().split(" ").filter(word => word.trim() !== "");;
     const normalizedWords = words.map(normalizeWord);
 
-    const filteredQuizzes = !normalizedWords.length
-        ? quizzes
-        : quizzes.filter(q =>
-            normalizedWords.every(word =>
-                q.title?.toLowerCase().includes(word) ||
-                q.status?.toLowerCase().includes(word) ||
-                q.difficulty?.toLowerCase().includes(word)
-            )
+    const filteredQuizzes = quizzes.filter(q => {
+        const title = q.title?.toLowerCase() || "";
+
+        return normalizedWords.every(word =>
+            title.includes(word) ||
+            matchesStatus(q.status, word) ||
+            matchesDifficulty(q.difficulty, word)
         );
+    });
 
     // TRANSLATION
     const { t } = useTranslation();

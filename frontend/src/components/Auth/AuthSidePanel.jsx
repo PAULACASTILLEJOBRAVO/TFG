@@ -16,15 +16,15 @@ const AuthSidePanel = ({onToggle}) => {
 
                 <div className="mb-8">
                     <img 
-                        src="/ClicklassLogo.png"
-                        alt="Clicklass"
+                        src="/QuizlectiveLogo.png"
+                        alt="Quizlective"
                         className="w-auto h-20 mx-auto"
                     />
                 </div>
 
                 <div className="flex flex-col gap-3 mb-8">
                     <h1 className="text-4xl font-bold text-red-700">
-                        Clicklass
+                        Quizlective
                     </h1>
                     <p className="text-sm text-muted-foreground max-w-[320px] text-gray-600">
                         Interactive responsive system for active learning
@@ -52,15 +52,15 @@ const AuthSidePanel = ({onToggle}) => {
 
                 <div className="mb-8">
                     <img 
-                        src="/ClicklassLogo.png"
-                        alt="Clicklass"
+                        src="/QuizlectiveLogo.png"
+                        alt="Quizlective"
                         className="w-auto h-20 mx-auto"
                     />
                 </div>
 
                 <div className="flex flex-col gap-3 mb-8">
                     <h1 className="text-4xl font-bold text-red-700">
-                        Clicklass
+                        Quizlective
                     </h1>
                     <p className="text-sm text-muted-foreground max-w-[320px] text-gray-600">
                         Interactive responsive system for active learning

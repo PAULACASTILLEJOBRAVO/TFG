@@ -113,7 +113,7 @@ export const statusMap = {
     draft: ["draft", "borrador"],
     archive: ["archive", "archivado", "archivada"],
     deleted: ["deleted", "eliminado", "eliminada"],
-    assigned: ["assigned", "asignado", "asignada"],
+    assigned: ["assigned", "asignado", "asignada", "ocupado", "ocupada", "en uso"],
     available: ["available", "disponible", "disponible"],
     damaged: ["damaged", "dañado", "dañada", "averiado", "averiada", "estropeado", "estropeada", "broken", "roto", "rota"],
     retired: ["retired", "retirado", "retirada"],

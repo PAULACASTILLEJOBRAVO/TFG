@@ -205,7 +205,7 @@ const QuizCreate = () => {
 
         <Separator />
 
-        <CreateHeader onBack="/dashboard_teacher/quizzes" label={t('teacher.quizzesManagement.labelButton')} title={t('teacher.quizzesManagement.quizForm.create.title')} />
+        <CreateHeader onBack="/dashboard_teacher/quizzes" label={t('common.quizzesManagement.labelButton')} title={t('teacher.quizzesManagement.quizForm.create.title')} />
 
         <QuizForm 
           difficulties={difficulties} 

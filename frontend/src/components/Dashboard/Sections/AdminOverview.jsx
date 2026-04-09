@@ -10,7 +10,7 @@ import { ManagementSection } from "../Layout/Content/Management";
 import { useTranslation } from "react-i18next";
 
 const AdminOverview = () => {
-    const { usersStats, loading } = useUsersStats();
+    const { usersStats, loading: usersStatsLoading } = useUsersStats();
 
     const { t } = useTranslation();
 
@@ -21,8 +21,8 @@ const AdminOverview = () => {
             <Separator/>
 
             <DashboardContentDetailCard cols="3">
-                <DashboardDetailCard title={t("admin.overview.totalUsers")} value={loading ? <Spinner/> : usersStats} />
-                <DashboardDetailCard title={t("admin.overview.connectedUsers")} value="" />
+                <DashboardDetailCard title={t("admin.overview.totalUsers")} value={usersStatsLoading ? <Spinner/> : usersStats} />
+                {/* <DashboardDetailCard title={t("admin.overview.connectedUsers")} value="" /> */}
                 <DashboardDetailCard title={t("admin.overview.totalClickers")} value="" />
             </DashboardContentDetailCard>
 

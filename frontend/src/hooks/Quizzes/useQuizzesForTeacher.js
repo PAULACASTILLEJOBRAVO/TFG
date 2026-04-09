@@ -1,17 +1,17 @@
 import { useState, useEffect } from "react";
 import { getQuizzesForTeacher } from "../../services/quizzes.service";
 
-export const useQuizzes = () => {
-    const [quizzes, setQuizzes] = useState([]);
+export const useQuizzesForTeacher = () => {
+    const [quizzesForTeacher, setQuizzesForTeacher] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [message, setMessage] = useState("");
         
-    const fetchQuizzes = async () => {
+    const fetchQuizzesForTeacher = async () => {
         setLoading(true);
         setError(null);
         setMessage("");
-        setQuizzes([]);
+        setQuizzesForTeacher([]);
 
         try{
             const data = await getQuizzesForTeacher();
@@ -19,24 +19,24 @@ export const useQuizzes = () => {
             if(data.error){
                 setError(data.error);
                 setMessage(data.message || "");
-                setQuizzes([]);
+                setQuizzesForTeacher([]);
             } else {
-                setQuizzes(data.data || []);
+                setQuizzesForTeacher(data.data || []);
                 setMessage(data.message || "");
             }
         }catch(err) {
             // Axios's error
             const errorMessage = err.response?.data?.message || err.message || "Unknown error";
             setError(errorMessage);
-            setQuizzes([]);
+            setQuizzesForTeacher([]);
         }finally{
             setLoading(false);
         }
     }
-
+    
     useEffect(() => {
-        fetchQuizzes();
+        fetchQuizzesForTeacher();
     }, []);
 
-    return { quizzes, loading, error, message, refetch: fetchQuizzes };
+    return { quizzesForTeacher, loading, error, message, refetchTeacher: fetchQuizzesForTeacher };
 };

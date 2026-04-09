@@ -31,6 +31,12 @@ export const textColorCard = {
     7: "text-teal-500"
 };
 
+export const colorChart = [
+    "#4ade80", // Green
+    "#f87171", // Red
+    "#facc15", // Yellow
+];
+
 export const colsMap = {
   1: "grid-cols-1",
   2: "md:grid-cols-2",
@@ -113,7 +119,7 @@ export const statusMap = {
     draft: ["draft", "borrador"],
     archive: ["archive", "archivado", "archivada"],
     deleted: ["deleted", "eliminado", "eliminada"],
-    assigned: ["assigned", "asignado", "asignada"],
+    assigned: ["assigned", "asignado", "asignada", "ocupado", "ocupada", "en uso"],
     available: ["available", "disponible", "disponible"],
     damaged: ["damaged", "dañado", "dañada", "averiado", "averiada", "estropeado", "estropeada", "broken", "roto", "rota"],
     retired: ["retired", "retirado", "retirada"],
@@ -125,7 +131,7 @@ export const searchDictionary = {
     draft: ["draft", "borrador"],
     archive: ["archive", "archivado", "archivada"],
     deleted: ["deleted", "eliminado", "eliminada"],
-    assigned: ["assigned", "asignado", "asignada"],
+    assigned: ["assigned", "asignado", "asignada", "ocupado", "ocupada", "en uso"],
     available: ["available", "disponible", "disponible"],
     damaged: ["damaged", "dañado", "dañada", "broken", "averiado", "averiada", "estropeado", "estropeada", "roto", "rota"],
     retired: ["retired", "retirado", "retirada"],

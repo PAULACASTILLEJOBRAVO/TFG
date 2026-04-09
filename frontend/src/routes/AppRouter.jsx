@@ -29,6 +29,11 @@ import {
   SessionPresentation
 } from '@/pages/Sessions';
 
+import {
+  QuizzesHistory,
+  SessionHistory
+} from '@/pages/Histories';
+
 
 const AppRouter = () => {
   return (
@@ -40,6 +45,7 @@ const AppRouter = () => {
           </RedirectIfAuth>
           } />
 
+        // DASHBOARDS
         <Route path='/dashboard_student' element={
           <RequireAuth allowedRoles={["student"]}>
             <DashboardStudent />
@@ -56,6 +62,7 @@ const AppRouter = () => {
           </RequireAuth>
           } />
 
+        // ADMIN PAGES
         <Route path='/dashboard_admin/users' element={
           <RequireAuth allowedRoles={["admin"]}>
             <UserManagement />
@@ -72,6 +79,7 @@ const AppRouter = () => {
           </RequireAuth>
           } />
 
+        // TEACHER PAGES
         <Route path="/dashboard_teacher/quizzes" element={
           <RequireAuth allowedRoles={["teacher"]}>
             <QuizzesManagement />
@@ -87,7 +95,6 @@ const AppRouter = () => {
             <QuizEdit />
           </RequireAuth>
           } />
-
         <Route path='/dashboard_teacher/session/:id' element={
           <RequireAuth allowedRoles={["teacher"]}>
             <SessionControl />
@@ -98,6 +105,19 @@ const AppRouter = () => {
             <SessionPresentation />
           </RequireAuth>
           } />
+
+        // STUDENT PAGES
+        <Route path='/dashboard_student/quizzes' element={
+          <RequireAuth allowedRoles={["student"]}>
+            <QuizzesHistory />
+          </RequireAuth>
+          } /> 
+        <Route path='/dashboard_student/quizzes/:id/history' element={
+          <RequireAuth allowedRoles={["student"]}>
+            <SessionHistory />
+          </RequireAuth>
+          }
+        />
 
         <Route path="*" element={<NotFound />} />
       </Routes>

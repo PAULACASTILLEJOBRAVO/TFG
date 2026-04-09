@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { getQuizById } from "../../services/quizzes.service";
+import { getQuizByIdForStudent } from "../../services/quizzes.service";
 
-export const useQuiz = (id) => {
-    const [quiz, setQuiz] = useState(null);
+export const useQuizForStudent = (id) => {
+    const [quizForStudent, setQuizForStudent] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [message, setMessage] = useState("");
@@ -16,23 +16,23 @@ export const useQuiz = (id) => {
             setMessage("");
 
             try{
-                const data = await getQuizById(id);
+                const data = await getQuizByIdForStudent(id);
                 
                 if(data.error){
                     // Backend return error (400, 404, 500, etc)
                     setError(data.error);
                     setMessage(data.message || "");
-                    setQuiz(null);
+                    setQuizForStudent(null);
                 }else{
                     // Backend return success (200, 201, 204, etc)
-                    setQuiz(data.data || null);
+                    setQuizForStudent(data.data || null);
                     setMessage(data.message || "");
                 }
             }catch(err) {
                 // Axios's error
                 const errorMessage = err.response?.data?.message || err.message || "Error desconocido";
                 setError(errorMessage);
-                setQuiz(null);
+                setQuizForStudent(null);
             }finally{
                 setLoading(false);
             }
@@ -41,5 +41,5 @@ export const useQuiz = (id) => {
         fetchQuiz();
     }, [id]);
 
-    return { quiz, loading, error, message };
+    return { quizForStudent, loading, error, message };
 };

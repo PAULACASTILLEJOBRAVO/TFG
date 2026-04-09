@@ -117,10 +117,10 @@ const QuizzesManagement = () => {
         <DashboardLayout>
             <DashboardContent>
                 <div className="flex items-center mb-4 justify-between">
-                    <DashboardSubtitle label={t("teacher.quizzesManagement.title")} />
+                    <DashboardSubtitle label={t("common.quizzesManagement.title")} />
                        
                     <div className="pr-6 md:pr-16">
-                        <CreateButton label={t("teacher.quizzesManagement.labelButton")} onClick={() => navigate("/dashboard_teacher/quizzes/create")}/>
+                        <CreateButton label={t("common.quizzesManagement.labelButton")} onClick={() => navigate("/dashboard_teacher/quizzes/create")}/>
                     </div>
                 </div>
 
@@ -130,7 +130,7 @@ const QuizzesManagement = () => {
                             <Spinner className="h-10 w-10" color="blue" />
                         </div>
                     ) : filteredQuizzes.length === 0 && (
-                        <p className="text-gray-500">{t("teacher.quizzesManagement.detailsCard.noQuizzes")}</p>
+                        <p className="text-gray-500">{t("common.quizzesManagement.detailsCard.noQuizzes")}</p>
                     )}
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -142,11 +142,11 @@ const QuizzesManagement = () => {
                                 <Fragment key={quiz._id}>
                                     {showDivider && (
                                         <div className="col-span-full flex items-center gap-2 my-2">
-                                            <div className="flex-1 h-px bg-gray-300"></div>
+                                            <div className="flex-1 h-px bg-gray-300" />
                                             <span className="text-sm font-medium text-gray-500 capitalize">
                                             {t("teacher.quizzesManagement.detailsCard." + quiz.status)}
                                             </span>
-                                            <div className="flex-1 h-px bg-gray-300"></div>
+                                            <div className="flex-1 h-px bg-gray-300" />
                                         </div>
                                     )}
 

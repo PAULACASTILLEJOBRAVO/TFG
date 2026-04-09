@@ -30,7 +30,8 @@ import {
 } from '@/pages/Sessions';
 
 import {
-  QuizzesHistory
+  QuizzesHistory,
+  SessionHistory
 } from '@/pages/Histories';
 
 
@@ -111,6 +112,12 @@ const AppRouter = () => {
             <QuizzesHistory />
           </RequireAuth>
           } /> 
+        <Route path='/dashboard_student/quizzes/:id/history' element={
+          <RequireAuth allowedRoles={["student"]}>
+            <SessionHistory />
+          </RequireAuth>
+          }
+        />
 
         <Route path="*" element={<NotFound />} />
       </Routes>

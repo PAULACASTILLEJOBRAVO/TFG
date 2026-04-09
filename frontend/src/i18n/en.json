@@ -28,7 +28,46 @@
         "start": "Start",
         "end": "End",
         "publish": "Publish",
-        "back": "Back to"
+        "back": "Back to",
+
+        "quizzesManagement": {
+            "title": "My quizzes",
+            "labelButton": "quiz",
+            
+            "detailsCard": {
+                "difficulty": {
+                    "hard": "Hard",
+                    "medium": "Medium",
+                    "easy": "Easy",
+                    "unknown": "No difficulty"
+                },
+                "noQuizzes": "You don't have any quizzes created."
+            }
+        },
+        "sessionHistory": {
+            "title": "My game sessions for {{quizTitle}}",
+            "noSessions": "No sessions played for this quiz yet.",
+            "backToQuizzes": "Back to my quizzes",
+
+            "completed": "Completed",
+
+            "startTime": "Start:",
+            "endTime": "End:",
+            "totalTime": "Total time:",
+            "averageTime": "Average time:",
+            "bestTime": "Best time:",
+            "attempts": "Attempts:",
+            "rank": "Rank:",
+            "totalScore": "Total score:",
+
+            "fastSession": "This session was faster than your average time for this quiz!",
+            "bestSession": "This session is your best time for this quiz!",
+
+            "correctAnswers": "Correct answers",
+            "incorrectAnswers": "Incorrect answers",
+            "unansweredQuestions": "Unanswered questions",
+            "noData": "No response data for this session."
+        }
     },
     "admin":{
         "users": "Users",
@@ -172,9 +211,6 @@
         },
 
         "quizzesManagement": {
-            "title": "My quizzes",
-            "labelButton": "quiz",
-
             "detailsCard": {
                 "questions": "questions",
                 "players": "players",
@@ -182,15 +218,6 @@
                 "lastAttempt": "Last attempt",
                 "average": "average",
                 "sessions": "sessions",
-                
-                "noQuizzes": "You don't have any quizzes created.",
-
-                "difficulty": {
-                    "hard": "Hard",
-                    "medium": "Medium",
-                    "easy": "Easy",
-                    "unknown": "No difficulty"
-                },
 
                 "status": "Status",
                 "draft": "Draft",

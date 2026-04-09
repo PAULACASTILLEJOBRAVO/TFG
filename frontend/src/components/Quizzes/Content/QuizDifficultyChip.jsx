@@ -7,7 +7,7 @@ const QuizDifficultyChip = ({ difficulty }) => {
     if(difficulty === 'hard') {
         return (
             <Badge variant="destructive">
-                {t('teacher.quizzesManagement.detailsCard.difficulty.hard')}
+                {t('common.quizzesManagement.detailsCard.difficulty.hard')}
             </Badge>
         );
     }
@@ -15,7 +15,7 @@ const QuizDifficultyChip = ({ difficulty }) => {
     if(difficulty === 'medium') {
         return (
             <Badge variant="secondary">
-                {t('teacher.quizzesManagement.detailsCard.difficulty.medium')}
+                {t('common.quizzesManagement.detailsCard.difficulty.medium')}
             </Badge>
         );
     }
@@ -23,14 +23,14 @@ const QuizDifficultyChip = ({ difficulty }) => {
     if(difficulty === 'easy') {
         return (
             <Badge className="bg-green-500 hover:bg-green-500">
-                {t('teacher.quizzesManagement.detailsCard.difficulty.easy')}
+                {t('common.quizzesManagement.detailsCard.difficulty.easy')}
             </Badge>
         );
     }
 
     return(
         <Badge variant="outline">
-            {t('teacher.quizzesManagement.detailsCard.difficulty.unknown')}
+            {t('common.quizzesManagement.detailsCard.difficulty.unknown')}
         </Badge>
     );
 }

@@ -44,6 +44,27 @@ const getQuizById = async (req, res) => {
     }
 }
 
+// Controller to fetch a quiz by ID for a specific student
+const getQuizByIdForStudent = async (req, res) => {
+    const currentUser = req.user;
+    const { id } = req.params;
+    
+    if (!id) return res.status(400).json({ message: 'Quiz ID is required' });
+
+    try {
+        const quiz = await quizServices.getQuizByIdForStudent(currentUser._id, id);
+        res.status(200).json({
+            message: 'Quiz fetched successfully', 
+            data: quiz
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            message: 'Error fetching the quiz', 
+            error: error.message 
+        });
+    }
+};
+
 // Controller to get all quizzes created by a specific teacher
 const getAllQuizzesForTeacher = async (req, res) => {
 
@@ -66,7 +87,7 @@ const getAllQuizzesForTeacher = async (req, res) => {
     }
 };
 
-// Controller to get all quizzes created by a specific teacher
+// Controller to get all quizzes assigned to a specific student
 const getAllQuizzesForStudent = async (req, res) => {
     const currentUser = req.user;
 
@@ -202,6 +223,7 @@ const updateQuizById = async (req, res) => {
 module.exports = {
     getAllQuizzes,
     getQuizById,
+    getQuizByIdForStudent,
     getAllQuizzesForTeacher,
     getAllQuizzesForStudent,
 

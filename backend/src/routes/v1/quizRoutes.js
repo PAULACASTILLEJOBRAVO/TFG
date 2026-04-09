@@ -248,6 +248,9 @@ router.delete('/:id', quizController.deleteQuizById);
  */
 router.get('/:id', quizController.getQuizById);
 
+// Route to get a quiz by ID for a specific student
+router.get('/student/:id', quizController.getQuizByIdForStudent);
+
 // Route to update a quiz by ID
 router.patch('/:id', quizController.updateQuizById);
 

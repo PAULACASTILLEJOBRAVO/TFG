@@ -17,7 +17,7 @@ import { useQuizActions } from "@/hooks/Quizzes/useQuizActions";
 import { useNavigate } from "react-router-dom";
 import { QuizForm } from "@/components/Quizzes/Form";
 import { useParams } from "react-router-dom";
-import { useQuiz } from "@/hooks/Quizzes/useQuiz";
+import { useQuizForTeacher } from "@/hooks/Quizzes/useQuizForTeacher";
 import { Spinner } from "@/components/ui/spinner";
 import { 
   validateQuiz, 
@@ -27,13 +27,13 @@ import { useTranslation } from "react-i18next";
 
 const QuizEdit = () => {
   const { id } = useParams();
-  const { quiz, loading } = useQuiz(id);
+  const { quizForTeacher, loading } = useQuizForTeacher(id);
 
   const { difficulties } = useDifficulties();
   const { update } = useQuizActions();
 
   // Data
-  const [editQuiz, setEditQuiz] = useState({ ...quiz });
+  const [editQuiz, setEditQuiz] = useState({ ...quizForTeacher });
 
   const [submitted, setSubmitted] = useState(false);
   const [touched, setTouched] = useState({ 
@@ -211,23 +211,23 @@ const QuizEdit = () => {
 
   // Effects
   useEffect(() => {
-    if(quiz) {
+    if(quizForTeacher) {
       // Normalize playerIds to ensure it's an array of IDs, and extract populated student objects
-      const normalizedPlayerIds = (quiz.playerIds || []).map(player =>
+      const normalizedPlayerIds = (quizForTeacher.playerIds || []).map(player =>
         typeof player === "string" ? player : player._id
       );
 
       // Extract populated student objects for the selectedStudents state
-      const populatedStudents = (quiz.playerIds || []).filter(
+      const populatedStudents = (quizForTeacher.playerIds || []).filter(
         player => typeof player === "object"
       );
 
       setEditQuiz({
-        ...quiz,
+        ...quizForTeacher,
         playerIds: normalizedPlayerIds // Ensure playerIds is an array of IDs, not objects
       });
 
-      const loadedQuestions = quiz.questionIds || [createNewQuestion()];
+      const loadedQuestions = quizForTeacher.questionIds || [createNewQuestion()];
 
       setQuestionsList(loadedQuestions);
 
@@ -238,11 +238,11 @@ const QuizEdit = () => {
         isCorrect: question.options.some(option => option.isCorrect)
       }));
 
-      setTouched({ quiz: { title: !!quiz.title }, question: initialTouched });
+      setTouched({ quiz: { title: !!quizForTeacher.title }, question: initialTouched });
 
       setSelectedStudents(populatedStudents);
     }
-  }, [quiz]);
+  }, [quizForTeacher]);
 
   return (
     <DashboardLayout>
@@ -251,7 +251,7 @@ const QuizEdit = () => {
 
         <Separator />
 
-        <CreateHeader onBack="/dashboard_teacher/quizzes" label={t("teacher.quizzesManagement.labelButton")} title={t("teacher.quizzesManagement.quizForm.edit.title")} />
+        <CreateHeader onBack="/dashboard_teacher/quizzes" label={t("common.quizzesManagement.labelButton")} title={t("teacher.quizzesManagement.quizForm.edit.title")} />
 
         {loading ? (
           <div className="w-full h-64 flex items-center justify-center">

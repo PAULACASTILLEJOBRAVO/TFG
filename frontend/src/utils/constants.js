@@ -31,6 +31,12 @@ export const textColorCard = {
     7: "text-teal-500"
 };
 
+export const colorChart = [
+    "#4ade80", // Green
+    "#f87171", // Red
+    "#facc15", // Yellow
+];
+
 export const colsMap = {
   1: "grid-cols-1",
   2: "md:grid-cols-2",

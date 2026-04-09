@@ -23,13 +23,15 @@ const UserRow = ({user, onEdit, onDelete, onChangePassword, onRestore, onSelect}
                     isDelete={user.isDelete}
                 />
             </TableCell>
-            <TableCell className="hidden md:table-cell">{
+            <TableCell className="hidden md:table-cell">
+            {
                 user?.lastLogoutAt 
                     ? new Date(user.lastLogoutAt).toLocaleDateString() 
                     : user.lastLoginAt 
                         ? new Date(user.lastLoginAt).toLocaleDateString() 
                         : t("admin.usersManagement.table.neverAccessed")
-            }</TableCell>
+            }
+            </TableCell>
             <TableCell>
                 <UserActionCell
                     onEdit={(event) => {

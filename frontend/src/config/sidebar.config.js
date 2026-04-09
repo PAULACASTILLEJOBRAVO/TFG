@@ -7,10 +7,15 @@ export const sidebarConfig = {
             href: "/dashboard_student/"
         },
         {
-            labelKey: "student.ranking",
-            icon: "trophy",
-            href: "/dashboard_student/ranking"
+            labelKey: "teacher.quizzes",
+            icon: "quiz",
+            href: "/dashboard_student/quizzes"
         },
+        // {
+        //     labelKey: "student.ranking",
+        //     icon: "trophy",
+        //     href: "/dashboard_student/ranking"
+        // },
         // {
         //     labelKey: "student.stadistics",
         //     icon: "chart-bar",

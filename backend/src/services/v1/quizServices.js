@@ -1,6 +1,10 @@
 // Import models
 const Quiz = require('../../models/Quiz');
 const Question = require('../../models/Question');
+const Clicker = require('../../models/Clicker');
+const Session = require('../../models/Session');
+const Result = require('../../models/Result');
+const Response = require('../../models/Response');
 
 // Quiz services
 // Service to fetch all quizzes
@@ -16,6 +20,145 @@ const getQuizById = async (id) => {
 // Service to fetch all quizzes created by a specific teacher
 const getAllQuizzesForTeacher = async (creatorId) => {
     return await Quiz.find({ creatorId: creatorId }).populate('creatorId').populate('playerIds').populate('questionIds').sort({ status: -1, updatedAt: -1 });
+};
+
+// Service to fetch all quizzes assigned to a specific student
+const getAllQuizzesForStudent = async (playerId) => {
+    const clicker = await Clicker.findOne({ assignedToUserId: playerId });
+    if (!clicker) throw new Error("Student doesn't have an assigned clicker"); // If the student doesn't have an assigned clicker, return an empty array
+    
+    // Get sessions for the student's clicker, and populate quiz details
+    const sessions = await Session.find({ deviceIds: { $in: [clicker._id] } }).populate({
+        path: 'quizId',
+        populate: [
+            { path: 'creatorId', select: 'username role' },
+            { path: 'questionIds' }
+        ]
+    }).sort({ endTime: -1, startTime: -1 }); 
+
+    // Case without sessions
+    if (sessions.length === 0) return null;
+
+    // Get results and responses for the sessions
+    const sessionIds = sessions.map(s => s._id);
+
+    const results = await Result.find({ sessionId: { $in: sessionIds }, playerId: playerId });
+    const responses = await Response.find({ sessionId: { $in: sessionIds }, playerId: playerId });
+
+    // Create maps for quick access to results and responses by sessionId
+    const resultsMap = new Map();
+    
+    results.forEach(r => {
+        resultsMap.set(r.sessionId.toString(), r);
+    });
+
+    const responsesMap = new Map();
+    
+    responses.forEach(r => {
+        const key = r.sessionId.toString();
+        if (!responsesMap.has(key)) {
+            responsesMap.set(key, []);
+        }
+        responsesMap.get(key).push(r);
+    });
+
+    // Normalize sessions data to include quiz details and group by quiz
+    const formattedSessions = sessions.map(session => ({
+        _id: session._id,
+        startTime: session.startTime,
+        endTime: session.endTime,
+        totalTime: session.endTime && session.startTime 
+            ? (session.endTime - session.startTime) 
+            : null,
+        status: session.status,
+        results: resultsMap.get(session._id.toString()) || null,
+        responses: responsesMap.get(session._id.toString()) || [],
+        quiz: session.quizId
+    }));
+
+    // Group sessions by quiz, so we can show all sessions for the same quiz together
+    const quizzesMap = new Map();
+
+    formattedSessions.forEach(session => {
+        const quizId = session.quiz._id.toString();
+
+        if (!quizzesMap.has(quizId)) {
+            quizzesMap.set(quizId, {
+                ...session.quiz.toObject(),
+                sessions: [session] 
+            });
+        } else {
+            quizzesMap.get(quizId).sessions.push(session);
+        }
+    });
+
+    return Array.from(quizzesMap.values());
+};
+
+// Service to fetch a quiz by ID for a specific student
+const getQuizByIdForStudent = async (playerId, quizId) => {
+    const clicker = await Clicker.findOne({ assignedToUserId: playerId });
+    if (!clicker) throw new Error("Student doesn't have an assigned clicker"); // If the student doesn't have an assigned clicker, we cannot fetch sessions, so we return null
+
+    const sessions = await Session.find({
+        quizId: quizId,
+        deviceIds: { $in: [clicker._id] }
+    })
+    .populate({
+        path: "quizId",
+        populate: [
+            { path: "creatorId", select: "username role" },
+            { path: "questionIds" }
+        ]
+    })
+    .sort({ endTime: -1, startTime: -1 });
+
+    // Case without sessions
+    if (sessions.length === 0) return null;
+
+    // Get results and responses for the sessions
+    const sessionIds = sessions.map(s => s._id);
+
+    const results = await Result.find({ sessionId: { $in: sessionIds }, playerId: playerId });
+    const responses = await Response.find({ sessionId: { $in: sessionIds }, playerId: playerId });
+
+    // Create maps for quick access to results and responses by sessionId
+    const resultsMap = new Map();
+    
+    results.forEach(r => {
+        resultsMap.set(r.sessionId.toString(), r);
+    });
+
+    const responsesMap = new Map();
+    
+    responses.forEach(r => {
+        const key = r.sessionId.toString();
+        if (!responsesMap.has(key)) {
+            responsesMap.set(key, []);
+        }
+        responsesMap.get(key).push(r);
+    });
+
+    // The quiz details will be the same for all sessions, so we can take it from the first session
+    const quiz = sessions[0].quizId;
+
+    // Normalize sessions data to include quiz details and group by quiz
+    const formattedSessions = sessions.map(session => ({
+        _id: session._id,
+        startTime: session.startTime,
+        endTime: session.endTime,
+        totalTime: session.startTime && session.endTime
+            ? session.endTime - session.startTime
+            : null,
+        status: session.status,
+        results: resultsMap.get(session._id.toString()) || null,
+        responses: responsesMap.get(session._id.toString()) || []
+    }));
+
+    return {
+        ...quiz.toObject(),
+        sessions: formattedSessions
+    };
 };
 
 // Service to create a new user
@@ -132,7 +275,7 @@ const updateQuizById = async ({id, body, _id, role}) => {
 
 
         // Then, create the quiz with the question IDs
-        const quizData = { ...quizFields, questionIds: finalQuestionIds };
+        // const quizData = { ...quizFields, questionIds: finalQuestionIds };
 
         // Detect deleted questions
         const currentQuestionIds = quiz.questionIds.map(id => id.toString());
@@ -168,7 +311,9 @@ const updateQuizById = async ({id, body, _id, role}) => {
 module.exports = {
     getAllQuizzes,
     getQuizById,
+    getQuizByIdForStudent,
     getAllQuizzesForTeacher,    
+    getAllQuizzesForStudent,
 
     createQuiz,
 

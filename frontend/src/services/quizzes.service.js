@@ -5,8 +5,18 @@ export const getQuizzesForTeacher = async () => {
   return response.data;
 };
 
-export const getQuizById = async (id) => {
+export const getQuizzesForStudent = async () => {
+    const response = await api.get(`/quizzes/my-student`);
+    return response.data;
+}
+
+export const getQuizByIdForTeacher = async (id) => {
     const response = await api.get(`/quizzes/${id}`);
+    return response.data;
+}
+
+export const getQuizByIdForStudent = async (id) => {
+    const response = await api.get(`/quizzes/student/${id}`);
     return response.data;
 }
 

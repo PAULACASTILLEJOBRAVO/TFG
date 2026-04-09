@@ -28,7 +28,46 @@
         "start": "Iniciar",
         "end": "Finalizar",
         "publish": "Publicar",
-        "back": "Volver a"
+        "back": "Volver a",
+
+        "quizzesManagement": {
+            "title": "Mis cuestionarios",
+            "labelButton": "cuestionario",
+
+            "detailsCard": {
+                "difficulty": {
+                    "hard": "Difícil",
+                    "medium": "Medio",
+                    "easy": "Fácil",
+                    "unknown": "Sin dificultad"
+                },
+                "noQuizzes": "No tienes ningún cuestionario creado."
+            }
+        },
+        "sessionHistory": {
+            "title": "Mis sesiones de juego en {{quizTitle}}",
+            "noSessions": "No has jugado ninguna sesión de este cuestionario todavía.",
+            "backToQuizzes": "Volver a mis cuestionarios",
+
+            "completed": "Completada",
+
+            "startTime": "Inicio:",
+            "endTime": "Finalización:",
+            "totalTime": "Tiempo total:",
+            "averageTime": "Tiempo promedio:",
+            "bestTime": "Mejor tiempo:",
+            "attempts": "Intentos:",
+            "rank": "Posición:",
+            "totalScore": "Puntos totales:",
+
+            "fastSession": "¡Esta sesión fue más rápida que tu tiempo promedio para este cuestionario!",
+            "bestSession": "¡Esta sesión es tu mejor tiempo para este cuestionario!",
+
+            "correctAnswers": "Respuestas correctas",
+            "incorrectAnswers": "Respuestas incorrectas",
+            "unansweredQuestions": "Preguntas sin responder",
+            "noData": "No hay datos de respuestas para esta sesión."
+        }
     },
     "admin":{
         "users": "Usuarios",
@@ -176,22 +215,13 @@
         },
 
         "quizzesManagement": {
-            "title": "Mis cuestionarios",
-            "labelButton": "cuestionario",
-
             "detailsCard": {
                 "questions": "preguntas",
                 "players": "jugadores",
                 "lastUpdated": "Última edición",
-
-                "noQuizzes": "No tienes cuestionarios creados.",
-
-                "difficulty": {
-                    "easy": "Fácil",
-                    "medium": "Medio",
-                    "hard": "Difícil",
-                    "unknown": "Sin dificultad"
-                },
+                "lastAttempt": "Último intento",
+                "average": "promedio",
+                "sessions": "sesiones",
 
                 "status": "Estado",
                 "draft": "Borrador",

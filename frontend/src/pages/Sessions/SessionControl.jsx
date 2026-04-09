@@ -1,6 +1,6 @@
 import { AppBreadcrumb } from "@/components/Common";
 import { DashboardContent } from "@/components/Dashboard/Layout";
-import { useQuiz } from "@/hooks/Quizzes/useQuiz";
+import { useQuizForTeacher } from "@/hooks/Quizzes/useQuizForTeacher";
 import { useAuth } from "@/auth/AuthContext";
 import { 
     useState,
@@ -20,7 +20,7 @@ import { useResponseActions } from "@/hooks/Response/useResponseActions";
 const SessionControl = () => {
     const { id } = useParams();
     const { user } = useAuth();
-    const { quiz, loading } = useQuiz(id);
+    const { quizForTeacher, loading } = useQuizForTeacher(id);
     const {
         connect,
         listen,
@@ -103,7 +103,7 @@ const SessionControl = () => {
                             ...prev,
                             {
                                 questionId: questionId,
-                                options: quiz.questionIds?.find(q => q._id === questionId)?.options || [],
+                                options: quizForTeacher.questionIds?.find(q => q._id === questionId)?.options || [],
                                 answers: [{ option: event.option, count: 1 }],
                                 totalResponses: 1
                             }
@@ -141,7 +141,7 @@ const SessionControl = () => {
             }
         });
 
-        console.log("Listening started...");
+        console.warn("Listening started...");
     }
 
     // Handlers
@@ -241,7 +241,7 @@ const SessionControl = () => {
             ) : (
                 !sessionStarted ? (
                     <div className="flex flex-col items-center gap-4 mt-6 max-w-xl mx-auto">
-                        <h1 className="text-4xl font-bold">{quiz?.title}</h1>
+                        <h1 className="text-4xl font-bold">{quizForTeacher?.title}</h1>
                         <SessionSteps 
                             presentationOpened={presentationOpened}
                             sessionStarted={sessionStarted}
@@ -254,7 +254,7 @@ const SessionControl = () => {
                     </div>  
                 ):(
                     <QuestionControlScreen 
-                        quiz={quiz} 
+                        quiz={quizForTeacher} 
                         questions={questions}
                         results={results}
                         resultsReady={resultsReady}

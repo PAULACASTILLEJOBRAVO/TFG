@@ -8,7 +8,7 @@ const QuizzCreateFooter = ({ onPublish, onDraft, onEdit }) => {
     return (
         <CardFooter className="flex items-end justify-end gap-3 pt-3">
             {onPublish && (<Button className="bg-green-500 hover:bg-green-500" onClick={onPublish}>
-                {t("common.publish")} {t("teacher.quizzesManagement.labelButton")}
+                {t("common.publish")} {t("common.quizzesManagement.labelButton")}
             </Button>)}
 
             {onDraft && (<Button variant="outline" onClick={onDraft}>
@@ -17,7 +17,7 @@ const QuizzCreateFooter = ({ onPublish, onDraft, onEdit }) => {
 
             {onEdit && (
                 <Button className="bg-green-500 hover:bg-green-500" onClick={onEdit}>
-                    {t("common.save")} {t("teacher.quizzesManagement.labelButton")} 
+                    {t("common.save")} {t("common.quizzesManagement.labelButton")} 
                 </Button>
             )}
 

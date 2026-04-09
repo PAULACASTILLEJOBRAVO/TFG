@@ -100,7 +100,7 @@ export const disconnectCoordinator = async () => {
             await port.close();
         }
 
-        console.log("Coordinator port disconnected successfully");
+        console.warn("Coordinator port disconnected successfully");
     }catch(error){
         console.error("Error closing coordinator port", error);
     }

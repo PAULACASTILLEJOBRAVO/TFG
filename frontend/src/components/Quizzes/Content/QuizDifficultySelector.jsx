@@ -35,7 +35,7 @@ const QuizDifficultySelector = ({value, onChange, difficulties}) => {
                     <SelectGroup>
                         {difficulties.map(difficulty => (   
                             <SelectItem key={difficulty._id} value={difficulty.value}>
-                                {t('teacher.quizzesManagement.detailsCard.difficulty.' + difficulty.value)}
+                                {t('common.quizzesManagement.detailsCard.difficulty.' + difficulty.value)}
                             </SelectItem>
                         ))}
                     </SelectGroup>

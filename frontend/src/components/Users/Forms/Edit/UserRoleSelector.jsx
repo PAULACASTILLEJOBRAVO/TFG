@@ -18,8 +18,6 @@ const UserRoleSelector = ({label, value, onChange}) => {
 
     if(loading) return <div className="flex justify-center"><Spinner color="blue" /></div>;
 
-    const safeValue = value ?? (roles.length > 0 ? roles[1].value : "");
-
     return(
         <div className="w-full">
             <div className="px-3 bg-transparent text-black">
@@ -33,7 +31,7 @@ const UserRoleSelector = ({label, value, onChange}) => {
                     {t("admin.usersManagement.drawer.edit.role")}
                 </Label>
             </div>
-            <Select value={ safeValue } onValueChange={onChange}>
+            <Select value={ value } onValueChange={onChange}>
                 <SelectTrigger>
                     <SelectValue placeholder={t("admin.usersManagement.drawer.edit.selectRole")} />
                 </SelectTrigger>

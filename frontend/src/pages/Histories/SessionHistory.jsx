@@ -108,7 +108,7 @@ const SessionHistory = () => {
                             </div>
                         </div>
 
-                        <SessionDetailsAccordion sessions={sessions}/>
+                        <SessionDetailsAccordion sessions={sessions} quiz={finalQuiz} />
                     </div>
                 )}
 

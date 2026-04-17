@@ -17,7 +17,7 @@ const ClickerRow = ({clicker, editClicker, editClickerId,  onEdit, onDelete, onR
     const { t } = useTranslation();
 
     return(
-        <TableRow className={`hover:bg-muted ${clicker.isDeleted ? "bg-red-50 hover:bg-red-100 text-gray-500" : isEditing ? "bg-blue-50 hover:bg-blue-100" : ""}`}>
+        <TableRow className={`hover:bg-muted ${clicker.status === "damaged" || clicker.status === "retired" ? "bg-red-50 hover:bg-red-100 text-gray-500" : isEditing ? "bg-blue-50 hover:bg-blue-100" : ""}`}>
             <TableCell className="font-medium">{HexadecimalToDecimal(clicker.deviceCode)}</TableCell>
             {isEditing 
                 ? editClicker?.status === "assigned" 

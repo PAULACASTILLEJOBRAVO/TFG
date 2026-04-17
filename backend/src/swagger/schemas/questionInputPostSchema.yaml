@@ -25,7 +25,7 @@ components:
             required:
               - text
               - isCorrect
-              - order
+              - letter
             properties:
               text:
                 type: string
@@ -35,18 +35,10 @@ components:
                 type: boolean
                 description: Indicates if the option is correct.
                 example: true
-              order:
-                type: integer
-                description: The order of the option in the list.
-                example: 0
-              feedback:
+              letter:
                 type: string
-                description: Optional feedback for this option.
-                example: "Correct! A stack follows the LIFO (Last In, First Out) principle."
-        correctOptions:
-          type: integer
-          description: Index of the correct answer to the question.
-          example: 0
+                description: The letter assigned to the option.
+                example: "A"
         points:
           type: integer
           description: Number of points awarded for a correct answer.
@@ -55,15 +47,3 @@ components:
           type: integer
           description: Time limit to answer the question in seconds.
           default: 30
-        isActive:
-          type: boolean
-          description: Indicates if the question is currently active.
-          default: true
-        isReusable:
-          type: boolean
-          description: Indicates if the question can be reused in other quizzes.
-          default: false
-        allowMultipleAttempts:
-          type: boolean
-          description: Indicates if multiple options can be selected for this question.
-          default: false

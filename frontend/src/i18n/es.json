@@ -63,10 +63,30 @@
             "fastSession": "¡Esta sesión fue más rápida que tu tiempo promedio para este cuestionario!",
             "bestSession": "¡Esta sesión es tu mejor tiempo para este cuestionario!",
 
+            "firstPlace": "¡Primer puesto en este ranking!",
+            "secondPlace": "¡Segundo puesto en este ranking!",
+            "thirdPlace": "¡Tercer puesto en este ranking!",
+            "otherPlace": "¡Posición en este ranking!",
+
             "correctAnswers": "Respuestas correctas",
             "incorrectAnswers": "Respuestas incorrectas",
             "unansweredQuestions": "Preguntas sin responder",
-            "noData": "No hay datos de respuestas para esta sesión."
+            "noData": "No hay datos de respuestas para esta sesión.",
+
+            "sessionReview": {
+                "title": "Revisión de la sesión de juego en {{quizTitle}}",
+                "description": "Revisa tus respuestas para esta sesión y ve las respuestas correctas para cada pregunta.",
+                "downloadPDF": "Descargar revisión en PDF",
+                "downloadLabelPDF": "revision_sesion_{{date}}",
+                
+                "date": "Fecha: {{date}}",
+                "correctAnswers": "Respuestas correctas: {{correct}}/{{total}}",
+                "score": "Puntuación: {{score}}",
+                "points": "Puntos: {{points}}/{{totalScore}}",
+                "pointsPerQuestion": "{{points}} puntos",
+                "rank": "Ranking: {{rank}}",
+                "yourAnswer": "Tu respuesta."
+            }
         }
     },
     "admin":{
@@ -118,8 +138,7 @@
                     "role": "Rol",
                     "lastLogin": "Último login",
                     "lastLogout": "Último logout",
-                    "deletedAt": "Fecha de eliminación",
-                    "deleteReason": "Motivo de eliminación"
+                    "archived": "Usuario archivado"
                 },
                 "edit": {
                     "description": "Edición del usuario",
@@ -319,7 +338,8 @@
             },
             "questionDisplay": {
                 "response": "respuesta",
-                "responses": "respuestas"
+                "responses": "respuestas",
+                "question": "Pregunta"
             }
         },
         "sessionPresentation": {

@@ -26,7 +26,7 @@ const QuizCreate = () => {
   const { create } = useQuizActions();
 
   // Data
-  const [createQuiz, setCreateQuiz] = useState({ title: "", description: "", creatorId: user ? user._id : null, playerIds: [], difficulty: "easy", isActive: false, status: "draft" });
+  const [createQuiz, setCreateQuiz] = useState({ title: "", description: "", creatorId: user ? user._id : null, playerIds: [], difficulty: "easy", status: "draft" });
 
   const [submitted, setSubmitted] = useState(false);
   const [touched, setTouched] = useState({ 
@@ -47,7 +47,7 @@ const QuizCreate = () => {
   }
 
   const handlePublish = async () => {
-    setCreateQuiz(prev => ({...prev, isActive: true, status: "published"}));
+    setCreateQuiz(prev => ({...prev, status: "published"}));
 
     setSubmitted(true);
 
@@ -62,7 +62,7 @@ const QuizCreate = () => {
   }
 
   const handleSaveDraft = async () => {
-    setCreateQuiz(prev => ({...prev, isActive: false, status: "draft"}));
+    setCreateQuiz(prev => ({...prev, status: "draft"}));
 
     setSubmitted(true);
     

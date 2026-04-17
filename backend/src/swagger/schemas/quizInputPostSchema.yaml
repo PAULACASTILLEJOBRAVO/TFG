@@ -17,17 +17,13 @@ components:
         difficulty:
           type: enum
           description: The difficulty level of the quiz.
-          enum: [Easy, Medium, Hard]
-          default: "Medium"
-        isActive:
-          type: boolean
-          description: Indicates if the quiz is active.
-          default: false
-        isPublic:
-          type: string
-          enum: [public, private]
-          description: Indicates if the quiz is public.
-          default: private
+          enum: [easy, medium, hard]
+          default: "medium"
+        status:
+          type: enum
+          description: The status of the quiz.
+          enum: [draft, published, archived]
+          default: "draft"
         creatorId:
           type: ObjectId
           description: The user ID who created the quiz.

@@ -30,8 +30,13 @@ components:
           type: string
           description: The full name of the user.
           example: "Johnathan Doe"
-        isActive:
-          type: boolean
-          description: Indicates if the user is active.
-          default: true
+        status:
+          type: string
+          description: The status of the user.
+          enum: [active, inactive]
+          example: "active"
+        profilePicture:
+          type: string
+          description: The URL of the user's profile picture.
+          example: "https://example.com/profile-picture.jpg"
         

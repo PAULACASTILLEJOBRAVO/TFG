@@ -61,7 +61,7 @@ const ResultLayout = ({ currentQuestion, results }) => {
                         {currentQuestion.options.map((option, index) => {
                             const optionLetter = String.fromCharCode(65 + index);
 
-                            const result = results.find(result => result.option === optionLetter) || { count: 0 };
+                            const result = results.find(result => result.letter === optionLetter) || { count: 0 };
 
                             const count = animatedCounts[index] !== undefined ? animatedCounts[index] : result.count ?? 0;
 
@@ -84,7 +84,7 @@ const ResultLayout = ({ currentQuestion, results }) => {
                                     <div className="relative z-10 flex items-center justify-between p-4">
                                         <div className="flex items-center gap-4">
                                             <span className="text-white font-semibold text-lg xl:text-2xl">
-                                                {String.fromCharCode(65 + index)}
+                                                {option.letter || String.fromCharCode(65 + index)}
                                             </span>
 
                                             <span className="text-white font-semibold text-xs xl:text-lg">

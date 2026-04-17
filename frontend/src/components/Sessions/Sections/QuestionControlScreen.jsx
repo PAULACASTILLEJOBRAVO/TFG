@@ -20,7 +20,7 @@ const QuestionControlScreen = ({quiz, questions, results, resultsReady, sessionI
     const [showResult, setShowResult] = useState(false);
 
     const question = quiz?.questionIds[currentQuestionIndex];
-    const questionStats = questions?.find(q => q.questionId === question?._id) || { totalResponses: 0 }; // Find stats for the current question
+    const questionStats = questions?.find(q => q.originalQuestionId === question?._id) || { totalResponses: 0 }; // Find stats for the current question
     const totalResponses = questionStats.totalResponses;
 
     const navigate = useNavigate();

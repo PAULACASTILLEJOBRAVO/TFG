@@ -1,6 +1,9 @@
 import { bgColorCard } from "@/utils/constants";
+import { useTranslation } from "react-i18next";
 
 const QuestionLayout = ({ currentQuestion, questionIndex, totalQuestions }) => {
+    const { t } = useTranslation();
+
     if(!currentQuestion) return null;
 
     return (
@@ -9,7 +12,7 @@ const QuestionLayout = ({ currentQuestion, questionIndex, totalQuestions }) => {
                 <div className="flex flex-col gap-3 xl:gap-12 w-full h-full p-2 xl:px-12 xl:py-8">
                     <div className="w-full text-right">
                         <span className="text-gray-600 bg-white text-md xl:text-2xl font-semibold">
-                            Question {questionIndex + 1} / {totalQuestions}
+                            {t("teacher.sessionControl.questionDisplay.question")} {questionIndex + 1} / {totalQuestions}
                         </span>
                     </div>
 
@@ -27,7 +30,7 @@ const QuestionLayout = ({ currentQuestion, questionIndex, totalQuestions }) => {
                                     className={`${bgColor} flex items-center p-2 xl:p-4 rounded-md shadow-lg`}
                                 >
                                     <span className="text-white font-semibold text-sm xl:text-3xl mr-4">
-                                        {String.fromCharCode(65 + index)}
+                                        {option.letter || String.fromCharCode(65 + index)} {/* Fallback to A, B, C... if letter is not defined */}
                                     </span>
 
                                     <span className="text-white font-semibold text-xs xl:text-2xl">

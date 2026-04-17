@@ -11,10 +11,12 @@ const QuizDetailsCard = ({ quiz, isStudent = false, onClick, onEdit, onDelete, o
     const { t } = useTranslation();
 
     const emptyPlayer = () => {
-        return quiz.playerIds.length === 0;
+        if(!isStudent) return quiz?.playerIds.length === 0;
     }
 
-    const sessions = quiz.sessions || [];
+    const sessions = quiz?.sessions || [];
+
+    const totalQuestions = sessions.map(session => session.results?.totalQuestions).find(question => question != null) || 0;
 
     const totalAttempts = sessions.length;
 
@@ -39,14 +41,14 @@ const QuizDetailsCard = ({ quiz, isStudent = false, onClick, onEdit, onDelete, o
             
             <div className="text-sm text-gray-600 mb-3">
                 <div>
-                    {quiz.questionIds.length} {t("teacher.quizzesManagement.detailsCard.questions")} 
-                    {!isStudent && (` · ${quiz.playerIds.length} ${t("teacher.quizzesManagement.detailsCard.players")}`)}
+                    {totalQuestions || quiz?.questionIds.length} {t("teacher.quizzesManagement.detailsCard.questions")} 
+                    {!isStudent && (` · ${quiz?.playerIds.length} ${t("teacher.quizzesManagement.detailsCard.players")}`)}
                     {isStudent && (` · ${totalAttempts} ${t("teacher.quizzesManagement.detailsCard.sessions")}`)}
                 </div>
             </div>
             
             <div className="flex justify-between items-center text-xs text-gray-500">
-                {!isStudent && (<span className="truncate">{t("teacher.quizzesManagement.detailsCard.lastUpdated")}: {quiz.updatedAt ? new Date(quiz.updatedAt).toLocaleDateString() : new Date(quiz.createdAt).toLocaleDateString()}</span>)}
+                {!isStudent && (<span className="truncate">{t("teacher.quizzesManagement.detailsCard.lastUpdated")}: {quiz?.updatedAt ? new Date(quiz?.updatedAt).toLocaleDateString() : new Date(quiz?.createdAt).toLocaleDateString()}</span>)}
                 
                 {isStudent && (
                     <span>
@@ -78,7 +80,7 @@ const QuizDetailsCard = ({ quiz, isStudent = false, onClick, onEdit, onDelete, o
                         onStartSession(quiz);
                     }}
                     label="quiz"
-                    isDeleted={quiz.isDeleted}
+                    deleted={quiz.status === 'archived'}
                     isPublished={!emptyPlayer() && quiz.status}
                 />
             )}

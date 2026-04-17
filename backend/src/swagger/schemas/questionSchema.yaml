@@ -6,7 +6,6 @@ components:
         - text
         - type
         - options
-        - correctOptions
       properties:
         _id:
           type: ObjectId
@@ -29,7 +28,7 @@ components:
             required:
               - text
               - isCorrect
-              - order
+              - letter
             properties:
               text:
                 type: string
@@ -39,18 +38,10 @@ components:
                 type: boolean
                 description: Indicates if the option is correct.
                 example: true
-              order:
-                type: integer
-                description: The order of the option in the list.
-                example: 0
-              feedback:
+              letter:
                 type: string
-                description: Optional feedback for this option.
-                example: "Correct! A stack follows the LIFO (Last In, First Out) principle."
-        correctOptions:
-          type: integer
-          description: Index of the correct answer to the question.
-          example: 0
+                description: The letter assigned to the option.
+                example: "A"
         points:
           type: integer
           description: Number of points awarded for a correct answer.
@@ -59,30 +50,6 @@ components:
           type: integer
           description: Time limit to answer the question in seconds.
           example: 30
-        isActive:
-          type: boolean
-          description: Indicates if the question is currently active.
-          example: true
-        isReusable:
-          type: boolean
-          description: Indicates if the question can be reused in other quizzes.
-          example: false
-        isDeleted:
-          type: boolean
-          description: Indicates if the question has been deleted.
-          example: false
-        deletedBy:
-          type: ObjectId
-          description: Identifier of the user who deleted the question.
-          example: "64f0c8e2b4d1c2a5f6e7d8d0"
-        deleteReason:
-          type: string
-          description: Reason for deleting the question.
-          example: "Outdated content"
-        allowMultipleAttempts:
-          type: boolean
-          description: Indicates if multiple options can be selected for this question.
-          example: false
         createdAt:
           type: date-time
           description: Timestamp when the question was created.
@@ -91,7 +58,4 @@ components:
           type: date-time
           description: Timestamp when the question was last updated.
           example: "2023-10-01T12:00:00Z"
-        deletedAt:
-          type: date-time
-          description: Timestamp when the question was deleted.
-          example: "2023-10-15T12:00:00Z"
+        

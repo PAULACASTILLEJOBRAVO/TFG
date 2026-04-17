@@ -38,37 +38,11 @@ const quizSchema = new Schema({
         enum: ['draft', 'published', 'archived'],
         default: 'draft'
     },
-    isActive: { 
-        type: Boolean, 
-        default: false 
-    },
-    isDeleted: {
-        type: Boolean,
-        default: false
-    },
-    deletedAt: { 
-        type: Date 
-    },
-    deletedBy: { 
-        type: Schema.Types.ObjectId, 
-        ref: 'User' 
-    },
-    deleteReason: { 
-        type: String, 
-        trim: true 
-    },
     difficulty: { 
         type: String, 
         enum: ['easy', 'medium', 'hard'], 
         default: 'easy' 
-    },
-
-    //Access control
-    // isPublic: { 
-    //     type: String, 
-    //     enum: ['private', 'public'], 
-    //     default: 'private' 
-    // },
+    }
 }, 
 { 
     timestamps: true, // Add createdAt and updatedAt fields
@@ -79,36 +53,22 @@ const quizSchema = new Schema({
 // Indexes
 quizSchema.index({ title: 1 });
 quizSchema.index({ creatorId: 1 });
-quizSchema.index({ isDeleted: 1 });
 quizSchema.index({ title: 'text' });
 
 // Query helper to exclude soft-deleted docs easily
 quizSchema.query.notDeleted = function() {
-  return this.where({ isDeleted: false });
+  return this.where({ status: { $ne: 'archived' } });
 };
 
 // Instance method to soft-delete
-quizSchema.methods.softDelete = async function({ by = null, reason = null } = {}) {
-  if (this.isPublic === 'public') throw new Error('Cannot delete a public quiz.');
-
-  this.isDeleted = true;
+quizSchema.methods.softDelete = async function() {
   this.status = 'archived'; // Set status to archived when deleted
-  this.deletedAt = new Date();
-  this.isActive = false; // Set isActive = false so quiz can't be used
-
-  if (by) this.deletedBy = by;
-  if (reason) this.deleteReason = reason;
 
   return this.save();
 };
 
 // Instance method to restore
 quizSchema.methods.restore = async function() {
-  this.isDeleted = false;
-  this.deletedAt = null;
-  this.deletedBy = null;
-  this.deleteReason = null;
-  this.isActive = true; // or leave it as previous state if you track it
   this.status = 'draft'; // Set status to draft when restored, or keep previous status if you track it
 
   return this.save();
@@ -117,19 +77,16 @@ quizSchema.methods.restore = async function() {
 // Instance method to publish
 quizSchema.methods.publish = async function() {
     this.status = 'published';
-    this.isActive = true; // Set isActive = true so quiz can be used
 
     return this.save();
 }
 
 // Static helper to soft-delete by id (useful in services)
-quizSchema.statics.softDeleteById = async function(id, { by = null, reason = null } = {}) {
+quizSchema.statics.softDeleteById = async function(id) {
   const quiz = await this.findById(id);
-  
   if (!quiz) return false;
-  if (quiz.isPublic === 'public') throw new Error('Cannot delete public quizzes');
   
-  await quiz.softDelete({ by, reason });
+  await quiz.softDelete();
 
   return true;
 };
@@ -137,7 +94,6 @@ quizSchema.statics.softDeleteById = async function(id, { by = null, reason = nul
 // Static restore by id
 quizSchema.statics.restoreById = async function(id) {
   const quiz = await this.findById(id);
-  
   if (!quiz) return false;
 
   await quiz.restore();
@@ -148,7 +104,6 @@ quizSchema.statics.restoreById = async function(id) {
 // Static publish by id
 quizSchema.statics.publishById = async function(id) {
     const quiz = await this.findById(id);
-  
     if (!quiz) return false;
 
     await quiz.publish();
@@ -159,7 +114,6 @@ quizSchema.statics.publishById = async function(id) {
 // Static update by id
 quizSchema.statics.updateById = async function(id, body, currentUserData, session) {
     const quiz = await this.findById(id).session(session);
-  
     if (!quiz) return false;
 
     // Extract current user ID and role
@@ -195,15 +149,9 @@ quizSchema.statics.canGetTeacherQuizzes = async function(currentUser) {
     return await validateTeacherRole(currentUser);
 }
 
-// Soft-delete related questions before deleting the quiz
+// Delete related questions before deleting the quiz
 quizSchema.pre('deleteOne', { document: true, query: false }, async function(next) {
     try {
-        if (this.isPublic === 'public') { // If the quiz is public, prevent its deletion
-            const err = new Error('Cannot delete a public quiz.');
-            err.status = 403;
-            return next(err); // Abort the operation
-        }
-
         const Question = mongoose.model('Question');
         debug(`Pre deleteOne hook triggered for Quiz: ${this._id}`);
 
@@ -217,16 +165,8 @@ quizSchema.pre('deleteOne', { document: true, query: false }, async function(nex
 
         // Go through each question and decide whether to delete it or not
         for (const question of questions) { // Iterate through questions
-            if (!question.isReusable) { // Only soft-delete not reusable questions
-                debug(`Soft-deleting private question: ${question._id}`);
-
-                await question.softDelete({
-                    by: this.deletedBy || null,
-                    reason: 'Parent quiz deleted'
-                });
-            } else { // Omit reusable questions
-                debug(`Omiting reusable question: ${question._id}`);
-            }
+            await question.deleteOne(); // Delete the question
+            debug(`Deleted question ${question._id} linked to quiz ${this._id}`);
         }
 
         next();

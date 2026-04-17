@@ -63,10 +63,30 @@
             "fastSession": "This session was faster than your average time for this quiz!",
             "bestSession": "This session is your best time for this quiz!",
 
+            "firstPlace": "First place in this ranking!",
+            "secondPlace": "Second place in this ranking!",
+            "thirdPlace": "Third place in this ranking!",
+            "otherPlace": "Place in this ranking!",
+
             "correctAnswers": "Correct answers",
             "incorrectAnswers": "Incorrect answers",
             "unansweredQuestions": "Unanswered questions",
-            "noData": "No response data for this session."
+            "noData": "No response data for this session.",
+
+            "sessionReview": {
+                "title": "Review of the game session in {{quizTitle}}",
+                "description": "Review your answers for this session and see the correct answers for each question.",
+                "downloadPDF": "Download PDF review",
+                "downloadLabelPDF": "session_review_{{date}}",
+
+                "date": "Date: {{date}}",
+                "correctAnswers": "Correct answers: {{correct}}/{{total}}",
+                "score": "Score: {{score}}",
+                "points": "Points: {{points}}/{{totalScore}}",
+                "pointsPerQuestion": "{{points}} points",
+                "rank": "Ranking: {{rank}}",
+                "yourAnswer": "Your answer."
+            }
         }
     },
     "admin":{
@@ -118,8 +138,7 @@
                     "role": "Role",
                     "lastLogin": "Last login",
                     "lastLogout": "Last logout",
-                    "deletedAt": "Deletion date",
-                    "deleteReason": "Deletion reason"
+                    "archived": "Archived user"
                 },
                 "edit": {
                     "description": "User edition",
@@ -315,7 +334,8 @@
             },
             "questionDisplay": {
                 "response": "respuesta",
-                "responses": "respuestas"
+                "responses": "respuestas",
+                "question": "Question"
             }
         },
        "sessionPresentation": {

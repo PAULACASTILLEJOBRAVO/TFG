@@ -16,11 +16,7 @@ const getClickerById = async (id) => {
 const getActiveClickersStats = async () => {
     return await Clicker.countDocuments({
         assignedToUserId: { $ne: null },
-        isActive: true,
-        $or: [
-            { isDeleted: false },
-            { isDeleted: { $exists: false } }
-        ],
+        status: { $ne: 'retired', $ne: 'damaged' },
     });
 }
 
@@ -39,7 +35,7 @@ const deleteClickerById = async (id, by = null, reason = 'Clicker deleted via se
         const clicker = await getClickerById(id);
         if (!clicker) return false; // If the clicker doesn't exist, return false
 
-        await Clicker.softDeleteById(id, { by, reason });
+        await Clicker.softDeleteById(id);
         return true; // Return true if deletion was successful
     } catch (error) {
         throw new Error(error.message);

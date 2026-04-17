@@ -16,6 +16,7 @@ import {
 import { useCoordinatorSerial } from "@/hooks/Hardware/useCoordinatorSerial";
 import { useSessionActions } from "@/hooks/Sessions/useSessionActions";
 import { useResponseActions } from "@/hooks/Response/useResponseActions";
+import { v4 as uuidv4 } from "uuid";
 
 const SessionControl = () => {
     const { id } = useParams();
@@ -54,7 +55,6 @@ const SessionControl = () => {
     const startListening = async () => {
         await listen((event) => {
             switch(event.type) {
-
                 case "ANSWER":
                     const questionId = currentQuestionRef.current;
                 
@@ -66,29 +66,29 @@ const SessionControl = () => {
                             deviceIdsRef.current.push(event.deviceId);
                         }
 
-                        const existingQuestion = prev.find(q => q.questionId === questionId);
+                        const existingQuestion = prev.find(q => q.originalQuestionId === questionId);
 
                         if(existingQuestion) {
                             // If the option already exists, increment the count, otherwise add it
-                            const existingOption = existingQuestion.answers.find(a => a.option === event.option);
+                            const existingOption = existingQuestion.answers.find(a => a.letter === event.letter);
 
                             let updatedAnswers;
 
                             if(existingOption) {
                                 // Increment count for existing option
                                 updatedAnswers = existingQuestion.answers.map(a => 
-                                    a.option === event.option
+                                    a.letter === event.letter
                                         ? { ...a, count: a.count + 1 }
                                         : a
                                 );
                             } else {
                                 // Add new option
-                                updatedAnswers = [...existingQuestion.answers, { option: event.option, count: 1 }];
+                                updatedAnswers = [...existingQuestion.answers, { letter: event.letter, count: 1 }];
                             }
 
                             // Update total responses
                             return prev.map(q =>
-                                q.questionId === questionId
+                                q.originalQuestionId === questionId
                                     ? { 
                                         ...q, 
                                         answers: updatedAnswers, 
@@ -99,12 +99,29 @@ const SessionControl = () => {
                         }
 
                         // If the question didn't exist yet
+                        const originalQuestion = quizForTeacher.questionIds?.find(
+                            q => q._id === questionId
+                        );
+
+                        // Create a snapshot of the question at the moment of receiving the answer, to ensure we have the original data even if the question gets updated later
+                        const snapshot = originalQuestion ? {
+                            text: originalQuestion?.text,
+                            type: originalQuestion?.type,
+                            points: originalQuestion?.points || null,
+                            timeLimit: originalQuestion?.timeLimit || null,
+                            options: originalQuestion?.options.map(option => ({
+                                letter: option?.letter,
+                                text: option?.text,
+                                isCorrect: option?.isCorrect
+                            }))
+                        } : null;
+
                         return [
                             ...prev,
                             {
-                                questionId: questionId,
-                                options: quizForTeacher.questionIds?.find(q => q._id === questionId)?.options || [],
-                                answers: [{ option: event.option, count: 1 }],
+                                originalQuestionId: questionId,
+                                questionSnapshot: snapshot,
+                                answers: [{ letter: event.letter, count: 1 }],
                                 totalResponses: 1
                             }
                         ];
@@ -115,10 +132,10 @@ const SessionControl = () => {
                     if (!questionId || !currentSessionId) return;
 
                     responseQueueRef.current.push({
+                        questionId: questionId,
                         sessionId: currentSessionId,
-                        questionId,
                         deviceId: event.deviceId, 
-                        answer: event.option,
+                        answer: event.letter,
                     });
 
                     break;

@@ -15,8 +15,8 @@ const loginUser = async (req, res) => {
 
         const user = await User.findOne({ email });
         if(!user) return res.status(404).json({ message: 'User does not exist'});
-        if(user.isDeleted) return res.status(403).json({ message: 'User account is deleted'});
-        if(!user.isActive) return res.status(403).json({ message: 'User account is not active'});
+        if(user.status === 'inactive') return res.status(403).json({ message: 'User account is deleted'});
+        if(user.status !== 'active') return res.status(403).json({ message: 'User account is not active'});
 
         const isMatch = await user.comparePassword(password);
         

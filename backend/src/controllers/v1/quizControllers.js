@@ -4,6 +4,9 @@ const Quiz = require('../../models/Quiz');
 // Import services
 const quizServices = require('../../services/v1/quizServices');
 
+// Debug
+const debug = require('debug')('backend:controllers:v1:quizControllers');
+
 // Quiz controllers
 // Controller to get all quizzes
 const getAllQuizzes = async (req, res) => {
@@ -128,16 +131,17 @@ const createQuiz = async (req, res) => {
 
 // Controller to delete a quiz by ID
 const deleteQuizById = async (req, res) => {
+    debug('Received request to delete quiz with params:', req.params);
     const { id } = req.params;
-    const { reason } = req.body;
-    const {_id } = req.user;
 
     if(!id) return res.status(400).json({ message: 'Quiz ID is required'});
 
     try{
-        const deleted = await quizServices.deleteQuizById(id, _id, reason);
+        debug('Attempting to delete quiz with ID:', id);
+        const deleted = await quizServices.deleteQuizById(id);
 
         if (!deleted) return res.status(404).json({ message: 'Quiz not found' });
+        debug('Quiz deleted successfully with ID:', id);
 
         res.status(200).json({
          message: 'Quiz deleted successfully'
@@ -152,14 +156,17 @@ const deleteQuizById = async (req, res) => {
 
 // Controller to restore a quiz by ID
 const restoreQuizById = async (req, res) => {
+    debug('Received request to restore quiz with params:', req.params);
     const { id } = req.params;
 
     if(!id) return res.status(400).json({ message: 'Quiz ID is required'});
 
     try{
+        debug('Attempting to restore quiz with ID:', id); 
         const restored = await quizServices.restoreQuizById(id);
 
         if (!restored) return res.status(404).json({ message: 'Quiz not found' });
+        debug('Quiz restored successfully with ID:', id);
 
         res.status(200).json({
          message: 'Quiz restored successfully'
@@ -173,14 +180,17 @@ const restoreQuizById = async (req, res) => {
 }
 
 const publishQuizById = async (req, res) => {
+    debug('Received request to publish quiz with params:', req.params);
     const { id } = req.params;
 
     if(!id) return res.status(400).json({ message: 'Quiz ID is required'});
 
     try{
+        debug('Attempting to publish quiz with ID:', id);
         const published = await quizServices.publishQuizById(id);
 
         if (!published) return res.status(404).json({ message: 'Quiz not found' });
+        debug('Quiz published successfully with ID:', id);
 
         res.status(200).json({
          message: 'Quiz published successfully'
@@ -195,6 +205,8 @@ const publishQuizById = async (req, res) => {
 
 // Controller to update a quiz by ID
 const updateQuizById = async (req, res) => {
+    debug('Received request to update quiz with params:', req.params, 'and body:', req.body);
+
     const {id} = req.params;
     const {body} = req;
     const { _id, role } = req.user;
@@ -203,10 +215,12 @@ const updateQuizById = async (req, res) => {
     if(!body) return res.status(400).json({ message: 'Body is required'});
 
     try{
+        debug('Attempting to update quiz with ID:', id, 'and body:', body);
         const updatedQuiz = await quizServices.updateQuizById({id, body, _id, role});
 
         if(!updatedQuiz) return res.status(404).json({ message: 'Quiz not found'});
 
+        debug('Quiz updated successfully with ID:', id, 'Updated quiz:', updatedQuiz);
         res.status(200).json({
             message: 'Quiz updated successfully',
             data: updatedQuiz

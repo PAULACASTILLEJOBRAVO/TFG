@@ -31,25 +31,6 @@ const clickerSchema = new Schema({
         enum: ['available', 'assigned', 'damaged', 'retired'],
         default: 'available'
     },
-    isActive: {
-        type: Boolean,
-        default: true
-    },
-    isDeleted: {
-        type: Boolean,
-        default: false
-    },
-    deletedAt: {
-        type: Date
-    },
-    deletedBy: {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
-    },
-    deleteReason: {
-        type: String,
-        trim: true
-    },
 }, 
 { 
     timestamps: true, // Add createdAt and updatedAt fields
@@ -62,42 +43,30 @@ clickerSchema.index({ AssignedToUserId: 1 });
 
 // Query helper to exclude deleted documents
 clickerSchema.query.notDeleted = function() {
-  return this.where({ isDeleted: false });
+  return this.where({ status: { $ne: 'retired' } });
 };
 
 // Instance method to soft-delete
-clickerSchema.methods.softDelete = async function({ by = null, reason = null } = {}) {
-  this.isDeleted = true;
-  this.deletedAt = new Date();
-  this.isActive = false; // Deactivate the clicker when deleted
+clickerSchema.methods.softDelete = async function() {
   this.status = 'retired'; // Set status to retired when deleted
   this.assignedToUserId = null; // Unassign the clicker when deleted
-  
-  if (by) this.deletedBy = by;
-  if (reason) this.deleteReason = reason;
 
   return this.save();
 };
 
 // Instance method to restore
 clickerSchema.methods.restore = async function() {
-  this.isDeleted = false;
-  this.isActive = true; // Reactivate the clicker when restored
-  this.deletedAt = null;
-  this.deletedBy = null;
-  this.deleteReason = null;
   this.status = 'available'; // Reset status to available when restored
 
   return this.save();
 };
 
 // Static helper to soft-delete by id 
-clickerSchema.statics.softDeleteById = async function(id, { by = null, reason = null } = {}) {
+clickerSchema.statics.softDeleteById = async function(id) {
   const clicker = await this.findById(id);
-  
   if (!clicker) return false;
   
-  await clicker.softDelete({ by, reason });
+  await clicker.softDelete();
 
   return true;
 };
@@ -105,7 +74,6 @@ clickerSchema.statics.softDeleteById = async function(id, { by = null, reason = 
 // Static restore by id
 clickerSchema.statics.restoreById = async function(id) {
   const clicker = await this.findById(id);
-  
   if (!clicker) return false;
 
   await clicker.restore();

@@ -5,7 +5,7 @@ import {
 } from "@/components/Common/ActionButtons";
 import { PasswordButton } from "../Buttons";
 
-const UserActionCell = ({ label, onEdit, onDelete, onChangePassword, onRestore, isDeleted }) => {
+const UserActionCell = ({ label, onEdit, onDelete, onChangePassword, onRestore, deleted }) => {
     return(
         <div className="flex justify-center items-center gap-2">
             {onEdit && (
@@ -21,7 +21,7 @@ const UserActionCell = ({ label, onEdit, onDelete, onChangePassword, onRestore, 
                 />
             )}
 
-             {isDeleted ? (
+             {deleted ? (
                 onRestore && (
                     <RestoreButton 
                         onClick={onRestore} 

@@ -23,7 +23,6 @@ const UserTable = ({users, onEdit, onDelete, onChangePassword, onRestore, loadin
                         <TableHead>{t("admin.usersManagement.table.name")}</TableHead>
                         <TableHead className="hidden md:table-cell">{t("admin.usersManagement.table.email")}</TableHead>
                         <TableHead>{t("admin.usersManagement.table.role")}</TableHead>
-                        <TableHead className="hidden md:table-cell">{t("admin.usersManagement.table.status")}</TableHead>
                         <TableHead className="hidden md:table-cell">{t("admin.usersManagement.table.lastAccess")}</TableHead>
                         <TableHead></TableHead>
                     </TableRow>

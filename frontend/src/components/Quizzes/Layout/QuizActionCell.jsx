@@ -8,7 +8,7 @@ import {
     PublishButton 
 } from "../Buttons";
 
-const QuizActionCell = ({ label, onEdit, onDelete, onRestore, onPublish, onStartSession, isDeleted, isPublished }) => {
+const QuizActionCell = ({ label, onEdit, onDelete, onRestore, onPublish, onStartSession, deleted, isPublished }) => {
     return(
         <div className="flex justify-center items-center gap-2">
             {onEdit && (
@@ -33,7 +33,7 @@ const QuizActionCell = ({ label, onEdit, onDelete, onRestore, onPublish, onStart
                 />
             )}
 
-             {isDeleted ? (
+             {deleted ? (
                 onRestore && (
                     <RestoreButton 
                         onClick={onRestore} 

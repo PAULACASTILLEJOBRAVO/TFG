@@ -101,7 +101,7 @@ const UserDetailDrawer = ({open, user, drawerMode, onView, onClose, onEdit, onSa
                             onChangePassword={() => onChangePassword(user)}
                             onRestore={() => onRestore(user)}
                             label={t("admin.usersManagement.labelButton")}
-                            isDeleted={user.isDeleted}
+                            deleted={user.status === 'inactive'}
                         />
                     )}
 

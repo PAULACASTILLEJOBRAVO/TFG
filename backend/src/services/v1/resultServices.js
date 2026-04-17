@@ -3,19 +3,25 @@ const Result = require('../../models/Result');
 const Session = require('../../models/Session');
 const Response = require('../../models/Response');
 
+// Debugging
+const debug = require('debug')('backend:services:v1:resultServices');
+
 // Result services
 // Service to get all results
 const getAllResults = async () => {
+  debug('Getting all results');
   return await Result.find().populate('playerId').populate('quizId').populate('sessionId');
 };
 
 // Service to get a result by ID
 const getResultById = async (id) => {
+  debug(`Getting result with ID ${id}`);
   return await Result.findById(id).populate('playerId').populate('quizId').populate('sessionId');
 }
 
 // Service to generate results for a session
 const generateResults = async ({playerId, sessionId}) => {
+  debug(`Generating results for session ID ${sessionId} and player ID ${playerId}`);
   // Get the session and quiz
   const session = await Session.findById(sessionId).populate({
     path: 'quizId',
@@ -23,17 +29,22 @@ const generateResults = async ({playerId, sessionId}) => {
       path: 'questionIds'
     }
   });
+
   const quiz = session.quizId;
 
   if (!session || !quiz) throw new Error('Session or Quiz not found');
+  debug(`Session and quiz found:`, session, quiz);
 
   const totalQuestions = quiz.questionIds.length;
 
   // Get all responses for the players in the session
+  debug(`Fetching responses for session ID ${sessionId} and player ID ${playerId}`);
   const responses = await Response.find({ sessionId, playerId });
 
   // Create a map of questionId to response for the player
+  debug(`Mapping responses for player ID ${playerId}`);
   const questionMap = new Map();
+
   quiz.questionIds.forEach(q => {
     questionMap.set(q._id.toString(), q); // Map questionId to question details
   });
@@ -42,6 +53,7 @@ const generateResults = async ({playerId, sessionId}) => {
   let wrongAnswers = 0;
 
   // Evaluate responses
+  debug(`Evaluating responses for player ID ${playerId}`);
   responses.forEach(response => {
     const question = questionMap.get(response.questionId.toString());
     if (!question) return; // Skip if the question is not part of the quiz
@@ -70,6 +82,13 @@ const generateResults = async ({playerId, sessionId}) => {
     0
   );
 
+  const quizSnapshot = {
+    originalQuizId: quiz._id,
+    title: quiz.title,
+    description: quiz.description,
+    difficulty: quiz.difficulty
+  };
+
   // Create and save the result
   const result = new Result({
       totalScore,
@@ -80,14 +99,17 @@ const generateResults = async ({playerId, sessionId}) => {
       rank: 0,
       playerId,
       sessionId,
-      quizId: quiz._id,
+      quizSnapshot: quizSnapshot,
       timeTaken,
       startedAt,
       finishedAt
   });
 
+  debug(`Saving result for player ID ${playerId} and session ID ${sessionId}:`, result);
+
   await result.save();
 
+  debug(`Result generated and saved for player ID ${playerId} and session ID ${sessionId}:`, result);
   return result;
 }
 

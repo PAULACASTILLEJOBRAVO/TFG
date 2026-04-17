@@ -19,7 +19,7 @@ const createResponse = async (body) => {
     const {sessionId, questionId, deviceId, answer} = body;
     
     try{
-        const clicker = await Clicker.findOne({ deviceCode: deviceId, isDeleted: false });
+        const clicker = await Clicker.findOne({ deviceCode: deviceId, status: "assigned" });
         if (!clicker) throw new Error('Clicker not found');
 
         const question = await Question.findById(questionId);

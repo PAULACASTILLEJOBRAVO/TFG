@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next";
 const UserCreate = () => {
     const { create } = useUserActions();
     
-    const [createUser, setCreateUser] = useState({ fullname: "", username: "", email: "", password: "", role: "", profilePicture: "" });
+    const [createUser, setCreateUser] = useState({ fullname: "", username: "", email: "", password: "", role: "student", profilePicture: "" });
     
     const navigate = useNavigate();
 

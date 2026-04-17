@@ -13,16 +13,10 @@ const UserRow = ({user, onEdit, onDelete, onChangePassword, onRestore, onSelect}
     const { t } = useTranslation();
 
     return(
-        <TableRow onClick={onSelect} className={`cursor-pointer hover:bg-muted ${user.isDeleted ? "bg-red-50 hover:bg-red-100 text-gray-500" : ""}`}>
+        <TableRow onClick={onSelect} className={`cursor-pointer hover:bg-muted ${user.status === 'inactive' ? "bg-red-50 hover:bg-red-100 text-gray-500" : ""}`}>
             <TableCell className="font-medium capitalize">{user.username}</TableCell>
             <TableCell className="hidden md:table-cell">{user.email}</TableCell>
             <TableCell className="capitalize">{t(rolesType[user.role])}</TableCell>
-            <TableCell className="hidden md:table-cell">
-                <UserStatusChip 
-                    isActive={user.isActive}
-                    isDelete={user.isDelete}
-                />
-            </TableCell>
             <TableCell className="hidden md:table-cell">
             {
                 user?.lastLogoutAt 
@@ -51,7 +45,7 @@ const UserRow = ({user, onEdit, onDelete, onChangePassword, onRestore, onSelect}
                         onRestore(user)
                     }}
                     label={t("admin.usersManagement.labelButton")}
-                    isDeleted={user.isDeleted}
+                    deleted={user.status === 'inactive'}
                 />
             </TableCell>
         </TableRow>

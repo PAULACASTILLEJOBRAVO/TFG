@@ -5,31 +5,25 @@ const editableFields = {
     teacher: ['username', 'fullname', 'bio'],
     admin: [
         'username', 'fullname', 'bio', 'profilePicture', 'role', 'email',
-        'lastLoginAt',
-        'isDeleted', 'deletedAt', 'deletedBy', 'deleteReason'
+        'lastLoginAt', 'lastLogoutAt', 'status'
       ]
   },
   clicker: {
     admin: [
         'deviceCode', 'status', 'assignedToUserId',  
-        'isActive', 'isDeleted', 'deletedAt', 'deletedBy', 'deleteReason'
       ]
   },
   question: {
-    teacher: ['text', 'options', 'correctOption', 'explanation', 'difficulty', 'isDeleted', 'deletedAt', 'deletedBy', 'deleteReason'],
+    teacher: ['text', 'options', 'correctOption', 'difficulty'],
   },
   quiz: {
     teacher: [
-      'title', 'description', 'creatorId', 'playerIds', 'questionIds', 'difficulty', 'status', 'isActive',
-      'isDeleted', 'deletedAt', 'deletedBy', 'deleteReason'
+      'title', 'description', 'creatorId', 'playerIds', 'questionIds', 'difficulty', 'status'
     ],
     admin: [
-      'title', 'description', 'creatorId', 'playerIds', 'questionIds', 'difficulty', 'status', 'isActive',
-      'isDeleted', 'deletedAt', 'deletedBy', 'deleteReason'
+      'title', 'description', 'creatorId', 'playerIds', 'questionIds', 'difficulty', 'status'
     ]
   },
-  response: {},
-  result: {},
   session: {
     teacher: {
       active: ['questions', 'deviceIds'],
@@ -39,9 +33,9 @@ const editableFields = {
       archived: [],
     },
     admin: {
-      active: ['teacherId', 'deviceIds', 'quizId', 'questions', 'startTime', 'endTime', 'status', 'isDeleted', 'deletedAt', 'deletedBy', 'deleteReason'],
+      active: ['teacherId', 'deviceIds', 'quizId', 'questions', 'startTime', 'endTime', 'status'],
       paused: [],
-      completed: ['teacherId', 'deviceIds', 'quizId', 'questions', 'startTime', 'endTime', 'status', 'isDeleted', 'deletedAt', 'deletedBy', 'deleteReason'],
+      completed: ['teacherId', 'deviceIds', 'quizId', 'questions', 'startTime', 'endTime', 'status'],
       cancelled: [],
       archived: []
     }  

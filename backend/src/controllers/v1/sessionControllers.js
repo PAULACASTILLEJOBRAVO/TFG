@@ -1,11 +1,17 @@
 // Import services
 const sessionServices = require('../../services/v1/sessionServices');
 
+// Debbugging
+const debug = require('debug')('backend:controllers:v1:sessionControllers');
+
 // Session controllers
 // Controller to get all sessions
 const getAllSessions = async (req, res) => {
   try {
+    debug('Fetching all sessions');
     const sessions = await sessionServices.getAllSessions();
+
+    debug(`Fetched ${sessions.length} sessions`);
     res.status(200).json({
         message: 'Sessions fetched successfully',
         data: sessions
@@ -25,10 +31,12 @@ const getSessionById = async (req, res) => {
     if(!id) return res.status(400).json({ message: 'Session ID is required' });
     
     try{
+        debug(`Fetching session with ID ${id}`);
         const session = await sessionServices.getSessionById(id);
 
         if (!session) return res.status(404).json({ message: 'Session not found' });
-        
+        debug(`Fetched session with ID ${id}: ${session}`);
+
         res.status(200).json({
             message: 'Session fetched successfully', 
             data: session
@@ -48,6 +56,7 @@ const createSession = async (req, res) => {
     if (!body) return res.status(400).json({ message: 'Invalid session data. Body is required' });
 
     try{
+        debug('Creating new session');
         const newSession = await sessionServices.createSession(body);
 
         res.status(201).json({
@@ -65,16 +74,17 @@ const createSession = async (req, res) => {
 // Controller to delete a session by ID
 const deleteSessionById = async (req, res) => {
     const {id} = req.params;
-    const { by, reason } = req.body;
 
     if(!id) return res.status(400).json({ message: 'Session ID is required'});
-    if(!by && !reason) return res.status(400).json({ message: 'Deletion metadata is required'});
+
 
     try{
-        const deleted = await sessionServices.deleteSessionById(id, by, reason);
+        debug(`Deleting session with ID ${id}`);
+        const deleted = await sessionServices.deleteSessionById(id);
 
         if (!deleted) return res.status(404).json({ message: 'Session not found' });
 
+        debug(`Session with ID ${id} deleted successfully`);
         res.status(200).json({
          message: 'Session deleted successfully'
         });
@@ -96,10 +106,12 @@ const completeSessionById = async (req, res) => {
     if(!body) return res.status(400).json({ message: 'Body is required'});
 
     try{
+        debug(`Completing session with ID ${id}`);
         const updatedSession = await sessionServices.completeSessionById({id, body, _id, role});
 
         if(!updatedSession) return res.status(404).json({ message: 'Session not found'});
 
+        debug(`Session with ID ${id} completed successfully`);
         res.status(200).json({
             message: 'Session completed successfully',
             data: updatedSession
@@ -122,10 +134,12 @@ const updateSessionById = async (req, res) => {
     if(!body) return res.status(400).json({ message: 'Body is required'});
 
     try{
+        debug(`Updating session with ID ${id}`);
         const updatedSession = await sessionServices.updateSessionById({id, body, _id, role});
 
         if(!updatedSession) return res.status(404).json({ message: 'Session not found'});
 
+        debug(`Session with ID ${id} updated successfully`);
         res.status(200).json({
             message: 'Session updated successfully',
             data: updatedSession

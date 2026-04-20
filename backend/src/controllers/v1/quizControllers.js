@@ -49,13 +49,24 @@ const getQuizById = async (req, res) => {
 
 // Controller to fetch a quiz by ID for a specific student
 const getQuizByIdForStudent = async (req, res) => {
-    const currentUser = req.user;
     const { id } = req.params;
-    
-    if (!id) return res.status(400).json({ message: 'Quiz ID is required' });
+    const { studentId } = req.query;
+
+    if (!id) {
+        return res.status(400).json({ message: 'Quiz ID is required' });
+    }
+
+    const currentUser = req.user;
+
+    let playerId = currentUser._id;
+
+    if (currentUser.role === "teacher" && studentId) {
+        playerId = studentId;
+    }
 
     try {
-        const quiz = await quizServices.getQuizByIdForStudent(currentUser._id, id);
+        const quiz = await quizServices.getQuizByIdForStudent(playerId, id);
+
         res.status(200).json({
             message: 'Quiz fetched successfully', 
             data: quiz
@@ -70,6 +81,7 @@ const getQuizByIdForStudent = async (req, res) => {
 
 // Controller to get all quizzes created by a specific teacher
 const getAllQuizzesForTeacher = async (req, res) => {
+    const limit = parseInt(req.query.limit) || 0;
 
     const currentUser = req.user;
 
@@ -77,7 +89,7 @@ const getAllQuizzesForTeacher = async (req, res) => {
         const canAccess = await Quiz.canGetTeacherQuizzes(currentUser);
         if (!canAccess) return res.status(403).json({message: "Unauthorized"});
 
-        const quizzes = await quizServices.getAllQuizzesForTeacher(currentUser._id);
+        const quizzes = await quizServices.getAllQuizzesForTeacher(currentUser._id, limit);
         res.status(200).json({
             message: 'Quizzes fetched successfully', 
             data: quizzes
@@ -92,10 +104,12 @@ const getAllQuizzesForTeacher = async (req, res) => {
 
 // Controller to get all quizzes assigned to a specific student
 const getAllQuizzesForStudent = async (req, res) => {
+    const limit = parseInt(req.query.limit) || 0;
+
     const currentUser = req.user;
 
     try {
-        const quizzes = await quizServices.getAllQuizzesForStudent(currentUser._id);
+        const quizzes = await quizServices.getAllQuizzesForStudent(currentUser._id, limit);
         res.status(200).json({
             message: 'Quizzes fetched successfully', 
             data: quizzes
@@ -107,6 +121,59 @@ const getAllQuizzesForStudent = async (req, res) => {
         });
     }
 };
+
+// Controller to fetch the sessions and results of a quiz for a specific teacher, to show quiz statistics and students' performance in the quiz sessions
+const getQuizSessionsForTeacher = async (req, res) => {
+    const currentUser = req.user;
+    const { id } = req.params;
+
+    if (!id) return res.status(400).json({ message: 'Quiz ID is required' });
+
+    try {
+        const canAccess = await Quiz.canGetTeacherQuizzes(currentUser);
+        if (!canAccess) return res.status(403).json({message: "Unauthorized"});
+
+        const sessionsData = await quizServices.getQuizSessionsForTeacher(id);
+        res.status(200).json({
+            message: 'Quiz sessions fetched successfully', 
+            data: sessionsData
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            message: 'Error fetching quiz sessions', 
+            error: error.message 
+        });
+    }
+};
+
+// Controller to fetch analytics data for each question of a quiz
+const getQuizQuestionAnalytics = async (req, res) => {
+    const currentUser = req.user;
+    const { id } = req.params;
+
+    if (!id) return res.status(400).json({ message: 'Quiz ID is required' });
+
+    try {
+        debug('Received request to get quiz question analytics with params:', req.params);
+
+        const canAccess = await Quiz.canGetTeacherQuizzes(currentUser);
+        if (!canAccess) return res.status(403).json({message: "Unauthorized"});
+        
+        debug('User is authorized to access quiz question analytics for quiz with ID:', id);
+        const analyticsData = await quizServices.getQuizQuestionAnalytics(id);
+
+        debug('Quiz question analytics fetched successfully for quiz with ID:', id, 'Analytics data:', analyticsData);
+        res.status(200).json({
+            message: 'Quiz question analytics fetched successfully', 
+            data: analyticsData
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            message: 'Error fetching quiz question analytics',
+            error: error.message
+        })
+    }
+}
 
 // Controller to create a new quiz
 const createQuiz = async (req, res) => {
@@ -240,6 +307,8 @@ module.exports = {
     getQuizByIdForStudent,
     getAllQuizzesForTeacher,
     getAllQuizzesForStudent,
+    getQuizSessionsForTeacher,
+    getQuizQuestionAnalytics,
 
     createQuiz,
     

@@ -20,6 +20,21 @@ export const getTotalUsersStats = async () => {
     return response.data;
 }
 
+export const getActiveUsersStats = async () => {
+    const response = await api.get("/users/stats/active");
+    return response.data;
+}
+
+export const getConnectedUsersStats = async () => {
+    const response = await api.get("/users/stats/connected");
+    return response.data;
+}
+
+export const getArchivedUsersStats = async () => {
+    const response = await api.get("/users/stats/archived");
+    return response.data;
+}
+
 export const getTotalStudentsStats = async () => {
     const response = await api.get("/users/students/stats/total");
     return response.data;

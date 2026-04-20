@@ -31,6 +31,7 @@ import {
 
 import {
   QuizzesHistory,
+  QuizSessions,
   SessionHistory
 } from '@/pages/Histories';
 
@@ -90,6 +91,11 @@ const AppRouter = () => {
             <QuizCreate />
           </RequireAuth>
           } />
+        <Route path='/dashboard_teacher/quizzes/:id/sessions' element={
+          <RequireAuth allowedRoles={["teacher"]}>
+            <QuizSessions />
+          </RequireAuth>
+          } />
         <Route path='/dashboard_teacher/quizzes/:id/edit' element={
           <RequireAuth allowedRoles={["teacher"]}>
             <QuizEdit />
@@ -105,7 +111,13 @@ const AppRouter = () => {
             <SessionPresentation />
           </RequireAuth>
           } />
-
+        <Route path='/dashboard_teacher/quizzes/:id/students/:studentId/history' element={
+          <RequireAuth allowedRoles={["teacher"]}>
+            <SessionHistory />
+          </RequireAuth>
+          }
+        />
+        
         // STUDENT PAGES
         <Route path='/dashboard_student/quizzes' element={
           <RequireAuth allowedRoles={["student"]}>

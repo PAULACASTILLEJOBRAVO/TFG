@@ -1,8 +1,19 @@
 import { useState, useEffect } from "react";
-import { getTotalUsersStats } from "../../services/user.service";
+import { 
+    getTotalUsersStats,
+    getActiveUsersStats,
+    getConnectedUsersStats,
+    getArchivedUsersStats
+} from "../../services/user.service";
 
 export const useUsersStats = () => {
-    const [usersStats, setUsersStats] = useState(0);
+    const [Userstats, setUserStats] = useState({
+        total: 0,
+        active: 0,
+        connected: 0,
+        archived: 0
+    });
+
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [message, setMessage] = useState("");
@@ -12,31 +23,58 @@ export const useUsersStats = () => {
             setLoading(true);
             setError(null);
             setMessage("");
-            setUsersStats(0);
 
-            try{
-                const data = await getTotalUsersStats();
+            try {
+                const [
+                    totalUserStats,
+                    activeUserStats,
+                    connectedUserStats,
+                    archivedUserStats
+                ] = await Promise.all([
+                    getTotalUsersStats(),
+                    getActiveUsersStats(),
+                    getConnectedUsersStats(),
+                    getArchivedUsersStats()
+                ]);
 
-                if(data.error){
-                    setError(data.error);
-                    setMessage(data.message || "");
-                    setUsersStats(0);
-                } else {
-                    setUsersStats(data.data || 0);
-                    setMessage(data.message || "");
+                setUserStats({
+                    total: totalUserStats.data || 0,
+                    active: activeUserStats.data || 0,
+                    connected: connectedUserStats.data || 0,
+                    archived: archivedUserStats.data || 0
+                });
+
+                const firstError =
+                    totalUserStats.error ||
+                    activeUserStats.error ||
+                    connectedUserStats.error ||
+                    archivedUserStats.error;
+
+                if (firstError) {
+                    setError(firstError);
                 }
-            }catch(err) {
-                // Axios's error
-                const errorMessage = err.response?.data?.message || err.message || "Unknown error";
+
+            } catch (err) {
+                const errorMessage =
+                    err.response?.data?.message ||
+                    err.message ||
+                    "Unknown error";
+
                 setError(errorMessage);
-                setUsersStats(0);
-            }finally{
+
+                setUserStats({
+                    total: 0,
+                    active: 0,
+                    connected: 0,
+                    archived: 0
+                });
+            } finally {
                 setLoading(false);
             }
-        }
+        };
 
         fetchUsers();
     }, []);
 
-    return { usersStats, loading, error, message };
+    return { Userstats, loading, error };
 };

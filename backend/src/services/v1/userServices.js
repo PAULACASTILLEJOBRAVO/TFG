@@ -2,6 +2,7 @@
 const User = require('../../models/User');
 const Quiz = require('../../models/Quiz');
 const Clicker = require('../../models/Clicker');
+const { get } = require('mongoose');
 
 // Debug
 const debug = require('debug')('backend:services:v1:userServices');
@@ -22,9 +23,28 @@ const getUserById = async (id) => {
 // Service to fetch users' stats
 const getTotalUsersStats = async () => {
     debug('Fetching total users stats');
-    return await User.countDocuments({
-        status: 'active'
+    return await User.countDocuments();
+}
+
+// Service to fetch connected users stats
+const getConnectedUsersStats = async () => {
+    debug('Fetching connected users stats');
+    return await User.countDocuments({ 
+        status: 'active',
+        isOnline: true 
     });
+}
+
+// Service to fetch active users stats
+const getActiveUsersStats = async () => {
+    debug('Fetching active users stats');
+    return await User.countDocuments({ status: 'active' });
+}
+
+// Service to fetch archived users stats
+const getArchivedUsersStats = async () => {
+    debug('Fetching archived users stats');
+    return await User.countDocuments({ status: 'inactive' });
 }
 
 // Service to fetch users' stats
@@ -156,10 +176,13 @@ module.exports = {
     getAllUsers,
     getUserById,
     getTotalUsersStats,
+    getActiveUsersStats,
+    getConnectedUsersStats,
+    getArchivedUsersStats,
     getTotalStudentsStatsForTeacher,
     getAllStudents,
     getAllStudentsWithoutClicker,
-    
+
     createUser,
 
     updateUserById,

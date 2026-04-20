@@ -64,7 +64,7 @@ export const languages = [
     { code: "en", labelKey: "common.english", flag:"🇬🇧" },
 ]
 
-import { Trophy, Plus, FileText, House, UserRoundPen, Settings, LogOut, NotebookPen, User, Calculator, MessageSquareWarning, PlayCircle } from "lucide-react";
+import { Trophy, Plus, FileText, House, UserRoundPen, Settings, LogOut, NotebookPen, User, Users, Calculator, MessageSquareWarning, PlayCircle, Target, Percent, GraduationCap } from "lucide-react";
 
 export const icons = {
     trophy: Trophy,
@@ -74,6 +74,7 @@ export const icons = {
     house: House,
     profile: UserRoundPen,
     settings: Settings,
+    tutorial: GraduationCap,
     logout: LogOut,
 
     quiz: NotebookPen,
@@ -81,7 +82,12 @@ export const icons = {
     user: User,
     clicker: Calculator,
     warning: MessageSquareWarning,
-    play: PlayCircle
+    play: PlayCircle,
+
+    participants: Users,
+    accuracy: Target,
+    averageTime: Percent,
+    sessions: PlayCircle,
 }
 
 export const typesQuestion = [
@@ -146,3 +152,5 @@ export const searchDictionary = {
     student: ["student", "estudiante", "alumno", "alumna"],
     teacher: ["teacher", "profesor", "profesora", "docente", "maestro", "maestra"],
 };
+
+export const TOLERANCE = 2;

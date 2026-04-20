@@ -54,8 +54,20 @@ router.use(authenticate);
  */
 router.get('/', clickerController.getAllClickers);
 
-// Route to get clickers' stats of a teacher
+// Route to get all clickers stats
+router.get('/stats', clickerController.getTotalClickersStats);
+
+// Route to get active clickers stats
 router.get('/stats/active-clickers', clickerController.getActiveClickersStats);
+
+// Route to get in use clickers stats
+router.get('/stats/in-use-clickers', clickerController.getInUseClickersStats);
+
+// Route to get available clickers stats
+router.get('/stats/available-clickers', clickerController.getAvailableClickersStats);
+
+// Route to get inactive clickers stats
+router.get('/stats/inactive-clickers', clickerController.getInactiveClickersStats);
 
 // Route to restore an clicker by ID
 router.patch('/restore/:id', clickerController.restoreClickerById);

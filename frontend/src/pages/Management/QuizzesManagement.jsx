@@ -23,7 +23,7 @@ import {
 } from "@/utils/search";
 
 const QuizzesManagement = () => {
-    const { quizzesForTeacher, loading, refetchTeacher } = useQuizzesForTeacher();
+    const { quizzesForTeacher, loading, refetchTeacher } = useQuizzesForTeacher({ limit: 0 });
     const { remove, restore, publish } = useQuizActions();
 
     const [selectedQuiz, setSelectedQuiz] = useState(null);
@@ -80,7 +80,7 @@ const QuizzesManagement = () => {
         try{
             await remove(selectedQuiz._id, {reason: reason});
             closeDialogs();
-            refetchTeacher();
+            refetchTeacher({ limit: 0 });
         }catch(error){
             console.error("Error deleting quiz", error);
         }
@@ -89,7 +89,7 @@ const QuizzesManagement = () => {
     const handleRestoreQuiz = async (quiz) => {
         try {
             await restore(quiz._id);
-            refetchTeacher();
+            refetchTeacher({ limit: 0 });
         }catch(error){
             console.error("Error restoring quiz", error);
         }
@@ -99,7 +99,7 @@ const QuizzesManagement = () => {
         try {
             await publish(selectedQuiz._id);
             closeDialogs();
-            refetchTeacher();
+            refetchTeacher({ limit: 0 });
         }catch(error){
             console.error("Error publishing quiz", error);
         }
@@ -112,6 +112,10 @@ const QuizzesManagement = () => {
     const handleStartQuiz = async (quiz) => {
         navigate(`/dashboard_teacher/session/${quiz._id}`);
     }
+
+    const handleViewResults = (quiz) => {
+        navigate(`/dashboard_teacher/quizzes/${quiz._id}/sessions`);
+    };
 
     return (
         <DashboardLayout>
@@ -153,6 +157,7 @@ const QuizzesManagement = () => {
                                     <QuizDetailsCard 
                                         key={quiz._id} 
                                         quiz={quiz} 
+                                        onClick={handleViewResults}
                                         onDelete={openDeleteDialog}  
                                         onRestore={handleRestoreQuiz}
                                         onPublish={openPublishDialog}

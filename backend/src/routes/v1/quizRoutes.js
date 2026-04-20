@@ -251,6 +251,12 @@ router.get('/:id', quizController.getQuizById);
 // Route to get a quiz by ID for a specific student
 router.get('/student/:id', quizController.getQuizByIdForStudent);
 
+// Route to get sessions and results for a specific quiz and teacher
+router.get('/:id/sessions', quizController.getQuizSessionsForTeacher);
+
+// Route
+router.get('/:id/questions-analytics', quizController.getQuizQuestionAnalytics)
+
 // Route to update a quiz by ID
 router.patch('/:id', quizController.updateQuizById);
 

@@ -1,17 +1,17 @@
 import {
     DashboardTitle, 
-    DashboardContentDetailCard, 
-    DashboardDetailCard
+    DashboardSubtitle, 
 } from "../Layout/Content";
 import { Separator } from "@/components/ui/separator";
-import { useStudentsStats } from "@/hooks/Users/useStudentsStats";
-import { Spinner } from "@/components/ui/spinner";
 import { useTranslation } from "react-i18next";
+import { CardCarousel } from "@/components/Common";
+import { useQuizzesForTeacher } from "@/hooks/Quizzes/useQuizzesForTeacher";
+import { QuizDetailsCard } from "@/components/Quizzes/Content";
 
 const TeacherOverview = () => {
-    const { studentsStats, loading: loadingStudent  } = useStudentsStats();
-
     const { t } = useTranslation();
+    
+    const { quizzesForTeacher, loading: loadingQuizzes } = useQuizzesForTeacher({ limit: 6 });
 
     return(
         <>
@@ -19,10 +19,13 @@ const TeacherOverview = () => {
 
             <Separator/>
 
-            <DashboardContentDetailCard cols="2">
-                    <DashboardDetailCard title={t("teacher.overview.totalStudents")} value={loadingStudent ? <Spinner/> : studentsStats} />
-                    <DashboardDetailCard title={t("teacher.overview.connectedStudents")} value="" />
-            </DashboardContentDetailCard>
+            <DashboardSubtitle label={t("teacher.recent_quizzes")}/>
+
+            <CardCarousel loading={loadingQuizzes} basePath="/dashboard_teacher/quizzes/:id/sessions">
+                {quizzesForTeacher.map(q => (
+                    <QuizDetailsCard key={q._id} quiz={q} />
+                ))}
+            </CardCarousel>
 
             <Separator/>
         </>

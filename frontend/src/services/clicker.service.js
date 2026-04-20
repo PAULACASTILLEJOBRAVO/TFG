@@ -6,9 +6,29 @@ export const getTotalClickers = async () => {
 }
 
 export const getTotalClickersStats = async () => {
-    const response = await api.get("/clickers/stats/total");
+    const response = await api.get("/clickers/stats");
     return response.data;
 }
+
+export const getActiveClickersStats = async () => {
+    const response = await api.get("/clickers/stats/active-clickers");
+    return response.data;
+}
+
+export const getInactiveClickersStats = async () => {
+    const response = await api.get("/clickers/stats/inactive-clickers");
+    return response.data;
+}
+
+export const getInUseClickersStats = async () => {
+    const response = await api.get("/clickers/stats/in-use-clickers");
+    return response.data;
+}
+
+export const getAvailableClickersStats = async () => {
+    const response = await api.get("/clickers/stats/available-clickers");
+    return response.data;
+}   
 
 export const deleteClicker = async (id, payload) => {
     const response = await api.delete(`/clickers/${id}`, {

@@ -20,7 +20,7 @@ import {
 } from "@/utils/search";
 
 const QuizzesHistory = () => {
-    const { quizzesForStudent, loading } = useQuizzesForStudent();
+    const { quizzesForStudent, loading } = useQuizzesForStudent({ limit: 0 });
 
     // Sort quizzes by difficulty (easy, medium, hard)
     const sortedQuizzes = useMemo(() => {

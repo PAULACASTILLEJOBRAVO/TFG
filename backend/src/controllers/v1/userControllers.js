@@ -50,7 +50,7 @@ const getUserById = async (req, res) => {
     }
 }
 
-// Controller to get users' stats
+// Controller to get total users stats
 const getTotalUsersStats = async (req, res) => {
     const currentUser = req.user;
 
@@ -71,7 +71,70 @@ const getTotalUsersStats = async (req, res) => {
     }
 }
 
-// Controller to get students' stats
+// Controller to get active users stats
+const getActiveUsersStats = async (req, res) => {
+    const currentUser = req.user;
+
+    try {
+        const canAccess = await User.canGetAdminUsers(currentUser);
+        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
+
+        const users = await userServices.getActiveUsersStats();
+        res.status(200).json({
+            message: "Active users' stats fetched successfully", 
+            data: users
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            message: "Error fetching active users' stats", 
+            error: error.message 
+        });
+    }
+}
+
+// Controller to get connected users stats
+const getConnectedUsersStats = async (req, res) => {
+    const currentUser = req.user;
+
+    try {
+        const canAccess = await User.canGetAdminUsers(currentUser);
+        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
+
+        const users = await userServices.getConnectedUsersStats();
+        res.status(200).json({
+            message: "Connected users' stats fetched successfully", 
+            data: users
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            message: "Error fetching connected users' stats", 
+            error: error.message 
+        });
+    }
+}
+
+// Controller to get archived users stats
+const getArchivedUsersStats = async (req, res) => {
+    const currentUser = req.user;
+
+    try {
+        const canAccess = await User.canGetAdminUsers(currentUser);
+        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
+
+        const users = await userServices.getArchivedUsersStats();
+        res.status(200).json({
+            message: "Archived users' stats fetched successfully", 
+            data: users
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            message: "Error fetching archived users' stats",
+            error: error.message 
+        });
+    }
+}
+
+// Controller to get students stats
 const getTotalStudentsStatsForTeacher = async (req, res) => {
     const currentUser = req.user;
 
@@ -294,6 +357,9 @@ module.exports = {
     getAllUsers,
     getUserById,
     getTotalUsersStats,
+    getActiveUsersStats,
+    getConnectedUsersStats,
+    getArchivedUsersStats,
     getTotalStudentsStatsForTeacher,
     getAllStudentsForTeacher,
     getAllStudentsForAdmin,

@@ -30,6 +30,8 @@
         "publish": "Publish",
         "back": "Back to",
 
+        "noItems": "No items to display",
+
         "quizzesManagement": {
             "title": "My quizzes",
             "labelButton": "quiz",
@@ -41,13 +43,15 @@
                     "easy": "Easy",
                     "unknown": "No difficulty"
                 },
-                "noQuizzes": "You don't have any quizzes created."
+                "noQuizzes": "You don't have any quizzes created.",
+                "noSessions": "No game sessions yet."
             }
         },
         "sessionHistory": {
-            "title": "My game sessions for {{quizTitle}}",
+            "title": "Game sessions for {{quizTitle}}",
+            "my-title": "My game sessions for {{quizTitle}}",
             "noSessions": "No sessions played for this quiz yet.",
-            "backToQuizzes": "Back to my quizzes",
+            "backToQuizzes": "my quizzes",
 
             "completed": "Completed",
 
@@ -77,8 +81,13 @@
                 "title": "Review of the game session in {{quizTitle}}",
                 "description": "Review your answers for this session and see the correct answers for each question.",
                 "downloadPDF": "Download PDF review",
-                "downloadLabelPDF": "session_review_{{date}}",
 
+                "studentData": "Student data",
+                "studentName": "Student: {{studentName}}",
+                "unknownStudent": "Anonymous",
+                "studentEmail": "Email: {{studentEmail}}",
+
+                "sessionData": "Session data",
                 "date": "Date: {{date}}",
                 "correctAnswers": "Correct answers: {{correct}}/{{total}}",
                 "score": "Score: {{score}}",
@@ -102,8 +111,15 @@
             "title": "Management",
 
             "totalUsers": "total users",
+            "activeUsers": "active users",
             "connectedUsers": "connected users",
+            "archivedUsers": "archived users",
+
             "totalClickers": "total clickers",
+            "activeClickers": "active clickers",
+            "inUseClickers": "in use clickers",
+            "availableClickers": "available clickers",
+            "inactiveClickers": "inactive clickers",
 
             "managementUser": "Users",
             "managementClicker": "Clickers"
@@ -222,6 +238,9 @@
         "historical": "Historical",
         "createQuiz": "Create Quiz",
 
+        "recent_quizzes": "Your recent Quizzes",
+        "recent_sessions": "Your quizzes from recent sessions",
+
         "greeting": "Hello, {{username}}",
 
         "overview": {
@@ -338,6 +357,7 @@
                 "question": "Question"
             }
         },
+
        "sessionPresentation": {
             "waiting": {
                 "title": "Turn on your clicker device",
@@ -355,6 +375,37 @@
                     } 
                 ],
                 "message": "Waiting for the teacher..."
+            }
+        },
+
+        "quizSessions": {
+            "tab": {
+                "analytics": "Analytics",
+                "students": "Students"
+            },
+            "studentsQuizTable": {
+                "name": "Name",
+                "attempts": "Attempts",
+                "accuracy": "Accuracy",
+                "avgTime": "Average Time",
+                "lastSession": "Last Session",
+                
+                "noStudents": "No students have played this quiz yet."
+            },
+            "analytics": {
+                "participants": "participants",
+                "totalSessions": "total sessions",
+                "averageScore": "average score",
+                "averageTime": "average time",
+                "accuracy": "accuracy",
+                "insight": "Insight",
+
+                "insightMessages": {
+                    "excellent": "Excellent!",
+                    "good": "Good!",
+                    "average": "Average.",
+                    "poor": "Poor."
+                }
             }
         }
     },

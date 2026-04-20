@@ -24,5 +24,9 @@ export const breadcrumbConfig = {
     "/dashboard_student/quizzes/:id/history": [
         { label: "Quizzes", href: "/dashboard_student/quizzes" },
         { label: "Quiz's History" }
-    ]
+    ],
+    "/dashboard_teacher/quizzes/:id/sessions": [
+        { label: "Quizzes", href: "/dashboard_teacher/quizzes" },
+        { label: "Quiz's Sessions" }
+    ],
 }   

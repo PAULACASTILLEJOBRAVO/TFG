@@ -30,6 +30,8 @@
         "publish": "Publicar",
         "back": "Volver a",
 
+        "noItems": "No hay elementos para mostrar",
+
         "quizzesManagement": {
             "title": "Mis cuestionarios",
             "labelButton": "cuestionario",
@@ -41,13 +43,15 @@
                     "easy": "Fácil",
                     "unknown": "Sin dificultad"
                 },
-                "noQuizzes": "No tienes ningún cuestionario creado."
+                "noQuizzes": "No tienes ningún cuestionario creado.",
+                "noSessions": "Sin sesiones de juego todavía."
             }
         },
         "sessionHistory": {
-            "title": "Mis sesiones de juego en {{quizTitle}}",
+            "title": "Sesiones de juego en {{quizTitle}}",
+            "my-title": "Mis sesiones de juego en {{quizTitle}}",
             "noSessions": "No has jugado ninguna sesión de este cuestionario todavía.",
-            "backToQuizzes": "Volver a mis cuestionarios",
+            "backToQuizzes": "mis cuestionarios",
 
             "completed": "Completada",
 
@@ -77,8 +81,13 @@
                 "title": "Revisión de la sesión de juego en {{quizTitle}}",
                 "description": "Revisa tus respuestas para esta sesión y ve las respuestas correctas para cada pregunta.",
                 "downloadPDF": "Descargar revisión en PDF",
-                "downloadLabelPDF": "revision_sesion_{{date}}",
                 
+                "studentData": "Datos del estudiante",
+                "studentName": "Estudiante: {{studentName}}",
+                "unknownStudent": "Anónimo",
+                "studentEmail": "Email: {{studentEmail}}",
+
+                "sessionData": "Datos de la sesión",
                 "date": "Fecha: {{date}}",
                 "correctAnswers": "Respuestas correctas: {{correct}}/{{total}}",
                 "score": "Puntuación: {{score}}",
@@ -102,8 +111,15 @@
             "title": "Gestión",
 
             "totalUsers": "usuarios totales",
+            "activeUsers": "usuarios activos",
             "connectedUsers": "usuarios conectados",
+            "archivedUsers": "usuarios archivados",
+
             "totalClickers": "clickers totales",
+            "activeClickers": "clickers activos",
+            "inUseClickers": "clickers en uso",
+            "availableClickers": "clickers disponibles",
+            "inactiveClickers": "clickers inactivos",
 
             "managementUser": "Usuarios",
             "managementClicker": "Clickers"
@@ -226,6 +242,9 @@
         "historical": "Histórico",
         "createQuiz": "Crear cuestionario",
 
+        "recent_quizzes": "Tus cuestionarios recientes",
+        "recent_sessions": "Tus cuestionarios de sesiones recientes",
+
         "greeting": "Hola, {{username}}",
 
         "overview": {
@@ -342,6 +361,7 @@
                 "question": "Pregunta"
             }
         },
+
         "sessionPresentation": {
             "waiting": {
                 "title": "Enciende tu dispositivo clicker",
@@ -359,6 +379,37 @@
                     }
                 ],
                 "message": "Esperando al profesor..."
+            }
+        },
+
+        "quizSessions": {
+            "tab": {
+                "analytics": "Analíticas",
+                "students": "Estudiantes"
+            },
+            "studentsQuizTable": {
+                "name": "Nombre",
+                "attempts": "Intentos",
+                "accuracy": "Precisión",
+                "avgTime": "Tiempo Promedio",
+                "lastSession": "Última Sesión",
+                
+                "noStudents": "Ningún estudiante ha jugado este cuestionario todavía."
+            },
+            "analytics": {
+                "participants": "participantes",
+                "totalSessions": "sesiones totales",
+                "averageScore": "puntuación promedio",
+                "averageTime": "tiempo promedio",
+                "accuracy": "precisión",
+                "insight": "Insight",
+
+                "insightMessages": {
+                    "excellent": "¡Excelente!",
+                    "good": "¡Bien!",
+                    "average": "Promedio.",
+                    "poor": "Necesita mejorar."
+                }
             }
         }
     },

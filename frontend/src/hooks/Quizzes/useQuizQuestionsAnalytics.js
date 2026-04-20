@@ -1,42 +1,42 @@
 import { useState, useEffect } from "react";
-import { getQuizzesForStudent } from "../../services/quizzes.service";
+import { getQuizQuestionAnalytics } from "../../services/quizzes.service";
 
-export const useQuizzesForStudent = ({ limit = 0 }) => {
-    const [quizzesForStudent, setQuizzesForStudent] = useState([]);
+export const useQuizQuestionsAnalytics = (id) => {
+    const [analytics, setAnalytics] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [message, setMessage] = useState("");
         
-    const fetchQuizzesForStudent = async ({ limit = 0 }) => {
+    const fetchQuizQuestionsAnalytics = async () => {
         setLoading(true);
         setError(null);
         setMessage("");
-        setQuizzesForStudent([]);
+        setAnalytics([]);
 
         try{
-            const data = await getQuizzesForStudent({ limit });
+            const data = await getQuizQuestionAnalytics(id);
 
             if(data.error){
                 setError(data.error);
                 setMessage(data.message || "");
-                setQuizzesForStudent([]);
+                setAnalytics([]);
             } else {
-                setQuizzesForStudent(data.data || []);
+                setAnalytics(data.data || []);
                 setMessage(data.message || "");
             }
         }catch(err) {
             // Axios's error
             const errorMessage = err.response?.data?.message || err.message || "Unknown error";
             setError(errorMessage);
-            setQuizzesForStudent([]);
+            setAnalytics([]);
         }finally{
             setLoading(false);
         }
     }
     
     useEffect(() => {
-        fetchQuizzesForStudent({ limit: 6 });
+        fetchQuizQuestionsAnalytics();
     }, []);
 
-    return { quizzesForStudent, loading, error, message, refetchStudent: fetchQuizzesForStudent };
+    return { analytics, loading, error, message, refetch: fetchQuizQuestionsAnalytics };
 };

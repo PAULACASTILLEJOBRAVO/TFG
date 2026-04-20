@@ -54,11 +54,21 @@ router.use(authenticate);
  */
 router.get('/', userController.getAllUsers);
 
-// Route to get users' stats
+// Route to get users stats
 router.get('/stats/total', userController.getTotalUsersStats);
 
-// Route to get students' stats
+// Route to get active users stats
+router.get('/stats/active', userController.getActiveUsersStats);
+
+// Route to get connected users stats
+router.get('/stats/connected', userController.getConnectedUsersStats);
+
+// Route to get archived users stats
+router.get('/stats/archived', userController.getArchivedUsersStats);
+
+// Route to get students stats
 router.get('/students/stats/total', userController.getTotalStudentsStatsForTeacher);
+
 
 // Route to get students for teacher
 router.get('/students-for-teacher', userController.getAllStudentsForTeacher);

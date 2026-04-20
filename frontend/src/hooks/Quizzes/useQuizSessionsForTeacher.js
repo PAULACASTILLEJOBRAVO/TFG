@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { getQuizByIdForStudent } from "../../services/quizzes.service";
+import { getQuizSessionsForTeacher } from "../../services/quizzes.service";
 
-export const useQuizForStudent = (id, studentId) => {
-    const [quizForStudent, setQuizForStudent] = useState(null);
+export const useQuizSessionsForTeacher = (id) => {
+    const [quizSessionsForTeacher, setQuizSessionsForTeacher] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [message, setMessage] = useState("");
@@ -16,30 +16,30 @@ export const useQuizForStudent = (id, studentId) => {
             setMessage("");
 
             try{
-                const data = await getQuizByIdForStudent(id, studentId);
+                const data = await getQuizSessionsForTeacher(id);
                 
                 if(data.error){
                     // Backend return error (400, 404, 500, etc)
                     setError(data.error);
                     setMessage(data.message || "");
-                    setQuizForStudent(null);
+                    setQuizSessionsForTeacher(null);
                 }else{
                     // Backend return success (200, 201, 204, etc)
-                    setQuizForStudent(data.data || null);
+                    setQuizSessionsForTeacher(data.data || null);
                     setMessage(data.message || "");
                 }
             }catch(err) {
                 // Axios's error
                 const errorMessage = err.response?.data?.message || err.message || "Error desconocido";
                 setError(errorMessage);
-                setQuizForStudent(null);
+                setQuizSessionsForTeacher(null);
             }finally{
                 setLoading(false);
             }
         }
 
         fetchQuiz();
-    }, [id, studentId]);
+    }, [id]);
 
-    return { quizForStudent, loading, error, message };
+    return { quizSessionsForTeacher, loading, error, message };
 };

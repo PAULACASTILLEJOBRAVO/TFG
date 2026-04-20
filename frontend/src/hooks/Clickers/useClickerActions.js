@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { deleteClicker, restoreClicker, updateClicker, createClicker } from "@/services/clicker.service";
+import { 
+    deleteClicker, 
+    restoreClicker, 
+    updateClicker, 
+    createClicker 
+} from "@/services/clicker.service";
 
 export const useClickerActions = () => {
     const [loading, setLoading] = useState(false);

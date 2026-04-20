@@ -28,7 +28,7 @@ const DashboardHeader = () => {
             </div>
 
             {/** Search */}
-            <div className="flex-1 md:flex justify-center hidden px-4">
+            <div className="flex-1 flex justify-center px-4">
                 <div className="w-full max-w-md">
                     <HeaderSearch 
                         placeholder={t("common.search")}

@@ -19,13 +19,16 @@ import {
     useLocation, 
     useParams 
 } from "react-router-dom";
+import { formatTime } from "@/utils/sessions";
+import { useAuth } from "@/auth/AuthContext";
 
 const SessionHistory = () => {
     const { t } = useTranslation();
-    const { id } = useParams();
+    const { id, studentId } = useParams();
+    const { user } = useAuth();
 
     // Quizz data
-    const {quizForStudent, loading} = useQuizForStudent(id);
+    const {quizForStudent, loading} = useQuizForStudent(id, studentId);
     const location = useLocation();
     const quizFromState = location.state?.quiz;
     const finalQuiz = quizFromState || quizForStudent;
@@ -45,14 +48,6 @@ const SessionHistory = () => {
 
     const totalAttempts = sessions.length;
 
-    // Format average time
-    const formatTime = (ms) => {
-        const totalSeconds = Math.floor(ms / 1000);
-        const minutes = Math.floor(totalSeconds / 60);
-        const seconds = totalSeconds % 60;
-        return `${minutes}:${seconds.toString().padStart(2, "0")}`;
-    };
-
     // Show best time only if there are at least 2 valid sessions to compare
     const showBest = validSessions.length > 1;
 
@@ -66,12 +61,12 @@ const SessionHistory = () => {
                 <div className="grid grid-cols-[1fr_8fr] items-center pb-2">
                     {/** Left */}
                     <div className="pr-6 md:pr-16">
-                        <BackButton href="/dashboard_student/quizzes" label={t("common.sessionHistory.backToQuizzes")} />
+                        <BackButton href={`/dashboard_${user.role}/quizzes`} label={t("common.sessionHistory.backToQuizzes")} />
                     </div>             
 
                     {/** Center */}
                     <div className="text-center">
-                        <DashboardSubtitle label={t("common.sessionHistory.title", { quizTitle: finalQuiz?.title || "" })} />
+                        <DashboardSubtitle label={t("common.sessionHistory.my-title", { quizTitle: finalQuiz?.title || "" })} />
                     </div>
                 </div>
 

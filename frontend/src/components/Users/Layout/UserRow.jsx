@@ -2,10 +2,7 @@ import {
     TableRow, 
     TableCell 
 } from "@/components/ui/table";
-import {
-    UserActionCell, 
-    UserStatusChip
-} from ".";
+import { UserActionCell } from ".";
 import { rolesType } from "@/utils/constants";
 import { useTranslation } from "react-i18next";
 

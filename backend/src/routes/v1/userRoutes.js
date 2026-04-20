@@ -54,6 +54,8 @@ router.use(authenticate);
  */
 router.get('/', userController.getAllUsers);
 
+router.get("/me", userController.getMe);
+
 // Route to get users stats
 router.get('/stats/total', userController.getTotalUsersStats);
 

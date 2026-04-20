@@ -1,42 +1,42 @@
 import { useState, useEffect } from "react";
-import { getTotalResponses } from "../../services/response.service";
+import { getUserById } from "../../services/user.service";
 
-export const useResponses = () => {
-    const [responses, setResponses] = useState([]);
+export const useUser = () => {
+    const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [message, setMessage] = useState("");
         
-    const fetchResponses = async () => {
+    const fetchUser = async () => {
         setLoading(true);
         setError(null);
         setMessage("");
-        setResponses([]);
+        setUser(null);
 
         try{
-            const data = await getTotalResponses();
+            const data = await getUserById();
 
             if(data.error){
                 setError(data.error);
                 setMessage(data.message || "");
-                setResponses([]);
+                setUser(null);
             } else {
-                setResponses(data.data || []);
+                setUser(data.data || []);
                 setMessage(data.message || "");
             }
         }catch(err) {
             // Axios's error
             const errorMessage = err.response?.data?.message || err.message || "Unknown error";
             setError(errorMessage);
-            setResponses([]);
+            setUser(null);
         }finally{
             setLoading(false);
         }
     }
 
     useEffect(() => {
-        fetchResponses();
+        fetchUser();
     }, []);
 
-    return { responses, loading, error, message, refetch: fetchResponses };
+    return { user, loading, error, message, refetch: fetchUser };
 };

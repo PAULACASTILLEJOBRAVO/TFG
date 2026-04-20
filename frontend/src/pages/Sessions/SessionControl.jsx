@@ -16,7 +16,6 @@ import {
 import { useCoordinatorSerial } from "@/hooks/Hardware/useCoordinatorSerial";
 import { useSessionActions } from "@/hooks/Sessions/useSessionActions";
 import { useResponseActions } from "@/hooks/Response/useResponseActions";
-import { v4 as uuidv4 } from "uuid";
 
 const SessionControl = () => {
     const { id } = useParams();

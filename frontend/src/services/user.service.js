@@ -40,6 +40,11 @@ export const getTotalStudentsStats = async () => {
     return response.data;
 }
 
+export const getUserById = async () => {
+    const response = await api.get(`/users/me`);
+    return response.data;
+}
+
 export const deleteUser = async (id, payload) => {
     const response = await api.delete(`/users/${id}`, {
         data: payload

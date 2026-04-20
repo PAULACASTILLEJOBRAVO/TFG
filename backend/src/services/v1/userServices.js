@@ -20,6 +20,12 @@ const getUserById = async (id) => {
     return await User.findById(id);
 }
 
+// Service to fetch the profile of the currently authenticated user
+const getMe = async (id) => {
+    debug('Fetching profile for user with ID:', id);
+    return user = await User.findById(id).select("-password");
+};
+
 // Service to fetch users' stats
 const getTotalUsersStats = async () => {
     debug('Fetching total users stats');
@@ -175,11 +181,14 @@ const updatePasswordById = async ({id, body, _id, role}) => {
 module.exports = {
     getAllUsers,
     getUserById,
+    getMe,
+
     getTotalUsersStats,
     getActiveUsersStats,
     getConnectedUsersStats,
     getArchivedUsersStats,
     getTotalStudentsStatsForTeacher,
+    
     getAllStudents,
     getAllStudentsWithoutClicker,
 

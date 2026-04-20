@@ -27,6 +27,29 @@ const getAllUsers = async (req, res) => {
     }
 };
 
+// Controller to get current user
+const getMe = async (req, res) => {
+    const currentUser = req.user;
+
+    try {
+        debug('Fetching current user with ID:', currentUser._id);
+        const user = await userServices.getMe(currentUser._id);
+
+        if (!user) return res.status(404).json({ message: 'User not found' });
+
+        debug('Current user fetched successfully:', user);
+        res.status(200).json({
+            message: 'User fetched successfully', 
+            data: user
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            message: 'Error fetching user', 
+            error: error.message 
+        });
+    }
+};
+
 // Controller to get an user by ID
 const getUserById = async (req, res) => {
     const {id} = req.params;
@@ -48,7 +71,7 @@ const getUserById = async (req, res) => {
             error: error.message 
         });
     }
-}
+};
 
 // Controller to get total users stats
 const getTotalUsersStats = async (req, res) => {
@@ -356,11 +379,14 @@ const updatePasswordById = async (req, res) => {
 module.exports = {
     getAllUsers,
     getUserById,
+    getMe,
+
     getTotalUsersStats,
     getActiveUsersStats,
     getConnectedUsersStats,
     getArchivedUsersStats,
     getTotalStudentsStatsForTeacher,
+    
     getAllStudentsForTeacher,
     getAllStudentsForAdmin,
     

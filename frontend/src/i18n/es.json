@@ -96,7 +96,12 @@
                 "rank": "Ranking: {{rank}}",
                 "yourAnswer": "Tu respuesta."
             }
-        }
+        },
+        "userProfile": {
+            "title": "Mi perfil",
+
+            "noData": "No hay datos disponibles para mostrar."
+         }
     },
     "admin":{
         "users": "Usuarios",

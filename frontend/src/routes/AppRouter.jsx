@@ -19,7 +19,11 @@ import {
   ClickersManagement
 } from '@/pages/Management';
 
-import UserCreate from '@/pages/Users/UsersCreate';
+import {
+  UsersCreate,
+  Profile
+} from '@/pages/Users/';
+
 import QuizCreate from '@/pages/Quizzes/QuizCreate';
 
 import QuizEdit from '@/pages/Quizzes/QuizEdit';
@@ -71,7 +75,7 @@ const AppRouter = () => {
           } />
         <Route path='/dashboard_admin/users/create' element={
           <RequireAuth allowedRoles={["admin"]}>
-            <UserCreate />
+            <UsersCreate />
           </RequireAuth>
           } />
         <Route path='/dashboard_admin/clickers' element={
@@ -79,6 +83,12 @@ const AppRouter = () => {
             <ClickersManagement />
           </RequireAuth>
           } />
+        <Route path='/dashboard_admin/profile' element={
+          <RequireAuth allowedRoles={["admin"]}>
+            <Profile />
+          </RequireAuth>
+          }
+        />
 
         // TEACHER PAGES
         <Route path="/dashboard_teacher/quizzes" element={
@@ -117,7 +127,13 @@ const AppRouter = () => {
           </RequireAuth>
           }
         />
-        
+        <Route path='/dashboard_teacher/profile' element={
+          <RequireAuth allowedRoles={["teacher"]}>
+            <Profile />
+          </RequireAuth>
+          }
+        />
+
         // STUDENT PAGES
         <Route path='/dashboard_student/quizzes' element={
           <RequireAuth allowedRoles={["student"]}>
@@ -127,6 +143,12 @@ const AppRouter = () => {
         <Route path='/dashboard_student/quizzes/:id/history' element={
           <RequireAuth allowedRoles={["student"]}>
             <SessionHistory />
+          </RequireAuth>
+          }
+        />
+        <Route path='/dashboard_student/profile' element={
+          <RequireAuth allowedRoles={["student"]}>
+            <Profile />
           </RequireAuth>
           }
         />

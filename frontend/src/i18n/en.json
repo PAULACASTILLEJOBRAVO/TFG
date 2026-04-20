@@ -96,6 +96,11 @@
                 "rank": "Ranking: {{rank}}",
                 "yourAnswer": "Your answer."
             }
+        },
+        "userProfile": {
+            "title": "My profile",
+
+            "noData": "No data available to display."
         }
     },
     "admin":{

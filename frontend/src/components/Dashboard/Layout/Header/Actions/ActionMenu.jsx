@@ -11,13 +11,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/auth/AuthContext";
-import { 
-    Calculator, 
-    NotebookPen, 
-    PlayCircle, 
-    User, 
-    MessageSquareWarning 
-} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { headerActionMenuConfig } from "@/config/headerActionMenu.config";
 import { icons } from "@/utils/constants";

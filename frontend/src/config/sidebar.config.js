@@ -17,11 +17,6 @@ export const sidebarConfig = {
             href: "/dashboard_student/profile"
         },
         {
-            labelKey: "common.settings",
-            icon: "settings",
-            href: "/dashboard_student/settings"
-        },
-        {
             labelKey: "common.tutorial",
             icon: "tutorial",
             href: "/dashboard_student/tutorial"
@@ -47,11 +42,6 @@ export const sidebarConfig = {
             labelKey: "common.profile",
             icon: "profile",
             href: "/dashboard_teacher/profile"
-        },
-        {
-            labelKey: "common.settings",
-            icon: "settings",
-            href: "/dashboard_teacher/settings"
         },
         {
             labelKey: "common.tutorial",
@@ -84,11 +74,6 @@ export const sidebarConfig = {
             labelKey: "common.profile",
             icon: "profile",
             href: "/dashboard_admin/profile"
-        },
-        {
-            labelKey: "common.settings",
-            icon: "settings",
-            href: "/dashboard_admin/settings"
         },
         {
             labelKey: "common.tutorial",

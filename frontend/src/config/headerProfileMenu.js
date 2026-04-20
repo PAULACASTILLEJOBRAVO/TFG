@@ -5,11 +5,6 @@ export const headerProfileMenuConfig = [
     path: (user) => `/dashboard_${user.role}/profile`
   },
   {
-    labelKey: "common.settings",
-    icon: "settings",
-    path: (user) => `/dashboard_${user.role}/settings`
-  },
-  {
     separator: true
   },
   {

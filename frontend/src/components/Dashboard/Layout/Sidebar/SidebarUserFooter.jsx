@@ -1,5 +1,3 @@
-import { Settings } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { 
     SidebarFooter, 
     SidebarMenu, 
@@ -32,11 +30,6 @@ const SidebarUserFooter = () => {
                                 ● Conectado
                             </p>
                         </div>
-
-                        {/* Settings */}
-                        <Button variant="ghost" size="icon">
-                            <Settings className="h-4 w-4" />
-                        </Button>
                     </div>
                 </SidebarMenuItem>
             </SidebarMenu>

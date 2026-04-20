@@ -39,6 +39,7 @@ import {
   SessionHistory
 } from '@/pages/Histories';
 
+import { Tutorial } from '@/pages/Dashboards';
 
 const AppRouter = () => {
   return (
@@ -89,6 +90,12 @@ const AppRouter = () => {
           </RequireAuth>
           }
         />
+        <Route path='/dashboard_admin/tutorial' element={
+          <RequireAuth allowedRoles={["admin"]}>
+            <Tutorial />
+          </RequireAuth>
+          }
+        />
 
         // TEACHER PAGES
         <Route path="/dashboard_teacher/quizzes" element={
@@ -133,6 +140,12 @@ const AppRouter = () => {
           </RequireAuth>
           }
         />
+        <Route path='/dashboard_teacher/tutorial' element={ 
+          <RequireAuth allowedRoles={["teacher"]}>
+            <Tutorial />
+          </RequireAuth>
+          }
+        />
 
         // STUDENT PAGES
         <Route path='/dashboard_student/quizzes' element={
@@ -149,6 +162,12 @@ const AppRouter = () => {
         <Route path='/dashboard_student/profile' element={
           <RequireAuth allowedRoles={["student"]}>
             <Profile />
+          </RequireAuth>
+          }
+        />
+        <Route path='/dashboard_student/tutorial' element={
+          <RequireAuth allowedRoles={["student"]}>
+            <Tutorial />
           </RequireAuth>
           }
         />

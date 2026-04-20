@@ -23,7 +23,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { useTranslation } from "react-i18next";
 
-const QuizForm = ({ difficulties, quiz, selectedStudents, questionsList, selectedQuestionIndex, quizError, questionError, touched, submitted, onUpdate, onSelectQuestion, onAddQuestion, onDeleteQuestion, activeQuestion, onUpdateQuestion, onToggleStudent, onSaveDraft, onPublish, onEdit, onBlur }) => {          
+const QuizForm = ({ difficulties, quiz, selectedStudents, questionsList, selectedQuestionIndex, quizError, questionError, questionErrors, touched, submitted, onUpdate, onSelectQuestion, onAddQuestion, onDeleteQuestion, activeQuestion, onUpdateQuestion, onToggleStudent, onSaveDraft, onPublish, onEdit, onBlur }) => {          
   const { t } = useTranslation();
 
   return (
@@ -44,6 +44,7 @@ const QuizForm = ({ difficulties, quiz, selectedStudents, questionsList, selecte
             <QuestionListPanel 
               displayQuestions={questionsList} 
               selectedQuestion={selectedQuestionIndex} 
+              questionErrors={questionErrors}
               onSelect={onSelectQuestion} 
               onAdd={onAddQuestion} 
               onDelete={onDeleteQuestion}

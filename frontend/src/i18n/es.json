@@ -31,6 +31,7 @@
         "back": "Volver a",
 
         "noItems": "No hay elementos para mostrar",
+        "noTutorial": "No hay tutorial disponible para este rol.",
 
         "quizzesManagement": {
             "title": "Mis cuestionarios",
@@ -128,6 +129,11 @@
 
             "managementUser": "Usuarios",
             "managementClicker": "Clickers"
+        },
+
+        "tutorial": {
+            "title": "Tutorial de administración",
+            "description": "¡Bienvenido al tutorial de administración! Aquí encontrarás toda la información que necesitas para gestionar usuarios y clickers en el sistema. Utiliza el menú de navegación para acceder a las diferentes secciones del panel de administración y sigue las instrucciones proporcionadas en cada sección para realizar las tareas de gestión de manera efectiva."
         },
 
         "usersManagement": {
@@ -422,6 +428,11 @@
         "ranking": "Ranking",
         "stadistics": "Estadísticas",
 
-        "greeting": "Hola, {{username}}"
+        "greeting": "Hola, {{username}}",
+
+        "tutorial": {
+            "title": "Tutorial de estudiante",
+            "description": "¡Bienvenido al tutorial de estudiante! Aquí encontrarás toda la información que necesitas para participar en cuestionarios, ver tus resultados y seguir tu progreso. Utiliza el menú de navegación para acceder a las diferentes secciones del panel de estudiante y sigue las instrucciones proporcionadas en cada sección para aprovechar al máximo tu experiencia con los cuestionarios."
+        }
     }
 }

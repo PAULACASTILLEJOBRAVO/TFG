@@ -9,7 +9,7 @@ import { QuestionSlideCard } from "@/components/Question";
 import { createNewQuestion } from "@/utils/questions";
 import { useTranslation } from "react-i18next";
 
-const QuestionListPanel = ({ displayQuestions, selectedQuestion, onSelect, onAdd, onDelete, maxHeight }) => {
+const QuestionListPanel = ({ displayQuestions, selectedQuestion, questionErrors, onSelect, onAdd, onDelete, maxHeight }) => {
     const { t } = useTranslation();
 
     return (
@@ -29,7 +29,14 @@ const QuestionListPanel = ({ displayQuestions, selectedQuestion, onSelect, onAdd
                         const isSelected = index === selectedQuestion;
 
                         return (
-                            <QuestionSlideCard key={index} index={index} onDelete={onDelete} onSelect={() => onSelect(index)} isSelected={isSelected} /> 
+                            <QuestionSlideCard 
+                                key={index} 
+                                index={index} 
+                                questionError={questionErrors?.[index]}
+                                onDelete={onDelete} 
+                                onSelect={() => onSelect(index)} 
+                                isSelected={isSelected} 
+                            /> 
                         ); 
                     })}
                 </div> 

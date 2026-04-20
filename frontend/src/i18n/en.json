@@ -31,6 +31,7 @@
         "back": "Back to",
 
         "noItems": "No items to display",
+        "noTutorial": "No tutorial available for this role.",
 
         "quizzesManagement": {
             "title": "My quizzes",
@@ -128,6 +129,11 @@
 
             "managementUser": "Users",
             "managementClicker": "Clickers"
+        },
+
+        "tutorial": {
+            "title": "Admin tutorial",
+            "description": "Welcome to the admin tutorial! Here you will find all the information you need to manage users and clickers in the system. Use the navigation menu to access different sections of the admin panel and follow the instructions provided in each section to perform management tasks effectively."
         },
 
         "usersManagement": {
@@ -251,6 +257,11 @@
         "overview": {
             "totalStudents": "total students",
             "connectedStudents": "connected students"
+        },
+
+        "tutorial": {
+            "title": "Teacher tutorial",
+            "description": "Welcome to the teacher tutorial! Here you will find all the information you need to create and manage quizzes, as well as control quiz sessions and review results. Use the navigation menu to access different sections of the teacher dashboard and follow the instructions provided in each section to make the most of the quiz management features."
         },
 
         "quizzesManagement": {
@@ -418,6 +429,11 @@
         "ranking": "Ranking",
         "stadistics": "Stadistics",
 
-        "greeting": "Hello, {{username}}"
+        "greeting": "Hello, {{username}}",
+
+        "tutorial": {
+            "title": "Student tutorial",
+            "description": "Welcome to the student tutorial! Here you will find all the information you need to participate in quizzes, view your results, and track your progress. Use the navigation menu to access different sections of the student dashboard and follow the instructions provided in each section to make the most of your quiz experience."
+        }
     }
 }

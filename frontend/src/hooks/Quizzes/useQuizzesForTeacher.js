@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { getQuizzesForTeacher } from "../../services/quizzes.service";
 
-export const useQuizzesForTeacher = ({ limit = 0 }) => {
+export const useQuizzesForTeacher = ({ limit }) => {
     const [quizzesForTeacher, setQuizzesForTeacher] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [message, setMessage] = useState("");
         
-    const fetchQuizzesForTeacher = async ({ limit = 0 }) => {
+    const fetchQuizzesForTeacher = async () => {
         setLoading(true);
         setError(null);
         setMessage("");
@@ -35,7 +35,7 @@ export const useQuizzesForTeacher = ({ limit = 0 }) => {
     }
     
     useEffect(() => {
-        fetchQuizzesForTeacher({ limit: 0 });
+        fetchQuizzesForTeacher();
     }, []);
 
     return { quizzesForTeacher, loading, error, message, refetchTeacher: fetchQuizzesForTeacher };

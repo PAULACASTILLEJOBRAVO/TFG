@@ -35,7 +35,7 @@ export const useQuizzesForStudent = ({ limit = 0 }) => {
     }
     
     useEffect(() => {
-        fetchQuizzesForStudent({ limit: 6 });
+        fetchQuizzesForStudent({ limit: 4 });
     }, []);
 
     return { quizzesForStudent, loading, error, message, refetchStudent: fetchQuizzesForStudent };

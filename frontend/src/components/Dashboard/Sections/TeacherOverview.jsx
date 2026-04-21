@@ -11,7 +11,7 @@ import { QuizDetailsCard } from "@/components/Quizzes/Content";
 const TeacherOverview = () => {
     const { t } = useTranslation();
     
-    const { quizzesForTeacher, loading: loadingQuizzes } = useQuizzesForTeacher({ limit: 6 });
+    const { quizzesForTeacher, loading: loadingQuizzes } = useQuizzesForTeacher({ limit: 4 });
 
     return(
         <>

@@ -72,7 +72,7 @@ const QuizDetailsCard = ({ quiz, isStudent = false, forceClickable = false, onCl
             onPointerLeave={handleMouseLeave}
         >
             <div className="flex items-center justify-between mb-3 gap-2">
-                <div className="text-lg font-semibold whitespace-nowrap">{quiz.title}</div>
+                <div className="text-lg font-semibold">{quiz.title}</div>
 
                {!isStudent && <QuizStatusChip status={quiz.status}/>}
                {isStudent && <QuizDifficultyChip difficulty={quiz.difficulty}/>}

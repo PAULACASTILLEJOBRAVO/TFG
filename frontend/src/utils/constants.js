@@ -38,18 +38,18 @@ export const colorChart = [
 ];
 
 export const colsMap = {
-  1: "grid-cols-1",
-  2: "md:grid-cols-2",
-  3: "md:grid-cols-3",
-  4: "md:grid-cols-4",
-  5: "md:grid-cols-5",
-  6: "md:grid-cols-6",  
-  7: "md:grid-cols-7",
-  8: "md:grid-cols-8",
-  9: "md:grid-cols-9",
-  10: "md:grid-cols-10",
-  11: "md:grid-cols-11",
-  12: "md:grid-cols-12",
+  1: "lg:grid-cols-1",
+  2: "lg:grid-cols-2",
+  3: "lg:grid-cols-3",
+  4: "lg:grid-cols-4",
+  5: "lg:grid-cols-5",
+  6: "lg:grid-cols-6",  
+  7: "lg:grid-cols-7",
+  8: "lg:grid-cols-8",
+  9: "lg:grid-cols-9",
+  10: "lg:grid-cols-10",
+  11: "lg:grid-cols-11",
+  12: "lg:grid-cols-12",
 };
 
 export const sizeMap = {
@@ -64,7 +64,7 @@ export const languages = [
     { code: "en", labelKey: "common.english", flag:"🇬🇧" },
 ]
 
-import { Trophy, Plus, FileText, House, UserRoundPen, Settings, LogOut, NotebookPen, User, Users, Calculator, MessageSquareWarning, PlayCircle, Target, Percent, GraduationCap } from "lucide-react";
+import { Trophy, Plus, FileText, House, UserRoundPen, Settings, LogOut, NotebookPen, User, Users, Calculator, MessageSquareWarning, PlayCircle, Target, Percent, GraduationCap, ChevronLeft, ChevronRight, ChevronUp, ChevronDown } from "lucide-react";
 
 export const icons = {
     trophy: Trophy,
@@ -88,6 +88,12 @@ export const icons = {
     accuracy: Target,
     averageTime: Percent,
     sessions: PlayCircle,
+
+    leftArrowPage: ChevronLeft,
+    rightArrowPage: ChevronRight,
+
+    arrowUp: ChevronUp,
+    arrowDown: ChevronDown,
 }
 
 export const typesQuestion = [

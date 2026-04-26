@@ -1,4 +1,7 @@
-import { useState, useEffect } from "react";
+import { 
+    useState, 
+    useEffect 
+} from "react";
 import { getUserById } from "../../services/user.service";
 
 export const useUser = () => {

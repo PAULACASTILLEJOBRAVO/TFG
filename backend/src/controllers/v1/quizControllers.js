@@ -8,22 +8,6 @@ const quizServices = require('../../services/v1/quizServices');
 const debug = require('debug')('backend:controllers:v1:quizControllers');
 
 // Quiz controllers
-// Controller to get all quizzes
-const getAllQuizzes = async (req, res) => {
-    try {
-        const quizzes = await quizServices.getAllQuizzes();
-        res.status(200).json({
-            message: 'Quizzes fetched successfully', 
-            data: quizzes
-        });
-    } catch (error) {
-        res.status(500).json({ 
-            message: 'Error fetching quizzes', 
-            error: error.message 
-        });
-    }
-};
-
 // Controller to get a quiz by ID
 const getQuizById = async (req, res) => {
     const {id} = req.params;
@@ -31,15 +15,18 @@ const getQuizById = async (req, res) => {
     if(!id) return res.status(400).json({ message: 'Quiz ID is required' });
     
     try{
+        debug('Received request to get quiz with ID:', id);
         const quiz = await quizServices.getQuizById(id);
 
         if (!quiz) return res.status(404).json({ message: 'Quiz not found' });
         
+        debug('Quiz fetched successfully with ID:', id, 'Quiz data:', quiz);
         res.status(200).json({
             message: 'Quiz fetched successfully', 
             data: quiz
         });
     } catch (error){
+        debug('Error fetching quiz with ID:', id, 'Error:', error);
         res.status(500).json({ 
             message: 'Error fetching quiz', 
             error: error.message 
@@ -65,13 +52,16 @@ const getQuizByIdForStudent = async (req, res) => {
     }
 
     try {
+        debug('Received request to get quiz with ID:', id, 'for player with ID:', playerId);
         const quiz = await quizServices.getQuizByIdForStudent(playerId, id);
 
+        debug('Quiz fetched successfully with ID:', id, 'Quiz data:', quiz);
         res.status(200).json({
             message: 'Quiz fetched successfully', 
             data: quiz
         });
     } catch (error) {
+        debug('Error fetching quiz with ID:', id, 'Error:', error);
         res.status(500).json({ 
             message: 'Error fetching the quiz', 
             error: error.message 
@@ -86,15 +76,19 @@ const getAllQuizzesForTeacher = async (req, res) => {
     const currentUser = req.user;
 
     try {
+        debug('Received request to get all quizzes for teacher with ID:', currentUser._id, 'and limit:', limit);
         const canAccess = await Quiz.canGetTeacherQuizzes(currentUser);
         if (!canAccess) return res.status(403).json({message: "Unauthorized"});
 
         const quizzes = await quizServices.getAllQuizzesForTeacher(currentUser._id, limit);
+        
+        debug('Quizzes fetched successfully for teacher with ID:', currentUser._id, 'Quizzes data:', quizzes);
         res.status(200).json({
             message: 'Quizzes fetched successfully', 
             data: quizzes
         });
     } catch (error) {
+        debug('Error fetching quizzes:', error);
         res.status(500).json({ 
             message: 'Error fetching quizzes', 
             error: error.message 
@@ -109,12 +103,16 @@ const getAllQuizzesForStudent = async (req, res) => {
     const currentUser = req.user;
 
     try {
+        debug('Received request to get all quizzes for student with ID:', currentUser._id, 'and limit:', limit);
         const quizzes = await quizServices.getAllQuizzesForStudent(currentUser._id, limit);
+
+        debug('Quizzes fetched successfully for student with ID:', currentUser._id, 'Quizzes data:', quizzes);
         res.status(200).json({
             message: 'Quizzes fetched successfully', 
             data: quizzes
         });
     } catch (error) {
+        debug('Error fetching quizzes for student with ID:', currentUser._id, 'Error:', error);
         res.status(500).json({ 
             message: 'Error fetching quizzes', 
             error: error.message 
@@ -130,15 +128,19 @@ const getQuizSessionsForTeacher = async (req, res) => {
     if (!id) return res.status(400).json({ message: 'Quiz ID is required' });
 
     try {
+        debug('Received request to get quiz sessions for teacher with ID:', currentUser._id, 'and quiz ID:', id);
         const canAccess = await Quiz.canGetTeacherQuizzes(currentUser);
         if (!canAccess) return res.status(403).json({message: "Unauthorized"});
 
         const sessionsData = await quizServices.getQuizSessionsForTeacher(id);
+
+        debug('Quiz sessions fetched successfully for quiz with ID:', id, 'Sessions data:', sessionsData);
         res.status(200).json({
             message: 'Quiz sessions fetched successfully', 
             data: sessionsData
         });
     } catch (error) {
+        debug('Error fetching quiz sessions for quiz with ID:', id, 'Error:', error);
         res.status(500).json({ 
             message: 'Error fetching quiz sessions', 
             error: error.message 
@@ -155,7 +157,6 @@ const getQuizQuestionAnalytics = async (req, res) => {
 
     try {
         debug('Received request to get quiz question analytics with params:', req.params);
-
         const canAccess = await Quiz.canGetTeacherQuizzes(currentUser);
         if (!canAccess) return res.status(403).json({message: "Unauthorized"});
         
@@ -168,6 +169,7 @@ const getQuizQuestionAnalytics = async (req, res) => {
             data: analyticsData
         });
     } catch (error) {
+        debug('Error fetching quiz question analytics for quiz with ID:', id, 'Error:', error);
         res.status(500).json({ 
             message: 'Error fetching quiz question analytics',
             error: error.message
@@ -182,13 +184,16 @@ const createQuiz = async (req, res) => {
     if (!body) return res.status(400).json({ message: 'Invalid quiz data. Body is required' });
 
     try{
+        debug('Received request to create quiz with body:', body);
         const newQuiz = await quizServices.createQuiz(body);
 
+        debug('Quiz created successfully with ID:', newQuiz._id, 'Quiz data:', newQuiz);
         res.status(201).json({
             message: 'Quiz created successfully', 
             data: newQuiz
         });    
     } catch(error){
+        debug('Error creating quiz with body:', body, 'Error:', error);
         res.status(500).json({ 
             message: 'Error creating quiz', 
             error: error.message 
@@ -214,6 +219,7 @@ const deleteQuizById = async (req, res) => {
          message: 'Quiz deleted successfully'
         });
     }catch(error){
+        debug('Error deleting quiz with ID:', id, 'Error:', error);
         res.status(500).json({
             message: 'Error deleting quiz',
             error: error.message
@@ -239,6 +245,7 @@ const restoreQuizById = async (req, res) => {
          message: 'Quiz restored successfully'
         });
     }catch(error){
+        debug('Error restoring quiz with ID:', id, 'Error:', error);
         res.status(500).json({
             message: 'Error restoring quiz',
             error: error.message
@@ -263,6 +270,7 @@ const publishQuizById = async (req, res) => {
          message: 'Quiz published successfully'
         });
     }catch(error){
+        debug('Error publishing quiz with ID:', id, 'Error:', error);
         res.status(500).json({
             message: 'Error publishing quiz',
             error: error.message
@@ -293,6 +301,7 @@ const updateQuizById = async (req, res) => {
             data: updatedQuiz
         })
     }catch(error){
+        debug('Error updating quiz with ID:', id, 'Error:', error);
         res.status(500).json({
             message: 'Error updating quiz',
             error: error.message
@@ -302,7 +311,6 @@ const updateQuizById = async (req, res) => {
 
 // Export controllers functions
 module.exports = {
-    getAllQuizzes,
     getQuizById,
     getQuizByIdForStudent,
     getAllQuizzesForTeacher,

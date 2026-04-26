@@ -9,8 +9,9 @@ import {
 } from "@/components/ui/table";
 import { Spinner } from "@/components/ui/spinner";
 import { StudentsQuizRow } from ".";
+import { TablePaginationFooter } from "@/components/Common";
 
-const StudentsQuizTable = ({ students, onSelect, loading }) => {
+const StudentsQuizTable = ({ students, currentPage, totalPages, onPageChange, rowsPerPage, onRowsPerPageChange, onSelect, loading }) => {
     const { t } = useTranslation();
 
     if (loading) return <Spinner />;
@@ -48,6 +49,14 @@ const StudentsQuizTable = ({ students, onSelect, loading }) => {
                     )}
                 </TableBody>
             </Table>
+
+            <TablePaginationFooter
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={onPageChange}
+                rowsPerPage={rowsPerPage}
+                onRowsPerPageChange={onRowsPerPageChange}
+            />
         </div>
     );
 };

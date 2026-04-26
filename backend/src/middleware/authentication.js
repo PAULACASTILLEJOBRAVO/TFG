@@ -21,7 +21,6 @@ const authenticate = async (req, res, next) => {
     
     const token = authHeader.split(' ')[1];
 
-
     try{
         // Verify token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -30,8 +29,6 @@ const authenticate = async (req, res, next) => {
         const user = await User.findById(decoded._id).select("_id role status");
 
         if(!user) return res.status(401).json({ message: 'Invalid user: user does not exist' });
-
-        if(user.status === 'inactive') return res.status(403).json({ message: 'User is soft-deleted' });
 
         if(user.status !== 'active') return res.status(403).json({ message: 'User account is not active' });
 

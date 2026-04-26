@@ -14,12 +14,6 @@ const { addOptionLetters } = require("../../utils/questionUtils");
 const debug = require('debug')('backend:services:v1:quizServices');
 
 // Quiz services
-// Service to fetch all quizzes
-const getAllQuizzes = async () => {
-    debug('Fetching all quizzes from the database');
-    return await Quiz.find().populate('creatorId').populate('playerIds').populate('questionIds');
-};
-
 // Service to fetch a quiz by ID
 const getQuizById = async (id) => {
     debug(`Fetching quiz with ID: ${id}`);
@@ -280,7 +274,7 @@ const getQuizSessionsForTeacher = async (quizId) => {
 };
 
 // Service to fetch all quizzes assigned to a specific student
-const getAllQuizzesForStudent = async (playerId, limit = 0) => {
+const getAllQuizzesForStudent = async (playerId, limit) => {
     debug(`Fetching quizzes for student with ID: ${playerId}`);
     const clicker = await Clicker.findOne({ assignedToUserId: playerId });
     if (!clicker) throw new Error("Student doesn't have an assigned clicker"); // If the student doesn't have an assigned clicker, return an empty array
@@ -367,6 +361,7 @@ const getAllQuizzesForStudent = async (playerId, limit = 0) => {
             responses: responsesMap.get(session._id.toString()) || []
         });
     });
+    debug(`Grouped sessions by quiz for student quizzes. Total quizzes: ${quizzesMap.size}`);
 
     // Sort quizzes by last session activity
     let quizzes = Array.from(quizzesMap.values());
@@ -375,6 +370,7 @@ const getAllQuizzesForStudent = async (playerId, limit = 0) => {
         const aTime = quizLastActivity.get(a._id.toString()) || 0;
         const bTime = quizLastActivity.get(b._id.toString()) || 0;
 
+        debug(`Comparing quiz times: ${bTime} - ${aTime}`);
         return bTime - aTime;
     });
 
@@ -458,6 +454,7 @@ const getQuizByIdForStudent = async (playerId, quizId) => {
         results: resultsMap.get(session._id.toString()) || null,
         responses: responsesMap.get(session._id.toString()) || []
     }));
+    debug(`Formatted sessions for quiz with ID: ${quizId} and student with ID: ${playerId}:`, formattedSessions);
 
     return {
         ...quiz,
@@ -467,8 +464,11 @@ const getQuizByIdForStudent = async (playerId, quizId) => {
 
 // Service to fetch the sessions and results of a quiz for a specific teacher, to show quiz statistics and students' performance in the quiz sessions
 const getQuizQuestionAnalytics = async (quizId) => {
+    debug(`Fetching question analytics for quiz with ID: ${quizId}`);
+
     // 1. Obtain quiz sessions
     const sessions = await Session.find({ quizId });
+    debug(`Fetched ${sessions.length} sessions for quiz with ID: ${quizId}`);
 
     if (!sessions.length) return [];
 
@@ -478,6 +478,7 @@ const getQuizQuestionAnalytics = async (quizId) => {
     const responses = await Response.find({
         sessionId: { $in: sessionIds }
     });
+    debug(`Fetched ${responses.length} responses for quiz with ID: ${quizId}`);
 
     // 3. Map questions (from snapshots)
     const questionsMap = new Map();
@@ -502,6 +503,7 @@ const getQuizQuestionAnalytics = async (quizId) => {
             }
         });
     });
+    debug(`Mapped questions for quiz with ID: ${quizId}. Total questions: ${questionsMap.size}`);
 
     // 4. Process responses
     responses.forEach(r => {
@@ -521,6 +523,7 @@ const getQuizQuestionAnalytics = async (quizId) => {
             option.count += 1;
         }
     });
+    debug(`Processed responses for quiz with ID: ${quizId} and updated questions analytics`);
 
     // 5. Calculate metrics
     const analytics = Array.from(questionsMap.values()).map(q => ({
@@ -530,6 +533,7 @@ const getQuizQuestionAnalytics = async (quizId) => {
             : 0
     }));
 
+    debug(`Calculated question analytics for quiz with ID: ${quizId}:`, analytics);
     return analytics;
 };
 
@@ -565,15 +569,18 @@ const createQuiz = async (body) => {
         await session.commitTransaction();
         session.endSession();
 
+        debug('Quiz created successfully with ID:', createdQuiz[0]._id, 'Quiz data:', createdQuiz[0]);
         return createdQuiz[0]; // insertMany returns an array of created documents
     } catch(error){
+        debug('Error creating quiz with body:', body, 'Error:', error);
+        debug('Aborting transaction for creating a new quiz');
+
         await session.abortTransaction();
         session.endSession();
 
-        throw error.message;
+        throw new Error(error.message);
     }
 }
-
 
 // Service to delete an user by ID
 const deleteQuizById = async (id) => {
@@ -584,8 +591,11 @@ const deleteQuizById = async (id) => {
 
         debug('Quiz found for deletion:', quiz);
         await Quiz.softDeleteById(id);
+
+        debug('Quiz deleted successfully with ID:', id);
         return true; // Return true if deletion was successful
     } catch (error) {
+        debug('Error deleting quiz with ID:', id, 'Error:', error);
         throw new Error(error.message);
     }
 }
@@ -599,8 +609,11 @@ const restoreQuizById =  async (id) => {
 
         debug('Quiz found for restoration:', quiz);
         await Quiz.restoreById(id);
+
+        debug('Quiz restored successfully with ID:', id);
         return true;
     }catch (error) {
+        debug('Error restoring quiz with ID:', id, 'Error:', error);
         throw new Error(error.message);
     }
 }
@@ -614,8 +627,11 @@ const publishQuizById =  async (id) => {
 
         debug('Quiz found for publishing:', quiz);
         await Quiz.publishById(id);
+
+        debug('Quiz published successfully with ID:', id);
         return true;
     }catch (error) {
+        debug('Error publishing quiz with ID:', id, 'Error:', error);
         throw new Error(error.message);
     }
 }
@@ -700,6 +716,9 @@ const updateQuizById = async ({id, body, _id, role}) => {
         debug('Quiz updated successfully with ID:', id, 'Updated quiz:', updatedQuiz);
         return updatedQuiz;
     }catch(error){
+        debug('Error updating quiz with ID:', id, 'Error:', error);
+        debug('Aborting transaction for quiz with ID:', id);
+
         await session.abortTransaction();
         session.endSession();
 
@@ -709,7 +728,6 @@ const updateQuizById = async ({id, body, _id, role}) => {
 
 // Export service functions
 module.exports = {
-    getAllQuizzes,
     getQuizById,
     getAllQuizzesForTeacher,    
     getQuizSessionsForTeacher,

@@ -17,106 +17,6 @@ const sessionController = require('../../controllers/v1/sessionControllers');
  */
 router.use(authenticate);
 
-// Route to get all sessions
-/**
- * @swagger
- * /v1/sessions:
- *   get:
- *     summary: Retrieve a list of all sessions
- *     tags: [Sessions]
- *     responses:
- *          200:
- *              description: A list of sessions
- *              content:
- *                  application/json:
- *                      schema:
- *                          type: object
- *                          properties:
- *                              message:    
- *                                  type: string
- *                                  example: 'Sessions fetched successfully'
- *                              data:
- *                                  type: array
- *                                  items:
- *                                      $ref: '#/components/schemas/Session'
- *          500:
- *              description: Server error while fetching session
- *              content:
- *                  application/json:
- *                      schema:
- *                          type: object
- *                          properties:
- *                              message:
- *                                  type: string
- *                                  example: Error fetching session
- *                              error:
- *                                  type: string
- */
-router.get('/', sessionController.getAllSessions);
-
-/**
- * @swagger
- * /v1/sessions/{id}:
- *   get:
- *     summary: Retrieve a session by ID
- *     description: Retrieve a specific session by their unique MongoDB ObjectId.
- *     tags: [Sessions]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *           example: "68e292c396c23e98e31b1604"
- *     responses:
- *       200:
- *         description: Session fetched successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Session fetched successfully
- *                 data: 
- *                   $ref: '#/components/schemas/Session'
- *       400:
- *         description: Missing or invalid session ID
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Session ID is required
- *       404:
- *         description: Session not found
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Session not found
- *       500:
- *         description: Server error while fetching session
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Error fetching session
- *                 error:
- *                   type: string
- */
-router.get('/:id', sessionController.getSessionById);
-
-
 // Route to post an user
 /**
  * @swagger
@@ -171,18 +71,11 @@ router.get('/:id', sessionController.getSessionById);
 router.post('/', sessionController.createSession);
 
 // Route to complete a session by ID
-router.patch('/:id/complete', sessionController.completeSessionById);
-
-// Route to update a session by ID
-router.patch('/:id', sessionController.updateSessionById);
-
-// Route to delete a session by ID
 /**
  * @swagger
- * /v1/sessions/{id}:
- *   delete:
- *     summary: Delete a session by ID
- *     description: Permanently removes a session from the database using its unique MongoDB ObjectId.
+ * /v1/sessions/{id}/complete:
+ *   patch:
+ *     summary: Mark a session as completed
  *     tags: [Sessions]
  *     parameters:
  *       - in: path
@@ -190,16 +83,10 @@ router.patch('/:id', sessionController.updateSessionById);
  *         required: true
  *         schema:
  *           type: string
- *           example: "68f3d3bb85388f1653996798"
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/SessionDeletionMetadata'
+ *         description: The session ID
  *     responses:
  *       200:
- *         description: Session deleted successfully
+ *         description: Session marked as completed successfully
  *         content:
  *           application/json:
  *             schema:
@@ -207,9 +94,11 @@ router.patch('/:id', sessionController.updateSessionById);
  *               properties:
  *                 message:
  *                   type: string
- *                   example: Session deleted successfully
+ *                   example: 'Session marked as completed successfully'
+ *                 data:
+ *                   $ref: '#/components/schemas/Session'
  *       400:
- *         description: Missing or invalid session ID
+ *         description: Invalid session ID or missing body
  *         content:
  *           application/json:
  *             schema:
@@ -217,7 +106,7 @@ router.patch('/:id', sessionController.updateSessionById);
  *               properties:
  *                 message:
  *                   type: string
- *                   example: Session ID is required
+ *                   example: 'Session ID is required'
  *       404:
  *         description: Session not found
  *         content:
@@ -227,9 +116,9 @@ router.patch('/:id', sessionController.updateSessionById);
  *               properties:
  *                 message:
  *                   type: string
- *                   example: Session not found
+ *                   example: 'Session not found'
  *       500:
- *         description: Server error while deleting session
+ *         description: Server error while updating session
  *         content:
  *           application/json:
  *             schema:
@@ -237,11 +126,79 @@ router.patch('/:id', sessionController.updateSessionById);
  *               properties:
  *                 message:
  *                   type: string
- *                   example: Error deleting session
+ *                   example: 'Error updating session'
  *                 error:
  *                   type: string
  */
-router.delete('/:id', sessionController.deleteSessionById);
+router.patch('/:id/complete', sessionController.completeSessionById);
+
+// Route to update a session by ID
+/**
+ * @swagger
+ * /v1/sessions/{id}:
+ *   patch:
+ *     summary: Update a session by ID
+ *     tags: [Sessions]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The session ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Session'
+ *     responses:
+ *       200:
+ *         description: Session updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Session updated successfully'
+ *                 data:
+ *                   $ref: '#/components/schemas/Session'
+ *       400:
+ *         description: Invalid session ID or missing body
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Session ID is required'
+ *       404:
+ *         description: Session not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Session not found'
+ *       500:
+ *         description: Server error while updating session
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Error updating session'
+ *                 error:
+ *                   type: string
+ */
+router.patch('/:id', sessionController.updateSessionById);
 
 // Export the module
 module.exports = router;

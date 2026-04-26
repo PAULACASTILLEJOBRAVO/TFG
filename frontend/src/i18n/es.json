@@ -33,6 +33,8 @@
         "noItems": "No hay elementos para mostrar",
         "noTutorial": "No hay tutorial disponible para este rol.",
 
+        "rowsPerPage": "Filas por página:",
+
         "quizzesManagement": {
             "title": "Mis cuestionarios",
             "labelButton": "cuestionario",

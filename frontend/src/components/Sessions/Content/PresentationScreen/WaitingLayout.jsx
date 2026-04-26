@@ -12,26 +12,26 @@ const WaitingLayout = () => {
     return (
         <div className="flex flex-col items-center h-full w-full text-center pt-2 gap-4">
 
-            <h1 className="text-3xl font-bold mb-1">{t("teacher.sessionPresentation.waiting.title")}</h1>
+            <h1 className="text-3xl xl:text-6xl font-bold mb-1">{t("teacher.sessionPresentation.waiting.title")}</h1>
 
             
-            <p className="text-gray-500 text-lg">{t("teacher.sessionPresentation.waiting.subtitle")}</p>
+            <p className="text-gray-500 text-lg xl:text-2xl">{t("teacher.sessionPresentation.waiting.subtitle")}</p>
             
             
             <div className="bg-white shadow-lg rounded-2xl p-6 text-left max-w-md w-full border border-gray-100">
                 <ul className="space-y-3">
                     {instructions.map((instruction, index) => (
                         <li key={index}>
-                            <p className="font-semibold text-gray-800">
+                            <p className="font-semibold text-gray-800 xl:text-xl">
                                 {instruction.text}
                             </p>
 
                             {instruction.subItems && (
-                                <ul className="ml-4 mt-1 space-y-1 text-sm text-gray-600">
+                                <ul className="ml-4 mt-1 space-y-1 text-sm text-gray-600 xl:text-lg">
                                     {instruction.subItems.map((sub, i) => (
                                         <li className="flex gap-2">
                                             <span className="text-gray-400">–</span>
-                                            <span>{sub}</span>
+                                            <span className="xl:text-lg">{sub}</span>
                                         </li>
                                     ))}
                                 </ul>

@@ -5,3 +5,4 @@ export { default as EditTextarea } from "./EditTextarea";
 export { default as InfoBlock } from "./InfoBlock";
 export { default as Logo } from "./Logo";
 export { default as CardCarousel } from "./CardCarousel";
+export { default as TablePaginationFooter } from "./TablePaginationFooter";

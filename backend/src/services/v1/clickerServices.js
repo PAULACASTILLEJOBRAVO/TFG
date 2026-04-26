@@ -8,7 +8,7 @@ const debug = require('debug')('backend:services:v1:clickerServices');
 // Service to fetch all clickers
 const getAllClickers = async () => {
     debug('Fetching all clickers');
-    return await Clicker.find().populate('assignedToUserId').populate('adminId').sort({ deviceCode: 1 });
+    return await Clicker.find().populate('assignedToUserId', '-password').populate('adminId').sort({ deviceCode: 1 });
 };
 
 // Service to fetch a clicker by ID
@@ -61,7 +61,8 @@ const createClicker = async (body) => {
         debug('Creating new clicker with body:', body);
         return await Clicker.create(body);
     } catch(error){
-        throw error.message;
+        debug('Error creating clicker:', error);
+        throw new Error(error.message);
     }
 }
 
@@ -75,8 +76,11 @@ const deleteClickerById = async (id) => {
 
         debug('Clicker found:', clicker);
         await Clicker.softDeleteById(id);
+
+        debug('Clicker deleted successfully');
         return true; // Return true if deletion was successful
     } catch (error) {
+        debug('Error deleting clicker:', error);
         throw new Error(error.message);
     }
 }
@@ -90,8 +94,11 @@ const restoreClickerById =  async (id) => {
 
         debug('Clicker found:', clicker);
         await Clicker.restoreById(id);
+
+        debug('Clicker restored successfully');
         return true;
     }catch (error) {
+        debug('Error restoring clicker:', error);
         throw new Error(error.message);
     }
 }
@@ -105,8 +112,11 @@ const updateClickerById = async ({id, body, _id, role}) => {
 
         debug('Clicker found:', clicker);
         const updatedClicker = await Clicker.updateById(id, body, { _id, role });
+
+        debug('Clicker updated successfully:', updatedClicker);
         return updatedClicker; // Return the updated clicker
     } catch (error) {
+        debug('Error updating clicker:', error);
         throw new Error(error.message);
     }
 }
@@ -114,7 +124,6 @@ const updateClickerById = async ({id, body, _id, role}) => {
 // Export service functions
 module.exports = {
     getAllClickers,
-    getClickerById,
     getActiveClickersStats,
     getInactiveClickersStats,
     getInUseClickersStats,

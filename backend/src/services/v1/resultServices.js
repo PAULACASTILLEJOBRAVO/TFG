@@ -7,19 +7,7 @@ const Response = require('../../models/Response');
 const debug = require('debug')('backend:services:v1:resultServices');
 
 // Result services
-// Service to get all results
-const getAllResults = async () => {
-  debug('Getting all results');
-  return await Result.find().populate('playerId').populate('quizId').populate('sessionId');
-};
-
-// Service to get a result by ID
-const getResultById = async (id) => {
-  debug(`Getting result with ID ${id}`);
-  return await Result.findById(id).populate('playerId').populate('quizId').populate('sessionId');
-}
-
-// Service to generate results for a session
+// Service to generate results for a session (called when a session is completed in sessionServices)
 const generateResults = async ({playerId, sessionId}) => {
   debug(`Generating results for session ID ${sessionId} and player ID ${playerId}`);
   // Get the session and quiz
@@ -29,8 +17,10 @@ const generateResults = async ({playerId, sessionId}) => {
       path: 'questionIds'
     }
   });
+  debug(`Session fetched for session ID ${sessionId}:`, session);
 
   const quiz = session.quizId;
+  debug(`Quiz fetched for session ID ${sessionId}:`, quiz);
 
   if (!session || !quiz) throw new Error('Session or Quiz not found');
   debug(`Session and quiz found:`, session, quiz);
@@ -81,6 +71,7 @@ const generateResults = async ({playerId, sessionId}) => {
     (score, response) => score + (response.pointsAwarded || 0), 
     0
   );
+  debug(`Total score calculated for player ID ${playerId}:`, totalScore);
 
   const quizSnapshot = {
     originalQuizId: quiz._id,
@@ -88,6 +79,7 @@ const generateResults = async ({playerId, sessionId}) => {
     description: quiz.description,
     difficulty: quiz.difficulty
   };
+  debug(`Quiz snapshot created for player ID ${playerId}:`, quizSnapshot);
 
   // Create and save the result
   const result = new Result({
@@ -113,9 +105,12 @@ const generateResults = async ({playerId, sessionId}) => {
   return result;
 }
 
-// Service to calculate ranks for a session
+// Service to calculate ranks for a session (called after generating results when a session is completed in sessionServices)
 const calculateRanks = async (sessionId) => {
+  debug(`Calculating ranks for session ID ${sessionId}`);
+
   const results = await Result.find({ sessionId }).sort({ totalScore: -1, timeTaken: 1 });
+  debug(`Results fetched for session ID ${sessionId}:`, results);
 
   const bulkOps = results.map((result, index) => ({
     updateOne: {
@@ -123,17 +118,16 @@ const calculateRanks = async (sessionId) => {
       update: { rank: index + 1 }
     }
   }));
+  debug(`Bulk operations for rank updates for session ID ${sessionId}:`, bulkOps);
 
   await Result.bulkWrite(bulkOps); // Update ranks in a single operation 
 
+  debug(`Ranks updated for session ID ${sessionId}`);
   return results;
 }
 
 // Export result services
 module.exports = {
-  getAllResults,
-  getResultById,
-
   generateResults,
   calculateRanks
 };

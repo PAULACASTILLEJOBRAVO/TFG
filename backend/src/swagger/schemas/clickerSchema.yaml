@@ -1,0 +1,161 @@
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    ClickerInput:
+      type: object
+      required:
+        - deviceCode
+        - status
+      properties:
+        deviceCode:
+          type: string
+          description: The device code of the clicker
+          example: "0x0100"
+        status:
+          type: string
+          description: The status of the clicker (e.g., available, assigned)
+          enum: ['available', 'assigned']
+          default: "available"
+
+    ClickerUpdateInput:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the clicker to be updated
+          example: "60d0fe4f5311236168a109ca"
+        assignedToUserId:
+          OneOf:
+            - type: string
+              description: The user ID to whom the clicker is assigned
+              example: "64a7f0c2e4b0c8b1a1e4d3f2"
+            - $ref: '#/components/schemas/AssignedToUser'
+        status:
+          type: string
+          description: The status of the clicker (e.g., available, assigned, damage, archived)
+          enum: ['available', 'assigned', 'damage', 'archived']
+
+    Clicker:
+      type: object
+      required:
+        - deviceCode
+      properties:
+        _id:
+          type: string
+          description: The auto-generated id of the clicker
+          example: "60d0fe4f5311236168a109ca"
+        deviceCode:
+          type: string
+          description: The device code of the clicker
+          example: "0x0005"
+        assignedToUserId:
+          OneOf:
+            - type: string
+              description: The user ID to whom the clicker is assigned
+              example: "64a7f0c2e4b0c8b1a1e4d3f2"
+            - $ref: '#/components/schemas/AssignedToUser'
+        adminId:
+          type: string
+          description: The user ID of the admin who manages the clicker
+          example: "#/components/schemas/Admin"
+        status:
+          type: string
+          description: The status of the clicker (e.g., available, assigned, damage, archived)
+          enum: ['available', 'assigned', 'damage', 'archived']
+          default: "available"
+          example: "assigned"
+    
+    AssignedToUser:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The user ID to whom the clicker is assigned
+          example: "69d12f46d5837f1e630a3608"
+        username:
+          type: string
+          description: The username of the user to whom the clicker is assigned
+          example: "Jane"
+        email:
+          type: string
+          description: The email of the user to whom the clicker is assigned
+          format: email
+          example: "jane@gmail.com"
+        role:
+          type: string
+          description: The role of the user to whom the clicker is assigned
+          example: "student"
+        status:
+          type: string
+          description: The status of the user to whom the clicker is assigned
+          example: "active"
+        lastLoginAt:
+          type: string
+          description: The date and time when the user last logged in
+          example: "2026-04-04T15:34:33.692Z"
+        lastLogoutAt:
+          type: string
+          description: The date and time when the user last logged out
+          example: "2026-04-04T15:34:33.692Z"
+        isOnline:
+          type: boolean
+          description: Whether the user is currently online
+          example: true
+        createdAt:
+          type: string
+          description: The date and time when the user was created
+          example: "2026-04-04T15:33:26.002Z"
+        updatedAt:
+          type: string
+          description: The date and time when the user was last updated
+          example: "2026-04-04T15:34:33.692Z"
+
+    Admin:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The user ID to whom the clicker is assigned
+          example: "69d12f46d5837a1e630a3608"
+        username:
+          type: string
+          description: The username of the user to whom the clicker is assigned
+          example: "admin"
+        email:
+          type: string
+          description: The email of the user to whom the clicker is assigned
+          format: email
+          example: "admin@gmail.com"
+        role:
+          type: string
+          description: The role of the user to whom the clicker is assigned
+          example: "admin"
+        status:
+          type: string
+          description: The status of the user to whom the clicker is assigned
+          example: "active"
+        lastLoginAt:
+          type: string
+          description: The date and time when the user last logged in
+          example: "2026-04-04T15:34:33.692Z"
+        lastLogoutAt:
+          type: string
+          description: The date and time when the user last logged out
+          example: "2026-04-04T15:34:33.692Z"
+        isOnline:
+          type: boolean
+          description: Whether the user is currently online
+          example: false
+        createdAt:
+          type: string
+          description: The date and time when the user was created
+          example: "2026-04-04T15:33:26.002Z"
+        updatedAt:
+          type: string
+          description: The date and time when the user was last updated
+          example: "2026-04-04T15:34:33.692Z"

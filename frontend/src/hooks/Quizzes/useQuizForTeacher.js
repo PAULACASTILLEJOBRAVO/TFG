@@ -1,5 +1,8 @@
-import { useState, useEffect } from "react";
-import { getQuizByIdForTeacher } from "../../services/quizzes.service";
+import { 
+    useState, 
+    useEffect 
+} from "react";
+import { getQuizById } from "../../services/quizzes.service";
 
 export const useQuizForTeacher = (id) => {
     const [quizForTeacher, setQuizForTeacher] = useState(null);
@@ -16,7 +19,7 @@ export const useQuizForTeacher = (id) => {
             setMessage("");
 
             try{
-                const data = await getQuizByIdForTeacher(id);
+                const data = await getQuizById(id);
                 
                 if(data.error){
                     // Backend return error (400, 404, 500, etc)

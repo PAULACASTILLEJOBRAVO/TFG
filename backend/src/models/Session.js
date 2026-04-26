@@ -62,7 +62,7 @@ const sessionSchema = new Schema({
     },
     status: { 
         type: String, 
-        enum: ['active', 'completed', 'paused', 'cancelled', 'archived'], 
+        enum: ['active', 'completed'], 
         default: 'active' 
     },
 }, 
@@ -77,35 +77,6 @@ sessionSchema.index({ teacherId: 1 });
 sessionSchema.index({ quizId: 1 });
 sessionSchema.index({ status: 1 });
 
-// Query helper to exclude soft-deleted docs easily
-sessionSchema.query.notDeleted = function() {
-  return this.where({ status: { $ne: 'archived' } });
-};
-
-// Instance method to pause the session
-sessionSchema.methods.pauseSession = async function() {
-    if(this.status !== 'active') throw new Error('Only active sessions can be paused.');
-    
-    if(this.status === 'paused') return debug(`Session ${this}._id} is already paused.`);
-
-    this.status = 'paused';
-    await this.save();
-
-    debug(`Session ${this._id} paused.`);
-}
-
-// Instance method to resumed the session
-sessionSchema.methods.resumeSession = async function() {
-    if(this.status !== 'paused') throw new Error('Only paused sessions can be resumed.');
-    
-    if(this.status === 'active') return debug(`Session ${this}._id} is already active.`);
-
-    this.status = 'active';
-    await this.save();
-    
-    debug(`Session ${this._id} resumed.`);
-}
-
 // Instance method to completed the session
 sessionSchema.methods.completeSession = async function({questions, endTime}) {
     debug(`Completing session ${this._id} with questions:`, questions);
@@ -118,72 +89,6 @@ sessionSchema.methods.completeSession = async function({questions, endTime}) {
 
     await this.save();
 }
-
-// Instance method to cancel the session
-sessionSchema.methods.cancelSession = async function(reason = null) {
-    if(this.status !== 'active' && this.status !== 'paused') throw new Error('Only active or paused sessions can be cancelled.');
-
-    if(this.status === 'cancelled') throw new Error(`Session ${this._id} is already cancelled.`);
-
-    this.status = 'cancelled';
-    if(reason) this.cancelReason = reason;
-    this.endTime = new Date();
-    await this.save();
-
-    debug(`Session ${this._id} cancelled.`);
-}
-
-// Instance method to archived the session
-sessionSchema.methods.archiveSession = async function() {
-    if(this.status === 'archived') throw new Error(`Session ${this._id} is already archived.`);
-
-    this.status = 'archived';
-    this.endTime = new Date();
-    await this.save();
-
-    debug(`Session ${this._id} archived.`);
-}
-
-// Instance method to delete the session
-sessionSchema.methods.softDelete = async function() {
-    // If it is not finished, archive it
-    if(this.status !== 'completed' && this.status !== 'cancelled' && this.status !== 'archived'){
-        this.status = 'archived';
-        this.endTime = new Date();
-    }
-
-    await this.save();
-    debug(`Session ${this._id} soft-deleted.`);
-};
-
-// Instance method to restore the session
-sessionSchema.methods.restore = async function() {
-    this.status = 'active';
-
-    await this.save();
-    debug(`Session ${this._id} restored.`);
-};
-
-// Static helper to soft-delete by id (useful in services)
-sessionSchema.statics.softDeleteById = async function(id) {
-  const session = await this.findById(id);
-  if (!session) return false;
-  
-  await session.softDelete();
-
-  return true;
-};
-
-// Static restore by id
-sessionSchema.statics.restoreById = async function(id) {
-  const session = await this.findById(id);
-  
-  if (!session) return false;
-
-  await session.restore();
-
-  return true;
-};
 
 // Static complete by id
 sessionSchema.statics.completeById = async function(id, body, currentUserData) {
@@ -225,36 +130,6 @@ sessionSchema.statics.completeById = async function(id, body, currentUserData) {
 
     debug(`Session with ID ${id} completed successfully`);
     return session;
-}
-
-// Static cancel by id
-sessionSchema.statics.cancelById = async function(id, reason = null){
-    const session = await this.findById(id);
-    if(!session) return false;
-
-    await session.cancelSession(reason);
-
-    return true;
-}
-
-// Static archive by id
-sessionSchema.statics.archiveById = async function(id){
-    const session = await this.findById(id);
-    if(!session) return false;
-
-    await session.archiveSession();
-    
-    return true;
-}
-
-// Static pause by id
-sessionSchema.statics.pauseById = async function(id){
-    const session = await this.findById(id);
-    if(!session) return false;
-
-    await session.pauseSession();
-
-    return true;
 }
 
 // Static update by id

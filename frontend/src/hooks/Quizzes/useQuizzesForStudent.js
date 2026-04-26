@@ -1,13 +1,16 @@
-import { useState, useEffect } from "react";
+import { 
+    useState, 
+    useEffect 
+} from "react";
 import { getQuizzesForStudent } from "../../services/quizzes.service";
 
-export const useQuizzesForStudent = ({ limit = 0 }) => {
+export const useQuizzesForStudent = ({ limit }) => {
     const [quizzesForStudent, setQuizzesForStudent] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [message, setMessage] = useState("");
         
-    const fetchQuizzesForStudent = async ({ limit = 0 }) => {
+    const fetchQuizzesForStudent = async () => {
         setLoading(true);
         setError(null);
         setMessage("");
@@ -35,7 +38,7 @@ export const useQuizzesForStudent = ({ limit = 0 }) => {
     }
     
     useEffect(() => {
-        fetchQuizzesForStudent({ limit: 4 });
+        fetchQuizzesForStudent();
     }, []);
 
     return { quizzesForStudent, loading, error, message, refetchStudent: fetchQuizzesForStudent };

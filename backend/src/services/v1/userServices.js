@@ -2,7 +2,6 @@
 const User = require('../../models/User');
 const Quiz = require('../../models/Quiz');
 const Clicker = require('../../models/Clicker');
-const { get } = require('mongoose');
 
 // Debug
 const debug = require('debug')('backend:services:v1:userServices');
@@ -102,7 +101,8 @@ const createUser = async (body) => {
         debug('Creating new user with data:', body);
         return await User.create(body);
     } catch(error){
-        throw error.message;
+        debug('Error creating user:', error);
+        throw new Error(error.message);
     }
 }
 
@@ -122,6 +122,7 @@ const deleteUserById = async (id) => {
 
         return true; // Return true if deletion was successful
     } catch (error) {
+        debug('Error deleting user:', error);
         throw new Error(error.message);
     }
 }
@@ -139,6 +140,7 @@ const restoreUserById =  async (id) => {
         debug('User restored successfully');
         return true;
     }catch (error) {
+        debug('Error restoring user:', error);
         throw new Error(error.message);
     }
 }
@@ -156,6 +158,7 @@ const updateUserById = async ({id, body, _id, role}) => {
         debug('User updated successfully:', updateUser);
         return updateUser;
     }catch(error){
+        debug('Error updating user:', error);
         throw new Error(error.message);
     }
 }
@@ -168,11 +171,12 @@ const updatePasswordById = async ({id, body, _id, role}) => {
         if(!user) return false;
 
         debug('User found:', user);
-        const updatePassword = await User.updatePasswordById(id, body, { _id, role });
+        const updatePassword = await User.updatePasswordById(id, body, { _id, role }).populate('-password');
 
         debug('User password updated successfully:', updatePassword);
         return updatePassword;
     }catch(error){
+        debug('Error updating user password:', error);
         throw new Error(error.message);
     }
 }
@@ -180,14 +184,12 @@ const updatePasswordById = async ({id, body, _id, role}) => {
 // Export service functions
 module.exports = {
     getAllUsers,
-    getUserById,
     getMe,
 
     getTotalUsersStats,
     getActiveUsersStats,
     getConnectedUsersStats,
     getArchivedUsersStats,
-    getTotalStudentsStatsForTeacher,
     
     getAllStudents,
     getAllStudentsWithoutClicker,

@@ -1,4 +1,7 @@
-import { useState, useEffect } from "react";
+import { 
+    useState, 
+    useEffect
+} from "react";
 import { getQuizByIdForStudent } from "../../services/quizzes.service";
 
 export const useQuizForStudent = (id, studentId) => {

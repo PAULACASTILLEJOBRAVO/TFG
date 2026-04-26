@@ -1,13 +1,17 @@
 // Import models
 const Difficulty = require('../../models/Difficulty');
 
+// Debug
+const debug = require('debug')('backend:services:v1:difficultyServices');
+
 // Difficulty services
 // Services to fetch all difficulties
 const getAllDifficulties = async () => {
-    return await Difficulty.find().select("value label");
+    debug('Fetching all difficulties from database');
+    return await Difficulty.find().select("value");
 };
 
-// Export service funcions
+// Export service functions
 module.exports = {
     getAllDifficulties
 }

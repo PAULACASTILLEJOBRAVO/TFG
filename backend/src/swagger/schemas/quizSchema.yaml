@@ -1,6 +1,35 @@
 components:
   schemas:
-    Quiz:
+    QuizInput:
+      type: object
+      required:
+        - title
+        - creatorId
+      properties:
+        title:
+          type: string
+          description: The title of the quiz.
+          example: "Midterm Exam - Module 1"
+        description:
+          type: string
+          description: A brief description of the quiz.
+          example: "This quiz covers topics from chapters 1 to 5."
+        difficulty:
+          type: enum
+          description: The difficulty level of the quiz.
+          enum: [easy, medium, hard]
+          default: "medium"
+        status:
+          type: enum
+          description: The status of the quiz.
+          enum: [draft, published, archived]
+          default: "draft"
+        creatorId:
+          type: ObjectId
+          description: The user ID who created the quiz.
+          example: '64a7f0c2e4b0c8b1a1e4d3f2'
+          
+    QuizzesForTeacher:
       type: object
       required:
         - title
@@ -45,4 +74,130 @@ components:
           description: The list of questions in the quiz.
           items:
             $ref: '#/components/schemas/Question'
+        playerIds:
+          type: array
+          description: The list of players who have taken the quiz.
+          items:
+            $ref: '#/components/schemas/Player'
+
+    Question:
+      type: object
+      required:
+        - text
+        - type
+        - options
+      properties:
+        _id:
+          type: ObjectId
+          description: Unique identifier for the question.
+          example: "64f0c8e2b4d1c2a5f6e7d8c9"
+        text:
+          type: string
+          description: The text of the question.
+          example: "Which of the following data structures uses the LIFO principle?"
+        type:
+          type: string
+          enum: [multiple-choice, true-false]
+          description: The type of the question.
+          example: "multiple-choice"
+        options:
+          type: array
+          description: List of possible options for the question.
+          items:
+            type: object
+            required:
+              - text
+              - isCorrect
+              - letter
+            properties:
+              text:
+                type: string
+                description: Visible text of the option.
+                example: "Stack"
+              isCorrect:
+                type: boolean
+                description: Indicates if the option is correct.
+                example: true
+              letter:
+                type: string
+                description: The letter assigned to the option.
+                example: "A"
+        points:
+          type: integer
+          description: Number of points awarded for a correct answer.
+          example: 5
+        timeLimit:
+          type: integer
+          description: Time limit to answer the question in seconds.
+          example: 30
+        createdAt:
+          type: date-time
+          description: Timestamp when the question was created.
+          example: "2023-10-01T12:00:00Z"
+        updatedAt:
+          type: date-time
+          description: Timestamp when the question was last updated.
+          example: "2023-10-01T12:00:00Z"
+      
+    Player:
+      type: object
+      required:
+        - username
+        - password
+        - email
+      properties:
+        _id:
+          type: ObjectId
+          description: The user ID.
+          example: "64a7f0c2e4b0c8b1a1e4d3f2"
+        username:
+          type: string
+          description: The username of the user.
+          example: "Millicent Johnson"
+        email:
+          type: string
+          description: The email of the user.
+          format: email
+          example: "Millicent.Johnson@gmail.com"
+        password:
+          type: string
+          description: The password of the user.
+          format: password
+        role:
+          type: string
+          description: The role of the user.
+          enum: [student, teacher, admin]
+          example: "student"
+        fullname:
+          type: string
+          description: The full name of the user.
+          example: "Millicent Johnson"
+        status:
+          type: string
+          description: The status of the user.
+          enum: [active, inactive]
+          example: "active"
+        profilePicture:
+          type: string
+          description: The URL of the user's profile picture.
+        createdAt:
+          type: date-time
+          description: The date and time when the user was created.
+          example: "2023-07-01T12:00:00Z"
+        updatedAt:
+          type: date-time
+          description: The date and time when the user was last updated.
+          example: "2023-07-15T12:00:00Z"
+        lastLoginAt:
+          type: date-time
+          description: The date and time when the user last logged in.
+          example: "2023-07-18T08:30:00Z"
+        lastLogoutAt:
+          type: date-time
+          description: The date and time when the user last logged out.
+          example: "2023-07-18T10:00:00Z"
+        isOnline:
+          type: boolean
+          description: Indicates if the user is currently online.
+          example: false
               

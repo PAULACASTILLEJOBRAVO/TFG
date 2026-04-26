@@ -33,6 +33,8 @@
         "noItems": "No items to display",
         "noTutorial": "No tutorial available for this role.",
 
+        "rowsPerPage": "Rows per page:",
+
         "quizzesManagement": {
             "title": "My quizzes",
             "labelButton": "quiz",

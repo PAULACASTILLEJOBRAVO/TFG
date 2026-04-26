@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { createQuiz, deleteQuiz, restoreQuiz, publishQuiz, updateQuiz } from "@/services/quizzes.service";
+import { 
+    createQuiz, 
+    deleteQuiz, 
+    restoreQuiz,
+    publishQuiz, 
+    updateQuiz 
+} from "@/services/quizzes.service";
 
 export const useQuizActions = () => {
     const [loading, setLoading] = useState(false);

@@ -10,15 +10,15 @@ export const getQuizzesForStudent = async ({ limit = 0 }) => {
     return response.data;
 }
 
-export const getQuizByIdForTeacher = async (id) => {
+export const getQuizById = async (id) => {
     const response = await api.get(`/quizzes/${id}`);
     return response.data;
 }
 
 export const getQuizByIdForStudent = async (id, studentId) => {
     const url = studentId
-        ? `/quizzes/student/${id}?studentId=${studentId}`
-        : `/quizzes/student/${id}`;
+        ? `/quizzes/${id}/student?studentId=${studentId}`
+        : `/quizzes/${id}/student`;
 
     const response = await api.get(url);
     return response.data;
@@ -47,12 +47,12 @@ export const deleteQuiz = async (id, payload) => {
 }
 
 export const restoreQuiz = async (id) => {
-    const response = await api.patch(`/quizzes/restore/${id}`);
+    const response = await api.patch(`/quizzes/${id}/restore`);
     return response.data;
 }
 
 export const publishQuiz = async (id) => {
-    const response = await api.patch(`/quizzes/publish/${id}`);
+    const response = await api.patch(`/quizzes/${id}/publish`);
     return response.data;
 }
 

@@ -7,7 +7,10 @@ import {
 import { DashboardSubtitle } from "@/components/Dashboard/Layout/Content";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
+import { 
+  useLocation, 
+  useParams 
+} from "react-router-dom";
 import { 
   Tabs, 
   TabsContent, 
@@ -24,6 +27,11 @@ import {
   QuizQuestionsAnalytics
 } from "@/components/Quizzes/Layout/QuizSessions";
 import { useQuizQuestionsAnalytics } from "@/hooks/Quizzes/useQuizQuestionsAnalytics";
+import { 
+  useEffect, 
+  useState 
+} from "react";
+import { normalizeWord } from "@/utils/search";
 
 const QuizSessions = () => {
   const { t } = useTranslation();
@@ -44,6 +52,55 @@ const QuizSessions = () => {
   const handleViewSessionsForStudent = (student) => {
     navigate(`/dashboard_teacher/quizzes/${id}/students/${student._id}/history`);
   };
+
+   // Search for students in the sessions of the quiz
+    const location = useLocation();
+    const params = new URLSearchParams(location.search);
+
+    const searchParams = params.get("search") || "";
+    const pageParam = parseInt(params.get("page")) || 1;
+    const limitParam = parseInt(params.get("limit")) || 5;
+
+    const words = searchParams.toLowerCase().split(" ").filter(word => word.trim() !== "");;
+    const normalizedWords = words.map(normalizeWord);
+
+    const filteredStudents = students.filter(s => {
+        const name = s.name?.toLowerCase() || "";
+        const email = s.email?.toLowerCase() || "";
+        const accuracy = s.accuracy !== undefined ? `${s.accuracy}%` : "";
+
+        return normalizedWords.every(word =>
+            name.includes(word) ||
+            email.includes(word) ||
+            accuracy.includes(word)
+        );
+    });
+
+    // Pagination for students in the sessions of the quiz
+    const [currentPage, setCurrentPage] = useState(pageParam);
+    const [rowsPerPage, setRowsPerPage] = useState(limitParam);
+
+    const indexOfLastUser = currentPage * rowsPerPage;
+    const indexOfFirstUser = indexOfLastUser - rowsPerPage;
+
+    const currentStudents = filteredStudents.slice(indexOfFirstUser, indexOfLastUser);
+
+    const totalPages = Math.ceil(filteredStudents.length / rowsPerPage);
+
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [searchParams]);
+
+    useEffect(() => {
+        const params = new URLSearchParams();
+
+        if (searchParams) params.set("search", searchParams);
+        params.set("page", currentPage);
+        params.set("limit", rowsPerPage);
+
+        navigate(`?${params.toString()}`, { replace: true });
+    }, [currentPage, rowsPerPage, searchParams]);
+
 
   return (
     <div>
@@ -103,7 +160,16 @@ const QuizSessions = () => {
 
                     {/** TAB 2 -  Students list */}
                     <TabsContent value="students">
-                        <StudentsQuizTable students={students} loading={loading} onSelect={handleViewSessionsForStudent} />
+                        <StudentsQuizTable 
+                          students={currentStudents}  
+                          currentPage={currentPage}
+                          totalPages={totalPages}
+                          onPageChange={setCurrentPage}
+                          rowsPerPage={rowsPerPage}
+                          onRowsPerPageChange={setRowsPerPage}
+                          loading={loading} 
+                          onSelect={handleViewSessionsForStudent} 
+                        />
                     </TabsContent>
                   </Tabs>
                 )}

@@ -1,4 +1,7 @@
-import { useState, useEffect } from "react";
+import { 
+    useState, 
+    useEffect 
+} from "react";
 import { getQuizQuestionAnalytics } from "../../services/quizzes.service";
 
 export const useQuizQuestionsAnalytics = (id) => {

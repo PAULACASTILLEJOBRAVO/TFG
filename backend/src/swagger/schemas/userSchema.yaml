@@ -1,29 +1,28 @@
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
   schemas:
-    User:
+    UserInput:
       type: object
       required:
         - username
         - password
         - email
+        - role
       properties:
-        _id:
-          type: ObjectId
-          description: The user ID.
-          example: "64a7f0c2e4b0c8b1a1e4d3f2"
         username:
           type: string
           description: The username of the user.
-          example: "John Doe"
+          example: "Joshep Morgan"
         email:
           type: string
           description: The email of the user.
           format: email
-          example: "John.Doe@gmail.com"
-        password:
-          type: string
-          description: The password of the user.
-          format: password
+          example: "Joshep.Morgan@gmail.com"
         role:
           type: string
           description: The role of the user.
@@ -32,7 +31,45 @@ components:
         fullname:
           type: string
           description: The full name of the user.
-          example: "Johnathan Doe"
+          example: "Joshep Morgan"
+        status:
+          type: string
+          description: The status of the user.
+          enum: [active, inactive]
+          example: "active"
+        profilePicture:
+          type: string
+          description: The base64 encoded string of the user's profile picture.
+        
+    User:
+      type: object
+      required:
+        - username
+        - email
+        - role
+      properties:
+        _id:
+          type: ObjectId
+          description: The user ID.
+          example: "64a7f0c2e4b0c8b1a1e4d3f2"
+        username:
+          type: string
+          description: The username of the user.
+          example: "Joshep Morgan"
+        email:
+          type: string
+          description: The email of the user.
+          format: email
+          example: "Joshep.Morgan@gmail.com"
+        role:
+          type: string
+          description: The role of the user.
+          enum: [student, teacher, admin]
+          example: "student"
+        fullname:
+          type: string
+          description: The full name of the user.
+          example: "Joshep Morgan"
         status:
           type: string
           description: The status of the user.
@@ -41,7 +78,6 @@ components:
         profilePicture:
           type: string
           description: The URL of the user's profile picture.
-          example: "https://example.com/profile-picture.jpg"
         createdAt:
           type: date-time
           description: The date and time when the user was created.
@@ -54,3 +90,11 @@ components:
           type: date-time
           description: The date and time when the user last logged in.
           example: "2023-07-18T08:30:00Z"
+        lastLogoutAt:
+          type: date-time
+          description: The date and time when the user last logged out.
+          example: "2023-07-18T10:00:00Z"
+        isOnline:
+          type: boolean
+          description: Indicates if the user is currently online.
+          example: false

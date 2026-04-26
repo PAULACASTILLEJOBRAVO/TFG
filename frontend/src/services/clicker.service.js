@@ -1,7 +1,7 @@
 import { api } from "./api";
 
 export const getTotalClickers = async () => {
-    const response = await api.get('clickers');
+    const response = await api.get('/clickers');
     return response.data;
 }
 
@@ -38,7 +38,7 @@ export const deleteClicker = async (id, payload) => {
 }
 
 export const restoreClicker = async (id) => {
-    const response = await api.patch(`/clickers/restore/${id}`);
+    const response = await api.patch(`/clickers/${id}/restore`);
     return response.data;
 };
 

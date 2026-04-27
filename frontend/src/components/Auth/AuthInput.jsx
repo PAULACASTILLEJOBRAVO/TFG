@@ -1,7 +1,20 @@
+import { useState } from "react";
+import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import { 
+    Eye,
+    EyeClosed 
+} from "lucide-react";
 
-const AuthInput = ({label, value, error, modeAuth = false, isRequired = false, errorMessage = "", helperText = "", ...props}) => {
+const AuthInput = ({label, value, error, modeAuth = false, type = "text", isRequired = false, errorMessage = "", helperText = "", ...props}) => {
+    const [showPassword, setShowPassword] = useState(false);
+
+    const isPassword = type === "password";
+    const inputType = isPassword
+        ? (showPassword ? "text" : "password")
+        : type;
+
     const message = error ? errorMessage : helperText;
 
     return(
@@ -10,6 +23,7 @@ const AuthInput = ({label, value, error, modeAuth = false, isRequired = false, e
                 <Input
                     id={props.id}
                     {...props}
+                    type={inputType}
                     placeholder=" "
                     aria-invalid={error}
                     aria-describedby={`${props.id}-message`}
@@ -28,8 +42,9 @@ const AuthInput = ({label, value, error, modeAuth = false, isRequired = false, e
                             ? (modeAuth 
                                 ? "border-4 border-red-900 focus:border-red-900" 
                                 : "border-red-500 focus:border-red-500") 
-                            : "border-black focus:border-black"}`
-                    }
+                            : "border-black focus:border-black"}
+                        ${isPassword ? "pr-10" : ""}    
+                    `}
                 />
                 <Label 
                     htmlFor={props.id}
@@ -53,6 +68,21 @@ const AuthInput = ({label, value, error, modeAuth = false, isRequired = false, e
                     `}>
                     {label} {isRequired && <span className="text-red-600">*</span>}
                 </Label>
+
+                {isPassword && (
+                    <Button
+                        variant="ghost"
+                        onClick={() => setShowPassword(prev => !prev)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-black"
+                        tabIndex={-1}
+                    >
+                        {showPassword ? (
+                            <EyeClosed className="h-5 w-5" />
+                        ) : (
+                            <Eye className="h-5 w-5" />
+                        )}
+                    </Button>
+                )}
             </div>
 
             <div className="mt-[-0.8rem] ">

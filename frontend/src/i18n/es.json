@@ -30,6 +30,11 @@
         "publish": "Publicar",
         "back": "Volver a",
 
+        "noItems": "No hay elementos para mostrar",
+        "noTutorial": "No hay tutorial disponible para este rol.",
+
+        "rowsPerPage": "Filas por página:",
+
         "quizzesManagement": {
             "title": "Mis cuestionarios",
             "labelButton": "cuestionario",
@@ -41,13 +46,15 @@
                     "easy": "Fácil",
                     "unknown": "Sin dificultad"
                 },
-                "noQuizzes": "No tienes ningún cuestionario creado."
+                "noQuizzes": "No tienes ningún cuestionario creado.",
+                "noSessions": "Sin sesiones de juego todavía."
             }
         },
         "sessionHistory": {
-            "title": "Mis sesiones de juego en {{quizTitle}}",
+            "title": "Sesiones de juego en {{quizTitle}}",
+            "my-title": "Mis sesiones de juego en {{quizTitle}}",
             "noSessions": "No has jugado ninguna sesión de este cuestionario todavía.",
-            "backToQuizzes": "Volver a mis cuestionarios",
+            "backToQuizzes": "mis cuestionarios",
 
             "completed": "Completada",
 
@@ -63,11 +70,41 @@
             "fastSession": "¡Esta sesión fue más rápida que tu tiempo promedio para este cuestionario!",
             "bestSession": "¡Esta sesión es tu mejor tiempo para este cuestionario!",
 
+            "firstPlace": "¡Primer puesto en este ranking!",
+            "secondPlace": "¡Segundo puesto en este ranking!",
+            "thirdPlace": "¡Tercer puesto en este ranking!",
+            "otherPlace": "¡Posición en este ranking!",
+
             "correctAnswers": "Respuestas correctas",
             "incorrectAnswers": "Respuestas incorrectas",
             "unansweredQuestions": "Preguntas sin responder",
-            "noData": "No hay datos de respuestas para esta sesión."
-        }
+            "noData": "No hay datos de respuestas para esta sesión.",
+
+            "sessionReview": {
+                "title": "Revisión de la sesión de juego en {{quizTitle}}",
+                "description": "Revisa tus respuestas para esta sesión y ve las respuestas correctas para cada pregunta.",
+                "downloadPDF": "Descargar revisión en PDF",
+                
+                "studentData": "Datos del estudiante",
+                "studentName": "Estudiante: {{studentName}}",
+                "unknownStudent": "Anónimo",
+                "studentEmail": "Email: {{studentEmail}}",
+
+                "sessionData": "Datos de la sesión",
+                "date": "Fecha: {{date}}",
+                "correctAnswers": "Respuestas correctas: {{correct}}/{{total}}",
+                "score": "Puntuación: {{score}}",
+                "points": "Puntos: {{points}}/{{totalScore}}",
+                "pointsPerQuestion": "{{points}} puntos",
+                "rank": "Ranking: {{rank}}",
+                "yourAnswer": "Tu respuesta."
+            }
+        },
+        "userProfile": {
+            "title": "Mi perfil",
+
+            "noData": "No hay datos disponibles para mostrar."
+         }
     },
     "admin":{
         "users": "Usuarios",
@@ -82,11 +119,23 @@
             "title": "Gestión",
 
             "totalUsers": "usuarios totales",
+            "activeUsers": "usuarios activos",
             "connectedUsers": "usuarios conectados",
+            "archivedUsers": "usuarios archivados",
+
             "totalClickers": "clickers totales",
+            "activeClickers": "clickers activos",
+            "inUseClickers": "clickers en uso",
+            "availableClickers": "clickers disponibles",
+            "inactiveClickers": "clickers inactivos",
 
             "managementUser": "Usuarios",
             "managementClicker": "Clickers"
+        },
+
+        "tutorial": {
+            "title": "Tutorial de administración",
+            "description": "¡Bienvenido al tutorial de administración! Aquí encontrarás toda la información que necesitas para gestionar usuarios y clickers en el sistema. Utiliza el menú de navegación para acceder a las diferentes secciones del panel de administración y sigue las instrucciones proporcionadas en cada sección para realizar las tareas de gestión de manera efectiva."
         },
 
         "usersManagement": {
@@ -118,8 +167,7 @@
                     "role": "Rol",
                     "lastLogin": "Último login",
                     "lastLogout": "Último logout",
-                    "deletedAt": "Fecha de eliminación",
-                    "deleteReason": "Motivo de eliminación"
+                    "archived": "Usuario archivado"
                 },
                 "edit": {
                     "description": "Edición del usuario",
@@ -206,6 +254,9 @@
         "quizzes": "Cuestionarios",
         "historical": "Histórico",
         "createQuiz": "Crear cuestionario",
+
+        "recent_quizzes": "Tus cuestionarios recientes",
+        "recent_sessions": "Tus cuestionarios de sesiones recientes",
 
         "greeting": "Hola, {{username}}",
 
@@ -319,9 +370,11 @@
             },
             "questionDisplay": {
                 "response": "respuesta",
-                "responses": "respuestas"
+                "responses": "respuestas",
+                "question": "Pregunta"
             }
         },
+
         "sessionPresentation": {
             "waiting": {
                 "title": "Enciende tu dispositivo clicker",
@@ -340,12 +393,48 @@
                 ],
                 "message": "Esperando al profesor..."
             }
+        },
+
+        "quizSessions": {
+            "tab": {
+                "analytics": "Analíticas",
+                "students": "Estudiantes"
+            },
+            "studentsQuizTable": {
+                "name": "Nombre",
+                "attempts": "Intentos",
+                "accuracy": "Precisión",
+                "avgTime": "Tiempo Promedio",
+                "lastSession": "Última Sesión",
+                
+                "noStudents": "Ningún estudiante ha jugado este cuestionario todavía."
+            },
+            "analytics": {
+                "participants": "participantes",
+                "totalSessions": "sesiones totales",
+                "averageScore": "puntuación promedio",
+                "averageTime": "tiempo promedio",
+                "accuracy": "precisión",
+                "insight": "Insight",
+
+                "insightMessages": {
+                    "excellent": "¡Excelente!",
+                    "good": "¡Bien!",
+                    "average": "Promedio.",
+                    "poor": "Necesita mejorar."
+                }
+            }
         }
     },
     "student": {
         "ranking": "Ranking",
         "stadistics": "Estadísticas",
 
-        "greeting": "Hola, {{username}}"
+        "greeting": "Hola, {{username}}",
+
+        "tutorial": {
+            "title": "Tutorial de estudiante",
+            "description": "¡Bienvenido al tutorial de estudiante! Aquí encontrarás toda la información que necesitas para participar en cuestionarios, ver tus resultados y seguir tu progreso. Utiliza el menú de navegación para acceder a las diferentes secciones del panel de estudiante y sigue las instrucciones proporcionadas en cada sección para aprovechar al máximo tu experiencia con los cuestionarios."
+        }
     }
 }

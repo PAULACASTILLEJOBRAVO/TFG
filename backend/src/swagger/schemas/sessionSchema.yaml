@@ -1,5 +1,31 @@
 components:
   schemas:
+    SessionInput:
+      type: object
+      required:
+        - teacherId
+        - playerId
+        - quizId
+        - startTime
+      properties:
+        startTime:
+          type:  date-time
+          description: Start time of the session in ISO 8601 format
+          default: "2023-07-19T12:34:56Z"
+        status:
+          type: string
+          description: Status of the session
+          enum: ['pending', 'active', 'completed', 'paused']
+          default: "pending"
+        teacherId:
+          type: objectId
+          description: Unique identifier for the teacher
+          example: '68e283a0d9eaff29b0c84535'
+        quizId:
+          type: objectId
+          description: Unique identifier for the quiz
+          example: '63a7f0c2e4b0c8b1a1e4d3f3'
+
     Session:
       type: object
       required:
@@ -23,20 +49,8 @@ components:
         status:
           type: string
           description: Status of the session
-          enum: ['pending', 'active', 'completed', 'paused', 'archived', 'cancelled']
+          enum: ['active', 'completed', 'paused', 'cancelled', 'archived']
           example: "active"
-        isDeleted:
-          type: boolean
-          description: Indicates if the session is deleted
-          example: false
-        deletedBy:
-          type: string
-          description: Identifier of the user who deleted the session
-          example: "64a7f0c2e4b0c8b1a1e4d3f2"
-        deleteReason:
-          type: string
-          description: Reason for deleting the session
-          example: "Session was cancelled by the teacher."
         createdAt:
           type: date-time
           description: Timestamp when the session was created
@@ -45,10 +59,6 @@ components:
           type: date-time
           description: Timestamp when the session was last updated
           example: "2023-07-19T12:30:00Z"
-        deletedAt:
-          type: date-time
-          description: Timestamp when the session was deleted
-          example: "2023-07-20T12:00:00Z"
         teacherId:
           type: array
           description: Unique identifier for the teacher

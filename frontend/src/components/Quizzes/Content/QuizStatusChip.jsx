@@ -6,7 +6,7 @@ const QuizStatusChip = ({ status }) => {
 
     if(status === 'archived') {
         return (
-            <Badge variant="destructive">
+            <Badge variant="destructive" className="shrink-0">
                 {t('teacher.quizzesManagement.detailsCard.archived')}
             </Badge>
         );
@@ -14,7 +14,7 @@ const QuizStatusChip = ({ status }) => {
 
     if(status === 'draft') {
         return (
-            <Badge variant="secondary">
+            <Badge variant="secondary" className="shrink-0">
                 {t('teacher.quizzesManagement.detailsCard.draft')}
             </Badge>
         );
@@ -22,14 +22,14 @@ const QuizStatusChip = ({ status }) => {
 
     if(status === 'published') {
         return (
-            <Badge className="bg-green-500 hover:bg-green-500">
+            <Badge className="bg-green-500 hover:bg-green-500 shrink-0">
                 {t('teacher.quizzesManagement.detailsCard.published')}
             </Badge>
         );
     }
 
     return(
-        <Badge variant="outline">
+        <Badge variant="outline" className="shrink-0">
             {t('teacher.quizzesManagement.detailsCard.unknown')}
         </Badge>
     );

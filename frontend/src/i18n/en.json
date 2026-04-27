@@ -30,6 +30,11 @@
         "publish": "Publish",
         "back": "Back to",
 
+        "noItems": "No items to display",
+        "noTutorial": "No tutorial available for this role.",
+
+        "rowsPerPage": "Rows per page:",
+
         "quizzesManagement": {
             "title": "My quizzes",
             "labelButton": "quiz",
@@ -41,13 +46,15 @@
                     "easy": "Easy",
                     "unknown": "No difficulty"
                 },
-                "noQuizzes": "You don't have any quizzes created."
+                "noQuizzes": "You don't have any quizzes created.",
+                "noSessions": "No game sessions yet."
             }
         },
         "sessionHistory": {
-            "title": "My game sessions for {{quizTitle}}",
+            "title": "Game sessions for {{quizTitle}}",
+            "my-title": "My game sessions for {{quizTitle}}",
             "noSessions": "No sessions played for this quiz yet.",
-            "backToQuizzes": "Back to my quizzes",
+            "backToQuizzes": "my quizzes",
 
             "completed": "Completed",
 
@@ -63,10 +70,40 @@
             "fastSession": "This session was faster than your average time for this quiz!",
             "bestSession": "This session is your best time for this quiz!",
 
+            "firstPlace": "First place in this ranking!",
+            "secondPlace": "Second place in this ranking!",
+            "thirdPlace": "Third place in this ranking!",
+            "otherPlace": "Place in this ranking!",
+
             "correctAnswers": "Correct answers",
             "incorrectAnswers": "Incorrect answers",
             "unansweredQuestions": "Unanswered questions",
-            "noData": "No response data for this session."
+            "noData": "No response data for this session.",
+
+            "sessionReview": {
+                "title": "Review of the game session in {{quizTitle}}",
+                "description": "Review your answers for this session and see the correct answers for each question.",
+                "downloadPDF": "Download PDF review",
+
+                "studentData": "Student data",
+                "studentName": "Student: {{studentName}}",
+                "unknownStudent": "Anonymous",
+                "studentEmail": "Email: {{studentEmail}}",
+
+                "sessionData": "Session data",
+                "date": "Date: {{date}}",
+                "correctAnswers": "Correct answers: {{correct}}/{{total}}",
+                "score": "Score: {{score}}",
+                "points": "Points: {{points}}/{{totalScore}}",
+                "pointsPerQuestion": "{{points}} points",
+                "rank": "Ranking: {{rank}}",
+                "yourAnswer": "Your answer."
+            }
+        },
+        "userProfile": {
+            "title": "My profile",
+
+            "noData": "No data available to display."
         }
     },
     "admin":{
@@ -82,11 +119,23 @@
             "title": "Management",
 
             "totalUsers": "total users",
+            "activeUsers": "active users",
             "connectedUsers": "connected users",
+            "archivedUsers": "archived users",
+
             "totalClickers": "total clickers",
+            "activeClickers": "active clickers",
+            "inUseClickers": "in use clickers",
+            "availableClickers": "available clickers",
+            "inactiveClickers": "inactive clickers",
 
             "managementUser": "Users",
             "managementClicker": "Clickers"
+        },
+
+        "tutorial": {
+            "title": "Admin tutorial",
+            "description": "Welcome to the admin tutorial! Here you will find all the information you need to manage users and clickers in the system. Use the navigation menu to access different sections of the admin panel and follow the instructions provided in each section to perform management tasks effectively."
         },
 
         "usersManagement": {
@@ -118,8 +167,7 @@
                     "role": "Role",
                     "lastLogin": "Last login",
                     "lastLogout": "Last logout",
-                    "deletedAt": "Deletion date",
-                    "deleteReason": "Deletion reason"
+                    "archived": "Archived user"
                 },
                 "edit": {
                     "description": "User edition",
@@ -203,11 +251,19 @@
         "historical": "Historical",
         "createQuiz": "Create Quiz",
 
+        "recent_quizzes": "Your recent Quizzes",
+        "recent_sessions": "Your quizzes from recent sessions",
+
         "greeting": "Hello, {{username}}",
 
         "overview": {
             "totalStudents": "total students",
             "connectedStudents": "connected students"
+        },
+
+        "tutorial": {
+            "title": "Teacher tutorial",
+            "description": "Welcome to the teacher tutorial! Here you will find all the information you need to create and manage quizzes, as well as control quiz sessions and review results. Use the navigation menu to access different sections of the teacher dashboard and follow the instructions provided in each section to make the most of the quiz management features."
         },
 
         "quizzesManagement": {
@@ -315,9 +371,11 @@
             },
             "questionDisplay": {
                 "response": "respuesta",
-                "responses": "respuestas"
+                "responses": "respuestas",
+                "question": "Question"
             }
         },
+
        "sessionPresentation": {
             "waiting": {
                 "title": "Turn on your clicker device",
@@ -336,12 +394,48 @@
                 ],
                 "message": "Waiting for the teacher..."
             }
+        },
+
+        "quizSessions": {
+            "tab": {
+                "analytics": "Analytics",
+                "students": "Students"
+            },
+            "studentsQuizTable": {
+                "name": "Name",
+                "attempts": "Attempts",
+                "accuracy": "Accuracy",
+                "avgTime": "Average Time",
+                "lastSession": "Last Session",
+                
+                "noStudents": "No students have played this quiz yet."
+            },
+            "analytics": {
+                "participants": "participants",
+                "totalSessions": "total sessions",
+                "averageScore": "average score",
+                "averageTime": "average time",
+                "accuracy": "accuracy",
+                "insight": "Insight",
+
+                "insightMessages": {
+                    "excellent": "Excellent!",
+                    "good": "Good!",
+                    "average": "Average.",
+                    "poor": "Poor."
+                }
+            }
         }
     },
     "student": {
         "ranking": "Ranking",
         "stadistics": "Stadistics",
 
-        "greeting": "Hello, {{username}}"
+        "greeting": "Hello, {{username}}",
+
+        "tutorial": {
+            "title": "Student tutorial",
+            "description": "Welcome to the student tutorial! Here you will find all the information you need to participate in quizzes, view your results, and track your progress. Use the navigation menu to access different sections of the student dashboard and follow the instructions provided in each section to make the most of your quiz experience."
+        }
     }
 }

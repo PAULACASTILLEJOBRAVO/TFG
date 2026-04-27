@@ -6,22 +6,12 @@ export const headerActionMenuConfig = {
         path: "/dashboard_admin/users"
     },
     {
-        labelKey: "admin.clickers",
-        icon: "clicker",
-        path: "/dashboard_admin/clickers"
-    },
-    {
-        labelKey: "admin.sessions",
-        icon: "play",
-        path: "/dashboard_admin/sessions"
-    },
-    {
         separator: true
     },
     {
-        labelKey: "admin.reports",
-        icon: "warning",
-        path: "/dashboard_admin/reports"
+        labelKey: "admin.clickers",
+        icon: "clicker",
+        path: "/dashboard_admin/clickers"
     }
   ],
   teacher: [  

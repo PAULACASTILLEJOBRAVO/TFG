@@ -50,11 +50,11 @@ const QuestionEditorPanel = forwardRef(({ question, questionError, touched, subm
             
                                 {question.options.map((option, index) => {
                                     const optionError = questionError?.optionErrors?.options?.[index] || null;
-
+                                    
                                     return(
                                         <Fragment key={index}>
                                         <OptionRow
-                                            label={String.fromCharCode(65 + index)}
+                                            letter={String.fromCharCode(65 + index)}
                                             color={bgColorCard[index].normal}
                                             value={option.text}
                                             index={index}

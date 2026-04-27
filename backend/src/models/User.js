@@ -50,25 +50,10 @@ const userSchema = new Schema({
     },
 
     //States and configuration
-    isActive: { 
-        type: Boolean,  // usable account
-        default: true 
-    },
-    isDeleted: {
-        type: Boolean,  // soft deleted flag
-        default: false, 
-        index: true,
-    },
-    deletedAt: { 
-        type: Date 
-    },
-    deletedBy: {
-        type: Schema.Types.ObjectId,
-        ref: 'User', // who performed the deletion
-    },
-    deleteReason: {
-        type: String,
-        trim: true,
+    status: { 
+        type: String, 
+        enum: ['active', 'inactive'], 
+        default: 'active' 
     },
     isOnline: {
         type: Boolean,
@@ -87,36 +72,29 @@ const userSchema = new Schema({
 }); 
 
 // Indexes  
-// userSchema.index({ email: 1 }, { unique: true, background: true });
-// userSchema.index({ username: 1 }, { unique: true, background: true });
 userSchema.index({ fullname: 'text' });
 
 // Query helper to exclude soft-deleted docs easily
 userSchema.query.notDeleted = function() {
-  return this.where({ isDeleted: false });
+  debug('Applying notDeleted query helper');
+  return this.where({ status: { $ne: 'inactive' } });
 };
 
 // Instance method to soft-delete
-userSchema.methods.softDelete = async function({ by = null, reason = null } = {}) {
-  this.isDeleted = true;
-  this.deletedAt = new Date();
+userSchema.methods.softDelete = async function() {
+  debug('Soft-deleting user:', this._id);
+  this.status = 'inactive';
 
-  if (by) this.deletedBy = by;
-  if (reason) this.deleteReason = reason;
-
-  // optionally also set isActive = false so account can't login
-  this.isActive = false;
+  debug('User status set to inactive, saving user...');
   return this.save();
 };
 
 // Instance method to restore
 userSchema.methods.restore = async function() {
-  this.isDeleted = false;
-  this.deletedAt = null;
-  this.deletedBy = null;
-  this.deleteReason = null;
-  this.isActive = true; // or leave it as previous state if you track it
+  debug('Restoring user:', this._id);
+  this.status = 'active';
 
+  debug('User status set to active, saving user...');
   return this.save();
 };
 
@@ -144,85 +122,113 @@ userSchema.methods.generateAuthToken = async function() {
 
 // Instance method to online user
 userSchema.methods.markOnline = async function () {
+  debug('Marking user as online:', this._id);
   this.isOnline = true;
   this.lastLoginAt = new Date();
+
+  debug('User marked as online, saving user...');
   await this.save();
 };
 
 // Instance method to ofline user
 userSchema.methods.markOffline = async function () {
+  debug('Marking user as offline:', this._id);
   this.isOnline = false;
   this.lastLogoutAt = new Date();
+  
+  debug('User marked as offline, saving user...');
   await this.save();
 };
 
 // Statics helper to mark all users offline
 userSchema.statics.markUserOffline = async function (id) {
+  debug('Marking user as offline by ID:', id);
   const user = await this.findById(id);
-
   if (!user) return false;
 
+  debug('User found for marking offline:', user);
   await user.markOffline();
 
+  debug('User marked as offline successfully');
   return true;
 }
 
 // Statics helper to soft-delete by id (useful in services)
-userSchema.statics.softDeleteById = async function(id, { by = null, reason = null } = {}) {
-  const user = await this.findById(id);
+userSchema.statics.softDeleteById = async function(id) {
+  debug('Soft-deleting user with ID:', id);
 
+  const user = await this.findById(id);
   if (!user) return false;
+  debug('User found for soft-deletion:', user);
   
-  await user.softDelete({ by, reason });
+  if(user.status === 'inactive') return false;
+  debug('User is active, proceeding with soft-deletion');
+
+  await user.softDelete();
+  debug('User soft-deleted successfully');
 
   return true;
 };
 
 // Statics restore by id
 userSchema.statics.restoreById = async function(id) {
-  const user = await this.findById(id);
+  debug('Restoring user with ID:', id);
 
+  const user = await this.findById(id);
   if (!user) return false;
-  if(user.isActive) return false;
+  debug('User found for restoration:', user);
+
+  if(user.status === 'active') return false;
+  debug('User is inactive, proceeding with restoration');
 
   await user.restore();
+  debug('User restored successfully');
 
   return user;
 };
 
 // Statics permissions to create new user 
 userSchema.statics.canCreateUser = async function(currentUser) {
+  debug('Checking permissions to create user for current user:', currentUser);
   return await validateAdminRole(currentUser);
 }
 
 // Statics permissons to fetch total users for admin
 userSchema.statics.canGetAdminUsers = async function(currentUser) {
+  debug('Checking permissions to get admin users for current user:', currentUser);
   return await validateAdminRole(currentUser);
 }
 
 // Statics permissions to fetch total students for a teacher
 userSchema.statics.canGetTeacherStudents = async function(currentUser) {
+  debug('Checking permissions to get teacher students for current user:', currentUser);
   return await validateTeacherRole(currentUser);
 }
 
 // Statics permissions to fetch total students for a teacher or admin
 userSchema.statics.canGetAdminStudents = async function(currentUser) {
+  debug('Checking permissions to get admin students for current user:', currentUser);
   return await validateAdminRole(currentUser);
 }
 
 // Statics update by id
 userSchema.statics.updateById = async function(id, body, currentUserData) {
+    debug('Updating user with ID:', id, 'by user:', currentUserData);
     const user = await this.findById(id).select('-password');
     if (!user) return false;
+    debug('User found for update:', user);
 
     // Extract current user ID and role
     const { _id: currentUserId, role: currentUserRole } = currentUserData; 
+    debug('Current user ID:', currentUserId, 'Current user role:', currentUserRole);
 
     // Check if the user is updating their own data
     const isSelf = currentUserId.toString() === id.toString(); 
+    debug('Is self-update:', isSelf);
 
     // Get allowed fields based on role and whether it's self-update
     const allowedFields = getUserEditableFields(currentUserRole, isSelf);
+    debug('Allowed fields for update based on role and self-update:', allowedFields);
 
     // Filter body to only include allowed fields
     const updates = {};
@@ -236,8 +242,10 @@ userSchema.statics.updateById = async function(id, body, currentUserData) {
 
     // Apply changes
     Object.assign(user, updates);
+    debug('User after applying updates:', user);
 
     // Save and return updated user
+    debug('Saving updated user...');
     await user.save();
 
     return user;
@@ -245,22 +253,29 @@ userSchema.statics.updateById = async function(id, body, currentUserData) {
 
 // Statics update password by id
 userSchema.statics.updatePasswordById = async function (id, body, currentUserData) {
+    debug('Updating password for user with ID:', id, 'by user:', currentUserData);
     const user = await this.findById(id);
     if(!user) return false;
+    debug('User found for password update:', user);
 
     // Extract current user ID and role
     const { _id: currentUserId, role: currentUserRole } = currentUserData;
+    debug('Current user ID:', currentUserId, 'Current user role:', currentUserRole);
 
     // Check if the user is updating their own password
     const isSelf = currentUserId.toString() === id.toString();
+    debug('Is self-password update:', isSelf);
 
     // Extract old and new passwords from body
     const { oldPassword, newPassword } = body;
+    debug('Old password provided:', !!oldPassword, 'New password provided:', !!newPassword);
 
     // Validate password change
     await validatePasswordChange({isSelf, currentUserRole, oldPassword, userPasswordHash: user.password});
+    debug('Password change validated successfully');
 
     // Set new password
+    debug('Setting new password for user...');
     user.password = newPassword;
     await user.save();  // Triggers pre-save hook to hash the password
 
@@ -269,10 +284,12 @@ userSchema.statics.updatePasswordById = async function (id, body, currentUserDat
 
 //Pre-save hook to hash the password before saving
 userSchema.pre('save', function(next) {
+    debug('Pre-save hook triggered for user:', this._id);
     const user = this;
 
     //Only hash the password if it has been modified (or is new)
     if (!user.isModified('password')) return next();
+    debug('Password field modified, hashing password...');
 
     //Generate a salt
     bcrypt.genSalt(SALT_WORK_FACTOR)
@@ -289,7 +306,7 @@ userSchema.pre('save', function(next) {
 
 //Method to compare a given password with the database hash
 userSchema.methods.comparePassword = async function(candidatePassword) {
-    debug('Comparing password...')
+    debug('Comparing password...');
     return bcrypt.compare(candidatePassword, this.password);
 };
 
@@ -300,28 +317,35 @@ userSchema.pre('save', async function(next) {
     const Session = mongoose.model('Session');
     
       // Case 1: Soft-delete
-    if (this.isModified('isDeleted') && this.isDeleted === true && this.role !== 'student') {   // Only act if the user is being soft-deleted
+    if (this.isModified('status') && this.status === 'inactive' && this.role !== 'student') {   // Only act if the user is being soft-deleted
+      debug('User is being soft-deleted, applying cascade actions for user:', this._id);
+
       // Mark quizzes created by this user as inactive
       await Quiz.updateMany(
-        { teacherId: this._id, isPublic: "private" }, // Only non-public quizzes
-        { isActive: false }
+        { teacherId: this._id }, 
+        { status: 'archived' }
       );
+      debug(`Quizzes created by user ${this._id} marked as archived.`);
 
       // Mark sessions created by this user as archived
       await Session.updateMany(
-        { teacherId: this._id, status: { $in: ['pedding', 'active', 'paused'] } }, 
+        { teacherId: this._id, status: { $in: ['active', 'paused'] } }, 
         { status: 'archived', endTime: new Date() }
       );
+      debug(`Sessions created by user ${this._id} marked as archived.`);
 
       debug(`Soft-delete cascade applied for user ${this._id}`);
     }
 
     // Case 2: Restore
-    if (this.isModified('isDeleted') && this.isDeleted === false && this.role !== 'student') {
+    if (this.isModified('status') && this.status === 'active' && this.role !== 'student') {
+      debug('User is being restored, applying cascade actions for user:', this._id);
+      
       await Quiz.updateMany(
         { teacherId: this._id },
-        { isActive: true }
+        { status: 'draft' }
       );
+      debug(`Quizzes created by user ${this._id} marked as draft.`);  
 
       debug(`Restore cascade applied for user ${this._id}`);
     }

@@ -10,11 +10,6 @@ const difficultySchema = new Schema({
         unique: true,
         trim: true, 
         lowercase: true 
-    },
-    label: {
-        type: String,
-        required: true,
-        trim: true,
     }
 }, 
 { 

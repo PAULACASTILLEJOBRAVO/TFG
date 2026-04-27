@@ -1,12 +1,12 @@
 import { Input } from "@/components/ui/input";
 import { RadioGroupItem } from "@/components/ui/radio-group";
 
-const OptionRow = ({ label, color, value, index, onChange, onBlur }) => {
+const OptionRow = ({ letter, color, value, index, onChange, onBlur }) => {
     return (
         <div className={`${color} flex items-center gap-3 p-3 rounded-md `}>
             <div className="flex items-center gap-3 w-full">
                 {/** LETTER */}
-                <span className="font-bold text-white">{label}</span>
+                <span className="font-bold text-white">{letter}</span>
 
                 {/** INPUT */}
                 <Input 

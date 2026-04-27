@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { deleteUser, changePasswordUser, restoreUser, updateUser, createUser } from "@/services/user.service";
+import { 
+    deleteUser, 
+    changePasswordUser, 
+    restoreUser, 
+    updateUser, 
+    createUser 
+} from "@/services/user.service";
 
 export const useUserActions = () => {
 

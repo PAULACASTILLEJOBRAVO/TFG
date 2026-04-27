@@ -26,7 +26,7 @@ export const parseCoordinatorMessage = (line) => {
                 type: "ANSWER",
                 questionId: parts[1],
                 deviceId: parts[2],
-                option: parts[3],
+                letter: parts[3],
                 raw: line
             };
         }
@@ -62,7 +62,7 @@ export const parseResultBlock = (lines) => {
         .map(l => {
             const [optionPart, countPart] = l.split(":");
             return {
-                option: optionPart.replace("Opción ", "").trim(),
+                letter: optionPart.replace("Opción ", "").trim(),
                 count: parseInt(countPart.replace("respuestas", "").trim())
             };
         });

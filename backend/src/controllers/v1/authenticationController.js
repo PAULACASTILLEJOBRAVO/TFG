@@ -15,8 +15,7 @@ const loginUser = async (req, res) => {
 
         const user = await User.findOne({ email });
         if(!user) return res.status(404).json({ message: 'User does not exist'});
-        if(user.isDeleted) return res.status(403).json({ message: 'User account is deleted'});
-        if(!user.isActive) return res.status(403).json({ message: 'User account is not active'});
+        if(user.status !== 'active') return res.status(403).json({ message: 'User account is not active'});
 
         const isMatch = await user.comparePassword(password);
         
@@ -79,23 +78,25 @@ const registerUser = async (req, res) => {
     if (!email || !username || !password) return res.status(400).json({ message: 'Username, email and password are required' });
 
     try{
+        debug('Registering new user with body:', body);
         if (await checkExists(User, 'email', email)) {
             return res.status(409).json({ message: 'The user alredy exists' });
         }
 
         const newUser = await authenticationServices.registerUser({email, username, password});
 
+        debug('User registered successfully:', newUser);
         res.status(201).json({
             message: 'User registered successfully', 
             data: newUser
         });    
     } catch(error){
+        debug('Error registering user:', error);
         res.status(500).json({ 
             message: 'Error registering user', 
             error: error.message 
         });
     }
-
 }
 
 // Export the module

@@ -7,6 +7,9 @@ const User = require('../../models/User');
 // Import utils
 const { checkExists } = require('../../utils/checkExists');
 
+// Debug
+const debug = require('debug')('backend:controllers:v1:userControllers');
+
 // User controllers
 // Controller to get all users
 const getAllUsers = async (req, res) => {
@@ -24,30 +27,30 @@ const getAllUsers = async (req, res) => {
     }
 };
 
-// Controller to get an user by ID
-const getUserById = async (req, res) => {
-    const {id} = req.params;
+// Controller to get current user
+const getMe = async (req, res) => {
+    const currentUser = req.user;
 
-    if(!id) return res.status(400).json({ message: 'User ID is required' });
-    
-    try{
-        const user = await userServices.getUserById(id);
+    try {
+        debug('Fetching current user with ID:', currentUser._id);
+        const user = await userServices.getMe(currentUser._id);
 
         if (!user) return res.status(404).json({ message: 'User not found' });
-        
+
+        debug('Current user fetched successfully:', user);
         res.status(200).json({
             message: 'User fetched successfully', 
             data: user
         });
-    } catch (error){
+    } catch (error) {
         res.status(500).json({ 
             message: 'Error fetching user', 
             error: error.message 
         });
     }
-}
+};
 
-// Controller to get users' stats
+// Controller to get total users stats
 const getTotalUsersStats = async (req, res) => {
     const currentUser = req.user;
 
@@ -68,7 +71,70 @@ const getTotalUsersStats = async (req, res) => {
     }
 }
 
-// Controller to get students' stats
+// Controller to get active users stats
+const getActiveUsersStats = async (req, res) => {
+    const currentUser = req.user;
+
+    try {
+        const canAccess = await User.canGetAdminUsers(currentUser);
+        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
+
+        const users = await userServices.getActiveUsersStats();
+        res.status(200).json({
+            message: "Active users' stats fetched successfully", 
+            data: users
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            message: "Error fetching active users' stats", 
+            error: error.message 
+        });
+    }
+}
+
+// Controller to get connected users stats
+const getConnectedUsersStats = async (req, res) => {
+    const currentUser = req.user;
+
+    try {
+        const canAccess = await User.canGetAdminUsers(currentUser);
+        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
+
+        const users = await userServices.getConnectedUsersStats();
+        res.status(200).json({
+            message: "Connected users' stats fetched successfully", 
+            data: users
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            message: "Error fetching connected users' stats", 
+            error: error.message 
+        });
+    }
+}
+
+// Controller to get archived users stats
+const getArchivedUsersStats = async (req, res) => {
+    const currentUser = req.user;
+
+    try {
+        const canAccess = await User.canGetAdminUsers(currentUser);
+        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
+
+        const users = await userServices.getArchivedUsersStats();
+        res.status(200).json({
+            message: "Archived users' stats fetched successfully", 
+            data: users
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            message: "Error fetching archived users' stats",
+            error: error.message 
+        });
+    }
+}
+
+// Controller to get students stats
 const getTotalStudentsStatsForTeacher = async (req, res) => {
     const currentUser = req.user;
 
@@ -137,22 +203,28 @@ const createUser = async (req, res) => {
     const { email, username, password } = body;
     const currentUser = req.user;
 
+    debug('Creating new user with data:', body);
+
     // Check parameters
     if (!body) return res.status(400).json({ message: 'Username, email and password are required' });
+    debug('Request body:', body);
 
     // Check required fields
     if (!email || !username || !password) return res.status(400).json({ message: 'Username, email and password are required' });
+    debug('Required fields are present');
 
     try{
         const canAccess = await User.canCreateUser(currentUser);
         if(!canAccess) return res.status(403).json({message: "Unauthorized"});
+        debug('User has permission to create new user');
 
         if (await checkExists(User, 'email', email)) {
+            debug('Email already exists:', email);
             return res.status(409).json({ message: 'The user alredy exists' });
         }
 
-
         const newUser = await userServices.createUser(body);
+        debug('New user created successfully:', newUser);
 
         res.status(201).json({
             message: 'User created successfully', 
@@ -168,19 +240,24 @@ const createUser = async (req, res) => {
 
 // Controller to delete an user by ID
 const deleteUserById = async (req, res) => {
+    debug('Deleting user by ID');
+    
     const { id } = req.params;
-    const { reason } = req.body;
-    const { _id } = req.user;
+    debug('User ID:', id);
 
     if(!id) return res.status(400).json({ message: 'User ID is required'});
+    debug('User ID is valid');
 
     try{
-        const deleted = await userServices.deleteUserById({id, by: _id, reason});
+        debug('Attempting to delete user');
+        const deleted = await userServices.deleteUserById(id);
+        debug('Delete operation completed, result:', deleted);
 
         if (!deleted) return res.status(404).json({ message: 'User not found' });
+        debug('User deleted successfully, sending response');
 
         res.status(200).json({
-         message: 'User deleted successfully'
+            message: 'User deleted successfully'
         });
     }catch(error){
         res.status(500).json({
@@ -192,6 +269,7 @@ const deleteUserById = async (req, res) => {
 
 // Controller to delete an user by ID
 const restoreUserById = async (req, res) => {
+    debug('Restoring user by ID');
     const { id } = req.params;
 
     if(!id) return res.status(400).json({ message: 'User ID is required'});
@@ -214,6 +292,8 @@ const restoreUserById = async (req, res) => {
 
 // Controller to update an user by ID
 const updateUserById = async (req, res) => {
+    debug('Updating user by ID');
+
     const {id} = req.params;
     const {body} = req;
     const { _id, role } = req.user;
@@ -221,10 +301,15 @@ const updateUserById = async (req, res) => {
     if(!id) return res.status(400).json({ message: 'User ID is required'});
     if(!body) return res.status(400).json({ message: 'Body is required'});
 
+    debug('User ID:', id);
+    debug('Request body:', body);
+
     try{
+        debug('Attempting to update user');
         const updatedUser = await userServices.updateUserById({id, body, _id, role});
 
         if(!updatedUser) return res.status(404).json({ message: 'User not found'});
+        debug('User updated successfully, sending response');
 
         res.status(200).json({
             message: 'User updated successfully',
@@ -240,6 +325,7 @@ const updateUserById = async (req, res) => {
 
 // Controller to update an user's password by ID
 const updatePasswordById = async (req, res) => {
+    debug('Updating user password by ID');
     const { id } = req.params;
     const { body } = req;
     const { _id, role } = req.user;
@@ -248,9 +334,11 @@ const updatePasswordById = async (req, res) => {
     if (!body.newPassword) return res.status(400).json({ message: 'New password is required' });
     
     try {
+        debug('Attempting to update user password');
         const updatedUser = await userServices.updatePasswordById({id, body, _id, role});
 
         if (!updatedUser) return res.status(404).json({ message: 'User not found' });
+        debug('User password updated successfully, sending response');
 
         res.status(200).json({
             message: 'User password updated successfully',
@@ -267,9 +355,14 @@ const updatePasswordById = async (req, res) => {
 //Export controller functions
 module.exports = {
     getAllUsers,
-    getUserById,
+    getMe,
+
     getTotalUsersStats,
+    getActiveUsersStats,
+    getConnectedUsersStats,
+    getArchivedUsersStats,
     getTotalStudentsStatsForTeacher,
+    
     getAllStudentsForTeacher,
     getAllStudentsForAdmin,
     

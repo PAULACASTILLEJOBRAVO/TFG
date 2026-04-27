@@ -1,51 +1,11 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Backend - TFG</title>
-        <meta name="description" content="Backend API for TFG - Node.js + Express">
-        <link rel="stylesheet" href="css/style-index.css">
-    </head>
-
-    <body>
-        <header>
-            <h1>Welcome to the API</h1>
-            <p>This is the root route of the API. Use the appropriate endpoints to interact with the services.</p>
-        </header>
-
-        <main>
-            <section class="card">
-                <h2>Available Endpoints</h2>
-                <ul>
-                    <li><a href="/v1/users" target="_blank">Users</a></li>
-                    <li><a href="/v1/quizzes" target="_blank">Quizzes</a></li>
-                    <li><a href="/v1/questions" target="_blank">Questions</a></li>
-                    <li><a href="/v1/sessions" target="_blank">Sessiones</a></li>
-                    <li><a href="/v1/responses" target="_blank">Responses</a></li>
-                    <li><a href="/v1/results" target="_blank">Results</a></li>
-                </ul>
-            </section>
-
-            <section class="card">
-                <h2>API Documentation</h2>
-                <p>For detailed information about the API endpoints, request/response formats, and authentication, please refer to the <a href="/swagger-api-docs" target="_blank">Swagger UI</a>.</p>
-            </section>
-
-            <footer>
-                <p>&copy; 2026 TFG - Backend Node.js + Express. All rights reserved.</p>
-            </footer>
-        </main>
-    </body>
-</html> -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Backend - TFG</title>
-    <meta name="description" content="Backend API for TFG - Node.js + Express">
+    <meta name="description" content="Backend API for TFG - Node.js + Express with JWT Authentication">
+    <meta name="author" content="Paula Castillejo Bravo">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style-index.css">
@@ -57,10 +17,44 @@
         </div>
     </nav>
 
-    <main class="container my-5">
+    <main class="container my-4">
         <div class="text-center mb-4">
             <h1>Welcome to the API</h1>
             <p class="text-muted">This is the root route of the API. Use the endpoints below to interact with the backend services.</p>
+        </div>
+
+        <div class="mb-4">
+            <div class="card mx-auto shadow-sm" style="max-width: 600px;">
+                <div class="card-body text-center">
+                    <h4 class="card-title">API Documentation</h4>
+                    <p class="card-text">For detailed information about the API endpoints, request/response formats, and authentication, please visit <a href="/swagger-api-docs" target="_blank">Swagger UI</a>.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Authentication</h5>
+                <div class="card-text">
+                    <p>Most endpoints are protected using JSON Web Tokens (JWT). <strong>You must authenticate to access them.</strong></p>
+                    
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5>Login</h5>
+                            <input type="text" id="email" placeholder="Email" class="form-control mb-2">
+                            <input type="password" id="password" placeholder="Password" class="form-control mb-2">
+                            
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-success w-50" onclick="login()">Login</button>
+                                <button class="btn btn-danger w-50" onclick="logout()">Logout</button>
+                            </div>
+
+                            <div id="tokenStatus" class="mt-2 small"></div>
+                            <div id="loginStatus" class="mt-1 small"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="row g-4">
@@ -68,9 +62,37 @@
                 <div class="card h-100 shadow-sm">
                     <div class="card-body">
                         <h5 class="card-title">Users</h5>
-                        <p class="card-text">Manage users (students, teachers, admins).</p>
+                        <p class="card-text">Manage users - Only admins.</p>
                         <div class="row g-2">
-                            <a href="/v1/stats" class="btn btn-primary" target="_blank">Go</a>
+                            <button class="btn btn-primary w-100" onclick="getData('/v1/users', 'usersResult')">
+                                Get users
+                            </button>
+
+                            <button class="btn btn-outline-secondary w-100 mt-2" onclick="openInNewTab('/v1/users')">
+                                Open in new tab
+                            </button>
+
+                            <pre id="usersResult" class="mt-2 bg-light p-2 small result-box"></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Clickers</h5>
+                        <p class="card-text">Manage clickers - Only admins.</p>
+                        <div class="row g-2">
+                            <button class="btn btn-primary w-100" onclick="getData('/v1/clickers', 'clickersResult')">
+                                Get clickers
+                            </button>
+
+                            <button class="btn btn-outline-secondary w-100 mt-2" onclick="openInNewTab('/v1/clickers')">
+                                Open in new tab
+                            </button>
+
+                            <pre id="clickersResult" class="mt-2 bg-light p-2 small result-box"></pre>
                         </div>
                     </div>
                 </div>
@@ -80,67 +102,204 @@
                 <div class="card h-100 shadow-sm">
                     <div class="card-body">
                         <h5 class="card-title">Quizzes</h5>
-                        <p class="card-text">Manage quizzes and questions.</p>
+                        <p class="card-text">Manage quizzes and questions - Only teachers.</p>
                         <div class="row g-2">
-                            <a href="/v1/quizzes" class="btn btn-primary" target="_blank">Go</a>
+                                <button class="btn btn-primary w-100" onclick="getData('/v1/quizzes/my-teacher', 'quizzesResult')">
+                                    Get quizzes for teacher
+                                </button>
+                         
+
+                                <button class="btn btn-outline-secondary w-100 mt-2" onclick="openInNewTab('/v1/quizzes/my-teacher')">
+                                    Open in new tab (teacher)
+                                </button>
+                        
+                            <pre id="quizzesResult" class="mt-2 bg-light p-2 small result-box"></pre>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">Questions</h5>
-                        <p class="card-text">View or create questions.</p>
-                        <div class="row g-2">
-                            <a href="/v1/questions" class="btn btn-primary" target="_blank">Go</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
+            <div class="col-md-12">
                 <div class="card h-100 shadow-sm">
                     <div class="card-body">
                         <h5 class="card-title">Sessions</h5>
-                        <p class="card-text">Start and track quiz sessions.</p>
+                        <p class="card-text">View analytics for sessions. - Only teachers or students.</p>
                         <div class="row g-2">
-                            <a href="/v1/sessions" class="btn btn-primary" target="_blank">Go</a>
+                            <button class="btn btn-primary w-100" onclick="getData('/v1/quizzes/69e0b4fc4925af10f90c4868/sessions', 'sessionsResult')">
+                                Get sessions for teacher
+                            </button>
+
+                            <button class="btn btn-outline-secondary w-100 mt-2" onclick="openInNewTab('/v1/quizzes/69e0b4fc4925af10f90c4868/sessions')">
+                                Open in new tab 
+                            </button>
+
+                            <div class="d-flex justify-content-center gap-2 mt-2">
+                                <button class="btn btn-primary w-100" onclick="getData('/v1/quizzes/69e0b4fc4925af10f90c4868/student', 'sessionsResult')">
+                                    Get sessions for student (student)
+                                </button>
+
+                                <button class="btn btn-primary w-100" onclick="getData('/v1/quizzes/69e0b4fc4925af10f90c4868/student?studentId=69921f6182c6bbfe37baeaa6', 'sessionsResult')">
+                                    Get sessions for student (teacher)
+                                </button>
+                            </div>
+
+                            <div class="d-flex justify-content-center gap-2 mt-2">
+                                <button class="btn btn-outline-secondary w-100 mt-2" onclick="openInNewTab('/v1/quizzes/69e0b4fc4925af10f90c4868/student')">
+                                    Open in new tab (student)
+                                </button>
+
+                                <button class="btn btn-outline-secondary w-100 mt-2" onclick="openInNewTab('/v1/quizzes/69e0b4fc4925af10f90c4868/sessions')">
+                                    Open in new tab (teacher)
+                                </button>
+                            </div>
+
+                            <pre id="sessionsResult" class="mt-2 bg-light p-2 small result-box"></pre>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">Responses & Results</h5>
-                        <p class="card-text">Monitor student answers and results.</p>
-                        <div class="d-flex justify-content-center gap-2">
-                            <a href="/v1/responses" class="btn btn-primary w-50" target="_blank">Responses</a>
-                            <a href="/v1/results" class="btn btn-success w-50" target="_blank">Results</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="mt-5 mb-5 text-center">
-            <h2>API Documentation</h2>
-            <div class="card mx-auto shadow-sm" style="max-width: 600px;">
-                <div class="card-body text-center">
-                    <p class="card-text">For detailed information about the API endpoints, request/response formats, and authentication, please visit <a href="/swagger-api-docs" target="_blank">Swagger UI</a>.</p>
                 </div>
             </div>
         </div>
     </main>
 
     <footer class="bg-white text-center py-3 shadow-sm">
-        &copy; 2026 TFG - Backend Node.js + Express. All rights reserved.
+         &copy; 2026 TFG - Backend with Node.js + Express for Quizlective. All rights reserved.
     </footer>
 
     <!-- Bootstrap JS (optional for components like dropdowns) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        async function login() {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            const status = document.getElementById("loginStatus");
+
+            try {
+                const res = await fetch("/v1/auth/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                let data;
+
+                try {
+                    data = await res.json();
+                } catch {
+                    output.textContent = "Invalid JSON response";
+                    return;
+                }
+
+                if (!res.ok) {
+                    status.textContent = "Login failed";
+                    status.className = "text-danger small mt-2";
+                    return;
+                }
+
+                localStorage.setItem("token", data.data.token);
+
+                status.textContent = "Logged in successfully";
+                status.className = "text-success small mt-2";
+
+                updateTokenStatus();
+            } catch (err) {
+                status.textContent = "Error connecting to server";
+                status.className = "text-danger small mt-2";
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem("token");
+            document.getElementById("loginStatus").textContent = "Logged out";
+
+            updateTokenStatus();
+        }
+
+        function updateTokenStatus() {
+            const token = localStorage.getItem("token");
+            const el = document.getElementById("tokenStatus");
+
+            if (token) {
+                el.textContent = "Token loaded";
+                el.className = "small text-success";
+            } else {
+                el.textContent = "Not authenticated";
+                el.className = "small text-danger";
+            }
+        }
+
+        updateTokenStatus();
+
+        window.addEventListener("storage", updateTokenStatus);
+
+        async function getData(endpoint, elementId) {
+            const token = localStorage.getItem("token");
+            const output = document.getElementById(elementId);
+
+            if (!token) {
+                output.textContent = "You must login first";
+                return;
+            }
+
+            try {
+                const res = await fetch(endpoint, {
+                    method: "GET",
+                    headers: {
+                        "Authorization": "Bearer " + token
+                    }
+                });
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                    output.textContent = "Error: " + (data.message || "Request failed");
+                    return;
+                }
+
+                output.textContent = JSON.stringify(data, null, 2);
+
+            } catch (err) {
+                output.textContent = "Network error";
+            }
+        }
+
+        async function openInNewTab(endpoint) {
+            const token = localStorage.getItem("token");
+
+            if (!token) {
+                alert("Login first to access this endpoint");
+                return;
+            }
+
+            const res = await fetch(endpoint, {
+                headers: {
+                    "Authorization": "Bearer " + token
+                }
+            });
+
+            const data = await res.json();
+
+            const newWindow = window.open("", "_blank");
+
+            newWindow.document.write(`
+                <html>
+                <head>
+                    <title>API Result</title>
+                    <style>
+                        body { font-family: monospace; padding: 20px; background: #f8f9fa; }
+                        pre { white-space: pre-wrap; }
+                    </style>
+                </head>
+                <body>
+                    <h2>${endpoint}</h2>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                </body>
+                </html>
+            `);
+        }
+    </script>
 </body>
 </html>

@@ -95,7 +95,7 @@ const UserFormCreate = ({newUser, onChange, onSubmit}) => {
                     isRequired={true}  
                 />
                 
-                <UserRoleSelector onChange={value => onChange("role", value)} />
+                <UserRoleSelector value={newUser.role} onChange={value => onChange("role", value)} />
 
                 <div className="pt-4">
                     <Button className="bg-green-500 hover:bg-green-500 w-full" onClick={handleConfirm}>

@@ -41,10 +41,14 @@ const resultSchema = new Schema({
         ref: 'Session', 
         required: true 
     },
-    quizId: { 
-        type: Schema.Types.ObjectId, 
-        ref: 'Quiz', 
-        required: true 
+    quizSnapshot: {
+        originalQuizId: {
+            type: Schema.Types.ObjectId,
+            ref: 'Quiz'
+        },
+        title: { type: String, required: true },
+        description: { type: String},
+        difficulty: { type: String, required: true },
     },
 
     //status and configuration

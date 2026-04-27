@@ -26,7 +26,7 @@ const QuizCreate = () => {
   const { create } = useQuizActions();
 
   // Data
-  const [createQuiz, setCreateQuiz] = useState({ title: "", description: "", creatorId: user ? user._id : null, playerIds: [], difficulty: "easy", isActive: false, status: "draft" });
+  const [createQuiz, setCreateQuiz] = useState({ title: "", description: "", creatorId: user ? user._id : null, playerIds: [], difficulty: "easy", status: "draft" });
 
   const [submitted, setSubmitted] = useState(false);
   const [touched, setTouched] = useState({ 
@@ -47,14 +47,18 @@ const QuizCreate = () => {
   }
 
   const handlePublish = async () => {
-    setCreateQuiz(prev => ({...prev, isActive: true, status: "published"}));
+    const hasPlayers = createQuiz.playerIds.length > 0;
+
+    const updatedQuiz = {...createQuiz, status: hasPlayers ? "published" : "draft"}; // Automatically set to published if there are players assigned, otherwise save as draft
+
+    setCreateQuiz(updatedQuiz);
 
     setSubmitted(true);
 
-    if(quizError || questionError.some(error => error)) return;
+    if(quizError || questionErrors.some(error => error)) return;
 
     try {
-      await create({quizFields: createQuiz, questions: questionsList});
+      await create({quizFields: updatedQuiz, questions: questionsList});
       navigate("/dashboard_teacher/quizzes");
     } catch (error) {
       console.error("Error creating quiz:", error);
@@ -62,14 +66,15 @@ const QuizCreate = () => {
   }
 
   const handleSaveDraft = async () => {
-    setCreateQuiz(prev => ({...prev, isActive: false, status: "draft"}));
+    const updatedQuiz = { ...createQuiz, status: "draft" };
 
+    setCreateQuiz(updatedQuiz);
     setSubmitted(true);
     
-    if(quizError || questionError.some(error => error)) return;
+    if(quizError || questionErrors.some(error => error)) return;
 
     try {
-      await create({quizFields: createQuiz, questions: questionsList});
+      await create({quizFields: updatedQuiz, questions: questionsList});
       navigate("/dashboard_teacher/quizzes");
     } catch (error) {
       console.error("Error creating quiz:", error);
@@ -80,7 +85,7 @@ const QuizCreate = () => {
   const [questionsList, setQuestionsList] = useState([ createNewQuestion() ]);
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0);
 
-  const questionError = questionsList.length > 0 ? questionsList.map(question => validateQuestion(question)) : [];
+  const questionErrors = questionsList.length > 0 ? questionsList.map(question => validateQuestion(question)) : [];
 
   const handleAddQuestion = (newQuestion) => {
     setQuestionsList(prev => {
@@ -215,7 +220,8 @@ const QuizCreate = () => {
           activeQuestion={activeQuestion} 
           selectedStudents={selectedStudents}
           quizError={quizError}
-          questionError={questionError[selectedQuestionIndex]}
+          questionError={questionErrors[selectedQuestionIndex]}
+          questionErrors={questionErrors}
           touched={touched}
           submitted={submitted}
           onUpdate={handleUpdate}  

@@ -1,7 +1,10 @@
-import { useState, useEffect } from "react";
+import { 
+    useState, 
+    useEffect 
+} from "react";
 import { getQuizzesForStudent } from "../../services/quizzes.service";
 
-export const useQuizzesForStudent = () => {
+export const useQuizzesForStudent = ({ limit }) => {
     const [quizzesForStudent, setQuizzesForStudent] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -14,7 +17,7 @@ export const useQuizzesForStudent = () => {
         setQuizzesForStudent([]);
 
         try{
-            const data = await getQuizzesForStudent();
+            const data = await getQuizzesForStudent({ limit });
 
             if(data.error){
                 setError(data.error);

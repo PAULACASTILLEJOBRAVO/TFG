@@ -5,7 +5,10 @@ import {
 import { DashboardSubtitle } from "@/components/Dashboard/Layout/Content";
 import { CreateButton } from "@/components/Common/ActionButtons";
 import { useClickers } from "@/hooks/Clickers/useClickers";
-import { useState } from "react";
+import { 
+  useState,
+  useEffect
+} from "react";
 import { ClickerTable } from "@/components/Clicker/Layout";
 import { 
   DeleteClickerDialog, 
@@ -16,7 +19,10 @@ import { useClickerActions } from "@/hooks/Clickers/useClickerActions";
 import { DecimalToHexadecimal } from "@/utils/clickers";
 import { useTranslation } from "react-i18next";
 import { validateClicker } from "@/utils/validators";
-import { useLocation } from "react-router-dom";
+import { 
+  useLocation, 
+  useNavigate 
+} from "react-router-dom";
 import { 
   matchesStatus, 
   normalizeWord 
@@ -32,7 +38,13 @@ const ClickersManagement = () => {
 
   // Search
     const location = useLocation();
-    const searchParams = new URLSearchParams(location.search).get("search") || "";
+    const navigate = useNavigate();
+
+    const params = new URLSearchParams(location.search);
+
+    const searchParams = params.get("search") || "";
+    const pageParam = parseInt(params.get("page")) || 1;
+    const limitParam = parseInt(params.get("limit")) || 5;
 
     const words = searchParams.toLowerCase().split(" ").filter(word => word.trim() !== "");;
     const normalizedWords = words.map(normalizeWord);
@@ -47,6 +59,78 @@ const ClickersManagement = () => {
             matchesStatus(c.status, word)
         );
     });
+
+        // Sorting table headers
+    const [sortConfig, setSortConfig] = useState({
+        key: null,
+        direction: "asc"
+    });
+
+    const handleSort = (key) => {
+        setSortConfig(prev => {
+            if (prev.key === key) {
+                return {
+                    key,
+                    direction: prev.direction === "asc" ? "desc" : "asc"
+                };
+            }
+            return { key, direction: "asc" };
+        });
+    };
+
+    const sortedClickers = [...filteredClickers].sort((a, b) => {
+        if (!sortConfig.key) return 0;
+
+        const getValue = (clicker) => {
+            switch (sortConfig.key) {
+                case "assignedToUser": 
+                    return clicker.assignedToUserId?.username?.toLowerCase() || null;
+                case "deviceCode":
+                case "status":
+                default:
+                    return clicker[sortConfig.key]?.toString().toLowerCase() || "";
+            }
+        };
+
+        const aValue = getValue(a);
+        const bValue = getValue(b);
+
+        // When sorting by assigned user, clickers with no assigned user should always be at the bottom
+        if (sortConfig.key === "assignedToUser") {
+            if (aValue === null && bValue === null) return 0;
+            if (aValue === null) return 1;
+            if (bValue === null) return -1;
+        }
+
+        if (aValue < bValue) return sortConfig.direction === "asc" ? -1 : 1;
+        if (aValue > bValue) return sortConfig.direction === "asc" ? 1 : -1;
+        return 0;
+    });
+
+    // Pagination
+    const [currentPage, setCurrentPage] = useState(pageParam);
+    const [rowsPerPage, setRowsPerPage] = useState(limitParam);
+
+    const indexOfLastClicker = currentPage * rowsPerPage;
+    const indexOfFirstClicker = indexOfLastClicker - rowsPerPage;
+
+    const currentClickers = sortedClickers.slice(indexOfFirstClicker, indexOfLastClicker);
+
+    const totalPages = Math.ceil(sortedClickers.length / rowsPerPage);
+
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [searchParams]);
+
+    useEffect(() => {
+        const params = new URLSearchParams();
+
+        if (searchParams) params.set("search", searchParams);
+        params.set("page", currentPage);
+        params.set("limit", rowsPerPage);
+
+        navigate(`?${params.toString()}`, { replace: true });
+    }, [currentPage, rowsPerPage, searchParams]);
 
   // Create clicker state (for the form in the dialog)
   const [createClicker, setCreateClicker] = useState({ deviceCode: 1, adminId: user._id ? user._id : null, status: "available", assignedToUserId: null });
@@ -204,7 +288,14 @@ const ClickersManagement = () => {
         </div>
 
         <ClickerTable
-            clickers={filteredClickers}
+            clickers={currentClickers}
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+            rowsPerPage={rowsPerPage}
+            onRowsPerPageChange={setRowsPerPage}
+            sortConfig={sortConfig}
+            onSort={handleSort}
             loading={loadingClickers}
             editClicker={editClicker}
             editClickerId={editClickerId}

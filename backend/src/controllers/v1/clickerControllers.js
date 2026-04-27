@@ -1,16 +1,29 @@
 // Import services
 const clickerServices = require('../../services/v1/clickerServices');
 
+// Import models
+const Clicker = require('../../models/Clicker');
+
+// Import utils
+const { checkExists } = require('../../utils/checkExists');
+
+// Debug
+const debug = require('debug')('backend:controllers:v1:clickerControllers');
+
 // Clicker controllers
 // Controller to get all clickers
 const getAllClickers = async (req, res) => {
     try {
+        debug('Fetching all clickers');
         const clickers = await clickerServices.getAllClickers();
+
+        debug('Clickers fetched successfully:', clickers);
         res.status(200).json({
             message: 'Clickers fetched successfully', 
             data: clickers
         });
     } catch (error) {
+        debug('Error fetching clickers:', error);
         res.status(500).json({ 
             message: 'Error fetching clickers', 
             error: error.message 
@@ -18,43 +31,129 @@ const getAllClickers = async (req, res) => {
     }
 };
 
-// Controller to get a clicker by ID
-const getClickerById = async (req, res) => {
-    const {id} = req.params;
-
-    if (!id) return res.status(400).json({ message: 'Clicker ID is required' });
-        
-    try{
-        const clicker = await clickerServices.getClickerById(id);
-
-        if (!clicker) return res.status(404).json({ message: 'Clicker not found' });
-        
-        res.status(200).json({
-            message: 'Clicker fetched successfully', 
-            data: clicker
-        });
-    } catch (error){
-        res.status(500).json({ 
-            message: 'Error fetching clicker', 
-            error: error.message 
-        });
-    } 
-}
-
-// Controller to get clickers' stats
-const getActiveClickersStats = async (req, res) => {
+// Controller to get clickers stats
+const getTotalClickersStats = async (req, res) => {
     const currentUser = req.user;
 
     try {
+        debug('Checking user permissions for accessing clickers stats');
         const canAccess = await Clicker.canGetAdminClickers(currentUser);
         if(!canAccess) return res.status(403).json({message: "Unauthorized"});
+        debug('User authorized to access clickers stats');
 
-        const clickers = await clickerServices.getActiveClickersStats();
+        const clickers = await clickerServices.getTotalClickersStats();
+
+        debug('Clickers stats fetched successfully:', clickers);
         res.status(200).json({
             message: "Clickers' stats fetched successfully", 
             data: clickers
         });
     } catch (error) {
+        debug('Error fetching clickers stats:', error);
+        res.status(500).json({ 
+            message: "Error fetching clickers' stats", 
+            error: error.message 
+        });
+    }
+}
+
+// Controller to get active clickers stats
+const getActiveClickersStats = async (req, res) => {
+    const currentUser = req.user;
+
+    try {
+        debug('Checking user permissions for accessing clickers stats');
+        const canAccess = await Clicker.canGetAdminClickers(currentUser);
+        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
+        debug('User authorized to access clickers stats');
+
+        const clickers = await clickerServices.getActiveClickersStats();
+
+        debug('Clickers stats fetched successfully:', clickers);
+        res.status(200).json({
+            message: "Clickers' stats fetched successfully", 
+            data: clickers
+        });
+    } catch (error) {
+        debug('Error fetching clickers stats:', error);
+        res.status(500).json({ 
+            message: "Error fetching clickers' stats", 
+            error: error.message 
+        });
+    }
+}
+
+// Controller to get in use clickers stats
+const getInUseClickersStats = async (req, res) => {
+    const currentUser = req.user;
+
+    try {
+        debug('Checking user permissions for accessing clickers stats');
+        const canAccess = await Clicker.canGetAdminClickers(currentUser);
+        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
+        debug('User authorized to access clickers stats');
+
+        const clickers = await clickerServices.getInUseClickersStats();
+
+        debug('Clickers stats fetched successfully:', clickers);
+        res.status(200).json({
+            message: "Clickers' stats fetched successfully", 
+            data: clickers
+        });
+    } catch (error) {
+        debug('Error fetching clickers stats:', error);
+        res.status(500).json({ 
+            message: "Error fetching clickers' stats",
+            error: error.message 
+        });
+    }
+}
+
+// Controller to get available clickers stats
+const getAvailableClickersStats = async (req, res) => {
+    const currentUser = req.user;
+
+    try {
+        debug('Checking user permissions for accessing clickers stats');
+        const canAccess = await Clicker.canGetAdminClickers(currentUser);
+        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
+        debug('User authorized to access clickers stats');
+
+        const clickers = await clickerServices.getAvailableClickersStats();
+
+        debug('Clickers stats fetched successfully:', clickers);
+        res.status(200).json({
+            message: "Clickers' stats fetched successfully", 
+            data: clickers
+        });
+    } catch (error) {
+        debug('Error fetching clickers stats:', error);
+        res.status(500).json({ 
+            message: "Error fetching clickers' stats",
+            error: error.message 
+        });
+    }
+}
+
+// Controller to get inactive clickers stats
+const getInactiveClickersStats = async (req, res) => {
+    const currentUser = req.user;
+
+    try {
+        debug('Checking user permissions for accessing clickers stats');
+        const canAccess = await Clicker.canGetAdminClickers(currentUser);
+        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
+        debug('User authorized to access clickers stats');
+
+        const clickers = await clickerServices.getInactiveClickersStats();
+
+        debug('Clickers stats fetched successfully:', clickers);
+        res.status(200).json({
+            message: "Clickers' stats fetched successfully", 
+            data: clickers
+        });
+    } catch (error) {
+        debug('Error fetching clickers stats:', error);
         res.status(500).json({ 
             message: "Error fetching clickers' stats", 
             error: error.message 
@@ -69,13 +168,20 @@ const createClicker = async (req, res) => {
     if (!body) return res.status(400).json({ message: 'Invalid clicker data. Body is required' });
 
     try{
+        if (await checkExists(Clicker, 'deviceCode', body.deviceCode)) {
+            debug('Device code already exists:', body.deviceCode);
+            return res.status(409).json({ message: 'The clicker already exists' });
+        }
+        debug('Creating new clicker with data:', body);
         const newClicker = await clickerServices.createClicker(body);
 
+        debug('Clicker created successfully:', newClicker);
         res.status(201).json({
             message: 'Clicker created successfully', 
             data: newClicker
         });    
     } catch(error){
+        debug('Error creating clicker:', error);
         res.status(500).json({ 
             message: 'Error creating clicker', 
             error: error.message 
@@ -89,17 +195,19 @@ const deleteClickerById = async (req, res) => {
     const { by, reason } = req.body; 
 
     if(!id) return res.status(400).json({ message: 'Clicker ID is required'});
-    if(!by && !reason) return res.status(400).json({ message: 'Deletion metadata is required'});
 
     try{
-        const deleted = await clickerServices.deleteClickerById(id, by, reason);
+        debug('Deleting clicker with ID:', id);
+        const deleted = await clickerServices.deleteClickerById(id);
 
         if (!deleted) return res.status(404).json({ message: 'Clicker not found' });
 
+        debug('Clicker deleted successfully');
         res.status(200).json({
          message: 'Clicker deleted successfully'
         });
     }catch(error){
+        debug('Error deleting clicker:', error);
         res.status(500).json({
             message: 'Error deleting clicker',
             error: error.message
@@ -114,14 +222,17 @@ const restoreClickerById = async (req, res) => {
     if(!id) return res.status(400).json({ message: 'Clicker ID is required'});
 
     try{
+        debug('Restoring clicker with ID:', id);
         const restored = await clickerServices.restoreClickerById(id);
 
         if (!restored) return res.status(404).json({ message: 'Clicker not found' });
 
+        debug('Clicker restored successfully');
         res.status(200).json({
          message: 'Clicker restored successfully'
         });
     }catch(error){
+        debug('Error restoring clicker:', error);
         res.status(500).json({
             message: 'Error restoring clicker',
             error: error.message
@@ -139,15 +250,18 @@ const updateClickerById = async (req, res) => {
     if(!body) return res.status(400).json({ message: 'Body is required'});
 
     try{
+        debug('Updating clicker with ID:', id);
         const updatedClicker = await clickerServices.updateClickerById({id, body, _id, role});
 
         if(!updatedClicker) return res.status(404).json({ message: 'Clicker not found'});
 
+        debug('Clicker updated successfully:', updatedClicker);
         res.status(200).json({
             message: 'Clicker updated successfully',
             data: updatedClicker
         })
     }catch(error){
+        debug('Error updating clicker:', error);
         res.status(500).json({
             message: 'Error updating clicker',
             error: error.message
@@ -158,8 +272,11 @@ const updateClickerById = async (req, res) => {
 // Export controllers functions
 module.exports = {
     getAllClickers,
-    getClickerById,
+    getTotalClickersStats,
     getActiveClickersStats,
+    getInactiveClickersStats,
+    getInUseClickersStats,
+    getAvailableClickersStats,
 
     createClicker,
     

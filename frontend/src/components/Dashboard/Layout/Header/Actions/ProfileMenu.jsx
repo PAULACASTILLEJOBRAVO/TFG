@@ -1,4 +1,7 @@
-import { useState, useRef } from "react";
+import { 
+    useState, 
+    useRef 
+} from "react";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -74,24 +77,6 @@ const ProfileMenu = () => {
                     </DropdownMenuItem>
                 );
             })}    
-            
-
-                {/* <DropdownMenuItem>
-                    <UserRoundPen />
-                    Perfil
-                </DropdownMenuItem>
-
-                <DropdownMenuItem>
-                    <Settings />
-                    Ajustes
-                </DropdownMenuItem>
-
-                <DropdownMenuSeparator/>
-
-                <DropdownMenuItem onClick={handleLogout} className="text-red-600 focus:text-red-600">
-                    <LogOut />
-                    Logout
-                </DropdownMenuItem> */}
             </DropdownMenuContent>
         </DropdownMenu>
     );

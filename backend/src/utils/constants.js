@@ -1,49 +1,30 @@
 // Editable fields by role
 const editableFields = {
   user: {
-    student: ['username', 'fullname', 'bio'],
-    teacher: ['username', 'fullname', 'bio'],
-    admin: [
-        'username', 'fullname', 'bio', 'profilePicture', 'role', 'email',
-        'lastLoginAt',
-        'isDeleted', 'deletedAt', 'deletedBy', 'deleteReason'
-      ]
+    admin: ['username', 'fullname', 'profilePicture', 'role', 'email', 'lastLoginAt', 'lastLogoutAt', 'status']
   },
   clicker: {
-    admin: [
-        'deviceCode', 'status', 'assignedToUserId',  
-        'isActive', 'isDeleted', 'deletedAt', 'deletedBy', 'deleteReason'
-      ]
+    admin: ['deviceCode', 'status', 'assignedToUserId']
   },
   question: {
-    teacher: ['text', 'options', 'correctOption', 'explanation', 'difficulty', 'isDeleted', 'deletedAt', 'deletedBy', 'deleteReason'],
+    teacher: ['text', 'options', 'correctOption', 'difficulty'],
   },
   quiz: {
     teacher: [
-      'title', 'description', 'creatorId', 'playerIds', 'questionIds', 'difficulty', 'status', 'isActive',
-      'isDeleted', 'deletedAt', 'deletedBy', 'deleteReason'
+      'title', 'description', 'creatorId', 'playerIds', 'questionIds', 'difficulty', 'status'
     ],
     admin: [
-      'title', 'description', 'creatorId', 'playerIds', 'questionIds', 'difficulty', 'status', 'isActive',
-      'isDeleted', 'deletedAt', 'deletedBy', 'deleteReason'
+      'title', 'description', 'creatorId', 'playerIds', 'questionIds', 'difficulty', 'status'
     ]
   },
-  response: {},
-  result: {},
   session: {
     teacher: {
       active: ['questions', 'deviceIds'],
-      paused: [],
       completed: ['status', 'deviceIds', 'questions', 'endTime'], 
-      cancelled: [],
-      archived: [],
     },
     admin: {
-      active: ['teacherId', 'deviceIds', 'quizId', 'questions', 'startTime', 'endTime', 'status', 'isDeleted', 'deletedAt', 'deletedBy', 'deleteReason'],
-      paused: [],
-      completed: ['teacherId', 'deviceIds', 'quizId', 'questions', 'startTime', 'endTime', 'status', 'isDeleted', 'deletedAt', 'deletedBy', 'deleteReason'],
-      cancelled: [],
-      archived: []
+      active: ['teacherId', 'deviceIds', 'quizId', 'questions', 'startTime', 'endTime', 'status'],
+      completed: ['teacherId', 'deviceIds', 'quizId', 'questions', 'startTime', 'endTime', 'status'],
     }  
   }
 };

@@ -1,4 +1,7 @@
-import { useState, useEffect } from "react";
+import { 
+    useState, 
+    useEffect 
+} from "react";
 import { getTotalDifficulties } from "../../services/difficulty.service";
 
 export const useDifficulties = () => {

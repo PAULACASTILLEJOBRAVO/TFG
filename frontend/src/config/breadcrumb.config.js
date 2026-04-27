@@ -6,6 +6,10 @@ export const breadcrumbConfig = {
         { label: "Users", href: "/dashboard_admin/users" },
         { label: "Create User", }
     ],
+    "/dashboard_admin/profile": [
+        { label: "Profile" }
+    ],
+    
     "/dashboard_teacher/quizzes": [
         { label: "Quizzes" }
     ],
@@ -21,8 +25,19 @@ export const breadcrumbConfig = {
         { label: "Quizzes", href: "/dashboard_teacher/quizzes" },
         { label: "Quiz's Session" }
     ],
+    "/dashboard_teacher/quizzes/:id/sessions": [
+        { label: "Quizzes", href: "/dashboard_teacher/quizzes" },
+        { label: "Quiz's Sessions" }
+    ],
+    "/dashboard_teacher/profile": [
+        { label: "Profile" }
+    ],
+
     "/dashboard_student/quizzes/:id/history": [
         { label: "Quizzes", href: "/dashboard_student/quizzes" },
         { label: "Quiz's History" }
+    ],
+    "/dashboard_student/profile": [
+        { label: "Profile" }
     ]
 }   

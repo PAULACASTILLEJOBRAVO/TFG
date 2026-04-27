@@ -1,0 +1,11 @@
+components:
+  schemas:
+    Role:
+      type: object
+      required:
+        - value
+      properties:
+        value:
+          type: string
+          description: The role value of the user (e.g., admin, user, teacher)
+          enum: ['admin', 'user', 'teacher']

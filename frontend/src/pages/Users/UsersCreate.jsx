@@ -1,4 +1,7 @@
-import { DashboardLayout,DashboardContent } from "@/components/Dashboard/Layout";
+import { 
+    DashboardLayout,
+    DashboardContent 
+} from "@/components/Dashboard/Layout";
 import { useUserActions } from "@/hooks/Users/useUserActions";
 import { Separator } from "@/components/ui/separator";
 import { AppBreadcrumb, CreateHeader } from "@/components/Common";
@@ -10,7 +13,7 @@ import { useTranslation } from "react-i18next";
 const UserCreate = () => {
     const { create } = useUserActions();
     
-    const [createUser, setCreateUser] = useState({ fullname: "", username: "", email: "", password: "", role: "", profilePicture: "" });
+    const [createUser, setCreateUser] = useState({ fullname: "", username: "", email: "", password: "", role: "student", profilePicture: "" });
     
     const navigate = useNavigate();
 

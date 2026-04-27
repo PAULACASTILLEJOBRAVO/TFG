@@ -1,4 +1,7 @@
-import { useState, useEffect } from "react";
+import { 
+    useState, 
+    useEffect 
+} from "react";
 import { getTotalRoles } from "../../services/role.service";
 
 export const useRoles = () => {

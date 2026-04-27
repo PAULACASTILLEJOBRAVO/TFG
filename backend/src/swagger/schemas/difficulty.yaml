@@ -1,0 +1,11 @@
+components:
+  schemas:
+    Difficulty:
+      type: object
+      required:
+        - value
+      properties:
+        value:
+          type: string
+          description: The difficulty value of the quiz (e.g., easy, medium, hard)
+          enum: ['easy', 'medium', 'hard']

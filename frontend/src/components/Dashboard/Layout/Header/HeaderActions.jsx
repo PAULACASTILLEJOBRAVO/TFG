@@ -5,8 +5,7 @@ import { headerConfig } from "@/config/header.config";
 import { 
     LanguageMenu, 
     ProfileMenu, 
-    ActionMenu, 
-    NotificationMenu
+    ActionMenu
 } from "./Actions";
 
 import { useAuth } from "@/auth/AuthContext";
@@ -29,8 +28,6 @@ const HeaderActions = () => {
             {ActionIcon && config?.actionType === "menu" && (
                 <ActionMenu icon={ActionIcon} />
             )}
-
-            <NotificationMenu unreadCount="2"/>
 
             <LanguageMenu/>
 

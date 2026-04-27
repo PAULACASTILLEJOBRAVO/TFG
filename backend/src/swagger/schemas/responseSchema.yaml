@@ -1,5 +1,57 @@
 components:
   schemas:
+    ResponseInput:
+      type: object
+      required:
+      - answer
+      - isCorrect
+      - timeTaken
+      - pointsAwarded
+      - playerId
+      - sessionId
+      - questionId
+      properties:
+        answer:
+          type: string
+          description: The answer provided by the player.
+          example: "Stack"
+        isCorrect:
+          type: boolean
+          description: Indicates if the answer is correct.
+          example: true
+        timeTaken:
+          type: integer
+          description: The time taken to answer the question in seconds.
+          default: 30
+        pointsAwarded:
+          type: integer
+          description: The points awarded for the answer.
+          default: 10
+        attemptNumber:
+          type: integer
+          description: The attempt number for this question.
+          default: 1
+        isFirstAttempt:
+          type: boolean
+          description: Indicates if this is the first attempt for the question.
+          default: true
+        isFinalAttempt:
+          type: boolean
+          description: Indicates if this is the final attempt for the question.
+          default: true
+        playerId:
+          type: objectId
+          description: The ID of the player who provided the response.
+          example: '68e28135fe97fd5d3f0cc3a4'
+        sessionId:
+          type: objectId
+          description: The ID of the game session.
+          example: '64b8f0c2e4b0f5a1c2d3e4f5'
+        questionId:
+          type: objectId
+          description: The ID of the question being answered.
+          example: '64f0c8e2b4d1c2a5f6e7d8c9'
+          
     Response:
       type: object
       required:

@@ -14,12 +14,14 @@ import { Fragment } from "react";
 const matchRoute = (pathname) => {
   if (breadcrumbConfig[pathname]) return breadcrumbConfig[pathname];
 
-  // Soporte básico para rutas dinámicas (/users/:id)
   return Object.entries(breadcrumbConfig).find(([route]) => {
     if (!route.includes(":")) return false;
 
-    const baseRoute = route.split("/:")[0];
-    return pathname.startsWith(baseRoute);
+    const regex = new RegExp(
+      "^" + route.replace(/:\w+/g, "[^/]+") + "$"
+    );
+
+    return regex.test(pathname);
   })?.[1];
 };
 

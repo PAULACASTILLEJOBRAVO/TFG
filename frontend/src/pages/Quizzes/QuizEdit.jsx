@@ -55,7 +55,7 @@ const QuizEdit = () => {
 
   const handleEditQuiz = async () => {
     setSubmitted(true);
-    if(quizError || questionError.some(error => error)) return;
+    if(quizError || questionErrors.some(error => error)) return;
 
     try {
       await update(id, {quizFields: editQuiz, questions: questionsList});
@@ -69,7 +69,7 @@ const QuizEdit = () => {
   const [questionsList, setQuestionsList] = useState([ createNewQuestion() ]);
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0);
 
-  const questionError = questionsList.length > 0 ? questionsList.map(question => validateQuestion(question)) : [];
+  const questionErrors = questionsList.length > 0 ? questionsList.map(question => validateQuestion(question)) : [];
 
   const handleAddQuestion = (newQuestion) => {
     setQuestionsList(prev => {
@@ -266,7 +266,8 @@ const QuizEdit = () => {
             activeQuestion={activeQuestion} 
             selectedStudents={selectedStudents}
             quizError={quizError}
-            questionError={questionError[selectedQuestionIndex]}
+            questionError={questionErrors[selectedQuestionIndex]}
+            questionErrors={questionErrors}
             touched={touched}
             submitted={submitted}
             onUpdate={handleUpdate}  

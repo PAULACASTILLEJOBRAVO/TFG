@@ -12,6 +12,7 @@
         "settings": "Configuración",
         "tutorial": "Tutorial",
 
+        "archive": "Archivar",
         "create": "Crear",
         "edit": "Editar",
         "delete": "Eliminar",
@@ -167,7 +168,7 @@
                     "role": "Rol",
                     "lastLogin": "Último login",
                     "lastLogout": "Último logout",
-                    "archived": "Usuario archivado"
+                    "archived": "Archivado"
                 },
                 "edit": {
                     "description": "Edición del usuario",
@@ -183,14 +184,18 @@
                 "delete": {
                     "title": "Eliminar usuario",
                     "description": "¿Estás seguro de que deseas eliminar este usuario? Esta acción no se puede deshacer.",
-                    "warning": "El usuario {{username}} no podrá volver a iniciar sesión.",
-                    "reasonLabel": "Motivo de eliminación"
+                    "warning": "El usuario {{username}} será eliminado permanentemente."
                 },
                 "changePassword": {
                     "title": "Cambiar contraseña",
                     "description": "Establece una nueva contraseña para el usuario {{username}}.",
                     "newPassword": "Nueva contraseña",
                     "confirmPassword": "Confirmar contraseña"
+                },
+                "archive": {
+                    "title": "Archivar usuario",
+                    "description": "¿Estás seguro de que deseas archivar este usuario? Esta acción desactivará la cuenta del usuario. Podrá ser restaurada más tarde si es necesario.",
+                    "warning": "El usuario {{username}} ya no podrá iniciar sesión."
                 }
             },
 

@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
 
-const UserFooterEdit = ({ label, onCancel, onSave }) => {
+const UserFooterEdit = ({ onCancel, onSave }) => {
     const { t } = useTranslation();
 
     return(

@@ -4,7 +4,8 @@ import {
     changePasswordUser, 
     restoreUser, 
     updateUser, 
-    createUser 
+    createUser,
+    archiveUser
 } from "@/services/user.service";
 
 export const useUserActions = () => {
@@ -124,5 +125,27 @@ export const useUserActions = () => {
         }
     };
 
-    return { create, update, changePassword, remove, restore, loading, error, message };
+    const archive = async (id) => {
+        try {
+            setLoading(true);
+            const data = await archiveUser(id);
+            
+            if(data.error){
+                setError(data.error);
+                setMessage(data.message || "");
+                return [];
+            }else{
+                setMessage(data.message || "");
+                return data.data || [];
+            }
+        } catch (err) {
+            const errorMessage = err.response?.data?.message || err.message || "Error desconocido";
+            setError(errorMessage);
+            throw err;
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return { create, update, changePassword, remove, restore, archive, loading, error, message };
 }

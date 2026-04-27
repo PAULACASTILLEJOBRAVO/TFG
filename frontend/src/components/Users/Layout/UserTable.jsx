@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next";
 import { TablePaginationFooter } from "@/components/Common";
 import { icons } from "@/utils/constants";
 
-const UserTable = ({users, currentPage, totalPages, onPageChange, rowsPerPage, onRowsPerPageChange, sortConfig, onSort, onEdit, onDelete, onChangePassword, onRestore, loading, onSelect}) => {
+const UserTable = ({users, currentPage, totalPages, onPageChange, rowsPerPage, onRowsPerPageChange, sortConfig, onSort, onEdit, onDelete, onArchive, onChangePassword, onRestore, loading, onSelect}) => {
     if (loading) return <div className="flex justify-center"><Spinner className="h-10 w-10" color="blue" /></div>;
 
     const { t } = useTranslation();
@@ -118,6 +118,7 @@ const UserTable = ({users, currentPage, totalPages, onPageChange, rowsPerPage, o
                                 user={user}
                                 onEdit={onEdit}
                                 onDelete={onDelete}
+                                onArchive={onArchive}
                                 onChangePassword={onChangePassword}
                                 onRestore={onRestore}
                                 onSelect={() => onSelect(user)}

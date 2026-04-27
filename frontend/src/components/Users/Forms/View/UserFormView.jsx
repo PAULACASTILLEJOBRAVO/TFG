@@ -29,12 +29,6 @@ const UserFormView = ({user}) => {
                     <InfoBlock label={t("admin.usersManagement.drawer.view.lastLogin")} value={user.lastLoginAt ? new Date(user.lastLoginAt).toLocaleDateString() : "Nunca"} />
                     <InfoBlock label={t("admin.usersManagement.drawer.view.lastLogout")} value={user.lastLogoutAt ? new Date(user.lastLogoutAt).toLocaleDateString() : "Nunca"} />
                 </div>
-                    
-                {user.status === 'inactive' && (
-                    <div className="grid grid-rows-2 rounded-md border bg-red-50 p-3 space-y-3">    
-                        <Label className="text-sm font-medium text-red-700 text-center">{t("admin.usersManagement.drawer.view.archived")}</Label>
-                    </div>
-                )}
             </div>
     );
 }

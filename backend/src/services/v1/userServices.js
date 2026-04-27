@@ -2,6 +2,7 @@
 const User = require('../../models/User');
 const Quiz = require('../../models/Quiz');
 const Clicker = require('../../models/Clicker');
+const { mongo, default: mongoose } = require('mongoose');
 
 // Debug
 const debug = require('debug')('backend:services:v1:userServices');
@@ -106,10 +107,10 @@ const createUser = async (body) => {
     }
 }
 
-// Service to delete an user by ID
-const deleteUserById = async (id) => {
+// Service to archive an user by ID
+const archiveUserById = async (id) => {
     try {
-        debug('Attempting to delete user with ID:', id);
+        debug('Attempting to archive user with ID:', id);
 
         const user = await getUserById(id);
         debug('User found:', user);
@@ -122,7 +123,7 @@ const deleteUserById = async (id) => {
 
         return true; // Return true if deletion was successful
     } catch (error) {
-        debug('Error deleting user:', error);
+        debug('Error archiving user:', error);
         throw new Error(error.message);
     }
 }
@@ -181,16 +182,73 @@ const updatePasswordById = async ({id, body, _id, role}) => {
     }
 }
 
+// Service to delete an user permanently by ID
+const deleteUserPermanentlyById = async (id) => {
+    try {
+        debug('Attempting to permanently delete user with ID:', id);
+
+        const user = await getUserById(id);
+        if(!user) return false;
+
+        debug('User found:', user);
+
+        const Quiz = mongoose.model('Quiz');
+        const Session = mongoose.model('Session');
+        const Clicker = mongoose.model('Clicker');
+        const Response = mongoose.model('Response');
+        const Result = mongoose.model('Result');
+
+        // Cascade delete response created by a student
+        if(user.role === "student"){
+            debug('User is a student, deleting associated responses and results');
+            await Promise.all([
+                Response.deleteMany({ playerId: id }),
+                Result.deleteMany({ playerId: id }),
+                Clicker.updateMany({ assignedToUserId: id }, { $set: { assignedToUserId: null, status: "available" } })
+            ]);
+
+            debug('Student cleanup completed: responses, results deleted and clickers unassigned');
+        }
+
+        // Cascade delete quizzes created by a teacher
+        if(user.role === "teacher"){
+            debug('User is a teacher, deleting associated quizzes');
+
+            // Delete dependencies: responses and results associated with those sessions
+            await Promise.all([
+                Response.deleteMany({ sessionId: { $in: await Session.find({ teacherId: id }).distinct('_id') } }),
+                Result.deleteMany({ sessionId: { $in: await Session.find({ teacherId: id }).distinct('_id') } })
+            ]);
+
+
+            // Delete the teacher's quizzes and sessions
+            await Promise.all([
+                Quiz.deleteMany({ creatorId: id }),
+                Session.deleteMany({ teacherId: id })
+            ]); 
+
+            debug('Teacher cleanup completed: quizzes deleted');
+        }
+
+        // Finally, delete the user permanently
+        await User.deleteOne({ _id: id });
+
+        debug('User permanently deleted successfully');
+        return true;
+    }catch (error) {
+        debug('Error permanently deleting user:', error);
+        throw new Error(error.message);
+    }
+};
+
 // Export service functions
 module.exports = {
     getAllUsers,
     getMe,
-
     getTotalUsersStats,
     getActiveUsersStats,
     getConnectedUsersStats,
     getArchivedUsersStats,
-    
     getAllStudents,
     getAllStudentsWithoutClicker,
 
@@ -198,8 +256,8 @@ module.exports = {
 
     updateUserById,
     updatePasswordById,
-    
     restoreUserById,
+    archiveUserById,
 
-    deleteUserById,
+    deleteUserPermanentlyById
 };

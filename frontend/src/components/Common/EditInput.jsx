@@ -18,7 +18,7 @@ const EditInput = ({label, value, type = "text", error, isRequired = false, erro
     const message = error ? errorMessage : helperText;
 
     return(
-        <>
+        <div>
             <div className="relative w-full">
                 <Input
                     id={props.id}
@@ -102,7 +102,7 @@ const EditInput = ({label, value, type = "text", error, isRequired = false, erro
                     </p>
                 )}
             </div>
-        </>
+        </div>
     )
 }
 

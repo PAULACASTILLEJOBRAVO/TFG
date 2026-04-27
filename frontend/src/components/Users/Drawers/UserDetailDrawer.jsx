@@ -23,7 +23,7 @@ import {
 } from "@/utils/validators";
 import { useTranslation } from "react-i18next";
 
-const UserDetailDrawer = ({open, user, drawerMode, onView, onClose, onEdit, onSave, onDelete, onChangePassword, onRestore }) => {
+const UserDetailDrawer = ({open, user, drawerMode, onView, onClose, onEdit, onSave, onDelete, onArchive, onChangePassword, onRestore }) => {
     const [editUser, setEditUser] = useState({ fullname: "", username: "", email: "", role: "", profilePicture: "" });
 
     const [submitted, setSubmitted] = useState(false);
@@ -93,15 +93,16 @@ const UserDetailDrawer = ({open, user, drawerMode, onView, onClose, onEdit, onSa
                 )} 
 
                 {/** FOOTER */}
-                <SheetFooter className="absolute bottom-6 left-6 right-6 flex gap-2">
+                <SheetFooter className="bottom-6 left-6 right-6 flex gap-2">
                     {drawerMode === "view" && (
                         <UserActionCell
                             onEdit={() => onEdit(user)}
                             onDelete={() => onDelete(user)}
+                            onArchive={() => onArchive(user)}
                             onChangePassword={() => onChangePassword(user)}
                             onRestore={() => onRestore(user)}
                             label={t("admin.usersManagement.labelButton")}
-                            deleted={user.status === 'inactive'}
+                            archived={user.status === 'inactive'}
                         />
                     )}
 

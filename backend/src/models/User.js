@@ -315,6 +315,7 @@ userSchema.pre('save', async function(next) {
   try {
     const Quiz = mongoose.model('Quiz');
     const Session = mongoose.model('Session');
+    const Clicker = mongoose.model('Clicker');
     
       // Case 1: Soft-delete
     if (this.isModified('status') && this.status === 'inactive' && this.role !== 'student') {   // Only act if the user is being soft-deleted
@@ -335,6 +336,19 @@ userSchema.pre('save', async function(next) {
       debug(`Sessions created by user ${this._id} marked as archived.`);
 
       debug(`Soft-delete cascade applied for user ${this._id}`);
+    }
+
+    if (this.isModified('status') && this.status === 'inactive' && this.role === 'student') {
+      debug('User is being soft-deleted and is a student, applying cascade actions for user:', this._id);
+
+      // Mark clickers assigned to this student as available
+      await Clicker.updateMany(
+        { assignedToUserId: this._id }, 
+        { $set: { assignedToUserId: null, status: 'available' } }
+      );
+      debug(`Clickers assigned to user ${this._id} marked as available.`);
+
+      debug(`Soft-delete cascade applied for student user ${this._id}`);
     }
 
     // Case 2: Restore

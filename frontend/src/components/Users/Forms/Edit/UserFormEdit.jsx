@@ -10,12 +10,13 @@ const UserFormEdit = ({data, onChange, emailError, touched, submitted, onBlur}) 
         <div className="space-y-3 text-center sm:text-left">
             <Separator/>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">   
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4"> 
                 <EditInput 
                     label={t("admin.usersManagement.drawer.edit.fullName")} 
                     value={data.fullname} 
                     onChange={e => onChange("fullname", e.target.value)}
-                />                
+                />     
+                           
                 <EditInput 
                     label={t("admin.usersManagement.drawer.edit.email")} 
                     value={data.email} 
@@ -24,12 +25,14 @@ const UserFormEdit = ({data, onChange, emailError, touched, submitted, onBlur}) 
                     errorMessage={emailError?.email}
                     isRequired={true}
                     onBlur={() => onBlur("email")}
-                />
+                /> 
 
-                <UserRoleSelector
-                    value={data.role}
-                    onChange={value => onChange("role", value)}
-                />
+                <div className="md:col-start-1">
+                    <UserRoleSelector
+                        value={data.role}
+                        onChange={value => onChange("role", value)}
+                    />
+                </div>
             </div>
         </div>
     );

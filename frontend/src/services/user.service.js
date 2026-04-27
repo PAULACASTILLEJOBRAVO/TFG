@@ -40,10 +40,13 @@ export const getUserById = async () => {
     return response.data;
 }
 
-export const deleteUser = async (id, payload) => {
-    const response = await api.delete(`/users/${id}`, {
-        data: payload
-    });
+export const archiveUser = async (id) => {
+    const response = await api.post(`/users/${id}/archive`);
+    return response.data;
+}
+
+export const deleteUser = async (id) => {
+    const response = await api.delete(`/users/${id}`);
     return response.data;
 }
 

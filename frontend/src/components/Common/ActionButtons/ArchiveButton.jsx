@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
+import { Archive } from "lucide-react";
 import { 
     Tooltip, 
     TooltipContent, 
@@ -7,27 +7,27 @@ import {
 } from "@/components/ui/tooltip";
 import { useTranslation } from "react-i18next";
 
-const DeleteButton = ({ onClick, label }) => {
+const ArchiveButton = ({ onClick, label }) => {
     const { t } = useTranslation();
 
     return(
         <Tooltip>
             <TooltipTrigger asChild>
                 <Button 
-                    className="[&_svg]:size-4 text-red-800 hover:bg-red-300"
+                    className="[&_svg]:size-4 text-red-500 bg-transparent hover:bg-white hover:text-red-600"
                     variant="ghost"
                     size="icon"
                     onClick={onClick}
                 >
-                    <Trash2 />
+                    <Archive />
                 </Button>
             </TooltipTrigger>
 
             <TooltipContent>
-                {t("common.delete")} {label}
+                {t("common.archive")} {label}
             </TooltipContent>
         </Tooltip>
     );
 }
 
-export default DeleteButton;
+export default ArchiveButton;

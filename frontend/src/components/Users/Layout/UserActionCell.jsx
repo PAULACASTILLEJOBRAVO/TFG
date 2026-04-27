@@ -1,11 +1,12 @@
 import { 
     EditButton, 
     DeleteButton, 
-    RestoreButton
+    RestoreButton,
+    ArchiveButton
 } from "@/components/Common/ActionButtons";
 import { PasswordButton } from "../Buttons";
 
-const UserActionCell = ({ label, onEdit, onDelete, onChangePassword, onRestore, deleted }) => {
+const UserActionCell = ({ label, onEdit, onDelete, onArchive, onChangePassword, onRestore, archived }) => {
     return(
         <div className="flex justify-center items-center gap-2">
             {onEdit && (
@@ -21,7 +22,7 @@ const UserActionCell = ({ label, onEdit, onDelete, onChangePassword, onRestore, 
                 />
             )}
 
-             {deleted ? (
+             {archived ? (
                 onRestore && (
                     <RestoreButton 
                         onClick={onRestore} 
@@ -29,12 +30,19 @@ const UserActionCell = ({ label, onEdit, onDelete, onChangePassword, onRestore, 
                     />
                 )
             ) : (
-                onDelete && (
-                    <DeleteButton
-                        onClick={onDelete}
+                onArchive && (
+                    <ArchiveButton
+                        onClick={onArchive}
                         label={label}
                     />
                 )
+            )}
+
+            {onDelete && (
+                <DeleteButton 
+                    onClick={onDelete}
+                    label={label}
+                />
             )}
         </div>
     );

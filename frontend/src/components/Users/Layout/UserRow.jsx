@@ -6,7 +6,7 @@ import { UserActionCell } from ".";
 import { rolesType } from "@/utils/constants";
 import { useTranslation } from "react-i18next";
 
-const UserRow = ({user, onEdit, onDelete, onChangePassword, onRestore, onSelect}) => {
+const UserRow = ({user, onEdit, onDelete, onArchive, onChangePassword, onRestore, onSelect}) => {
     const { t } = useTranslation();
 
     return(
@@ -41,8 +41,12 @@ const UserRow = ({user, onEdit, onDelete, onChangePassword, onRestore, onSelect}
                         event.stopPropagation();
                         onRestore(user)
                     }}
+                    onArchive={(event) => {
+                        event.stopPropagation();
+                        onArchive(user)
+                    }}
                     label={t("admin.usersManagement.labelButton")}
-                    deleted={user.status === 'inactive'}
+                    archived={user.status === 'inactive'}
                 />
             </TableCell>
         </TableRow>

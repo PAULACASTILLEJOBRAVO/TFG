@@ -12,6 +12,7 @@
         "settings": "Settings",
         "tutorial": "Tutorial",
 
+        "archive": "Archive",
         "create": "Create",
         "edit": "Edit",
         "delete": "Delete",
@@ -167,7 +168,7 @@
                     "role": "Role",
                     "lastLogin": "Last login",
                     "lastLogout": "Last logout",
-                    "archived": "Archived user"
+                    "archived": "Archived"
                 },
                 "edit": {
                     "description": "User edition",
@@ -183,14 +184,18 @@
                 "delete": {
                     "title": "Delete user",
                     "description": "Are you sure you want to delete this user? This action cannot be undone.",
-                    "warning": "The user {{username}} will no longer be able to log in.",
-                    "reasonLabel": "Reason for deletion"
+                    "warning": "The user {{username}} will be permanently deleted."
                 },
                 "changePassword": {
                     "title": "Change password",
                     "description": "Enter a new password for the user {{username}}.",
                     "newPassword": "New password",
                     "confirmPassword": "Confirm password"
+                },
+                "archive": {
+                    "title": "Archive user",
+                    "description": "Are you sure you want to archive this user? This action will deactivate the user's account. It can be restored later if needed.",
+                    "warning": "The user {{username}} will no longer be able to log in."
                 }
             },
 

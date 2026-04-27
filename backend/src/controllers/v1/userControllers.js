@@ -238,9 +238,9 @@ const createUser = async (req, res) => {
     }
 }
 
-// Controller to delete an user by ID
-const deleteUserById = async (req, res) => {
-    debug('Deleting user by ID');
+// Controller to archive an user by ID
+const archiveUserById = async (req, res) => {
+    debug('Archiving user by ID');
     
     const { id } = req.params;
     debug('User ID:', id);
@@ -249,25 +249,25 @@ const deleteUserById = async (req, res) => {
     debug('User ID is valid');
 
     try{
-        debug('Attempting to delete user');
-        const deleted = await userServices.deleteUserById(id);
-        debug('Delete operation completed, result:', deleted);
+        debug('Attempting to archive user');
+        const archived = await userServices.archiveUserById(id);
+        debug('Archive operation completed, result:', archived);
 
-        if (!deleted) return res.status(404).json({ message: 'User not found' });
-        debug('User deleted successfully, sending response');
+        if (!archived) return res.status(404).json({ message: 'User not found' });
+        debug('User archived successfully, sending response');
 
         res.status(200).json({
-            message: 'User deleted successfully'
+            message: 'User archived successfully'
         });
     }catch(error){
         res.status(500).json({
-            message: 'Error deleting user',
+            message: 'Error archiving user',
             error: error.message
         })
     }
 }
 
-// Controller to delete an user by ID
+// Controller to restore an user by ID
 const restoreUserById = async (req, res) => {
     debug('Restoring user by ID');
     const { id } = req.params;
@@ -352,17 +352,44 @@ const updatePasswordById = async (req, res) => {
     }
 }
 
+// Controller to permanently delete an user by ID
+const deleteUserPermanentlyById = async (req, res) => {
+    debug('Permanently deleting user by ID');
+    
+    const { id } = req.params;
+    debug('User ID:', id);
+
+    if(!id) return res.status(400).json({ message: 'User ID is required'});
+    debug('User ID is valid');
+
+    try{
+        debug('Attempting to permanently delete user');
+        const deleted = await userServices.deleteUserPermanentlyById(id);
+        debug('Delete operation completed, result:', deleted);
+
+        if (!deleted) return res.status(404).json({ message: 'User not found' });
+        debug('User permanently deleted successfully, sending response');
+
+        res.status(200).json({
+            message: 'User permanently deleted successfully'
+        });
+    }catch(error){
+        res.status(500).json({
+            message: 'Error permanently deleting user',
+            error: error.message
+        })
+    }
+}
+
 //Export controller functions
 module.exports = {
     getAllUsers,
     getMe,
-
     getTotalUsersStats,
     getActiveUsersStats,
     getConnectedUsersStats,
     getArchivedUsersStats,
     getTotalStudentsStatsForTeacher,
-    
     getAllStudentsForTeacher,
     getAllStudentsForAdmin,
     
@@ -371,6 +398,7 @@ module.exports = {
     updateUserById,
     updatePasswordById,
     restoreUserById,
+    archiveUserById,
 
-    deleteUserById
+    deleteUserPermanentlyById
 };  

@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
 
-const DeleteUserDialog = ({open, user, onConfirm, onClose}) => {
+const ArchiveUserDialog = ({open, user, onConfirm, onClose}) => {
     const { t } = useTranslation();
 
     return(
@@ -17,18 +17,18 @@ const DeleteUserDialog = ({open, user, onConfirm, onClose}) => {
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>
-                        {t("admin.usersManagement.dialogs.delete.title")}
+                        {t("admin.usersManagement.dialogs.archive.title")}
                     </DialogTitle>
                 </DialogHeader>
                 <DialogDescription>
-                    {t("admin.usersManagement.dialogs.delete.description")}
+                    {t("admin.usersManagement.dialogs.archive.description")}
                     <br />
-                    <strong>{t("admin.usersManagement.dialogs.delete.warning", {username: user.username})}</strong>
+                    <strong>{t("admin.usersManagement.dialogs.archive.warning", {username: user.username})}</strong>
                 </DialogDescription>
 
                 <DialogFooter className="gap-2">
                     <Button variant="destructive" onClick={() => onConfirm()}>
-                        {t("common.delete")}
+                        {t("common.archive")}
                     </Button>
 
                     <Button variant="outline" onClick={onClose}>
@@ -40,4 +40,4 @@ const DeleteUserDialog = ({open, user, onConfirm, onClose}) => {
     );
 }
 
-export default DeleteUserDialog;
+export default ArchiveUserDialog;

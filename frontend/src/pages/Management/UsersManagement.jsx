@@ -10,7 +10,8 @@ import {
 } from "react";
 import { 
     DeleteUserDialog, 
-    ChangePasswordUserDialog
+    ChangePasswordUserDialog,
+    ArchiveUserDialog
 } from "@/components/Users/Dialogs";
 import { useUserActions } from "@/hooks/Users/useUserActions";
 import { UserDetailDrawer } from "@/components/Users/Drawers";    
@@ -27,7 +28,7 @@ import {
 const UserManagement = () => {
     // DATA
     const { users, loading: loadingManagement, refetch  } = useUsers();
-    const { remove, changePassword, restore, update } = useUserActions();
+    const { remove, changePassword, restore, update, archive } = useUserActions();
 
     // SELECTIONATED ROW
     const [selectedUser, setSelectedUser] = useState(null);
@@ -39,7 +40,8 @@ const UserManagement = () => {
     //DIALOGS
     const [dialogs, setDialogs] = useState({
         delete: false,
-        changePassword: false
+        changePassword: false,
+        archive: false
     });
 
     // Navigation
@@ -180,6 +182,11 @@ const UserManagement = () => {
         setDialogs(prev => ({...prev, delete: true}));
     }
 
+    const openArchiveDialog = (user) => {
+        setSelectedUser(user);
+        setDialogs(prev => ({...prev, archive: true}));
+    }
+
     const openChangePasswordDialog = (user) => {
         setSelectedUser(user);
         setDialogs(prev => ({...prev, changePassword: true}));
@@ -188,6 +195,7 @@ const UserManagement = () => {
     const closeDialogs = () => {
         setDialogs({
             delete: false,
+            archive: false,
             changePassword: false
         });
     }
@@ -204,13 +212,23 @@ const UserManagement = () => {
     }
 
     // DIALOGS ACTIONS
-    const handleConfirmDelete = async (reason) => {
+    const handleConfirmDelete = async () => {
         try{
-            await remove(selectedUser._id, {reason: reason});
+            await remove(selectedUser._id);
             closeDialogs();
             refetch();
         }catch(error){
             console.error("Error deleting user:", error);
+        }
+    }
+
+    const handleConfirmArchive = async () => {
+        try{
+            await archive(selectedUser._id);
+            closeDialogs();
+            refetch();
+        }catch(error){
+            console.error("Error archiving user:", error);
         }
     }
 
@@ -255,6 +273,7 @@ const UserManagement = () => {
                     onSelect={handleSelectUser}
                     onEdit={handleEditUser}
                     onDelete={openDeleteDialog}
+                    onArchive={openArchiveDialog}
                     onChangePassword={openChangePasswordDialog}
                     onRestore={handleRestoreUser}
                 />
@@ -268,6 +287,7 @@ const UserManagement = () => {
                     onEdit={handleEditUser}
                     onSave={handleUpdateUser}
                     onDelete={openDeleteDialog}
+                    onArchive={openArchiveDialog}
                     onChangePassword={openChangePasswordDialog}
                     onRestore={handleRestoreUser}
                 />
@@ -283,6 +303,13 @@ const UserManagement = () => {
                     open={dialogs.changePassword}
                     user={selectedUser}
                     onConfirm={handleConfirmChangePassword}
+                    onClose={closeDialogs}
+                />}
+
+                {selectedUser && <ArchiveUserDialog
+                    open={dialogs.archive}
+                    user={selectedUser}
+                    onConfirm={handleConfirmArchive}
                     onClose={closeDialogs}
                 />}
             </DashboardContent>

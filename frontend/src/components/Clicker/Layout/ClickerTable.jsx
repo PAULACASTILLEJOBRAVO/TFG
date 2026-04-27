@@ -17,6 +17,15 @@ const ClickerTable = ({clickers, currentPage, totalPages, onPageChange, rowsPerP
 
     const { t } = useTranslation();
 
+    const getHeaderClass = (key) => `
+        flex items-center w-full h-full px-3 py-2 transition-colors justify-between rounded-tl-md rounded-tr-md
+        ${
+            sortConfig.key === key
+                ? "bg-black text-white font-medium"
+                : "text-muted-foreground hover:bg-gray-300 bg-white"
+        }
+    `;
+
     return(
         <div className="w-full rounded-md border">
             <Table>
@@ -24,16 +33,16 @@ const ClickerTable = ({clickers, currentPage, totalPages, onPageChange, rowsPerP
                     <TableRow>
                         <TableHead
                             onClick={() => onSort("deviceCode")}
-                            className="cursor-pointer select-none hover:bg-muted/40"
+                            className="cursor-pointer select-none align-middle p-0"
                         >
-                            <div className="flex items-center">
+                            <div className={getHeaderClass("deviceCode")}>
                                 {t("admin.clickersManagement.table.code")}
 
                                 {sortConfig.key === "deviceCode" && (
                                     <span className="ml-1">
                                         {sortConfig.direction === "asc"
-                                            ? <icons.arrowUp className="h-3 w-3" />
-                                            : <icons.arrowDown className="h-3 w-3" />
+                                            ? <icons.arrowUp className="h-4 w-4" />
+                                            : <icons.arrowDown className="h-4 w-4" />
                                         }
                                     </span>
                                 )}
@@ -41,16 +50,16 @@ const ClickerTable = ({clickers, currentPage, totalPages, onPageChange, rowsPerP
                         </TableHead>
                         <TableHead
                             onClick={() => onSort("assignedToUser")}
-                            className="cursor-pointer select-none hover:bg-muted/40"
+                            className="cursor-pointer select-none align-middle p-0"
                         >
-                            <div className="flex items-center">
+                            <div className={getHeaderClass("assignedToUser")}>
                                 {t("admin.clickersManagement.table.assignedUser")}
 
                                 {sortConfig.key === "assignedToUser" && (
                                     <span className="ml-1">
                                         {sortConfig.direction === "asc"
-                                            ? <icons.arrowUp className="h-3 w-3" />
-                                            : <icons.arrowDown className="h-3 w-3" />
+                                            ? <icons.arrowUp className="h-4 w-4" />
+                                            : <icons.arrowDown className="h-4 w-4" />
                                         }
                                     </span>
                                 )}
@@ -58,16 +67,16 @@ const ClickerTable = ({clickers, currentPage, totalPages, onPageChange, rowsPerP
                         </TableHead>
                         <TableHead
                             onClick={() => onSort("status")}
-                            className="cursor-pointer select-none hover:bg-muted/40"
+                            className="cursor-pointer select-none align-middle p-0"
                         >
-                            <div className="flex items-center">
+                            <div className={getHeaderClass("status")}>
                                 {t("admin.clickersManagement.table.status")}
 
                                 {sortConfig.key === "status" && (
                                     <span className="ml-1">
                                         {sortConfig.direction === "asc"
-                                            ? <icons.arrowUp className="h-3 w-3" />
-                                            : <icons.arrowDown className="h-3 w-3" />
+                                            ? <icons.arrowUp className="h-4 w-4" />
+                                            : <icons.arrowDown className="h-4 w-4" />
                                         }
                                     </span>
                                 )}

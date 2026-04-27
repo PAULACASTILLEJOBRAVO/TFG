@@ -9,7 +9,7 @@ const StudentsQuizRow = ({index, student, onSelect}) => {
     const { t } = useTranslation();
 
     return(
-        <TableRow onClick={() => onSelect(student)} className="cursor-pointer hover:bg-muted">
+        <TableRow onClick={() => onSelect(student)} className="cursor-pointer hover:bg-gray-200">
             <TableCell className="font-bold">{index + 1}</TableCell>
             <TableCell className="font-medium capitalize">{student.name}</TableCell>
             <TableCell>{student.sessionsCount}</TableCell>

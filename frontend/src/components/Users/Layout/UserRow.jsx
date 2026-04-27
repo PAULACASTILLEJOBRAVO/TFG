@@ -10,7 +10,7 @@ const UserRow = ({user, onEdit, onDelete, onChangePassword, onRestore, onSelect}
     const { t } = useTranslation();
 
     return(
-        <TableRow onClick={onSelect} className={`cursor-pointer hover:bg-muted ${user.status === 'inactive' ? "bg-red-50 hover:bg-red-100 text-gray-500" : ""}`}>
+        <TableRow onClick={onSelect} className={`cursor-pointer hover:bg-gray-200 ${user.status === 'inactive' ? "bg-red-50 hover:bg-red-100 text-gray-500" : ""}`}>
             <TableCell className="font-medium capitalize">{user.username}</TableCell>
             <TableCell className="hidden md:table-cell">{user.email}</TableCell>
             <TableCell className="capitalize">{t(rolesType[user.role])}</TableCell>

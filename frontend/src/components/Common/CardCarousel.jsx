@@ -12,7 +12,19 @@ import { TOLERANCE } from "@/utils/constants";
 const CardCarousel = ({ children, loading, basePath }) => {
     const scrollRef = useRef(null);
     const navigate = useNavigate();
-    const [, forceUpdate] = useState(0);
+    
+    const [canLeft, setCanLeft] = useState(false);
+    const [canRight, setCanRight] = useState(false);
+
+    const updateScrollState = () => {
+        const el = scrollRef.current;
+        if (!el) return;
+
+        const max = el.scrollWidth - el.clientWidth;
+
+        setCanLeft(el.scrollLeft > TOLERANCE);
+        setCanRight(max - el.scrollLeft > TOLERANCE);
+    };
 
     const scroll = (direction) => {
         const el = scrollRef.current;
@@ -25,34 +37,28 @@ const CardCarousel = ({ children, loading, basePath }) => {
             behavior: "smooth",
         });
 
-        requestAnimationFrame(() => {
-            el.dispatchEvent(new Event("scroll"));
-        });
+        requestAnimationFrame(updateScrollState);
     };
 
     useEffect(() => {
         const el = scrollRef.current;
         if (!el) return;
 
-        const handleScroll = () => forceUpdate(x => x + 1);
+        updateScrollState();
+
+        const handleScroll = () => {
+            updateScrollState();
+        };
 
         el.addEventListener("scroll", handleScroll);
         return () => el.removeEventListener("scroll", handleScroll);
     }, []);
 
-    const getScrollState = () => {
-        const el = scrollRef.current;
-        if (!el) return { left: false, right: false };
-
-        const max = el.scrollWidth - el.clientWidth;
-
-        return {
-            left: el.scrollLeft > TOLERANCE,
-            right: max - el.scrollLeft > TOLERANCE,
-        };
-    };
-
-    const { left: canLeft, right: canRight } = getScrollState();
+    useEffect(() => {
+        requestAnimationFrame(() => {
+            updateScrollState();
+        });
+    }, [children, loading]);
 
     const handleClick = (child) => {
         if (!basePath || !child?.props?.quiz?._id) return;

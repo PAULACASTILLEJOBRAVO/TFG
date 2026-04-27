@@ -1,7 +1,5 @@
 import { useRef } from "react";
-import { Pencil } from "lucide-react";
 import { UserAvatar } from "@/components/Dashboard/Layout/Sidebar";
-import { Button } from '@/components/ui/button';
 import { ChangePhotoButton } from "../../Buttons";
 
 const UserProfilePictureChanger = ({avatar, username, onChange}) => {

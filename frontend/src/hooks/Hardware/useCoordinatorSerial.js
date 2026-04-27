@@ -3,7 +3,6 @@ import {
     connectCoordinator, 
     attemptReconnect, 
     disconnectCoordinator,
-
     listenResponse,
     sendCommand
 } from "@/services/hardware/serial.service";

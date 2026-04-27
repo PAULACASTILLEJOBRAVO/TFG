@@ -1,4 +1,7 @@
-import { useState, useEffect } from "react";
+import { 
+    useState, 
+    useEffect 
+} from "react";
 import { getTotalClickers } from "../../services/clicker.service";
 
 export const useClickers = () => {

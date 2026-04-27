@@ -54,7 +54,7 @@ const DashboardSidebar = () => {
                     <SidebarGroup>
                         <SidebarGroupContent>
                             <SidebarMenu>
-                                {config.map((item, index) => {
+                                {config.map((item) => {
                                     const isActive = isSidebarItemActive(pathname, item.href); // Subroutes
                                     const ActionIcon = item?.icon ? icons[item.icon] : null;
 

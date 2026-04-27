@@ -27,10 +27,10 @@ const responseSchema = new Schema({
         ref: 'Session',
         required: true 
     },
-    questionId: { 
-        type: mongoose.Schema.Types.ObjectId, 
+    questionId: {
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Question',
-        required: true 
+        required: true
     }
 }, { 
     timestamps: true, // Add createdAt and updatedAt fields

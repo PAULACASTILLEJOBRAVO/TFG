@@ -17,28 +17,22 @@ const UserFormView = ({user}) => {
                     <InfoBlock label={t("admin.usersManagement.drawer.view.email")} value={user.email} />
                 </div>
 
-                <InfoBlock label={t("admin.usersManagement.drawer.view.role")} value={rolesType[user.role]} />
+                <InfoBlock label={t("admin.usersManagement.drawer.view.role")} value={t(rolesType[user.role])} />
 
                 <Separator/>
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 justify-items-center items-center">     
                     <UserStatusChip 
-                        isActive={user.isActive}
-                        isDelete={user.isDelete}
+                        deleted={user.status === 'inactive'}
                     />
 
                     <InfoBlock label={t("admin.usersManagement.drawer.view.lastLogin")} value={user.lastLoginAt ? new Date(user.lastLoginAt).toLocaleDateString() : "Nunca"} />
                     <InfoBlock label={t("admin.usersManagement.drawer.view.lastLogout")} value={user.lastLogoutAt ? new Date(user.lastLogoutAt).toLocaleDateString() : "Nunca"} />
                 </div>
                     
-                {user.isDeleted && (
+                {user.status === 'inactive' && (
                     <div className="grid grid-rows-2 rounded-md border bg-red-50 p-3 space-y-3">    
-                        <Label className="text-sm font-medium text-red-700 text-center">Usuario eliminado</Label>
-                        <Separator/>
-                        <div className="grid grid-cols-1 md:grid-cols-2">
-                            <InfoBlock label={t("admin.usersManagement.drawer.view.deletedAt")} value={new Date(user.deletedAt).toLocaleDateString()} />
-                            <InfoBlock label={t("admin.usersManagement.drawer.view.deleteReason")} value={user.deleteReason || "—"} />
-                        </div>
+                        <Label className="text-sm font-medium text-red-700 text-center">{t("admin.usersManagement.drawer.view.archived")}</Label>
                     </div>
                 )}
             </div>

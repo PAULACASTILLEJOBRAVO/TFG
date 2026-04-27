@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 
-const UserStatusChip = ({ isActive, isDelete }) => {
-    if(isDelete || !isActive) {
+const UserStatusChip = ({ deleted }) => {
+    if(deleted) {
         return (
             <Badge variant="destructive">
                 Eliminado

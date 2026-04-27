@@ -1,0 +1,108 @@
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    LoginRequestInput:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          description: The email of the user.
+          format: email
+          example: "jd@gmail.com"
+        password:
+          type: string
+          description: The password of the user.
+          example: "Jhon"
+
+    LoginRequest:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: The user ID.
+          example: "64a7f0c2e4b0c8b1a1e4d3f2"
+        token:
+          type: string
+          description: The JWT token for authentication.
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        username:
+          type: string
+          description: The username of the user.
+          example: "John Doe"
+        email:
+          type: string
+          description: The email of the user.
+          format: email
+          example: "jd@gmail.com"
+        role:
+          type: string
+          description: The role of the user.
+          enum: [student, teacher, admin]
+          example: "student"
+
+    RegisterRequestInput:
+      type: object
+      required:
+        - username
+        - email
+        - password
+      properties:
+        username:
+          type: string
+          description: The username of the user.
+          example: "Sophy Doe"
+        email:
+          type: string
+          description: The email of the user.
+          format: email
+          example: "Sophy.Doe@gmail.com"
+        password:
+          type: string
+          description: The password of the user.
+          example: "password45678"
+
+    RegisterRequest:
+      type: object
+      required:
+        - username
+        - email
+        - password
+      properties:
+        username:
+          type: string
+          description: The username of the user.
+          example: "Sophy Doe"
+        email:
+          type: string
+          description: The email of the user.
+          format: email
+          example: "sophy.doe@gmail.com"
+        role:
+          type: string
+          description: The role of the user.
+          enum: [student, teacher, admin]
+          example: "student"
+        status:
+          type: string
+          description: The status of the user.
+          enum: [active, inactive]
+          example: "active"
+        createdAt:
+          type: string
+          format: date-time
+          description: The date and time when the user was created.
+          example: "2024-06-01T12:00:00Z"
+        updatedAt:
+          type: string
+          format: date-time
+          description: The date and time when the user was last updated.
+          example: "2024-06-01T12:00:00Z"
+        

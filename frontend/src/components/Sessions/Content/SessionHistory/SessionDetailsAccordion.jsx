@@ -19,8 +19,9 @@ import {
 } from "@/components/ui/tooltip";
 import { useMemo } from "react";
 import { PieGraphic } from "@/components/Common/Charts";
+import { DownloadPDF } from "../../Buttons";
 
-const SessionDetailsAccordion = ({ sessions = [] }) => {
+const SessionDetailsAccordion = ({ sessions = [], quiz = [] }) => {
     const { t } = useTranslation();
 
     const { averageTime, bestTime } = useMemo(() => {
@@ -76,13 +77,41 @@ const SessionDetailsAccordion = ({ sessions = [] }) => {
                                 {/* Rank */}
                                 <div className="flex items-center ">
                                     {session.results?.rank === 1 ? (
-                                        <Trophy className="w-4 h-4 shrink-0 mr-1 text-yellow-500" />
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <Trophy className="w-4 h-4 shrink-0 mr-1 text-yellow-500" />
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                                <p>{t("common.sessionHistory.firstPlace")}</p>
+                                            </TooltipContent>
+                                        </Tooltip>
                                     ) : session.results?.rank === 2 ? (
-                                        <Medal className="w-4 h-4 shrink-0 mr-1 text-gray-400" />
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <Medal className="w-4 h-4 shrink-0 mr-1 text-gray-400" />
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                                <p>{t("common.sessionHistory.secondPlace")}</p>
+                                            </TooltipContent>
+                                        </Tooltip>
                                     ) : session.results?.rank === 3 ? (
-                                        <Medal className="w-4 h-4 shrink-0 mr-1 text-amber-700" />
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <Medal className="w-4 h-4 shrink-0 mr-1 text-amber-700" />
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                                <p>{t("common.sessionHistory.thirdPlace")}</p>
+                                            </TooltipContent>
+                                        </Tooltip>
                                     ) : (
-                                        <Hash className="w-4 h-4 shrink-0 mr-1 text-gray-300" />
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <Hash className="w-4 h-4 shrink-0 mr-1 text-gray-300" />
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                                <p>{t("common.sessionHistory.otherPlace")}</p>
+                                            </TooltipContent>
+                                        </Tooltip>
                                     )}
 
                                     <span className={`ml-1 px-2 py-0.5 rounded text-xs font-medium ${
@@ -165,6 +194,9 @@ const SessionDetailsAccordion = ({ sessions = [] }) => {
                                     )}
                                 </div>
                             </div>
+
+                            {/* PDF Review Button */}
+                            <DownloadPDF session={session} quiz={quiz} />
                         </AccordionContent>
                     </AccordionItem>
                 );

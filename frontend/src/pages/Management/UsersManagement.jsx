@@ -4,7 +4,10 @@ import {
 } from "@/components/Dashboard/Layout/";
 import { UserTable } from "@/components/Users/Layout";
 import { useUsers } from "@/hooks/Users/useUsers";
-import { useState } from "react";
+import { 
+    useState,
+    useEffect
+} from "react";
 import { 
     DeleteUserDialog, 
     ChangePasswordUserDialog
@@ -44,7 +47,11 @@ const UserManagement = () => {
 
     // Search
     const location = useLocation();
-    const searchParams = new URLSearchParams(location.search).get("search") || "";
+    const params = new URLSearchParams(location.search);
+
+    const searchParams = params.get("search") || "";
+    const pageParam = parseInt(params.get("page")) || 1;
+    const limitParam = parseInt(params.get("limit")) || 5;
 
     const words = searchParams.toLowerCase().split(" ").filter(word => word.trim() !== "");;
     const normalizedWords = words.map(normalizeWord);
@@ -61,6 +68,86 @@ const UserManagement = () => {
             matchesRole(u.role, word)
         );
     });
+
+    // Sorting table headers
+    const [sortConfig, setSortConfig] = useState({
+        key: null,
+        direction: "asc"
+    });
+
+    const handleSort = (key) => {
+        setSortConfig(prev => {
+            if (prev.key === key) {
+                return {
+                    key,
+                    direction: prev.direction === "asc" ? "desc" : "asc"
+                };
+            }
+            return { key, direction: "asc" };
+        });
+    };
+
+    const sortedUsers = [...filteredUsers].sort((a, b) => {
+        if (!sortConfig.key) return 0;
+
+        const getLastAccess = (user) => user.lastLogoutAt || user.lastLoginAt || null;
+
+        const getValue = (user) => {
+            let value;
+
+            switch (sortConfig.key) {
+                case "lastAccess":
+                    value = getLastAccess(user);
+                    break;
+                default:
+                    value = user[sortConfig.key];
+            }
+
+            if (!value) return 0;
+
+            if (
+                sortConfig.key === "lastAccess" ||
+                sortConfig.key === "lastLoginAt" ||
+                sortConfig.key === "lastLogoutAt"
+            ) {
+                return new Date(value).getTime();
+            }
+
+            return value.toString().toLowerCase();
+        };
+
+        const aValue = getValue(a);
+        const bValue = getValue(b);
+
+        if (aValue < bValue) return sortConfig.direction === "asc" ? -1 : 1;
+        if (aValue > bValue) return sortConfig.direction === "asc" ? 1 : -1;
+        return 0;
+    });
+
+    // Pagination
+    const [currentPage, setCurrentPage] = useState(pageParam);
+    const [rowsPerPage, setRowsPerPage] = useState(limitParam);
+
+    const indexOfLastUser = currentPage * rowsPerPage;
+    const indexOfFirstUser = indexOfLastUser - rowsPerPage;
+
+    const currentUsers = sortedUsers.slice(indexOfFirstUser, indexOfLastUser);
+
+    const totalPages = Math.ceil(sortedUsers.length / rowsPerPage);
+
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [searchParams]);
+
+    useEffect(() => {
+        const params = new URLSearchParams();
+
+        if (searchParams) params.set("search", searchParams);
+        params.set("page", currentPage);
+        params.set("limit", rowsPerPage);
+
+        navigate(`?${params.toString()}`, { replace: true });
+    }, [currentPage, rowsPerPage, searchParams]);
 
     // Translation
     const { t } = useTranslation();
@@ -156,7 +243,14 @@ const UserManagement = () => {
                 </div>
 
                 <UserTable
-                    users={filteredUsers}
+                    users={currentUsers}
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                    rowsPerPage={rowsPerPage}
+                    onRowsPerPageChange={setRowsPerPage}
+                    sortConfig={sortConfig}
+                    onSort={handleSort}
                     loading={loadingManagement}
                     onSelect={handleSelectUser}
                     onEdit={handleEditUser}

@@ -1,7 +1,10 @@
-import { useState, useEffect } from "react";
+import { 
+    useState, 
+    useEffect
+} from "react";
 import { getQuizByIdForStudent } from "../../services/quizzes.service";
 
-export const useQuizForStudent = (id) => {
+export const useQuizForStudent = (id, studentId) => {
     const [quizForStudent, setQuizForStudent] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -16,7 +19,7 @@ export const useQuizForStudent = (id) => {
             setMessage("");
 
             try{
-                const data = await getQuizByIdForStudent(id);
+                const data = await getQuizByIdForStudent(id, studentId);
                 
                 if(data.error){
                     // Backend return error (400, 404, 500, etc)
@@ -39,7 +42,7 @@ export const useQuizForStudent = (id) => {
         }
 
         fetchQuiz();
-    }, [id]);
+    }, [id, studentId]);
 
     return { quizForStudent, loading, error, message };
 };

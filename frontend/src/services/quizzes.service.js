@@ -1,22 +1,36 @@
 import { api } from "./api";
 
-export const getQuizzesForTeacher = async () => {
-  const response = await api.get(`/quizzes/my-teacher`);
+export const getQuizzesForTeacher = async ({ limit = 0 }) => {
+  const response = await api.get(`/quizzes/my-teacher?limit=${limit}`);
   return response.data;
 };
 
-export const getQuizzesForStudent = async () => {
-    const response = await api.get(`/quizzes/my-student`);
+export const getQuizzesForStudent = async ({ limit = 0 }) => {
+    const response = await api.get(`/quizzes/my-student?limit=${limit}`);
     return response.data;
 }
 
-export const getQuizByIdForTeacher = async (id) => {
+export const getQuizById = async (id) => {
     const response = await api.get(`/quizzes/${id}`);
     return response.data;
 }
 
-export const getQuizByIdForStudent = async (id) => {
-    const response = await api.get(`/quizzes/student/${id}`);
+export const getQuizByIdForStudent = async (id, studentId) => {
+    const url = studentId
+        ? `/quizzes/${id}/student?studentId=${studentId}`
+        : `/quizzes/${id}/student`;
+
+    const response = await api.get(url);
+    return response.data;
+}
+
+export const getQuizSessionsForTeacher = async (id) => {
+    const response = await api.get(`/quizzes/${id}/sessions`);
+    return response.data;
+}
+
+export const getQuizQuestionAnalytics = async (id) => {
+    const response = await api.get(`/quizzes/${id}/questions-analytics`);
     return response.data;
 }
 
@@ -33,12 +47,12 @@ export const deleteQuiz = async (id, payload) => {
 }
 
 export const restoreQuiz = async (id) => {
-    const response = await api.patch(`/quizzes/restore/${id}`);
+    const response = await api.patch(`/quizzes/${id}/restore`);
     return response.data;
 }
 
 export const publishQuiz = async (id) => {
-    const response = await api.patch(`/quizzes/publish/${id}`);
+    const response = await api.patch(`/quizzes/${id}/publish`);
     return response.data;
 }
 

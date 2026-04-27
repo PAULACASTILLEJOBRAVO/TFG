@@ -1,4 +1,7 @@
-import { useState, useEffect } from "react";
+import { 
+    useState, 
+    useEffect 
+} from "react";
 import { getTotalUsers } from "../../services/user.service";
 
 export const useUsers = () => {

@@ -54,16 +54,304 @@ router.use(authenticate);
  */
 router.get('/', userController.getAllUsers);
 
-// Route to get users' stats
-router.get('/stats/total', userController.getTotalUsersStats);
+// Route to get the user profile of the authenticated user
+/**
+ * @swagger
+ * /v1/users/me:
+ *   get:
+ *     summary: Get the authenticated user's profile
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: User profile retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'User profile fetched successfully'
+ *                 data:
+ *                   $ref: '#/components/schemas/User'
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'User not found'
+ *       500:
+ *         description: Server error while fetching user profile
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Error fetching user profile'
+ *                 error:
+ *                   type: string
+ */
+router.get("/me", userController.getMe);
 
-// Route to get students' stats
-router.get('/students/stats/total', userController.getTotalStudentsStatsForTeacher);
+// Route to get users stats
+/** 
+ * @swagger
+ * /v1/users/stats:
+ *   get:
+ *     summary: Get user statistics
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: User statistics retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'User statistics fetched successfully'
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     totalUsers:
+ *                       type: integer
+ *                       example: 100
+ *       500:
+ *         description: Server error while fetching user statistics
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Error fetching user statistics'
+ *                 error:
+ *                   type: string
+ *                   example: 'Internal server error'
+ */
+router.get('/stats', userController.getTotalUsersStats);
+
+// Route to get active users stats
+/**
+ * @swagger
+ * /v1/users/stats/active:
+ *   get:
+ *     summary: Get active user statistics
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: Active user statistics retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Active user statistics fetched successfully'
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     activeUsers:
+ *                       type: integer
+ *                       example: 80
+ *       500:
+ *         description: Server error while fetching active user statistics
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Error fetching active user statistics'
+ *                 error:
+ *                   type: string
+ *                   example: 'Internal server error'
+ */
+router.get('/stats/active', userController.getActiveUsersStats);
+
+// Route to get connected users stats
+/**
+ * @swagger
+ * /v1/users/stats/connected:
+ *   get:
+ *     summary: Get connected user statistics
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: Connected user statistics retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Connected user statistics fetched successfully'
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     connectedUsers:
+ *                       type: integer
+ *                       example: 60
+ *       500:
+ *         description: Server error while fetching connected user statistics
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Error fetching connected user statistics'
+ *                 error:
+ *                   type: string
+ *                   example: 'Internal server error'
+ */
+router.get('/stats/connected', userController.getConnectedUsersStats);
+
+// Route to get archived users stats
+/**
+ * @swagger
+ * /v1/users/stats/archived:
+ *   get:
+ *     summary: Get archived user statistics
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: Archived user statistics retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Archived user statistics fetched successfully'
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     archivedUsers:
+ *                       type: integer
+ *                       example: 20
+ *       500:
+ *         description: Server error while fetching archived user statistics
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Error fetching archived user statistics'
+ *                 error:
+ *                   type: string
+ */
+router.get('/stats/archived', userController.getArchivedUsersStats);
 
 // Route to get students for teacher
+/**
+ * @swagger
+ * /v1/users/students-for-teacher:
+ *   get:
+ *     summary: Get students for teacher
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: Students for teacher retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Students for teacher fetched successfully'
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/User'
+ *       403:
+ *         description: Forbidden - User does not have permission to access this resource
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Forbidden - You do not have permission to access this resource'
+ *       500:
+ *         description: Server error while fetching students for teacher
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Error fetching students for teacher'
+ *                 error:
+ *                   type: string
+ *                   example: 'Internal server error'
+ */
 router.get('/students-for-teacher', userController.getAllStudentsForTeacher);
 
 // Route to get students for admin
+/**
+ * @swagger
+ * /v1/users/students-for-admin:
+ *   get:
+ *     summary: Get students for admin
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: Students for admin retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Students for admin fetched successfully'
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/User'
+ *       403:
+ *         description: Forbidden - User does not have permission to access this resource
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Forbidden - You do not have permission to access this resource'
+ *       500:
+ *         description: Server error while fetching students for admin
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Error fetching students for admin'
+ *                 error:
+ *                   type: string
+ *                   example: 'Internal server error'
+ */
 router.get('/students-for-admin', userController.getAllStudentsForAdmin);
 
 // Route to post an user
@@ -120,20 +408,12 @@ router.get('/students-for-admin', userController.getAllStudentsForAdmin);
 router.post('/', userController.createUser);
 
 // Route to restore an user by ID
-router.patch('/restore/:id', userController.restoreUserById);
-
-// Route to update an user's password by ID
-router.patch('/password/:id', userController.updatePasswordById);
-
-// IMPORTANT: All "/:id" routes at the end of the document
-
-// Route to get an user by ID
 /**
  * @swagger
- * /v1/users/{id}:
- *   get:
- *     summary: Retrieve a user by ID
- *     description: Retrieve a specific user by their unique MongoDB ObjectId.
+ * /v1/users/{id}/restore:
+ *   patch:
+ *     summary: Restore a user by ID
+ *     description: Restores a previously deleted user by ID.
  *     tags: [Users]
  *     parameters:
  *       - in: path
@@ -141,10 +421,10 @@ router.patch('/password/:id', userController.updatePasswordById);
  *         required: true
  *         schema:
  *           type: string
- *           example: "68e28135fe97fd5d3f0cc3a4"
+ *           example: "68f270d1e556829877241f19"
  *     responses:
  *       200:
- *         description: User fetched successfully
+ *         description: User restored successfully
  *         content:
  *           application/json:
  *             schema:
@@ -152,11 +432,48 @@ router.patch('/password/:id', userController.updatePasswordById);
  *               properties:
  *                 message:
  *                   type: string
- *                   example: User fetched successfully
- *                 data: 
- *                   $ref: '#/components/schemas/User'
+ *                   example: 'User restored successfully'
+ */
+router.patch('/:id/restore', userController.restoreUserById);
+
+// Route to update an user's password by ID
+/**
+ * @swagger
+ * /v1/users/{id}/password:
+ *   patch:
+ *     summary: Update a user's password by ID
+ *     description: Updates the password of a user by ID.
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: "68f270d1e556829877241f19"
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               newPassword:
+ *                 type: string
+ *                 example: 'newSecurePassword123'
+ *     responses:
+ *       200:
+ *         description: User password updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'User password updated successfully'
  *       400:
- *         description: Missing or invalid user ID
+ *         description: Invalid input or missing new password
  *         content:
  *           application/json:
  *             schema:
@@ -164,7 +481,7 @@ router.patch('/password/:id', userController.updatePasswordById);
  *               properties:
  *                 message:
  *                   type: string
- *                   example: User ID is required
+ *                   example: 'New password is required'
  *       404:
  *         description: User not found
  *         content:
@@ -174,9 +491,9 @@ router.patch('/password/:id', userController.updatePasswordById);
  *               properties:
  *                 message:
  *                   type: string
- *                   example: User not found
+ *                   example: 'User not found'
  *       500:
- *         description: Server error while fetching user
+ *         description: Server error while updating user password
  *         content:
  *           application/json:
  *             schema:
@@ -184,11 +501,82 @@ router.patch('/password/:id', userController.updatePasswordById);
  *               properties:
  *                 message:
  *                   type: string
- *                   example: Error fetching user
+ *                   example: 'Error updating user password'
  *                 error:
  *                   type: string
  */
-router.get('/:id', userController.getUserById);
+router.patch('/:id/password', userController.updatePasswordById);
+
+// Route to update an user by ID
+/**
+ * @swagger
+ * /v1/users/{id}:
+ *   patch:
+ *     summary: Update a user by ID
+ *     description: Updates the details of a user by ID.
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: "68f270d1e556829877241f19"
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UserUpdateInput'
+ *     responses:
+ *       200:
+ *         description: User updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'User updated successfully'
+ *                 data:
+ *                   $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Invalid input or missing required fields
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Invalid user data'
+ *                 error:
+ *                   type: string
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'User not found'
+ *       500:
+ *         description: Server error while updating user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Error updating user'
+ *                 error:
+ *                   type: string
+ */
+router.patch('/:id', userController.updateUserById);
 
 // Route to delete an user by ID
 /**
@@ -205,12 +593,6 @@ router.get('/:id', userController.getUserById);
  *         schema:
  *           type: string
  *           example: "68f270d1e556829877241f19"
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/UserDeletionMetadata'
  *     responses:
  *       200:
  *         description: User deleted successfully
@@ -256,9 +638,6 @@ router.get('/:id', userController.getUserById);
  *                   type: string
  */
 router.delete('/:id', userController.deleteUserById);
-
-// Route to update an user by ID
-router.patch('/:id', userController.updateUserById);
 
 //Export the module
 module.exports = router;

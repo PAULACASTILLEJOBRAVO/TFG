@@ -9,7 +9,6 @@ const { getUserEditableFields } = require('../utils/checkRolePermissions');
 
 // Import utils functions
 const { validatePasswordChange } = require('../utils/validateChange');
-const { validateAdminRole, validateTeacherRole } = require('../middleware/validationRole');
 
 // Define the number of salt rounds for bcrypt
 const SALT_WORK_FACTOR = 10;
@@ -186,30 +185,6 @@ userSchema.statics.restoreById = async function(id) {
 
   return user;
 };
-
-// Statics permissions to create new user 
-userSchema.statics.canCreateUser = async function(currentUser) {
-  debug('Checking permissions to create user for current user:', currentUser);
-  return await validateAdminRole(currentUser);
-}
-
-// Statics permissons to fetch total users for admin
-userSchema.statics.canGetAdminUsers = async function(currentUser) {
-  debug('Checking permissions to get admin users for current user:', currentUser);
-  return await validateAdminRole(currentUser);
-}
-
-// Statics permissions to fetch total students for a teacher
-userSchema.statics.canGetTeacherStudents = async function(currentUser) {
-  debug('Checking permissions to get teacher students for current user:', currentUser);
-  return await validateTeacherRole(currentUser);
-}
-
-// Statics permissions to fetch total students for a teacher or admin
-userSchema.statics.canGetAdminStudents = async function(currentUser) {
-  debug('Checking permissions to get admin students for current user:', currentUser);
-  return await validateAdminRole(currentUser);
-}
 
 // Statics update by id
 userSchema.statics.updateById = async function(id, body, currentUserData) {

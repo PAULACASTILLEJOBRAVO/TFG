@@ -55,9 +55,6 @@ const getTotalUsersStats = async (req, res) => {
     const currentUser = req.user;
 
     try {
-        const canAccess = await User.canGetAdminUsers(currentUser);
-        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
-
         const users = await userServices.getTotalUsersStats();
         res.status(200).json({
             message: "Users' stats fetched successfully", 
@@ -76,9 +73,6 @@ const getActiveUsersStats = async (req, res) => {
     const currentUser = req.user;
 
     try {
-        const canAccess = await User.canGetAdminUsers(currentUser);
-        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
-
         const users = await userServices.getActiveUsersStats();
         res.status(200).json({
             message: "Active users' stats fetched successfully", 
@@ -97,9 +91,6 @@ const getConnectedUsersStats = async (req, res) => {
     const currentUser = req.user;
 
     try {
-        const canAccess = await User.canGetAdminUsers(currentUser);
-        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
-
         const users = await userServices.getConnectedUsersStats();
         res.status(200).json({
             message: "Connected users' stats fetched successfully", 
@@ -118,9 +109,6 @@ const getArchivedUsersStats = async (req, res) => {
     const currentUser = req.user;
 
     try {
-        const canAccess = await User.canGetAdminUsers(currentUser);
-        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
-
         const users = await userServices.getArchivedUsersStats();
         res.status(200).json({
             message: "Archived users' stats fetched successfully", 
@@ -134,35 +122,11 @@ const getArchivedUsersStats = async (req, res) => {
     }
 }
 
-// Controller to get students stats
-const getTotalStudentsStatsForTeacher = async (req, res) => {
-    const currentUser = req.user;
-
-    try {
-        const canAccess = await User.canGetTeacherStudents(currentUser);
-        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
-
-        const students = await userServices.getTotalStudentsStatsForTeacher(currentUser._id);
-        res.status(200).json({
-            message: "Students' stats fetched successfully", 
-            data: students
-        });
-    } catch (error) {
-        res.status(500).json({ 
-            message: "Error fetching students' stats", 
-            error: error.message 
-        });
-    }
-}
-
 // Controller to get students for teacher
 const getAllStudentsForTeacher = async (req, res) => {
     const currentUser = req.user;
 
     try {
-        const canAccess = await User.canGetTeacherStudents(currentUser);
-        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
-
         const students = await userServices.getAllStudents();
         res.status(200).json({
             message: "Students fetched successfully", 
@@ -181,9 +145,6 @@ const getAllStudentsForAdmin = async (req, res) => {
     const currentUser = req.user;
 
     try {
-        const canAccess = await User.canGetAdminStudents(currentUser);
-        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
-
         const students = await userServices.getAllStudentsWithoutClicker();
         res.status(200).json({
             message: "Students fetched successfully", 
@@ -214,10 +175,6 @@ const createUser = async (req, res) => {
     debug('Required fields are present');
 
     try{
-        const canAccess = await User.canCreateUser(currentUser);
-        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
-        debug('User has permission to create new user');
-
         if (await checkExists(User, 'email', email)) {
             debug('Email already exists:', email);
             return res.status(409).json({ message: 'The user alredy exists' });
@@ -389,7 +346,6 @@ module.exports = {
     getActiveUsersStats,
     getConnectedUsersStats,
     getArchivedUsersStats,
-    getTotalStudentsStatsForTeacher,
     getAllStudentsForTeacher,
     getAllStudentsForAdmin,
     

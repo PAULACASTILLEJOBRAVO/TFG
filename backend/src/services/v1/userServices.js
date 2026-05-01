@@ -53,25 +53,6 @@ const getArchivedUsersStats = async () => {
     return await User.countDocuments({ status: 'inactive' });
 }
 
-// Service to fetch users' stats
-const getTotalStudentsStatsForTeacher = async (id) => {
-    debug('Fetching total students stats for teacher with ID:', id);
-    const quizzes = await Quiz.find({
-        creatorId: id, 
-        status: "published",
-    });
-
-    debug('Quizzes found for teacher:', quizzes);
-    const studentIds = quizzes.flatMap(quiz => quiz.playerIds);
-
-    debug('Student IDs found for teacher:', studentIds);
-    return await User.countDocuments({
-        _id: { $in: studentIds },
-        status: "active",
-        role: "student"
-    });
-}
-
 // Service to fetch all students
 const getAllStudents = async () => {
     debug('Fetching all students');

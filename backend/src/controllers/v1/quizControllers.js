@@ -77,8 +77,6 @@ const getAllQuizzesForTeacher = async (req, res) => {
 
     try {
         debug('Received request to get all quizzes for teacher with ID:', currentUser._id, 'and limit:', limit);
-        const canAccess = await Quiz.canGetTeacherQuizzes(currentUser);
-        if (!canAccess) return res.status(403).json({message: "Unauthorized"});
 
         const quizzes = await quizServices.getAllQuizzesForTeacher(currentUser._id, limit);
         
@@ -129,9 +127,6 @@ const getQuizSessionsForTeacher = async (req, res) => {
 
     try {
         debug('Received request to get quiz sessions for teacher with ID:', currentUser._id, 'and quiz ID:', id);
-        const canAccess = await Quiz.canGetTeacherQuizzes(currentUser);
-        if (!canAccess) return res.status(403).json({message: "Unauthorized"});
-
         const sessionsData = await quizServices.getQuizSessionsForTeacher(id);
 
         debug('Quiz sessions fetched successfully for quiz with ID:', id, 'Sessions data:', sessionsData);
@@ -157,10 +152,6 @@ const getQuizQuestionAnalytics = async (req, res) => {
 
     try {
         debug('Received request to get quiz question analytics with params:', req.params);
-        const canAccess = await Quiz.canGetTeacherQuizzes(currentUser);
-        if (!canAccess) return res.status(403).json({message: "Unauthorized"});
-        
-        debug('User is authorized to access quiz question analytics for quiz with ID:', id);
         const analyticsData = await quizServices.getQuizQuestionAnalytics(id);
 
         debug('Quiz question analytics fetched successfully for quiz with ID:', id, 'Analytics data:', analyticsData);

@@ -36,11 +36,6 @@ const getTotalClickersStats = async (req, res) => {
     const currentUser = req.user;
 
     try {
-        debug('Checking user permissions for accessing clickers stats');
-        const canAccess = await Clicker.canGetAdminClickers(currentUser);
-        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
-        debug('User authorized to access clickers stats');
-
         const clickers = await clickerServices.getTotalClickersStats();
 
         debug('Clickers stats fetched successfully:', clickers);
@@ -62,11 +57,6 @@ const getActiveClickersStats = async (req, res) => {
     const currentUser = req.user;
 
     try {
-        debug('Checking user permissions for accessing clickers stats');
-        const canAccess = await Clicker.canGetAdminClickers(currentUser);
-        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
-        debug('User authorized to access clickers stats');
-
         const clickers = await clickerServices.getActiveClickersStats();
 
         debug('Clickers stats fetched successfully:', clickers);
@@ -88,11 +78,6 @@ const getInUseClickersStats = async (req, res) => {
     const currentUser = req.user;
 
     try {
-        debug('Checking user permissions for accessing clickers stats');
-        const canAccess = await Clicker.canGetAdminClickers(currentUser);
-        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
-        debug('User authorized to access clickers stats');
-
         const clickers = await clickerServices.getInUseClickersStats();
 
         debug('Clickers stats fetched successfully:', clickers);
@@ -114,11 +99,6 @@ const getAvailableClickersStats = async (req, res) => {
     const currentUser = req.user;
 
     try {
-        debug('Checking user permissions for accessing clickers stats');
-        const canAccess = await Clicker.canGetAdminClickers(currentUser);
-        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
-        debug('User authorized to access clickers stats');
-
         const clickers = await clickerServices.getAvailableClickersStats();
 
         debug('Clickers stats fetched successfully:', clickers);
@@ -140,11 +120,6 @@ const getInactiveClickersStats = async (req, res) => {
     const currentUser = req.user;
 
     try {
-        debug('Checking user permissions for accessing clickers stats');
-        const canAccess = await Clicker.canGetAdminClickers(currentUser);
-        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
-        debug('User authorized to access clickers stats');
-
         const clickers = await clickerServices.getInactiveClickersStats();
 
         debug('Clickers stats fetched successfully:', clickers);

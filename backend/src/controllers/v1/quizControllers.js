@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+
 // Import models
 const Quiz = require('../../models/Quiz');
 
@@ -12,7 +14,9 @@ const debug = require('debug')('backend:controllers:v1:quizControllers');
 const getQuizById = async (req, res) => {
     const {id} = req.params;
 
-    if(!id) return res.status(400).json({ message: 'Quiz ID is required' });
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: 'Quiz ID is incorrect' }); // ID is always sent, so we check if it's a valid ObjectId
+    }
     
     try{
         debug('Received request to get quiz with ID:', id);
@@ -39,8 +43,8 @@ const getQuizByIdForStudent = async (req, res) => {
     const { id } = req.params;
     const { studentId } = req.query;
 
-    if (!id) {
-        return res.status(400).json({ message: 'Quiz ID is required' });
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: 'Quiz ID is incorrect' }); // ID is always sent, so we check if it's a valid ObjectId
     }
 
     const currentUser = req.user;
@@ -123,7 +127,9 @@ const getQuizSessionsForTeacher = async (req, res) => {
     const currentUser = req.user;
     const { id } = req.params;
 
-    if (!id) return res.status(400).json({ message: 'Quiz ID is required' });
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: 'Quiz ID is incorrect' }); // ID is always sent, so we check if it's a valid ObjectId
+    }
 
     try {
         debug('Received request to get quiz sessions for teacher with ID:', currentUser._id, 'and quiz ID:', id);
@@ -148,7 +154,9 @@ const getQuizQuestionAnalytics = async (req, res) => {
     const currentUser = req.user;
     const { id } = req.params;
 
-    if (!id) return res.status(400).json({ message: 'Quiz ID is required' });
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: 'Quiz ID is incorrect' });
+    }
 
     try {
         debug('Received request to get quiz question analytics with params:', req.params);
@@ -197,7 +205,9 @@ const deleteQuizById = async (req, res) => {
     debug('Received request to delete quiz with params:', req.params);
     const { id } = req.params;
 
-    if(!id) return res.status(400).json({ message: 'Quiz ID is required'});
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: 'Quiz ID is incorrect' }); // ID is always sent, so we check if it's a valid ObjectId
+    }
 
     try{
         debug('Attempting to delete quiz with ID:', id);
@@ -223,7 +233,9 @@ const restoreQuizById = async (req, res) => {
     debug('Received request to restore quiz with params:', req.params);
     const { id } = req.params;
 
-    if(!id) return res.status(400).json({ message: 'Quiz ID is required'});
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: 'Quiz ID is incorrect' }); // ID is always sent, so we check if it's a valid ObjectId
+    }
 
     try{
         debug('Attempting to restore quiz with ID:', id); 
@@ -248,7 +260,9 @@ const publishQuizById = async (req, res) => {
     debug('Received request to publish quiz with params:', req.params);
     const { id } = req.params;
 
-    if(!id) return res.status(400).json({ message: 'Quiz ID is required'});
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: 'Quiz ID is incorrect' }); // ID is always sent, so we check if it's a valid ObjectId
+    }
 
     try{
         debug('Attempting to publish quiz with ID:', id);
@@ -277,8 +291,10 @@ const updateQuizById = async (req, res) => {
     const {body} = req;
     const { _id, role } = req.user;
 
-    if(!id) return res.status(400).json({ message: 'Quiz ID is required'});
     if(!body) return res.status(400).json({ message: 'Body is required'});
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: 'Quiz ID is incorrect' }); // ID is always sent, so we check if it's a valid ObjectId
+    }
 
     try{
         debug('Attempting to update quiz with ID:', id, 'and body:', body);

@@ -10,7 +10,7 @@ module.exports.connect = async () => {
   mongoServer = await MongoMemoryServer.create();
   const uri = mongoServer.getUri();
 
-  // For security reasons: If there is alredy an open connection, we close it first
+  // For security reasons: If there is already an open connection, we close it first
   if( mongoose.connection.readyState !== 0 ) await mongoose.disconnect();
 
   await mongoose.connect(uri);

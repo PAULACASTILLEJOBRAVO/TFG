@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+
 // Import services
 const clickerServices = require('../../services/v1/clickerServices');
 
@@ -169,7 +171,9 @@ const deleteClickerById = async (req, res) => {
     const {id} = req.params;
     const { by, reason } = req.body; 
 
-    if(!id) return res.status(400).json({ message: 'Clicker ID is required'});
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: 'Clicker ID is incorrect' }); // ID is always sent, so we check if it's a valid ObjectId
+    }
 
     try{
         debug('Deleting clicker with ID:', id);
@@ -194,7 +198,9 @@ const deleteClickerById = async (req, res) => {
 const restoreClickerById = async (req, res) => {
     const { id } = req.params;
 
-    if(!id) return res.status(400).json({ message: 'Clicker ID is required'});
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: 'Clicker ID is incorrect' }); // ID is always sent, so we check if it's a valid ObjectId
+    }
 
     try{
         debug('Restoring clicker with ID:', id);
@@ -221,8 +227,10 @@ const updateClickerById = async (req, res) => {
     const {body} = req;
     const { _id, role } = req.user;
 
-    if(!id) return res.status(400).json({ message: 'Clicker ID is required'});
     if(!body) return res.status(400).json({ message: 'Body is required'});
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: 'Clicker ID is incorrect' }); // ID is always sent, so we check if it's a valid ObjectId
+    }
 
     try{
         debug('Updating clicker with ID:', id);

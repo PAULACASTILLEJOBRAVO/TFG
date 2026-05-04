@@ -41,7 +41,7 @@ export const getUserById = async () => {
 }
 
 export const archiveUser = async (id) => {
-    const response = await api.post(`/users/${id}/archive`);
+    const response = await api.patch(`/users/${id}/archive`);
     return response.data;
 }
 

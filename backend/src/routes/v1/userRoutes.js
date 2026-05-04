@@ -579,11 +579,11 @@ router.patch('/:id/password', requireAdminRole, userController.updatePasswordByI
  */
 router.patch('/:id', userController.updateUserById);
 
-// Route to delete an user by ID
+// Route to archive an user by ID
 /**
  * @swagger
  * /v1/users/{id}/archive:
- *   post:
+ *   patch:
  *     summary: Archive a user by ID
  *     description: Archives a User in the database using its unique MongoDB ObjectId.
  *     tags: [Users]
@@ -638,7 +638,7 @@ router.patch('/:id', userController.updateUserById);
  *                 error:
  *                   type: string
  */
-router.post('/:id/archive', requireAdminRole, userController.archiveUserById);
+router.patch('/:id/archive', requireAdminRole, userController.archiveUserById);
 
 // Route to delete an user permanently by ID
 /**

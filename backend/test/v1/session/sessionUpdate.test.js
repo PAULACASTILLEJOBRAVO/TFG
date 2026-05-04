@@ -1,0 +1,572 @@
+const request = require('supertest');
+const app = require('../../../app'); 
+const User = require('../../../src/models/User');
+const Quiz = require('../../../src/models/Quiz');
+const Question = require('../../../src/models/Question');
+const Session = require('../../../src/models/Session');
+const Clicker = require('../../../src/models/Clicker');
+
+const sessionServices = require('../../../src/services/v1/sessionServices');
+
+const { connect, closeDatabase, clearDatabase } = require('../setup');
+
+// Before all tests, start an in-memory MongoDB instance
+beforeAll(async () => { await connect(); });
+
+// Variable to store the authentication token for protected routes
+let admin, teacher, student, clicker, quiz, session, question, sessionId;
+let teacherToken;
+
+beforeEach(async () => {
+    await clearDatabase(); // Clear the database before each test
+
+    teacher = await User.create({
+        username: 'teacher',
+        email: 'teacher@test.com',
+        password: '547638',
+        role: 'teacher',
+        status: 'active'
+    });
+
+    const resTeacher = await request(app)
+        .post('/v1/auth/login')
+        .send({
+            email: 'teacher@test.com',
+            password: '547638'
+        });
+
+
+    teacherToken = resTeacher.body.data.token;
+
+    admin = await User.create({
+        username: 'admin',
+        email: 'admin@test.com',
+        password: '123456',
+        status: 'active',
+        role: 'admin'
+    });
+    
+    student = await User.create({
+        _id: '609e129e1c4ae12f34567895',
+        username: 'student1',
+        email: 'student1@test.com',
+        password: '987654',
+        role: 'student'
+    });
+
+    clicker = await Clicker.create({
+        _id: '609e129e1c4ae12f34567893',
+        deviceCode: '0x0012',
+        assignedToUserId: student._id,
+        status: 'assigned',
+        adminId: admin._id
+    });
+
+    question = await Question.create({
+        _id: '609e129e1c4ae12f34567894',
+        text: 'What is 2 + 2?',
+        type: 'multiple-choice',
+        points: 10,
+        timeLimit: null,
+        options: [
+            {
+                text: '3',
+                isCorrect: false,
+                letter: 'A'
+            }, 
+            {
+                text: '4',
+                isCorrect: true,
+                letter: 'B'
+            }, 
+            {
+                text: '5',
+                isCorrect: false,
+                letter: 'C'
+            }, 
+            {
+                text: '6',
+                isCorrect: false,
+                letter: 'D'
+            }
+        ]
+    });
+
+    quiz = await Quiz.create({ 
+        _id: '609e129e1c4ae12f34567892',
+        title: 'Quiz 1',
+        creatorId: teacher._id,
+        questionIds: [question._id],
+        playerIds: [student._id],
+        status: 'published',
+        difficulty: 'easy'
+    });
+
+    session = {
+        _id: '609e129e1c4ae12f34567891',
+        quizId: quiz._id,
+        teacherId: teacher._id,
+        deviceIds: [clicker._id],
+        startTime: new Date(),
+        status: 'active'
+    };
+
+    sessionId = session._id;
+    await Session.create(session);
+});
+
+// After all tests, stop the in-memory MongoDB instance
+afterAll(async () => { await closeDatabase(); });
+
+describe('PATCH /v1/sessions/:id/complete', () => {
+
+    it('200 - should mark session as completed', async () => {
+        const response = await request(app)
+            .patch(`/v1/sessions/${sessionId}/complete`)
+            .set('Authorization', `Bearer ${teacherToken}`)
+            .send({
+                status: "completed",
+                questions: [{
+                        originalQuestionId: question._id,
+                        questionSnapshot:{
+                            text: question.text,
+                            type: question.type,
+                            points: question.points,
+                            timeLimit: question.timeLimit,
+                            options: question.options
+                        },
+                        answers: [
+                            {
+                                letter: 'B',
+                                count: 1
+                            },
+                            {
+                                letter: 'C',
+                                count: 1
+                            }
+                        ],
+                        totalResponses: 2
+                    }],
+                endTime: new Date()
+            });
+
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toHaveProperty('message');
+        expect(response.body.message).toBe('Session completed successfully');
+        expect(response.body).toHaveProperty('data');
+    });
+
+    it('401 - should fail without token', async () => {
+        const response = await request(app)
+            .patch(`/v1/sessions/${sessionId}/complete`)
+            .send({
+                status: "completed",
+                questions: [{
+                        originalQuestionId: question._id,
+                        questionSnapshot:{
+                            text: question.text,
+                            type: question.type,
+                            points: question.points,
+                            timeLimit: question.timeLimit,
+                            options: question.options
+                        },
+                        answers: [
+                            {
+                                letter: 'B',
+                                count: 1
+                            },
+                            {
+                                letter: 'C',
+                                count: 1
+                            }
+                        ],
+                        totalResponses: 2
+                    }],
+                endTime: new Date()
+            });
+
+        expect(response.statusCode).toBe(401);
+    });
+
+    it('401 - should fail with invalid token', async () => {
+        const response = await request(app)
+            .patch(`/v1/sessions/${sessionId}/complete`)
+            .set('Authorization', 'Bearer invalidtoken')
+            .send({
+                status: "completed",
+                questions: [{
+                        originalQuestionId: question._id,
+                        questionSnapshot:{
+                            text: question.text,
+                            type: question.type,
+                            points: question.points,
+                            timeLimit: question.timeLimit,
+                            options: question.options
+                        },
+                        answers: [
+                            {
+                                letter: 'B',
+                                count: 1
+                            },
+                            {
+                                letter: 'C',
+                                count: 1
+                            }
+                        ],
+                        totalResponses: 2
+                    }],
+                endTime: new Date()
+            });
+
+        expect(response.statusCode).toBe(401);
+    });
+
+    it('400 - should return 400 if body is missing', async () => {
+        const response = await request(app)
+            .patch(`/v1/sessions/${sessionId}/complete`)
+            .set('Authorization', `Bearer ${teacherToken}`);
+
+        expect(response.statusCode).toBe(400);
+        expect(response.body).toHaveProperty('message');
+        expect(response.body.message).toBe('Body is required');
+    });
+
+    it('400 - should return 400 if ID is invalid', async () => {
+        const response = await request(app)
+            .patch(`/v1/sessions/invalid-id/complete`)
+            .set('Authorization', `Bearer ${teacherToken}`)
+            .send({
+                status: "completed",
+                questions: [{
+                        originalQuestionId: question._id,
+                        questionSnapshot:{
+                            text: question.text,
+                            type: question.type,
+                            points: question.points,
+                            timeLimit: question.timeLimit,
+                            options: question.options
+                        },
+                        answers: [
+                            {
+                                letter: 'B',
+                                count: 1
+                            },
+                            {
+                                letter: 'C',
+                                count: 1
+                            }
+                        ],
+                        totalResponses: 2
+                    }],
+                endTime: new Date()
+            });
+
+        expect(response.statusCode).toBe(400);
+        expect(response.body).toHaveProperty('message');
+        expect(response.body.message).toBe('Session ID is incorrect');
+    });
+
+    it('404 - should return 404 if session not found', async () => {
+        const nonExistentId = '609e129e1c4ae12f34567899';
+
+        const response = await request(app)
+            .patch(`/v1/sessions/${nonExistentId}/complete`)
+            .set('Authorization', `Bearer ${teacherToken}`)
+            .send({
+                status: "completed",
+                questions: [{
+                        originalQuestionId: question._id,
+                        questionSnapshot:{
+                            text: question.text,
+                            type: question.type,
+                            points: question.points,
+                            timeLimit: question.timeLimit,
+                            options: question.options
+                        },
+                        answers: [
+                            {
+                                letter: 'B',
+                                count: 1
+                            },
+                            {
+                                letter: 'C',
+                                count: 1
+                            }
+                        ],
+                        totalResponses: 2
+                    }],
+                endTime: new Date()
+            });
+
+        expect(response.statusCode).toBe(404);
+        expect(response.body).toHaveProperty('message');
+        expect(response.body.message).toBe('Session not found');
+    });
+
+    it('500 - should return 500 if there is a server error', async () => {
+        // Mock the service to throw an error
+        jest.spyOn(sessionServices, 'completeSessionById').mockImplementation(() => {
+            throw new Error('Database error');
+        });
+
+        const response = await request(app)
+            .patch(`/v1/sessions/${sessionId}/complete`)
+            .set('Authorization', `Bearer ${teacherToken}`)
+            .send({
+                status: "completed",
+                questions: [{
+                        originalQuestionId: question._id,
+                        questionSnapshot:{
+                            text: question.text,
+                            type: question.type,
+                            points: question.points,
+                            timeLimit: question.timeLimit,
+                            options: question.options
+                        },
+                        answers: [
+                            {
+                                letter: 'B',
+                                count: 1
+                            },
+                            {
+                                letter: 'C',
+                                count: 1
+                            }
+                        ],
+                        totalResponses: 2
+                    }],
+                endTime: new Date()
+            });
+        
+        expect(response.statusCode).toBe(500);
+        expect(response.body).toHaveProperty('message');
+        expect(response.body.message).toBe('Error completing session');
+        expect(response.body).toHaveProperty('error');
+        expect(response.body.error).toBe('Database error');
+
+        // Restore the original implementation
+        sessionServices.completeSessionById.mockRestore();
+    });
+
+});
+
+describe('PATCH /v1/sessions/:id', () => {
+    it('200 - should update a session', async () => {
+        const response = await request(app)
+            .patch(`/v1/sessions/${sessionId}`)
+            .set('Authorization', `Bearer ${teacherToken}`)
+            .send({
+                questions: [{
+                        originalQuestionId: question._id,
+                        questionSnapshot:{
+                            text: question.text,
+                            type: question.type,
+                            points: question.points,
+                            timeLimit: question.timeLimit,
+                            options: question.options
+                        },
+                        answers: [
+                            {
+                                letter: 'B',
+                                count: 1
+                            },
+                            {
+                                letter: 'C',
+                                count: 1
+                            }
+                        ],
+                        totalResponses: 2
+                    }]
+            });
+
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toHaveProperty('message');
+        expect(response.body.message).toBe('Session updated successfully');
+        expect(response.body).toHaveProperty('data');
+    });
+
+    it('401 - should fail without token', async () => {
+        const response = await request(app)
+            .patch(`/v1/sessions/${sessionId}`)
+            .send({
+                questions: [{
+                        originalQuestionId: question._id,
+                        questionSnapshot:{
+                            text: question.text,
+                            type: question.type,
+                            points: question.points,
+                            timeLimit: question.timeLimit,
+                            options: question.options
+                        },
+                        answers: [
+                            {
+                                letter: 'B',
+                                count: 1
+                            },
+                            {
+                                letter: 'C',
+                                count: 1
+                            }
+                        ],
+                        totalResponses: 2
+                    }]
+            });
+
+        expect(response.statusCode).toBe(401);
+    });
+
+    it('401 - should fail with invalid token', async () => {
+        const response = await request(app)
+            .patch(`/v1/sessions/${sessionId}`)
+            .set('Authorization', 'Bearer invalidtoken')
+            .send({
+                questions: [{
+                        originalQuestionId: question._id,
+                        questionSnapshot:{
+                            text: question.text,
+                            type: question.type,
+                            points: question.points,
+                            timeLimit: question.timeLimit,
+                            options: question.options
+                        },
+                        answers: [
+                            {
+                                letter: 'B',
+                                count: 1
+                            },
+                            {
+                                letter: 'C',
+                                count: 1
+                            }
+                        ],
+                        totalResponses: 2
+                    }]
+            });
+
+        expect(response.statusCode).toBe(401);
+    });
+
+    it('400 - should return 400 if request is invalid', async () => {
+        const response = await request(app)
+            .patch(`/v1/sessions/invalid-id`)
+            .set('Authorization', `Bearer ${teacherToken}`)
+            .send({
+                status: "completed",
+                questions: [{
+                        originalQuestionId: question._id,
+                        questionSnapshot:{
+                            text: question.text,
+                            type: question.type,
+                            points: question.points,
+                            timeLimit: question.timeLimit,
+                            options: question.options
+                        },
+                        answers: [
+                            {
+                                letter: 'B',
+                                count: 1
+                            },
+                            {
+                                letter: 'C',
+                                count: 1
+                            }
+                        ],
+                        totalResponses: 2
+                    }],
+                endTime: new Date()
+            });
+
+        expect(response.statusCode).toBe(400);
+        expect(response.body).toHaveProperty('message');
+        expect(response.body.message).toBe('Session ID is incorrect');
+    });
+
+    it('400 - should return 400 if request is invalid', async () => {
+        const response = await request(app)
+            .patch(`/v1/sessions/${sessionId}`)
+            .set('Authorization', `Bearer ${teacherToken}`);
+
+        expect(response.statusCode).toBe(400);
+        expect(response.body).toHaveProperty('message');
+        expect(response.body.message).toBe('Body is required');
+    });
+
+    it('404 - should return 404 if session not found', async () => {
+        const nonExistentId = '609e129e1c4ae12f34567899';
+        
+        const response = await request(app)
+            .patch(`/v1/sessions/${nonExistentId}`)
+            .set('Authorization', `Bearer ${teacherToken}`)
+            .send({
+                questions: [{
+                        originalQuestionId: question._id,
+                        questionSnapshot:{
+                            text: question.text,
+                            type: question.type,
+                            points: question.points,
+                            timeLimit: question.timeLimit,
+                            options: question.options
+                        },
+                        answers: [
+                            {
+                                letter: 'B',
+                                count: 1
+                            },
+                            {
+                                letter: 'C',
+                                count: 1
+                            }
+                        ],
+                        totalResponses: 2
+                    }]
+            });
+
+        expect(response.statusCode).toBe(404);
+        expect(response.body).toHaveProperty('message');
+        expect(response.body.message).toBe('Session not found');
+    });
+
+    it('500 - should return 500 if there is a server error', async () => {
+        // Mock the service to throw an error
+        jest.spyOn(sessionServices, 'updateSessionById').mockImplementation(() => {
+            throw new Error('Database error');
+        });
+
+        const response = await request(app)
+            .patch(`/v1/sessions/${sessionId}`)
+            .set('Authorization', `Bearer ${teacherToken}`)
+            .send({
+                questions: [{
+                        originalQuestionId: question._id,
+                        questionSnapshot:{
+                            text: question.text,
+                            type: question.type,
+                            points: question.points,
+                            timeLimit: question.timeLimit,
+                            options: question.options
+                        },
+                        answers: [
+                            {
+                                letter: 'B',
+                                count: 1
+                            },
+                            {
+                                letter: 'C',
+                                count: 1
+                            }
+                        ],
+                        totalResponses: 2
+                    }]
+            });
+        
+        expect(response.statusCode).toBe(500);
+        expect(response.body).toHaveProperty('message');
+        expect(response.body.message).toBe('Error updating session');
+        expect(response.body).toHaveProperty('error');
+        expect(response.body.error).toBe('Database error');
+
+        // Restore the original implementation
+        sessionServices.updateSessionById.mockRestore();
+    });
+
+});

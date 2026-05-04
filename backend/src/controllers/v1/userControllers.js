@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+
 // Import services
 const userServices = require('../../services/v1/userServices');
 
@@ -177,7 +179,7 @@ const createUser = async (req, res) => {
     try{
         if (await checkExists(User, 'email', email)) {
             debug('Email already exists:', email);
-            return res.status(409).json({ message: 'The user alredy exists' });
+            return res.status(409).json({ message: 'The user already exists' });
         }
 
         const newUser = await userServices.createUser(body);
@@ -202,7 +204,9 @@ const archiveUserById = async (req, res) => {
     const { id } = req.params;
     debug('User ID:', id);
 
-    if(!id) return res.status(400).json({ message: 'User ID is required'});
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: 'User ID is incorrect' }); // ID is always sent, so we check if it's a valid ObjectId
+    }
     debug('User ID is valid');
 
     try{
@@ -229,17 +233,24 @@ const restoreUserById = async (req, res) => {
     debug('Restoring user by ID');
     const { id } = req.params;
 
-    if(!id) return res.status(400).json({ message: 'User ID is required'});
+    debug('User ID:', id);
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: 'User ID is incorrect' });
+    }
+    debug('User ID is valid');
 
     try{
+        debug('Attempting to restore user');
         const restored = await userServices.restoreUserById(id);
 
         if (!restored) return res.status(404).json({ message: 'User not found' });
 
+        debug('User restored successfully, sending response');
         res.status(200).json({
-         message: 'User restored successfully'
+            message: 'User restored successfully'
         });
     }catch(error){
+        debug('Error restoring user:', error);
         res.status(500).json({
             message: 'Error restoring user',
             error: error.message
@@ -255,8 +266,10 @@ const updateUserById = async (req, res) => {
     const {body} = req;
     const { _id, role } = req.user;
 
-    if(!id) return res.status(400).json({ message: 'User ID is required'});
     if(!body) return res.status(400).json({ message: 'Body is required'});
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: 'User ID is incorrect' }); // ID is always sent, so we check if it's a valid ObjectId
+    }
 
     debug('User ID:', id);
     debug('Request body:', body);
@@ -316,7 +329,9 @@ const deleteUserPermanentlyById = async (req, res) => {
     const { id } = req.params;
     debug('User ID:', id);
 
-    if(!id) return res.status(400).json({ message: 'User ID is required'});
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: 'User ID is incorrect' }); // ID is always sent, so we check if it's a valid ObjectId
+    }
     debug('User ID is valid');
 
     try{

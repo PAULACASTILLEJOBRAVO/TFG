@@ -153,7 +153,7 @@ const updatePasswordById = async ({id, body, _id, role}) => {
         if(!user) return false;
 
         debug('User found:', user);
-        const updatePassword = await User.updatePasswordById(id, body, { _id, role }).populate('-password');
+        const updatePassword = await User.updatePasswordById(id, body, { _id, role });
 
         debug('User password updated successfully:', updatePassword);
         return updatePassword;

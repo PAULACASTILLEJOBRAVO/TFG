@@ -64,8 +64,8 @@ beforeEach(async () => {
     clicker = await Clicker.create({
         _id: '609e129e1c4ae12f34567896',
         deviceCode: '0x0012',
-        assignedToUserId: student._id,
-        adminId: admin._id,
+        assignedToUserId: student._id.toString(),
+        adminId: admin._id.toString(),
         status: 'assigned'
     });
 
@@ -100,21 +100,21 @@ beforeEach(async () => {
     quiz = await Quiz.create({ 
         _id: '609e129e1c4ae12f34567892',
         title: 'Quiz 1',
-        creatorId: teacher._id,
-        questionIds: [question._id],
-        playerIds: [student._id],
+        creatorId: teacher._id.toString(),
+        questionIds: [question._id.toString()],
+        playerIds: [student._id.toString()],
         status: 'published',
         difficulty: 'easy'
     });
 
     session = await Session.create({
         _id: '609e129e1c4ae12f34567893',
-        quizId: quiz._id,
-        teacherId: teacher._id,
-        deviceIds: [clicker._id],
+        quizId: quiz._id.toString(),
+        teacherId: teacher._id.toString(),
+        deviceIds: [clicker._id.toString()],
         status: 'active',
         questions: [{
-            originalQuestionId: question._id,
+            originalQuestionId: question._id.toString(),
             questionSnapshot: {
                 text: question.text,
                 type: question.type,
@@ -134,8 +134,8 @@ describe('POST /v1/responses', () => {
         const newResponse = {
             answer: 'B',
             deviceId: clicker.deviceCode,
-            sessionId: session._id,
-            questionId: question._id,
+            sessionId: session._id.toString(),
+            questionId: question._id.toString(),
         }
 
         const response = await request(app)
@@ -154,8 +154,8 @@ describe('POST /v1/responses', () => {
         const newResponse = {
             answer: 'B',
             deviceId: clicker.deviceCode,
-            sessionId: session._id,
-            questionId: question._id,
+            sessionId: session._id.toString(),
+            questionId: question._id.toString(),
         }
 
         // Mock the service to throw an error

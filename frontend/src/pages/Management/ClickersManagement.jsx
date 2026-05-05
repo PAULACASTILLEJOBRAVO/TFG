@@ -221,9 +221,9 @@ const ClickersManagement = () => {
   }
 
   // DIALOGS ACTIONS
-  const handleConfirmDelete = async (reason) => {
+  const handleConfirmDelete = async () => {
       try{
-          await remove(selectedClicker._id, {reason: reason});
+          await remove(selectedClicker._id);
           closeDialogs();
           refetch();
       }catch(error){

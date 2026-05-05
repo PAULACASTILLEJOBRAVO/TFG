@@ -1,13 +1,15 @@
 // tests/setup.js
 const mongoose = require('mongoose');
-const { MongoMemoryServer } = require('mongodb-memory-server');
+const { MongoMemoryReplSet } = require('mongodb-memory-server');
 
 let mongoServer;
 
 module.exports.connect = async () => {
   mongoose.set('strictQuery', false); // To suppress deprecation warning
 
-  mongoServer = await MongoMemoryServer.create();
+  mongoServer = await MongoMemoryReplSet.create({
+    replSet: { name: 'rs0', count: 1 } // Create a replica set with a single member to support transactions
+  });
   const uri = mongoServer.getUri();
 
   // For security reasons: If there is already an open connection, we close it first

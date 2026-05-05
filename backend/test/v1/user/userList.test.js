@@ -52,14 +52,15 @@ beforeEach(async () => {
 
     await User.insertMany(users);
 
-    user = new User({
+    user = await User.create({
         username: 'student2',
         email: 'student2@test.com',
         password: '987012',
+        role: 'student',
+        status: 'active'
     });
 
-    userId = user._id;
-    await User.create(user);
+    userId = user._id.toString();
 });
 
 // After all tests, stop the in-memory MongoDB instance

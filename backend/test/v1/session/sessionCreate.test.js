@@ -58,9 +58,9 @@ beforeEach(async () => {
     clicker = await Clicker.create({
         _id: '609e129e1c4ae12f34567893',
         deviceCode: '0x0012',
-        assignedToUserId: student._id,
+        assignedToUserId: student._id.toString(),
         status: 'assigned',
-        adminId: admin._id
+        adminId: admin._id.toString()
     });
 
     question = await Question.create({
@@ -94,9 +94,9 @@ beforeEach(async () => {
     quiz = await Quiz.create({ 
         _id: '609e129e1c4ae12f34567892',
         title: 'Quiz 1',
-        creatorId: teacher._id,
-        questionIds: [question._id],
-        playerIds: [student._id],
+        creatorId: teacher._id.toString(),
+        questionIds: [question._id.toString()],
+        playerIds: [student._id.toString()],
         status: 'published',
         difficulty: 'easy'
     });
@@ -111,9 +111,9 @@ describe('POST /v1/sessions', () => {
             .post('/v1/sessions')
             .set('Authorization', `Bearer ${teacherToken}`)
             .send({
-                quizId: quiz._id,
-                teacherId: teacher._id,
-                deviceIds: [clicker._id],
+                quizId: quiz._id.toString(),
+                teacherId: teacher._id.toString(),
+                deviceIds: [clicker._id.toString()],
                 startTime: new Date(),
                 status: 'active'
             });
@@ -134,9 +134,9 @@ describe('POST /v1/sessions', () => {
             .post('/v1/sessions')
             .set('Authorization', `Bearer ${teacherToken}`)
             .send({
-                quizId: quiz._id,
-                teacherId: teacher._id,
-                deviceIds: [clicker._id],
+                quizId: quiz._id.toString(),
+                teacherId: teacher._id.toString(),
+                deviceIds: [clicker._id.toString()],
                 startTime: new Date(),
                 status: 'active'
             });

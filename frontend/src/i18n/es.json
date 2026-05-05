@@ -249,8 +249,7 @@
                 "delete": {
                     "title": "Eliminar clicker",
                     "description": "¿Estás seguro de que deseas eliminar este clicker? Esta acción no se puede deshacer.",
-                    "warning": "El clicker con código {{code}} no podrá volver a ser utilizado.",
-                    "reasonLabel": "Motivo de eliminación"
+                    "warning": "El clicker con código {{code}} no podrá volver a ser utilizado."
                 }
             }
         }
@@ -333,14 +332,12 @@
                 "delete": {
                     "title": "Eliminar cuestionario",
                     "description": "¿Estás seguro de que deseas eliminar este cuestionario? Esta acción no se puede deshacer.",
-                    "warning": "El cuestionario {{title}} no podrá volver a ser utilizado ni jugado, pero podrás restaurarlo más tarde si lo deseas.",
-                    "reasonLabel": "Motivo de eliminación"
+                    "warning": "El cuestionario {{title}} no podrá volver a ser utilizado ni jugado, pero podrás restaurarlo más tarde si lo deseas."
                 },
                 "publish": {
                     "title": "Publicar cuestionario",
                     "description": "¿Estás seguro de que deseas publicar este cuestionario? Esta acción hará que el cuestionario esté disponible para los estudiantes.",
-                    "warning": "Los alumnos podrán jugar el cuestionario {{title}} una vez publicado.",
-                    "reasonLabel": "Motivo de publicación"
+                    "warning": "Los alumnos podrán jugar el cuestionario {{title}} una vez publicado."
                 }
             }
         },

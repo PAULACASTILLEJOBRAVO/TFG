@@ -76,9 +76,9 @@ const QuizzesManagement = () => {
     }
 
     // DIALOGS ACTIONS
-    const handleConfirmDelete = async (reason) => {
+    const handleConfirmDelete = async () => {
         try{
-            await remove(selectedQuiz._id, {reason: reason});
+            await remove(selectedQuiz._id);
             closeDialogs();
             refetchTeacher({ limit: 0 });
         }catch(error){

@@ -57,9 +57,9 @@ beforeEach(async () => {
     clicker = await Clicker.create({
         _id: '609e129e1c4ae12f34567893',
         deviceCode: '0x0012',
-        assignedToUserId: student._id,
+        assignedToUserId: student._id.toString(),
         status: 'assigned',
-        adminId: admin._id
+        adminId: admin._id.toString()
     });
 
     question = await Question.create({
@@ -95,24 +95,23 @@ beforeEach(async () => {
     quiz = await Quiz.create({ 
         _id: '609e129e1c4ae12f34567892',
         title: 'Quiz 1',
-        creatorId: teacher._id,
-        questionIds: [question._id],
-        playerIds: [student._id],
+        creatorId: teacher._id.toString(),
+        questionIds: [question._id.toString()],
+        playerIds: [student._id.toString()],
         status: 'published',
         difficulty: 'easy'
     });
 
-    session = {
+    session = await Session.create({
         _id: '609e129e1c4ae12f34567891',
-        quizId: quiz._id,
-        teacherId: teacher._id,
-        deviceIds: [clicker._id],
+        quizId: quiz._id.toString(),
+        teacherId: teacher._id.toString(),
+        deviceIds: [clicker._id.toString()],
         startTime: new Date(),
         status: 'active'
-    };
+    });
 
-    sessionId = session._id;
-    await Session.create(session);
+    sessionId = session._id.toString();
 });
 
 // After all tests, stop the in-memory MongoDB instance
@@ -127,7 +126,7 @@ describe('PATCH /v1/sessions/:id/complete', () => {
             .send({
                 status: "completed",
                 questions: [{
-                        originalQuestionId: question._id,
+                        originalQuestionId: question._id.toString(),
                         questionSnapshot:{
                             text: question.text,
                             type: question.type,
@@ -162,7 +161,7 @@ describe('PATCH /v1/sessions/:id/complete', () => {
             .send({
                 status: "completed",
                 questions: [{
-                        originalQuestionId: question._id,
+                        originalQuestionId: question._id.toString(),
                         questionSnapshot:{
                             text: question.text,
                             type: question.type,
@@ -195,7 +194,7 @@ describe('PATCH /v1/sessions/:id/complete', () => {
             .send({
                 status: "completed",
                 questions: [{
-                        originalQuestionId: question._id,
+                        originalQuestionId: question._id.toString(),
                         questionSnapshot:{
                             text: question.text,
                             type: question.type,
@@ -238,7 +237,7 @@ describe('PATCH /v1/sessions/:id/complete', () => {
             .send({
                 status: "completed",
                 questions: [{
-                        originalQuestionId: question._id,
+                        originalQuestionId: question._id.toString(),
                         questionSnapshot:{
                             text: question.text,
                             type: question.type,
@@ -275,7 +274,7 @@ describe('PATCH /v1/sessions/:id/complete', () => {
             .send({
                 status: "completed",
                 questions: [{
-                        originalQuestionId: question._id,
+                        originalQuestionId: question._id.toString(),
                         questionSnapshot:{
                             text: question.text,
                             type: question.type,
@@ -315,7 +314,7 @@ describe('PATCH /v1/sessions/:id/complete', () => {
             .send({
                 status: "completed",
                 questions: [{
-                        originalQuestionId: question._id,
+                        originalQuestionId: question._id.toString(),
                         questionSnapshot:{
                             text: question.text,
                             type: question.type,
@@ -357,7 +356,7 @@ describe('PATCH /v1/sessions/:id', () => {
             .set('Authorization', `Bearer ${teacherToken}`)
             .send({
                 questions: [{
-                        originalQuestionId: question._id,
+                        originalQuestionId: question._id.toString(),
                         questionSnapshot:{
                             text: question.text,
                             type: question.type,
@@ -390,7 +389,7 @@ describe('PATCH /v1/sessions/:id', () => {
             .patch(`/v1/sessions/${sessionId}`)
             .send({
                 questions: [{
-                        originalQuestionId: question._id,
+                        originalQuestionId: question._id.toString(),
                         questionSnapshot:{
                             text: question.text,
                             type: question.type,
@@ -421,7 +420,7 @@ describe('PATCH /v1/sessions/:id', () => {
             .set('Authorization', 'Bearer invalidtoken')
             .send({
                 questions: [{
-                        originalQuestionId: question._id,
+                        originalQuestionId: question._id.toString(),
                         questionSnapshot:{
                             text: question.text,
                             type: question.type,
@@ -453,7 +452,7 @@ describe('PATCH /v1/sessions/:id', () => {
             .send({
                 status: "completed",
                 questions: [{
-                        originalQuestionId: question._id,
+                        originalQuestionId: question._id.toString(),
                         questionSnapshot:{
                             text: question.text,
                             type: question.type,
@@ -499,7 +498,7 @@ describe('PATCH /v1/sessions/:id', () => {
             .set('Authorization', `Bearer ${teacherToken}`)
             .send({
                 questions: [{
-                        originalQuestionId: question._id,
+                        originalQuestionId: question._id.toString(),
                         questionSnapshot:{
                             text: question.text,
                             type: question.type,
@@ -537,7 +536,7 @@ describe('PATCH /v1/sessions/:id', () => {
             .set('Authorization', `Bearer ${teacherToken}`)
             .send({
                 questions: [{
-                        originalQuestionId: question._id,
+                        originalQuestionId: question._id.toString(),
                         questionSnapshot:{
                             text: question.text,
                             type: question.type,

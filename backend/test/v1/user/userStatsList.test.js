@@ -63,7 +63,9 @@ beforeEach(async () => {
         status: 'inactive'
     }];
 
-    await User.insertMany(validUsers);
+    for (const user of validUsers) {
+        await User.create(user);
+    }
 });
 
 // After all tests, stop the in-memory MongoDB instance

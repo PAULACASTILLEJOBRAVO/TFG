@@ -99,33 +99,33 @@ beforeEach(async () => {
         { 
             _id: '609e129e1c4ae12f34567897',
             title: 'Quiz 1',
-            creatorId: teacher._id,
+            creatorId: teacher._id.toString(),
             status: 'published',
             difficulty: 'easy',
-            playerIds: students.map(s => s._id)
+            playerIds: students.map(s => s._id.toString())
         },
         { 
             _id: '609e129e1c4ae12f34567898',
             title: 'Quiz 2',
-            creatorId: teacher._id,
+            creatorId: teacher._id.toString(),
             status: 'draft',
             difficulty: 'medium',
-            questionIds: [question._id]
+            questionIds: [question._id.toString()]
         },
         { 
             _id: '609e129e1c4ae12f34567899',
             title: 'Quiz 3',
-            creatorId: teacher._id,
+            creatorId: teacher._id.toString(),
             difficulty: 'hard',
             status: 'archived',
-            questionIds: [question._id],
-            playerIds: students.map(s => s._id)
+            questionIds: [question._id.toString()],
+            playerIds: students.map(s => s._id.toString())
         },
     ];
 
     await Quiz.insertMany(quizzes);
 
-    quizId = quizzes[0]._id; 
+    quizId = quizzes[0]._id.toString(); 
 
     admin = await User.create({
         username: 'admin1',
@@ -136,21 +136,21 @@ beforeEach(async () => {
     });
 
     clicker = await Clicker.create({
-        adminId: admin._id,
+        adminId: admin._id.toString(),
         deviceCode: '0x0012',
         status: 'assigned',
-        assignedToUserId: students[0]._id
+        assignedToUserId: students[0]._id.toString()
     });
 
     session = await Session.create({
-        quizId: quizzes[0]._id,
-        teacherId: teacher._id,
-        deviceIds: [clicker._id],
+        quizId: quizzes[0]._id.toString(),
+        teacherId: teacher._id.toString(),
+        deviceIds: [clicker._id.toString()],
         status: 'completed',
         startTime: new Date(),
         endTime: new Date(),
         questions: [{
-            originalQuestionId: question._id,
+            originalQuestionId: question._id.toString(),
             questionSnapshot:{
                 text: question.text,
                 type: question.type,
@@ -173,19 +173,19 @@ beforeEach(async () => {
     });
 
     response = await Response.create({
-        sessionId: session._id,
-        playerId: students[0]._id,
-        questionId: question._id,
+        sessionId: session._id.toString(),
+        playerId: students[0]._id.toString(),
+        questionId: question._id.toString(),
         answer: 'B',
         isCorrect: true,
         pointsAwarded: 10
     });
 
     result = await Result.create({
-        playerId: students[0]._id,
-        sessionId: session._id,
+        playerId: students[0]._id.toString(),
+        sessionId: session._id.toString(),
         quizSnapshot: {
-            originalQuizId: quizzes[0]._id,
+            originalQuizId: quizzes[0]._id.toString(),
             title: quizzes[0].title,
             description: quizzes[0].description,
             difficulty: quizzes[0].difficulty
@@ -481,5 +481,49 @@ describe('GET /v1/quizzes/:id/student?studentId=:studentId', () => {
 
         // Restore the original implementation
         quizServices.getQuizByIdForStudent.mockRestore();
+    });
+});
+
+
+describe('GET /v1/quizzes/:id', () => {
+    it('200 - should return the quiz by ID', async () => {
+        const response = await request(app)
+            .get(`/v1/quizzes/${quizId}`)
+            .set('Authorization', `Bearer ${teacherToken}`);
+        
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toHaveProperty('message');
+        expect(response.body.message).toBe('Quiz fetched successfully');
+        expect(response.body).toHaveProperty('data');
+    })
+
+    it('400 - should return 400 if quiz ID is invalid', async () => {
+        const response = await request(app)
+            .get(`/v1/quizzes/invalid-id`)
+            .set('Authorization', `Bearer ${teacherToken}`);
+        
+        expect(response.statusCode).toBe(400);
+        expect(response.body).toHaveProperty('message');
+        expect(response.body.message).toBe('Quiz ID is incorrect');
+    })
+
+    it('500 - should return 500 if there is a server error', async () => {
+        // Mock the service to throw an error
+        jest.spyOn(quizServices, 'getQuizById').mockImplementation(() => {
+            throw new Error('Database error');
+        });
+
+        const response = await request(app)
+            .get(`/v1/quizzes/${quizId}`)
+            .set('Authorization', `Bearer ${teacherToken}`);
+        
+        expect(response.statusCode).toBe(500);
+        expect(response.body).toHaveProperty('message');
+        expect(response.body.message).toBe('Error fetching quiz');
+        expect(response.body).toHaveProperty('error');
+        expect(response.body.error).toBe('Database error');
+
+        // Restore the original implementation
+        quizServices.getQuizById.mockRestore();
     });
 });

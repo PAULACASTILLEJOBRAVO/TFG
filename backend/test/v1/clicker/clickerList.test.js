@@ -1,7 +1,8 @@
 const request = require('supertest');
 const app = require('../../../app'); 
 const User = require('../../../src/models/User');
-const userServices = require('../../../src/services/v1/userServices');
+const Clicker = require('../../../src/models/Clicker');
+const clickerServices = require('../../../src/services/v1/clickerServices');
 
 const { connect, closeDatabase, clearDatabase } = require('../setup');
 
@@ -9,7 +10,7 @@ const { connect, closeDatabase, clearDatabase } = require('../setup');
 beforeAll(async () => { await connect(); });
 
 // Variable to store the authentication token for protected routes
-let userAdmin, user, userId;
+let userAdmin, user, userId, clicker, clickerId;
 let adminToken;
 
 beforeEach(async () => {
@@ -34,86 +35,74 @@ beforeEach(async () => {
     adminToken = resAdmin.body.data.token;
 
     user = await User.create({
-        username: 'student2',
-        email: 'student2@test.com',
-        password: '987012',
+        username: 'student1',
+        email: 'student1@test.com',
+        password: '987654',
         role: 'student',
         status: 'active'
     });
 
-    userId = user._id.toString();
+    clicker = await Clicker.create({
+        deviceCode: '0x0012',
+        status: 'assigned',
+        assignedToUserId: user._id.toString(),
+        adminId: userAdmin._id.toString()
+    });
+
+    clickerId = clicker._id.toString();
 });
 
 // After all tests, stop the in-memory MongoDB instance
 afterAll(async () => { await closeDatabase(); });
 
-describe('DELETE /v1/users/:id', () => {
-    it('200 - should delete an user', async () => {
+describe('GET /v1/clickers', () => {
+
+    it('200 - should return all clickers', async () => {
         const response = await request(app)
-            .delete(`/v1/users/${userId}`)
-            .set('Authorization', `Bearer ${adminToken}`);
+            .get('/v1/clickers')
+            .set('Authorization', `Bearer ${adminToken}`)
+            .expect(200);
 
         expect(response.statusCode).toBe(200);
         expect(response.body).toHaveProperty('message');
-        expect(response.body.message).toBe('User permanently deleted successfully');
+        expect(response.body.message).toBe('Clickers fetched successfully');
+        expect(response.body).toHaveProperty('data');
+        expect(response.body.data).toHaveLength(1); // 1 clicker created in beforeEach
     });
 
     it('401 - should fail without token', async () => {
         const response = await request(app)
-            .delete(`/v1/users/${userId}`);
+            .get('/v1/clickers');
 
         expect(response.statusCode).toBe(401);
     });
 
     it('401 - should fail with invalid token', async () => {
         const response = await request(app)
-            .delete(`/v1/users/${userId}`)
+            .get('/v1/clickers')
             .set('Authorization', 'Bearer invalidtoken');
 
         expect(response.statusCode).toBe(401);
     });
 
-    
-    it('400 - should return 400 if User ID is incorrect', async () => {
-        const response = await request(app)
-            .delete(`/v1/users/invalid-id`)
-            .set('Authorization', `Bearer ${adminToken}`);
-
-        expect(response.statusCode).toBe(400);
-        expect(response.body).toHaveProperty('message');
-        expect(response.body.message).toBe('User ID is incorrect');
-    });
-
-    it('404 - should return 404 if user not found', async () => {
-        const nonExistentId = '609e129e1c4ae12f34567899';
-
-        const response = await request(app)
-            .delete(`/v1/users/${nonExistentId}`)
-            .set('Authorization', `Bearer ${adminToken}`);
-
-        expect(response.statusCode).toBe(404);
-        expect(response.body).toHaveProperty('message');
-        expect(response.body.message).toBe('User not found');
-    });
-
     it('500 - should return 500 if there is a server error', async () => {
         // Mock the service to throw an error
-        jest.spyOn(userServices, 'deleteUserPermanentlyById').mockImplementation(() => {
+        jest.spyOn(clickerServices, 'getAllClickers').mockImplementation(() => {
             throw new Error('Database error');
         });
 
         const response = await request(app)
-            .delete(`/v1/users/${userId}`)
+            .get('/v1/clickers')
             .set('Authorization', `Bearer ${adminToken}`);
         
         expect(response.statusCode).toBe(500);
         expect(response.body).toHaveProperty('message');
-        expect(response.body.message).toBe('Error permanently deleting user');
+        expect(response.body.message).toBe('Error fetching clickers');
         expect(response.body).toHaveProperty('error');
         expect(response.body.error).toBe('Database error');
 
         // Restore the original implementation
-        userServices.deleteUserPermanentlyById.mockRestore();
+        clickerServices.getAllClickers.mockRestore();
     });
 
 });

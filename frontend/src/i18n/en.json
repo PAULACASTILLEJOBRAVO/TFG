@@ -245,8 +245,7 @@
                 "delete": {
                     "title": "Delete Clicker",
                     "description": "Are you sure you want to delete this clicker? This action cannot be undone.",
-                    "warning": "The clicker with code {{code}} will no longer be able to be used.",
-                    "reasonLabel": "Reason for deletion"
+                    "warning": "The clicker with code {{code}} will no longer be able to be used."
                 }
             }
         }
@@ -334,14 +333,12 @@
                 "delete": {
                     "title": "Delete Quiz",
                     "description": "Are you sure you want to delete this quiz? This action cannot be undone.",
-                    "warning": "The quiz {{title}} will no longer be able to be used or played, but you can restore it later if you wish.",
-                    "reasonLabel": "Reason for deletion"
+                    "warning": "The quiz {{title}} will no longer be able to be used or played, but you can restore it later if you wish."
                 },
                 "publish": {
                     "title": "Publish Quiz",
                     "description": "Are you sure you want to publish this quiz? This action will make the quiz available for students.",
-                    "warning": "Students will be able to play the quiz {{title}} once published.",
-                    "reasonLabel": "Reason for publication"
+                    "warning": "Students will be able to play the quiz {{title}} once published."
                 }
             }
         },

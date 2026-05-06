@@ -27,6 +27,6 @@ jobs:
 
     - name: Run tests
       env:
-        JWT_SECRET: ${{ secrets.JWT_SECRET_TEST }}
+        JWT_SECRET: ${{ secrets.JWT_SECRET }}
       run: npm run test  
       working-directory: ./backend

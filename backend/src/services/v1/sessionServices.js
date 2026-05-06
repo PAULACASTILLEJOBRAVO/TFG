@@ -11,7 +11,7 @@ const debug = require('debug')('backend:services:v1:sessionServices');
 // Service to get a session by ID
 const getSessionById = async (id) => {
     debug(`Getting session with ID ${id}`);
-    return await Session.findById(id).populate('teacherId', '-password').populate('deviceIds').populate('quizId');
+    return await Session.findById(id).populate('teacherId').populate('deviceIds').populate('quizId');
 };
 
 // Service to create a new session

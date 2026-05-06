@@ -59,7 +59,7 @@ const getAllStudents = async () => {
     return await User.find({ 
         status: "active",  
         role: "student" 
-    }).select('-password');
+    });
 }
 
 // Service to fetch all students without clicker
@@ -74,7 +74,7 @@ const getAllStudentsWithoutClicker = async () => {
         _id: { $nin: studentsWithClicker },
         status: "active",
         role: "student"
-    }).select('-password'); 
+    }); 
 }
 
 // Service to create a new user

@@ -190,7 +190,7 @@ userSchema.statics.restoreById = async function(id) {
 // Statics update by id
 userSchema.statics.updateById = async function(id, body, currentUserData) {
     debug('Updating user with ID:', id, 'by user:', currentUserData);
-    const user = await this.findById(id).select('-password');
+    const user = await this.findById(id);
     if (!user) return false;
     debug('User found for update:', user);
 

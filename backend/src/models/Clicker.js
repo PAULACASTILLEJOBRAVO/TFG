@@ -2,10 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const debug = require('debug')('backend:models:quiz');
 
-const {
-    validateAdminRoleById,
-    validateAdminRole
-} = require('../middleware/validationRole');
+const { validateAdminRoleById } = require('../middleware/validationRole');
 
 const { getClickerEditableFields } = require('../utils/checkRolePermissions');
 
@@ -115,12 +112,6 @@ clickerSchema.statics.updateById = async function(id, body, currentUserData) {
     await clicker.save();
 
     return clicker;
-}
-
-// Statics permissons to fetch total users for admin
-clickerSchema.statics.canGetAdminClickers = async function(currentUser) {
-  debug('Checking permissions to get admin clickers for current user:', currentUser);
-  return await validateAdminRole(currentUser);
 }
 
 //Pre-save hook to validate that the adminId corresponds to a user with the 'admin' role

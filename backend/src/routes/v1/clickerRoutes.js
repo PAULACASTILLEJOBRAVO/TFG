@@ -4,6 +4,7 @@ const router = express.Router();
 
 // Import middleware
 const { authenticate } = require('../../middleware/authentication');
+const { requireAdminRole } = require('../../middleware/roles');
 
 // Import controllers
 const clickerController = require('../../controllers/v1/clickerControllers');
@@ -16,6 +17,7 @@ const clickerController = require('../../controllers/v1/clickerControllers');
  *   description: Clicker management and retrieval - All routes require admin authentication
  */
 router.use(authenticate);
+router.use(requireAdminRole);
 
 // Route to get all clickers stats
 /** @swagger

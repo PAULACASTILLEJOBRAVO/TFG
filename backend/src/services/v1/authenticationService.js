@@ -8,7 +8,7 @@ debug = require('debug')('backend:services:v1:authenticationService');
 const registerUser = async (body) => {
     try{
         debug('Registering new user with body:', body);
-        return (await User.create(body)).populate('-password');
+        return await User.create(body);
     }catch (error){
         debug('Error registering user:', error);
         throw new Error(error.message);

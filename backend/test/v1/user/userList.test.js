@@ -5,31 +5,62 @@ const userServices = require('../../../src/services/v1/userServices');
 
 const { connect, closeDatabase, clearDatabase } = require('../setup');
 
-
 // Before all tests, start an in-memory MongoDB instance
 beforeAll(async () => { await connect(); });
 
 // Variable to store the authentication token for protected routes
-let token;
+let userAdmin, users, user, userId;
+let adminToken;
 
 beforeEach(async () => {
     await clearDatabase(); // Clear the database before each test
 
-    const user = await User.create({
+    userAdmin = await User.create({
         username: 'admin',
         email: 'admin@test.com',
         password: '547638',
-        role: 'admin'
+        role: 'admin',
+        status: 'active'
     });
 
-    const res = await request(app)
+    const resAdmin = await request(app)
         .post('/v1/auth/login')
         .send({
             email: 'admin@test.com',
             password: '547638'
         });
 
-    token = res.body.token;
+
+    adminToken = resAdmin.body.data.token;
+
+    users = [
+        {
+            username: 'student1',
+            email: 'student1@test.com',
+            password: '987654',
+            role: 'student',
+            status: 'active'
+        },
+        {
+            username: 'teacher1',
+            email: 'teacher1@test.com',
+            password: '123456',
+            role: 'teacher',
+            status: 'active'
+        }
+    ];
+
+    await User.insertMany(users);
+
+    user = await User.create({
+        username: 'student2',
+        email: 'student2@test.com',
+        password: '987012',
+        role: 'student',
+        status: 'active'
+    });
+
+    userId = user._id.toString();
 });
 
 // After all tests, stop the in-memory MongoDB instance
@@ -37,37 +68,17 @@ afterAll(async () => { await closeDatabase(); });
 
 describe('GET /v1/users', () => {
 
-    // First, create some users in the database
-    beforeEach(async () => {
-        const users = [
-            {
-                username: 'student1',
-                email: 'student1@test.com',
-                password: '987654',
-            },
-            {
-                username: 'teacher1',
-                email: 'teacher1@test.com',
-                password: '123456',
-                role: 'teacher'
-            }
-        ];
-
-        await User.insertMany(users);
-
-    });
-
     it('200 - should return all users', async () => {
         const response = await request(app)
             .get('/v1/users')
-            .set('Authorization', `Bearer ${token}`)
+            .set('Authorization', `Bearer ${adminToken}`)
             .expect(200);
 
         expect(response.statusCode).toBe(200);
         expect(response.body).toHaveProperty('message');
         expect(response.body.message).toBe('Users fetched successfully');
         expect(response.body).toHaveProperty('data');
-        expect(response.body.data).toHaveLength(3);
+        expect(response.body.data).toHaveLength(4); // 2 from users + admin + user from beforeEach
     });
 
     it('401 - should fail without token', async () => {
@@ -85,7 +96,7 @@ describe('GET /v1/users', () => {
         expect(response.statusCode).toBe(401);
     });
 
-    it('500 - hould return 500 if there is a server error', async () => {
+    it('500 - should return 500 if there is a server error', async () => {
         // Mock the service to throw an error
         jest.spyOn(userServices, 'getAllUsers').mockImplementation(() => {
             throw new Error('Database error');
@@ -93,7 +104,7 @@ describe('GET /v1/users', () => {
 
         const response = await request(app)
             .get('/v1/users')
-            .set('Authorization', `Bearer ${token}`);
+            .set('Authorization', `Bearer ${adminToken}`);
         
         expect(response.statusCode).toBe(500);
         expect(response.body).toHaveProperty('message');
@@ -107,27 +118,11 @@ describe('GET /v1/users', () => {
 
 });
 
-describe('GET /v1/users/:id', () => {
-
-    let userId;
-
-    // First, create some users in the database
-    beforeEach(async () => {
-        const user = new User({
-            username: 'student1',
-            email: 'student1@test.com',
-            password: '987654',
-        });
-
-        userId = user._id;
-        await User.create(user);
-
-    });
-
+describe('GET /v1/users/me', () => {
     it('200 - should return a users by ID', async () => {
         const response = await request(app)
-            .get(`/v1/users/${userId}`)
-            .set('Authorization', `Bearer ${token}`)
+            .get(`/v1/users/me`)
+            .set('Authorization', `Bearer ${adminToken}`)
             .expect(200);
 
         expect(response.statusCode).toBe(200);
@@ -138,40 +133,43 @@ describe('GET /v1/users/:id', () => {
 
         it('401 - should fail without token', async () => {
         const response = await request(app)
-            .get(`/v1/users/${userId}`);
+            .get(`/v1/users/me`);
 
         expect(response.statusCode).toBe(401);
     });
 
     it('401 - should fail with invalid token', async () => {
         const response = await request(app)
-            .get(`/v1/users/${userId}`)
+            .get(`/v1/users/me`)
             .set('Authorization', 'Bearer invalidtoken');
 
         expect(response.statusCode).toBe(401);
     });
 
     it('404 - should return 404 if response not found', async () => {
-        const nonExistentId = '609e129e1c4ae12f34567899'; 
+        // Mock the service to return null to simulate user not found
+        jest.spyOn(userServices, 'getMe').mockResolvedValue(null);
 
         const response = await request(app)
-            .get(`/v1/users/${nonExistentId}`)
-            .set('Authorization', `Bearer ${token}`);
+            .get(`/v1/users/me`)
+            .set('Authorization', `Bearer ${adminToken}`);
         
         expect(response.statusCode).toBe(404);
         expect(response.body).toHaveProperty('message');
         expect(response.body.message).toBe('User not found');
+
+        userServices.getMe.mockRestore();
     })
 
-    it('500 - hould return 500 if there is a server error', async () => {
+    it('500 - should return 500 if there is a server error', async () => {
         // Mock the service to throw an error
-        jest.spyOn(userServices, 'getUserById').mockImplementation(() => {
+        jest.spyOn(userServices, 'getMe').mockImplementation(() => {
             throw new Error('Database error');
         });
 
         const response = await request(app)
-            .get(`/v1/users/${userId}`)
-            .set('Authorization', `Bearer ${token}`);
+            .get(`/v1/users/me`)
+            .set('Authorization', `Bearer ${adminToken}`);
         
         expect(response.statusCode).toBe(500);
         expect(response.body).toHaveProperty('message');
@@ -180,7 +178,7 @@ describe('GET /v1/users/:id', () => {
         expect(response.body.error).toBe('Database error');
 
         // Restore the original implementation
-        userServices.getUserById.mockRestore();
+        userServices.getMe.mockRestore();
     });
 
 });

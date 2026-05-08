@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+
 // Import services
 const clickerServices = require('../../services/v1/clickerServices');
 
@@ -36,11 +38,6 @@ const getTotalClickersStats = async (req, res) => {
     const currentUser = req.user;
 
     try {
-        debug('Checking user permissions for accessing clickers stats');
-        const canAccess = await Clicker.canGetAdminClickers(currentUser);
-        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
-        debug('User authorized to access clickers stats');
-
         const clickers = await clickerServices.getTotalClickersStats();
 
         debug('Clickers stats fetched successfully:', clickers);
@@ -62,22 +59,17 @@ const getActiveClickersStats = async (req, res) => {
     const currentUser = req.user;
 
     try {
-        debug('Checking user permissions for accessing clickers stats');
-        const canAccess = await Clicker.canGetAdminClickers(currentUser);
-        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
-        debug('User authorized to access clickers stats');
-
         const clickers = await clickerServices.getActiveClickersStats();
 
-        debug('Clickers stats fetched successfully:', clickers);
+        debug('Active clickers stats fetched successfully:', clickers);
         res.status(200).json({
-            message: "Clickers' stats fetched successfully", 
+            message: "Active clickers' stats fetched successfully", 
             data: clickers
         });
     } catch (error) {
-        debug('Error fetching clickers stats:', error);
+        debug('Error fetching active clickers stats:', error);
         res.status(500).json({ 
-            message: "Error fetching clickers' stats", 
+            message: "Error fetching active clickers' stats", 
             error: error.message 
         });
     }
@@ -88,22 +80,17 @@ const getInUseClickersStats = async (req, res) => {
     const currentUser = req.user;
 
     try {
-        debug('Checking user permissions for accessing clickers stats');
-        const canAccess = await Clicker.canGetAdminClickers(currentUser);
-        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
-        debug('User authorized to access clickers stats');
-
         const clickers = await clickerServices.getInUseClickersStats();
 
-        debug('Clickers stats fetched successfully:', clickers);
+        debug('In use clickers stats fetched successfully:', clickers);
         res.status(200).json({
-            message: "Clickers' stats fetched successfully", 
+            message: "In use clickers' stats fetched successfully", 
             data: clickers
         });
     } catch (error) {
-        debug('Error fetching clickers stats:', error);
+        debug('Error fetching in use clickers stats:', error);
         res.status(500).json({ 
-            message: "Error fetching clickers' stats",
+            message: "Error fetching in use clickers' stats",
             error: error.message 
         });
     }
@@ -114,22 +101,17 @@ const getAvailableClickersStats = async (req, res) => {
     const currentUser = req.user;
 
     try {
-        debug('Checking user permissions for accessing clickers stats');
-        const canAccess = await Clicker.canGetAdminClickers(currentUser);
-        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
-        debug('User authorized to access clickers stats');
-
         const clickers = await clickerServices.getAvailableClickersStats();
 
-        debug('Clickers stats fetched successfully:', clickers);
+        debug('Available clickers stats fetched successfully:', clickers);
         res.status(200).json({
-            message: "Clickers' stats fetched successfully", 
+            message: "Available clickers' stats fetched successfully", 
             data: clickers
         });
     } catch (error) {
-        debug('Error fetching clickers stats:', error);
+        debug('Error fetching available clickers stats:', error);
         res.status(500).json({ 
-            message: "Error fetching clickers' stats",
+            message: "Error fetching available clickers' stats",
             error: error.message 
         });
     }
@@ -140,22 +122,17 @@ const getInactiveClickersStats = async (req, res) => {
     const currentUser = req.user;
 
     try {
-        debug('Checking user permissions for accessing clickers stats');
-        const canAccess = await Clicker.canGetAdminClickers(currentUser);
-        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
-        debug('User authorized to access clickers stats');
-
         const clickers = await clickerServices.getInactiveClickersStats();
 
-        debug('Clickers stats fetched successfully:', clickers);
+        debug('Inactive clickers stats fetched successfully:', clickers);
         res.status(200).json({
-            message: "Clickers' stats fetched successfully", 
+            message: "Inactive clickers' stats fetched successfully", 
             data: clickers
         });
     } catch (error) {
-        debug('Error fetching clickers stats:', error);
+        debug('Error fetching inactive clickers stats:', error);
         res.status(500).json({ 
-            message: "Error fetching clickers' stats", 
+            message: "Error fetching inactive clickers' stats", 
             error: error.message 
         });
     }
@@ -192,9 +169,10 @@ const createClicker = async (req, res) => {
 // Controller to delete a clicker by ID
 const deleteClickerById = async (req, res) => {
     const {id} = req.params;
-    const { by, reason } = req.body; 
 
-    if(!id) return res.status(400).json({ message: 'Clicker ID is required'});
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: 'Clicker ID is incorrect' }); // ID is always sent, so we check if it's a valid ObjectId
+    }
 
     try{
         debug('Deleting clicker with ID:', id);
@@ -219,7 +197,9 @@ const deleteClickerById = async (req, res) => {
 const restoreClickerById = async (req, res) => {
     const { id } = req.params;
 
-    if(!id) return res.status(400).json({ message: 'Clicker ID is required'});
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: 'Clicker ID is incorrect' }); // ID is always sent, so we check if it's a valid ObjectId
+    }
 
     try{
         debug('Restoring clicker with ID:', id);
@@ -246,8 +226,10 @@ const updateClickerById = async (req, res) => {
     const {body} = req;
     const { _id, role } = req.user;
 
-    if(!id) return res.status(400).json({ message: 'Clicker ID is required'});
     if(!body) return res.status(400).json({ message: 'Body is required'});
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: 'Clicker ID is incorrect' }); // ID is always sent, so we check if it's a valid ObjectId
+    }
 
     try{
         debug('Updating clicker with ID:', id);

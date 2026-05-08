@@ -53,32 +53,13 @@ const getArchivedUsersStats = async () => {
     return await User.countDocuments({ status: 'inactive' });
 }
 
-// Service to fetch users' stats
-const getTotalStudentsStatsForTeacher = async (id) => {
-    debug('Fetching total students stats for teacher with ID:', id);
-    const quizzes = await Quiz.find({
-        creatorId: id, 
-        status: "published",
-    });
-
-    debug('Quizzes found for teacher:', quizzes);
-    const studentIds = quizzes.flatMap(quiz => quiz.playerIds);
-
-    debug('Student IDs found for teacher:', studentIds);
-    return await User.countDocuments({
-        _id: { $in: studentIds },
-        status: "active",
-        role: "student"
-    });
-}
-
 // Service to fetch all students
 const getAllStudents = async () => {
     debug('Fetching all students');
     return await User.find({ 
         status: "active",  
         role: "student" 
-    }).select('-password');
+    });
 }
 
 // Service to fetch all students without clicker
@@ -93,7 +74,7 @@ const getAllStudentsWithoutClicker = async () => {
         _id: { $nin: studentsWithClicker },
         status: "active",
         role: "student"
-    }).select('-password'); 
+    }); 
 }
 
 // Service to create a new user
@@ -172,7 +153,7 @@ const updatePasswordById = async ({id, body, _id, role}) => {
         if(!user) return false;
 
         debug('User found:', user);
-        const updatePassword = await User.updatePasswordById(id, body, { _id, role }).populate('-password');
+        const updatePassword = await User.updatePasswordById(id, body, { _id, role });
 
         debug('User password updated successfully:', updatePassword);
         return updatePassword;

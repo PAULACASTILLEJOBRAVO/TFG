@@ -4,6 +4,7 @@ const router = express.Router();
 
 // Import middleware
 const { authenticate } = require('../../middleware/authentication');
+const { requireTeacherRole, requireAdminRole } = require('../../middleware/roles');
 
 // Import controllers
 const quizController = require('../../controllers/v1/quizControllers');
@@ -62,7 +63,7 @@ router.use(authenticate);
  *                 error:
  *                   type: string
  */
-router.get('/my-teacher', quizController.getAllQuizzesForTeacher);
+router.get('/my-teacher', requireTeacherRole, quizController.getAllQuizzesForTeacher);
 
 // Route to get all quizzes assigned to a specific student
 /**
@@ -148,7 +149,7 @@ router.get('/my-student', quizController.getAllQuizzesForStudent);
  *                 error:
  *                   type: string
  */
-router.post('/', quizController.createQuiz);
+router.post('/', requireTeacherRole, quizController.createQuiz);
 
 // Route to get a quiz by ID for a specific student
 /**
@@ -286,7 +287,7 @@ router.get('/:id/student', quizController.getQuizByIdForStudent);
  *                 error:
  *                   type: string
  */
-router.get('/:id/sessions', quizController.getQuizSessionsForTeacher);
+router.get('/:id/sessions', requireTeacherRole, quizController.getQuizSessionsForTeacher);
 
 // Route to get question analytics for a specific quiz and teacher
 /**
@@ -357,7 +358,7 @@ router.get('/:id/sessions', quizController.getQuizSessionsForTeacher);
  *                 error:
  *                   type: string
  */
-router.get('/:id/questions-analytics', quizController.getQuizQuestionAnalytics);
+router.get('/:id/questions-analytics', requireTeacherRole, quizController.getQuizQuestionAnalytics);
 
 // Route to restore a quiz by ID
 /**
@@ -418,7 +419,7 @@ router.get('/:id/questions-analytics', quizController.getQuizQuestionAnalytics);
  *                 error:
  *                   type: string
  */
-router.patch('/:id/restore', quizController.restoreQuizById);
+router.patch('/:id/restore', requireTeacherRole, quizController.restoreQuizById);
 
 // Route to publish a quiz by ID
 /**
@@ -479,7 +480,7 @@ router.patch('/:id/restore', quizController.restoreQuizById);
  *                 error:
  *                   type: string
  */
-router.patch('/:id/publish', quizController.publishQuizById);
+router.patch('/:id/publish', requireTeacherRole, quizController.publishQuizById);
 
 // Route to get a quiz by ID for a specific student
 /**
@@ -611,7 +612,7 @@ router.get('/:id', quizController.getQuizById);
  *                 error:
  *                   type: string
  */
-router.patch('/:id', quizController.updateQuizById);
+router.patch('/:id', requireTeacherRole, quizController.updateQuizById);
 
 // Route to delete a quiz by ID
 /**
@@ -672,7 +673,7 @@ router.patch('/:id', quizController.updateQuizById);
  *                 error:
  *                   type: string
  */
-router.delete('/:id', quizController.deleteQuizById);
+router.delete('/:id', requireTeacherRole, quizController.deleteQuizById);
 
 // Export the module
 module.exports = router;

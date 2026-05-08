@@ -93,8 +93,7 @@ sessionSchema.methods.completeSession = async function({questions, endTime}) {
 // Static complete by id
 sessionSchema.statics.completeById = async function(id, body, currentUserData) {
     debug(`Completing session with ID ${id} and body:`, body);
-    debug(body.questions[0].questionSnapshot); // Log the first question for more insight
-
+ 
     const session = await this.findById(id);
     if(!session) return false;
 

@@ -13,7 +13,7 @@ const loginUser = async (req, res) => {
         const { email, password } = req.body;
         if(!email || !password) return res.status(400).json({ message: 'Email and password are required'});
 
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ email }).select('+password');
         if(!user) return res.status(404).json({ message: 'User does not exist'});
         if(user.status !== 'active') return res.status(403).json({ message: 'User account is not active'});
 
@@ -80,7 +80,7 @@ const registerUser = async (req, res) => {
     try{
         debug('Registering new user with body:', body);
         if (await checkExists(User, 'email', email)) {
-            return res.status(409).json({ message: 'The user alredy exists' });
+            return res.status(409).json({ message: 'The user already exists' });
         }
 
         const newUser = await authenticationServices.registerUser({email, username, password});

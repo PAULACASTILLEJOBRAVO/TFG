@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const debug = require('debug')('backend:models:quiz');
 
-const {validateTeacherRoleById, validateTeacherRole} = require('../middleware/validationRole');
+const { validateTeacherRoleById } = require('../middleware/validationRole');
 const { getQuizEditableFields } = require('../utils/checkRolePermissions');
 
 //Define quiz schema
@@ -142,11 +142,6 @@ quizSchema.statics.updateById = async function(id, body, currentUserData, sessio
     await quiz.save({session});
 
     return quiz;
-}
-
-// Statics permissions to fetch total quizzes for a teacher
-quizSchema.statics.canGetTeacherQuizzes = async function(currentUser) {
-    return await validateTeacherRole(currentUser);
 }
 
 // Delete related questions before deleting the quiz

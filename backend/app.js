@@ -36,6 +36,16 @@ app.use(express.json({ limit: '20mb' }));
 app.use(express.urlencoded({ extended: true, limit: '20mb' }));
 app.use(express.static(path.join(__dirname, 'src/public')));
 
+// Log each request with method, url, status code and response time
+app.use((req, res, next) => {
+  const start = Date.now();
+  res.on('finish', () => {
+    debug(`P${res.statusCode} T${Date.now()-start}ms ${req.method} ${req.url}`);
+  });
+
+  next();
+});
+
 // Define Swagger route
 app.use('/swagger-api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 

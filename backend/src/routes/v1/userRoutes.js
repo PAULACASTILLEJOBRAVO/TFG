@@ -4,6 +4,7 @@ const router = express.Router();
 
 // Import middleware
 const { authenticate } = require('../../middleware/authentication');
+const { requireTeacherRole, requireAdminRole } = require('../../middleware/roles');
 
 // Import controllers
 const userController = require('../../controllers/v1/userControllers');
@@ -52,7 +53,7 @@ router.use(authenticate);
  *                              error:
  *                                  type: string
  */
-router.get('/', userController.getAllUsers);
+router.get('/', requireAdminRole, userController.getAllUsers);
 
 // Route to get the user profile of the authenticated user
 /**
@@ -137,7 +138,7 @@ router.get("/me", userController.getMe);
  *                   type: string
  *                   example: 'Internal server error'
  */
-router.get('/stats', userController.getTotalUsersStats);
+router.get('/stats', requireAdminRole, userController.getTotalUsersStats);
 
 // Route to get active users stats
 /**
@@ -177,7 +178,7 @@ router.get('/stats', userController.getTotalUsersStats);
  *                   type: string
  *                   example: 'Internal server error'
  */
-router.get('/stats/active', userController.getActiveUsersStats);
+router.get('/stats/active', requireAdminRole, userController.getActiveUsersStats);
 
 // Route to get connected users stats
 /**
@@ -217,7 +218,7 @@ router.get('/stats/active', userController.getActiveUsersStats);
  *                   type: string
  *                   example: 'Internal server error'
  */
-router.get('/stats/connected', userController.getConnectedUsersStats);
+router.get('/stats/connected', requireAdminRole, userController.getConnectedUsersStats);
 
 // Route to get archived users stats
 /**
@@ -256,7 +257,7 @@ router.get('/stats/connected', userController.getConnectedUsersStats);
  *                 error:
  *                   type: string
  */
-router.get('/stats/archived', userController.getArchivedUsersStats);
+router.get('/stats/archived', requireAdminRole, userController.getArchivedUsersStats);
 
 // Route to get students for teacher
 /**
@@ -304,7 +305,7 @@ router.get('/stats/archived', userController.getArchivedUsersStats);
  *                   type: string
  *                   example: 'Internal server error'
  */
-router.get('/students-for-teacher', userController.getAllStudentsForTeacher);
+router.get('/students-for-teacher', requireTeacherRole, userController.getAllStudentsForTeacher);
 
 // Route to get students for admin
 /**
@@ -352,7 +353,7 @@ router.get('/students-for-teacher', userController.getAllStudentsForTeacher);
  *                   type: string
  *                   example: 'Internal server error'
  */
-router.get('/students-for-admin', userController.getAllStudentsForAdmin);
+router.get('/students-for-admin', requireAdminRole, userController.getAllStudentsForAdmin);
 
 // Route to post an user
 /**
@@ -405,7 +406,7 @@ router.get('/students-for-admin', userController.getAllStudentsForAdmin);
  *                 error:
  *                   type: string
  */
-router.post('/', userController.createUser);
+router.post('/', requireAdminRole, userController.createUser);
 
 // Route to restore an user by ID
 /**
@@ -434,7 +435,7 @@ router.post('/', userController.createUser);
  *                   type: string
  *                   example: 'User restored successfully'
  */
-router.patch('/:id/restore', userController.restoreUserById);
+router.patch('/:id/restore', requireAdminRole, userController.restoreUserById);
 
 // Route to update an user's password by ID
 /**
@@ -505,7 +506,7 @@ router.patch('/:id/restore', userController.restoreUserById);
  *                 error:
  *                   type: string
  */
-router.patch('/:id/password', userController.updatePasswordById);
+router.patch('/:id/password', requireAdminRole, userController.updatePasswordById);
 
 // Route to update an user by ID
 /**
@@ -578,11 +579,11 @@ router.patch('/:id/password', userController.updatePasswordById);
  */
 router.patch('/:id', userController.updateUserById);
 
-// Route to delete an user by ID
+// Route to archive an user by ID
 /**
  * @swagger
  * /v1/users/{id}/archive:
- *   post:
+ *   patch:
  *     summary: Archive a user by ID
  *     description: Archives a User in the database using its unique MongoDB ObjectId.
  *     tags: [Users]
@@ -637,7 +638,7 @@ router.patch('/:id', userController.updateUserById);
  *                 error:
  *                   type: string
  */
-router.post('/:id/archive', userController.archiveUserById);
+router.patch('/:id/archive', requireAdminRole, userController.archiveUserById);
 
 // Route to delete an user permanently by ID
 /**
@@ -698,7 +699,7 @@ router.post('/:id/archive', userController.archiveUserById);
  *                 error:
  *                   type: string
  */
-router.delete('/:id', userController.deleteUserPermanentlyById);
+router.delete('/:id', requireAdminRole, userController.deleteUserPermanentlyById);
 
 //Export the module
 module.exports = router;

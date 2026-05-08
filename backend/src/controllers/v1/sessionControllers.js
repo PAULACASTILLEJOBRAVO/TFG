@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+
 // Import services
 const sessionServices = require('../../services/v1/sessionServices');
 
@@ -35,8 +37,10 @@ const completeSessionById = async (req, res) => {
     const {body} = req;
     const { _id, role } = req.user;
 
-    if(!id) return res.status(400).json({ message: 'Session ID is required'});
     if(!body) return res.status(400).json({ message: 'Body is required'});
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: 'Session ID is incorrect' }); // ID is always sent, so we check if it's a valid ObjectId
+    }
 
     try{
         debug(`Completing session with ID ${id}`);
@@ -64,8 +68,10 @@ const updateSessionById = async (req, res) => {
     const {body} = req;
     const { _id, role } = req.user;
 
-    if(!id) return res.status(400).json({ message: 'Session ID is required'});
     if(!body) return res.status(400).json({ message: 'Body is required'});
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: 'Session ID is incorrect' }); // ID is always sent, so we check if it's a valid ObjectId
+    }
 
     try{
         debug(`Updating session with ID ${id}`);

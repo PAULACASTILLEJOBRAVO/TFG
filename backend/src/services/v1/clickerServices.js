@@ -8,7 +8,7 @@ const debug = require('debug')('backend:services:v1:clickerServices');
 // Service to fetch all clickers
 const getAllClickers = async () => {
     debug('Fetching all clickers');
-    return await Clicker.find().populate('assignedToUserId', '-password').populate('adminId').sort({ deviceCode: 1 });
+    return await Clicker.find().populate('assignedToUserId').populate('adminId').sort({ deviceCode: 1 });
 };
 
 // Service to fetch a clicker by ID

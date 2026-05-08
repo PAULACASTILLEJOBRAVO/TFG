@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+
 // Import services
 const userServices = require('../../services/v1/userServices');
 
@@ -55,9 +57,6 @@ const getTotalUsersStats = async (req, res) => {
     const currentUser = req.user;
 
     try {
-        const canAccess = await User.canGetAdminUsers(currentUser);
-        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
-
         const users = await userServices.getTotalUsersStats();
         res.status(200).json({
             message: "Users' stats fetched successfully", 
@@ -76,9 +75,6 @@ const getActiveUsersStats = async (req, res) => {
     const currentUser = req.user;
 
     try {
-        const canAccess = await User.canGetAdminUsers(currentUser);
-        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
-
         const users = await userServices.getActiveUsersStats();
         res.status(200).json({
             message: "Active users' stats fetched successfully", 
@@ -97,9 +93,6 @@ const getConnectedUsersStats = async (req, res) => {
     const currentUser = req.user;
 
     try {
-        const canAccess = await User.canGetAdminUsers(currentUser);
-        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
-
         const users = await userServices.getConnectedUsersStats();
         res.status(200).json({
             message: "Connected users' stats fetched successfully", 
@@ -118,9 +111,6 @@ const getArchivedUsersStats = async (req, res) => {
     const currentUser = req.user;
 
     try {
-        const canAccess = await User.canGetAdminUsers(currentUser);
-        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
-
         const users = await userServices.getArchivedUsersStats();
         res.status(200).json({
             message: "Archived users' stats fetched successfully", 
@@ -134,35 +124,11 @@ const getArchivedUsersStats = async (req, res) => {
     }
 }
 
-// Controller to get students stats
-const getTotalStudentsStatsForTeacher = async (req, res) => {
-    const currentUser = req.user;
-
-    try {
-        const canAccess = await User.canGetTeacherStudents(currentUser);
-        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
-
-        const students = await userServices.getTotalStudentsStatsForTeacher(currentUser._id);
-        res.status(200).json({
-            message: "Students' stats fetched successfully", 
-            data: students
-        });
-    } catch (error) {
-        res.status(500).json({ 
-            message: "Error fetching students' stats", 
-            error: error.message 
-        });
-    }
-}
-
 // Controller to get students for teacher
 const getAllStudentsForTeacher = async (req, res) => {
     const currentUser = req.user;
 
     try {
-        const canAccess = await User.canGetTeacherStudents(currentUser);
-        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
-
         const students = await userServices.getAllStudents();
         res.status(200).json({
             message: "Students fetched successfully", 
@@ -181,9 +147,6 @@ const getAllStudentsForAdmin = async (req, res) => {
     const currentUser = req.user;
 
     try {
-        const canAccess = await User.canGetAdminStudents(currentUser);
-        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
-
         const students = await userServices.getAllStudentsWithoutClicker();
         res.status(200).json({
             message: "Students fetched successfully", 
@@ -214,13 +177,9 @@ const createUser = async (req, res) => {
     debug('Required fields are present');
 
     try{
-        const canAccess = await User.canCreateUser(currentUser);
-        if(!canAccess) return res.status(403).json({message: "Unauthorized"});
-        debug('User has permission to create new user');
-
         if (await checkExists(User, 'email', email)) {
             debug('Email already exists:', email);
-            return res.status(409).json({ message: 'The user alredy exists' });
+            return res.status(409).json({ message: 'The user already exists' });
         }
 
         const newUser = await userServices.createUser(body);
@@ -245,7 +204,9 @@ const archiveUserById = async (req, res) => {
     const { id } = req.params;
     debug('User ID:', id);
 
-    if(!id) return res.status(400).json({ message: 'User ID is required'});
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: 'User ID is incorrect' }); // ID is always sent, so we check if it's a valid ObjectId
+    }
     debug('User ID is valid');
 
     try{
@@ -272,17 +233,24 @@ const restoreUserById = async (req, res) => {
     debug('Restoring user by ID');
     const { id } = req.params;
 
-    if(!id) return res.status(400).json({ message: 'User ID is required'});
+    debug('User ID:', id);
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: 'User ID is incorrect' });
+    }
+    debug('User ID is valid');
 
     try{
+        debug('Attempting to restore user');
         const restored = await userServices.restoreUserById(id);
 
         if (!restored) return res.status(404).json({ message: 'User not found' });
 
+        debug('User restored successfully, sending response');
         res.status(200).json({
-         message: 'User restored successfully'
+            message: 'User restored successfully'
         });
     }catch(error){
+        debug('Error restoring user:', error);
         res.status(500).json({
             message: 'Error restoring user',
             error: error.message
@@ -298,8 +266,10 @@ const updateUserById = async (req, res) => {
     const {body} = req;
     const { _id, role } = req.user;
 
-    if(!id) return res.status(400).json({ message: 'User ID is required'});
     if(!body) return res.status(400).json({ message: 'Body is required'});
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: 'User ID is incorrect' }); // ID is always sent, so we check if it's a valid ObjectId
+    }
 
     debug('User ID:', id);
     debug('Request body:', body);
@@ -359,7 +329,9 @@ const deleteUserPermanentlyById = async (req, res) => {
     const { id } = req.params;
     debug('User ID:', id);
 
-    if(!id) return res.status(400).json({ message: 'User ID is required'});
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: 'User ID is incorrect' }); // ID is always sent, so we check if it's a valid ObjectId
+    }
     debug('User ID is valid');
 
     try{
@@ -389,7 +361,6 @@ module.exports = {
     getActiveUsersStats,
     getConnectedUsersStats,
     getArchivedUsersStats,
-    getTotalStudentsStatsForTeacher,
     getAllStudentsForTeacher,
     getAllStudentsForAdmin,
     

@@ -124,11 +124,22 @@
             "connectedUsers": "usuarios conectados",
             "archivedUsers": "usuarios archivados",
 
+            "totalUsersInfo": "Número total de usuarios registrados en el sistema.",
+            "activeUsersInfo": "Usuarios que pueden interactuar con el sistema.",
+            "connectedUsersInfo": "Usuarios que han iniciado sesión en las últimas 24 horas.",
+            "archivedUsersInfo": "Usuarios que han sido archivados y no pueden iniciar sesión.",
+
             "totalClickers": "clickers totales",
             "activeClickers": "clickers activos",
             "inUseClickers": "clickers en uso",
             "availableClickers": "clickers disponibles",
             "inactiveClickers": "clickers inactivos",
+
+            "totalClickersInfo": "Número total de clickers registrados en el sistema.",
+            "activeClickersInfo": "Clickers que están activos, ya sean asignados o disponibles.",
+            "inUseClickersInfo": "Clickers que están actualmente asignados a estudiantes y en uso.",
+            "availableClickersInfo": "Clickers que están activos y pueden ser asignados a los estudiantes.",
+            "inactiveClickersInfo": "Clickers que han sido marcados como inactivos debido a daños o retiro.",
 
             "managementUser": "Usuarios",
             "managementClicker": "Clickers"
@@ -267,6 +278,11 @@
         "overview": {
             "totalStudents": "estudiantes totales",
             "connectedStudents": "estudiantes conectados"
+        },
+
+        "tutorial": {
+            "title": "Tutorial de profesor",
+            "description": "¡Bienvenido al tutorial de profesor! Aquí encontrarás toda la información que necesitas para crear cuestionarios, gestionar sesiones de juego y analizar los resultados. Utiliza el menú de navegación para acceder a las diferentes secciones del panel de profesor y sigue las instrucciones proporcionadas en cada sección para aprovechar al máximo tu experiencia con los cuestionarios."
         },
 
         "quizzesManagement": {

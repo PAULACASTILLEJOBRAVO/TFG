@@ -124,11 +124,22 @@
             "connectedUsers": "connected users",
             "archivedUsers": "archived users",
 
+            "totalUsersInfo": "Total number of users registered in the system.",
+            "activeUsersInfo": "Users who can interact with the system.",
+            "connectedUsersInfo": "Users who have logged in within the last 24 hours.",
+            "archivedUsersInfo": "Users who have been archived and cannot log in.",
+
             "totalClickers": "total clickers",
             "activeClickers": "active clickers",
             "inUseClickers": "in use clickers",
             "availableClickers": "available clickers",
             "inactiveClickers": "inactive clickers",
+
+            "totalClickersInfo": "Total number of clickers registered in the system.",
+            "activeClickersInfo": "Clickers that are active, whether assigned or available.",
+            "inUseClickersInfo": "Clickers that are currently assigned to students and in use.",
+            "availableClickersInfo": "Clickers that are active and can be assigned to students.",
+            "inactiveClickersInfo": "Clickers that have been marked as inactive due to damage or retirement.",
 
             "managementUser": "Users",
             "managementClicker": "Clickers"

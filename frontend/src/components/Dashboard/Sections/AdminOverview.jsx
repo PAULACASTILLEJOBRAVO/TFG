@@ -33,12 +33,14 @@ const AdminOverview = () => {
                     title={t("admin.overview.totalUsers")} 
                     value={ usersStatsLoading ? <Spinner/> : usersStats} 
                     className="bg-amber-100"
+                    tooltipLabel={t("admin.overview.totalUsersInfo")}
                 />
                 <DashboardDetailCard 
                     icon={icons.user} 
                     title={t("admin.overview.activeUsers")} 
                     value={usersStatsLoading ? <Spinner/> : activeUsersStats} 
                     className="bg-green-100" 
+                    tooltipLabel={t("admin.overview.activeUsersInfo")}
                 />
                 <DashboardDetailCard 
                     icon={icons.user} 
@@ -48,6 +50,7 @@ const AdminOverview = () => {
                     colorTextIcon="text-white"
                     colorTextTitle="text-white"
                     colorTextValue="text-white"
+                    tooltipLabel={t("admin.overview.connectedUsersInfo")}
                 />
                 <DashboardDetailCard 
                     icon={icons.user} 
@@ -57,6 +60,7 @@ const AdminOverview = () => {
                     colorTextIcon="text-white" 
                     colorTextTitle="text-white" 
                     colorTextValue="text-white" 
+                    tooltipLabel={t("admin.overview.archivedUsersInfo")}
                 />
             </DashboardContentDetailCard>
 
@@ -67,12 +71,14 @@ const AdminOverview = () => {
                     title={t("admin.overview.totalClickers")} 
                     value={clickersStatsLoading ? <Spinner/> : clickersStats}
                     className="bg-amber-100"
+                    tooltipLabel={t("admin.overview.totalClickersInfo")}
                 />
                 <DashboardDetailCard 
                     icon={icons.clicker} 
                     title={t("admin.overview.activeClickers")} 
                     value={clickersStatsLoading ? <Spinner/> : activeClickersStats} 
                     className="bg-green-100" 
+                    tooltipLabel={t("admin.overview.activeClickersInfo")}
                 />
                 <DashboardDetailCard 
                     icon={icons.clicker} 
@@ -82,6 +88,7 @@ const AdminOverview = () => {
                     colorTextIcon="text-white" 
                     colorTextTitle="text-white" 
                     colorTextValue="text-white" 
+                    tooltipLabel={t("admin.overview.inUseClickersInfo")}
                 />
                 <DashboardDetailCard 
                     icon={icons.clicker} 
@@ -91,7 +98,7 @@ const AdminOverview = () => {
                     colorTextIcon="text-white" 
                     colorTextTitle="text-white" 
                     colorTextValue="text-white" 
-
+                    tooltipLabel={t("admin.overview.availableClickersInfo")}
                 />
                 <DashboardDetailCard 
                     icon={icons.clicker} 
@@ -101,6 +108,7 @@ const AdminOverview = () => {
                     colorTextIcon="text-white" 
                     colorTextTitle="text-white" 
                     colorTextValue="text-white" 
+                    tooltipLabel={t("admin.overview.inactiveClickersInfo")}
                 />
             </DashboardContentDetailCard>
 

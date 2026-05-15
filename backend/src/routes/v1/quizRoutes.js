@@ -360,6 +360,78 @@ router.get('/:id/sessions', requireTeacherRole, quizController.getQuizSessionsFo
  */
 router.get('/:id/questions-analytics', requireTeacherRole, quizController.getQuizQuestionAnalytics);
 
+// Route to get session analytics for a specific quiz and teacher
+/**
+ * @swagger
+ * /v1/quizzes/{id}/sess-analytics:
+ *   get:
+ *     summary: Get session analytics for a specific quiz and teacher
+ *     description: Retrieve analytics data for each session in a specific quiz, accessible only to the teacher who created the quiz.
+ *     tags: [Quizzes]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: "68e28ac9d9eaff29b0c8453b"
+ *     responses:
+ *       200:
+ *         description: Session analytics fetched successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Session analytics fetched successfully
+ *       400:
+ *         description: Missing or invalid quiz ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Quiz ID is required
+ *       403:
+ *         description: Unauthorized access
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Unauthorized access
+ *       404:
+ *         description: Quiz not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Quiz not found
+ *       500:
+ *         description: Server error while fetching session analytics
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Error fetching session analytics
+ *                 error:
+ *                   type: string
+ */
+router.get('/:id/sessions-analytics', requireTeacherRole, quizController.getQuizSessionAnalytics);
+
+
 // Route to restore a quiz by ID
 /**
  * @swagger

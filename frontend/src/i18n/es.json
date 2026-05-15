@@ -433,6 +433,13 @@
                 "averageScore": "puntuación promedio",
                 "averageTime": "tiempo promedio",
                 "accuracy": "precisión",
+
+                "participantsTooltip": "Número de estudiantes únicos que han jugado este cuestionario.",
+                "totalSessionsTooltip": "Número total de sesiones de juego jugadas para este cuestionario.",
+                "averageScoreTooltip": "Puntuación promedio alcanzada por los estudiantes en todas las sesiones de este cuestionario.",
+                "averageTimeTooltip": "Tiempo promedio que los estudiantes tardan en completar este cuestionario.",
+                "accuracyTooltip": "Porcentaje general de respuestas correctas en todas las sesiones de este cuestionario.",
+
                 "insight": "Insight",
 
                 "insightMessages": {
@@ -440,7 +447,20 @@
                     "good": "¡Bien!",
                     "average": "Promedio.",
                     "poor": "Necesita mejorar."
-                }
+                },
+
+                "sessionNumber": "Sesión",
+                "questionNumber": "Pregunta",
+                "distractorDetected": "⚠ La opción {{option}} ha sido seleccionada por el {{percentage}}% de los estudiantes.",
+                "dispersedDistractors": "⚠ La opción {{option}} ha sido seleccionada por el {{percentage}}% de los estudiantes.",
+                "multipleStrongDistractors": "⚠ Las opciones {{options}} han sido seleccionadas por más del {{percentage}}% de los estudiantes cada una.",
+                "noQuizData": "No hay datos de sesiones para este cuestionario todavía.",
+
+                "option": "Opción",
+                "responses": "respuestas",
+                "percentage": "% del total",
+                "correct": "Correcta",
+                "incorrect": "Incorrecta"
             }
         }
     },

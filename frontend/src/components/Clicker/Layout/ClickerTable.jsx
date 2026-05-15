@@ -12,9 +12,7 @@ import { useTranslation } from "react-i18next";
 import { TablePaginationFooter } from "@/components/Common";
 import { icons } from "@/utils/constants";
 
-const ClickerTable = ({clickers, currentPage, totalPages, onPageChange, rowsPerPage, onRowsPerPageChange, sortConfig, onSort, loading, editClicker, editClickerId, onEdit, onDelete, onRestore, onSaveEdit, onCancelEdit, onEditChange, onToggleStudent}) => {
-    if (loading) return <div className="flex justify-center"><Spinner className="h-10 w-10" color="blue" /></div>;
-
+const ClickerTable = ({clickers, currentPage, totalPages, onPageChange, rowsPerPage, onRowsPerPageChange, sortConfig, onSort, editClicker, editClickerId, onEdit, onDelete, onRestore, onSaveEdit, onCancelEdit, onEditChange, onToggleStudent}) => {
     const { t } = useTranslation();
 
     const getHeaderClass = (key) => `

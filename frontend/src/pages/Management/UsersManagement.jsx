@@ -24,10 +24,11 @@ import {
     matchesRole, 
     normalizeWord 
 } from "@/utils/search";
+import { Spinner } from "@/components/ui/spinner";
 
 const UserManagement = () => {
     // DATA
-    const { users, loading: loadingManagement, refetch  } = useUsers();
+    const { users, loading: loadingUsers, refetch } = useUsers();
     const { remove, changePassword, restore, update, archive } = useUserActions();
 
     // SELECTIONATED ROW
@@ -260,23 +261,28 @@ const UserManagement = () => {
                     </div>
                 </div>
 
-                <UserTable
-                    users={currentUsers}
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    onPageChange={setCurrentPage}
-                    rowsPerPage={rowsPerPage}
-                    onRowsPerPageChange={setRowsPerPage}
-                    sortConfig={sortConfig}
-                    onSort={handleSort}
-                    loading={loadingManagement}
-                    onSelect={handleSelectUser}
-                    onEdit={handleEditUser}
-                    onDelete={openDeleteDialog}
-                    onArchive={openArchiveDialog}
-                    onChangePassword={openChangePasswordDialog}
-                    onRestore={handleRestoreUser}
-                />
+                {loadingUsers ? (
+                    <div className="flex justify-center">
+                        <Spinner className="h-10 w-10" color="blue" />
+                    </div>
+                ) : (
+                    <UserTable
+                        users={currentUsers}
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={setCurrentPage}
+                        rowsPerPage={rowsPerPage}
+                        onRowsPerPageChange={setRowsPerPage}
+                        sortConfig={sortConfig}
+                        onSort={handleSort}
+                        onSelect={handleSelectUser}
+                        onEdit={handleEditUser}
+                        onDelete={openDeleteDialog}
+                        onArchive={openArchiveDialog}
+                        onChangePassword={openChangePasswordDialog}
+                        onRestore={handleRestoreUser}
+                    />
+                )}
 
                 <UserDetailDrawer 
                     open={isDrawerOpen}

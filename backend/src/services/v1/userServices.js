@@ -11,19 +11,19 @@ const debug = require('debug')('backend:services:v1:userServices');
 // Service to fetch all users
 const getAllUsers = async () => {
     debug('Fetching all users');
-    return await User.find();
+    return await User.find().select('+profilePicture');
 };
 
 // Service to fetch an user by ID
 const getUserById = async (id) => {
     debug('Fetching user by ID:', id);
-    return await User.findById(id);
+    return await User.findById(id); 
 }
 
 // Service to fetch the profile of the currently authenticated user
 const getMe = async (id) => {
     debug('Fetching profile for user with ID:', id);
-    return user = await User.findById(id).select("-password");
+    return user = await User.findById(id).select('+profilePicture');
 };
 
 // Service to fetch users' stats

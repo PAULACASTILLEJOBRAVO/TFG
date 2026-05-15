@@ -429,6 +429,13 @@
                 "averageScore": "average score",
                 "averageTime": "average time",
                 "accuracy": "accuracy",
+
+                "participantsTooltip": "Number of unique students who have played this quiz.",
+                "totalSessionsTooltip": "Total number of game sessions played for this quiz.",
+                "averageScoreTooltip": "Average score achieved by students in all sessions of this quiz.",
+                "averageTimeTooltip": "Average time taken by students to complete this quiz.",
+                "accuracyTooltip": "Overall percentage of correct answers across all sessions of this quiz.",
+
                 "insight": "Insight",
 
                 "insightMessages": {
@@ -436,7 +443,21 @@
                     "good": "Good!",
                     "average": "Average.",
                     "poor": "Poor."
-                }
+                },
+
+                "sessionNumber": "Session",
+                "questionNumber": "Question",
+                "distractorDetected": "⚠ The option {{option}} has been selected by {{percentage}}% of students.",
+                "dispersedDistractors": "⚠ The options {{options}} have been selected by {{percentage}}% of students.",
+                "multipleStrongDistractors": "⚠ The options {{options}} have been selected by more than {{percentage}}% of students each.",
+                "noQuestions": "No questions have been played in this quiz yet.",
+                
+                "option": "Option",
+                "responses": "responses",
+                "percentage": "% of total",
+                "correct": "Correct",
+                "incorrect": "Incorrect"
+                
             }
         }
     },

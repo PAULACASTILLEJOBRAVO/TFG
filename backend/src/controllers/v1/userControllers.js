@@ -16,12 +16,16 @@ const debug = require('debug')('backend:controllers:v1:userControllers');
 // Controller to get all users
 const getAllUsers = async (req, res) => {
     try {
+        debug('Fetching all users');
         const users = await userServices.getAllUsers();
+
+        debug('Users fetched successfully:', users);
         res.status(200).json({
             message: 'Users fetched successfully', 
             data: users
         });
     } catch (error) {
+        debug('Error fetching users:', error);
         res.status(500).json({ 
             message: 'Error fetching users', 
             error: error.message 

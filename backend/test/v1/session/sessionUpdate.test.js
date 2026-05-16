@@ -5,6 +5,7 @@ const Quiz = require('../../../src/models/Quiz');
 const Question = require('../../../src/models/Question');
 const Session = require('../../../src/models/Session');
 const Clicker = require('../../../src/models/Clicker');
+const Response = require('../../../src/models/Response');
 
 const sessionServices = require('../../../src/services/v1/sessionServices');
 
@@ -14,7 +15,7 @@ const { connect, closeDatabase, clearDatabase } = require('../setup');
 beforeAll(async () => { await connect(); });
 
 // Variable to store the authentication token for protected routes
-let admin, teacher, student, clicker, quiz, session, question, sessionId;
+let admin, teacher, student, clicker, quiz, session, question, sessionId, responses;
 let teacherToken;
 
 beforeEach(async () => {
@@ -112,6 +113,23 @@ beforeEach(async () => {
     });
 
     sessionId = session._id.toString();
+
+    responses = await Response.insertMany([
+        {
+            sessionId: session._id.toString(),
+            questionId: question._id.toString(),
+            playerId: student._id.toString(),
+            answer: 'B',
+            isCorrect: true,
+        },
+        {
+            sessionId: session._id.toString(),
+            questionId: question._id.toString(),
+            playerId: student._id.toString(),
+            answer: 'C',
+            isCorrect: false,
+        }
+    ]);
 });
 
 // After all tests, stop the in-memory MongoDB instance

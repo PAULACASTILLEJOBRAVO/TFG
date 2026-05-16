@@ -47,7 +47,8 @@
                     "easy": "Fácil",
                     "unknown": "Sin dificultad"
                 },
-                "noQuizzes": "No tienes ningún cuestionario creado.",
+                "noQuizzesTeacher": "No tienes ningún cuestionario creado.",
+                "noQuizzesStudent": "No has jugado ningún cuestionario todavía.",
                 "noSessions": "Sin sesiones de juego todavía."
             }
         },

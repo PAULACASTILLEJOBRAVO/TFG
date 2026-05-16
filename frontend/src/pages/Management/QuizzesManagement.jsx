@@ -134,7 +134,7 @@ const QuizzesManagement = () => {
                             <Spinner className="h-10 w-10" color="blue" />
                         </div>
                     ) : filteredQuizzes.length === 0 && (
-                        <p className="text-gray-500">{t("common.quizzesManagement.detailsCard.noQuizzes")}</p>
+                        <p className="text-gray-500">{t("common.quizzesManagement.detailsCard.noQuizzesTeacher")}</p>
                     )}
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

@@ -20,7 +20,7 @@ const StudentsQuizRow = ({index, student, onSelect}) => {
             }>
                 {student.accuracy}%
             </TableCell>
-            <TableCell>{formatTime(student.avgTime)}</TableCell>
+            <TableCell>{formatTime(Math.floor((student.avgTime || 0) / 1000))}</TableCell>
             <TableCell>{student.lastSession 
                 ? new Date(student.lastSession).toLocaleDateString()
                 : "-"

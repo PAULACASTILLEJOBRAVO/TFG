@@ -33,8 +33,7 @@ const resultSchema = new Schema({
     //Relations
     playerId: { 
         type: Schema.Types.ObjectId, 
-        ref: 'User', 
-        required: true 
+        ref: 'User',
     },
     sessionId: { 
         type: Schema.Types.ObjectId, 

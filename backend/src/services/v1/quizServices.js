@@ -178,15 +178,15 @@ const getQuizSessionsForTeacher = async (quizId) => {
         student.correctAnswers += r.correctAnswers || 0;
         student.totalQuestions += r.totalQuestions || 0;
 
-        const session = sessionsMap.get(r.sessionId.toString());
+        if (r.timeTaken) {
+            student.totalTime += r.timeTaken * 1000; // convert seconds to milliseconds
 
-        if (session && session.startTime && session.endTime) {
-            const duration = session.endTime - session.startTime;
+            const session = sessionsMap.get(r.sessionId.toString());
 
-            student.totalTime += duration;
-
-            if (!student.lastSession || session.endTime > student.lastSession) {
-                student.lastSession = session.endTime;
+            if (session?.endTime) {
+                if (!student.lastSession || session.endTime > student.lastSession) {
+                    student.lastSession = session.endTime;
+                }
             }
         }
     });
@@ -235,11 +235,7 @@ const getQuizSessionsForTeacher = async (quizId) => {
     debug(`Calculated accuracy for quiz ${quizId}:`, accuracy);
 
     // Average time
-    const avgTime =
-        sessions.reduce((acc, s) => {
-            if (!s.startTime || !s.endTime) return acc;
-            return acc + (s.endTime - s.startTime);
-        }, 0) / sessions.length;
+    const avgTime = results.reduce((acc, r) => acc + ((r.timeTaken || 0) * 1000), 0) / results.length;
     debug(`Calculated average time for quiz ${quizId}:`, avgTime);
 
     students.sort((a, b) => {
@@ -446,9 +442,7 @@ const getQuizByIdForStudent = async (playerId, quizId) => {
         _id: session._id,
         startTime: session.startTime,
         endTime: session.endTime,
-        totalTime: session.startTime && session.endTime
-            ? session.endTime - session.startTime
-            : null,
+        totalTime: result?.timeTaken || null,
         status: session.status,
         questions: session.questions,
         results: resultsMap.get(session._id.toString()) || null,

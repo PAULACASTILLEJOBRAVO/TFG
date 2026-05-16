@@ -75,7 +75,7 @@ const deleteClickerById = async (id) => {
         if (!clicker) return false; // If the clicker doesn't exist, return false
 
         debug('Clicker found:', clicker);
-        await Clicker.softDeleteById(id);
+        await Clicker.deleteOne({ _id: id });
 
         debug('Clicker deleted successfully');
         return true; // Return true if deletion was successful

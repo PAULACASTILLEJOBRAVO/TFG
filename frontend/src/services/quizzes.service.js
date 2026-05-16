@@ -34,6 +34,11 @@ export const getQuizQuestionAnalytics = async (id) => {
     return response.data;
 }
 
+export const getQuizSessionAnalytics = async (id) => {
+    const response = await api.get(`/quizzes/${id}/sessions-analytics`);
+    return response.data;
+}
+
 export const createQuiz = async (payload) => {
     const response = await api.post('/quizzes', payload);
     return response.data;

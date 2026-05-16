@@ -49,9 +49,8 @@ const QuizDetailsCard = ({ quiz, isStudent = false, forceClickable = false, onCl
 
     // Quiz form teacher perspective includes only sessionsCount, so we can directly use it without needing to check for sessions array.
     const hasTeacherSessions = quiz.sessionsCount > 0;
-    const isPublished = quiz.status === 'published';
 
-    const isClickable = forceClickable || (!isStudent ? (isPublished && hasTeacherSessions) : hasStudentSessions);
+    const isClickable = forceClickable || (!isStudent ? (hasTeacherSessions) : hasStudentSessions);
 
     const emptyPlayer = () => {
         if(!isStudent) return quiz?.playerIds.length === 0;
@@ -103,7 +102,7 @@ const QuizDetailsCard = ({ quiz, isStudent = false, forceClickable = false, onCl
                 )}
             </div>
 
-            {!isStudent && isPublished && !hasTeacherSessions && (
+            {!isStudent && !hasTeacherSessions && (
                 <div className={`text-xs text-blue-500/80 mt-2 flex items-center gap-1 transition-all duration-200
                         ${hovered
                             ? "opacity-100 translate-y-0"

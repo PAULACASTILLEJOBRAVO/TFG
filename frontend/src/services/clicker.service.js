@@ -30,10 +30,8 @@ export const getAvailableClickersStats = async () => {
     return response.data;
 }   
 
-export const deleteClicker = async (id, payload) => {
-    const response = await api.delete(`/clickers/${id}`, {
-        data: payload
-    });
+export const deleteClicker = async (id) => {
+    const response = await api.delete(`/clickers/${id}`);
     return response.data;
 }
 

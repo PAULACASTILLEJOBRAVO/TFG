@@ -176,6 +176,33 @@ const getQuizQuestionAnalytics = async (req, res) => {
     }
 }
 
+// Controller to fetch analytics data for each session of a quiz
+const getQuizSessionAnalytics = async (req, res) => {
+    const currentUser = req.user;
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: 'Quiz ID is incorrect' });
+    }
+
+    try {
+        debug('Received request to get quiz session analytics with params:', req.params);
+        const analyticsData = await quizServices.getQuizSessionAnalytics(id);
+
+        debug('Quiz session analytics fetched successfully for quiz with ID:', id, 'Analytics data:', analyticsData);
+        res.status(200).json({
+            message: 'Quiz session analytics fetched successfully', 
+            data: analyticsData
+        });
+    } catch (error) {
+        debug('Error fetching quiz session analytics for quiz with ID:', id, 'Error:', error);
+        res.status(500).json({ 
+            message: 'Error fetching quiz session analytics',
+            error: error.message
+        })
+    }
+}
+
 // Controller to create a new quiz
 const createQuiz = async (req, res) => {
     const {body} = req;
@@ -323,6 +350,7 @@ module.exports = {
     getAllQuizzesForTeacher,
     getAllQuizzesForStudent,
     getQuizSessionsForTeacher,
+    getQuizSessionAnalytics,
     getQuizQuestionAnalytics,
 
     createQuiz,

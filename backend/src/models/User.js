@@ -46,7 +46,8 @@ const userSchema = new Schema({
     },
     profilePicture: { 
         type: String, // Base64-encoded image
-        trim: true 
+        trim: true,
+        select: false, // Exclude the profilePicture field from query results by default 
     },
 
     //States and configuration

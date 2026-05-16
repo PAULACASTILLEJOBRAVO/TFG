@@ -23,10 +23,9 @@ import { StudentsQuizTable } from "@/components/Users/Layout/Students";
 import { useNavigate } from "react-router-dom";
 import { 
   QuizSessionsCards, 
-  QuizSessionsGraphics,
   QuizQuestionsAnalytics
 } from "@/components/Quizzes/Layout/QuizSessions";
-import { useQuizQuestionsAnalytics } from "@/hooks/Quizzes/useQuizQuestionsAnalytics";
+import { useQuizSessionsAnalytics } from "@/hooks/Quizzes/useQuizSessionsAnalytics";
 import { 
   useEffect, 
   useState 
@@ -39,12 +38,11 @@ const QuizSessions = () => {
   const { id } = useParams();
 
   const { quizSessionsForTeacher, loading } = useQuizSessionsForTeacher(id);
-  const { analytics } = useQuizQuestionsAnalytics(id);
+  const { analytics } = useQuizSessionsAnalytics(id);
 
   const quiz = quizSessionsForTeacher?.quiz;
   const students = quizSessionsForTeacher?.students || [];
   const stats = quizSessionsForTeacher?.stats || {};
-  const sessions = quizSessionsForTeacher?.sessions || [];
 
   // NAVIGATION
   const navigate = useNavigate();
@@ -139,23 +137,7 @@ const QuizSessions = () => {
                     <TabsContent value="analytics">
                       <QuizSessionsCards stats={stats} />
 
-                      {stats.sessions > 1 && (
-                        <QuizSessionsGraphics
-                          data={sessions} 
-                          lines={[
-                            { dataKey: "accuracy", color: "#3b82f6" },
-                            { dataKey: "avgTime", color: "#f59e0b" }
-                          ]}  
-                          xKey="label"
-                        />
-                      )}
-                      {/* 
-                        <SingleSessionInsight session={sessions[0]} stats={stats} />
-                      */}
-                      {analytics.map((question, index) => (
-                        <QuizQuestionsAnalytics key={index} question={question} />
-                      ))}
-
+                      <QuizQuestionsAnalytics analytics={analytics} />
                     </TabsContent>
 
                     {/** TAB 2 -  Students list */}

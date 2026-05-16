@@ -27,6 +27,7 @@ import {
   matchesStatus, 
   normalizeWord 
 } from "@/utils/search";
+import { Spinner } from "@/components/ui/spinner";
 
 const ClickersManagement = () => {
   const { t } = useTranslation();
@@ -147,8 +148,8 @@ const ClickersManagement = () => {
         setCreateClicker(prev => ({ ...prev, [field]: value }));
       }
     } else {
-      // If is status field and the new value is assigned, set assignedToUserId to null
-      if(value === "assigned") {
+      // If is status field and the new value is not assigned, set assignedToUserId to null
+      if(value !== "assigned") {
         setCreateClicker(prev => ({ ...prev, status: value, assignedToUserId: null }));
       } else {
         setCreateClicker(prev => ({ ...prev, status: value }));
@@ -165,8 +166,8 @@ const ClickersManagement = () => {
     if(field !== "status") {
       setEditClicker(prev => ({ ...prev, [field]: value }));
     } else {
-      // If is status field and the new value is assigned, set assignedToUserId to null
-      if(value === "assigned") {
+      // If is status field and the new value is not assigned, set assignedToUserId to null
+      if(value !== "assigned") {
         setEditClicker(prev => ({ ...prev, status: value, assignedToUserId: null }));
       } else {
         setEditClicker(prev => ({ ...prev, status: value }));
@@ -287,26 +288,31 @@ const ClickersManagement = () => {
             </div>
         </div>
 
-        <ClickerTable
-            clickers={currentClickers}
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-            rowsPerPage={rowsPerPage}
-            onRowsPerPageChange={setRowsPerPage}
-            sortConfig={sortConfig}
-            onSort={handleSort}
-            loading={loadingClickers}
-            editClicker={editClicker}
-            editClickerId={editClickerId}
-            onDelete={openDeleteDialog}
-            onRestore={handleRestoreClicker}
-            onEdit={handleStartEditClicker}
-            onSaveEdit={handleSaveEditClicker}
-            onCancelEdit={handleCancelEditClicker}
-            onEditChange={handleUpdateEditClicker}
-            onToggleStudent={handleToggleStudentEdit}
-        />
+        {loadingClickers ? (
+            <div className="flex justify-center">
+                <Spinner className="h-10 w-10" color="blue" />
+            </div>
+        ) : (
+            <ClickerTable
+                clickers={currentClickers}
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+                rowsPerPage={rowsPerPage}
+                onRowsPerPageChange={setRowsPerPage}
+                sortConfig={sortConfig}
+                onSort={handleSort}
+                editClicker={editClicker}
+                editClickerId={editClickerId}
+                onDelete={openDeleteDialog}
+                onRestore={handleRestoreClicker}
+                onEdit={handleStartEditClicker}
+                onSaveEdit={handleSaveEditClicker}
+                onCancelEdit={handleCancelEditClicker}
+                onEditChange={handleUpdateEditClicker}
+                onToggleStudent={handleToggleStudentEdit} 
+            />
+        )}
 
         {selectedClicker && <DeleteClickerDialog
             open={dialogs.delete}

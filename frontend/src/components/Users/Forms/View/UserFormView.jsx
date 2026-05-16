@@ -17,8 +17,14 @@ const UserFormView = ({user}) => {
                     <InfoBlock label={t("admin.usersManagement.drawer.view.email")} value={user.email} />
                 </div>
 
-                <InfoBlock label={t("admin.usersManagement.drawer.view.role")} value={t(rolesType[user.role])} />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">   
 
+                        {console.log("User assigned clicker:", user)}
+                    <InfoBlock label={t("admin.usersManagement.drawer.view.role")} value={t(rolesType[user.role])} />
+                    {user.role === "student" && user?.assignedClickerCode && (
+                        <InfoBlock label={t("admin.usersManagement.drawer.view.clicker")} value={user.assignedClickerCode ? user.assignedClickerCode : t("admin.usersManagement.drawer.view.noClickerAssigned")} />
+                    )}
+                </div>
                 <Separator/>
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 justify-items-center items-center">     
@@ -26,8 +32,8 @@ const UserFormView = ({user}) => {
                         deleted={user.status === 'inactive'}
                     />
 
-                    <InfoBlock label={t("admin.usersManagement.drawer.view.lastLogin")} value={user.lastLoginAt ? new Date(user.lastLoginAt).toLocaleDateString() : "Nunca"} />
-                    <InfoBlock label={t("admin.usersManagement.drawer.view.lastLogout")} value={user.lastLogoutAt ? new Date(user.lastLogoutAt).toLocaleDateString() : "Nunca"} />
+                    <InfoBlock label={t("admin.usersManagement.drawer.view.lastLogin")} value={user.lastLoginAt ? new Date(user.lastLoginAt).toLocaleDateString() : t("admin.usersManagement.table.neverAccessed")} />
+                    <InfoBlock label={t("admin.usersManagement.drawer.view.lastLogout")} value={user.lastLogoutAt ? new Date(user.lastLogoutAt).toLocaleDateString() : t("admin.usersManagement.table.neverAccessed")} />
                 </div>
             </div>
     );

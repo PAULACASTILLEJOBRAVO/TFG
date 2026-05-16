@@ -177,6 +177,8 @@
                     "fullName": "Nombre completo",
                     "email": "Email",
                     "role": "Rol",
+                    "clicker": "Clicker asignado",
+                    "noClickerAssigned": "No asignado",
                     "lastLogin": "Último login",
                     "lastLogout": "Último logout",
                     "archived": "Archivado"
@@ -439,15 +441,6 @@
                 "averageScoreTooltip": "Puntuación promedio alcanzada por los estudiantes en todas las sesiones de este cuestionario.",
                 "averageTimeTooltip": "Tiempo promedio que los estudiantes tardan en completar este cuestionario.",
                 "accuracyTooltip": "Porcentaje general de respuestas correctas en todas las sesiones de este cuestionario.",
-
-                "insight": "Insight",
-
-                "insightMessages": {
-                    "excellent": "¡Excelente!",
-                    "good": "¡Bien!",
-                    "average": "Promedio.",
-                    "poor": "Necesita mejorar."
-                },
 
                 "sessionNumber": "Sesión",
                 "questionNumber": "Pregunta",

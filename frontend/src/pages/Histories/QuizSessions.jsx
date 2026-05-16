@@ -23,7 +23,6 @@ import { StudentsQuizTable } from "@/components/Users/Layout/Students";
 import { useNavigate } from "react-router-dom";
 import { 
   QuizSessionsCards, 
-  QuizSessionsGraphics,
   QuizQuestionsAnalytics
 } from "@/components/Quizzes/Layout/QuizSessions";
 import { useQuizSessionsAnalytics } from "@/hooks/Quizzes/useQuizSessionsAnalytics";
@@ -44,7 +43,6 @@ const QuizSessions = () => {
   const quiz = quizSessionsForTeacher?.quiz;
   const students = quizSessionsForTeacher?.students || [];
   const stats = quizSessionsForTeacher?.stats || {};
-  const sessions = quizSessionsForTeacher?.sessions || [];
 
   // NAVIGATION
   const navigate = useNavigate();

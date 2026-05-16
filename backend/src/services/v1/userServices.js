@@ -23,7 +23,26 @@ const getUserById = async (id) => {
 // Service to fetch the profile of the currently authenticated user
 const getMe = async (id) => {
     debug('Fetching profile for user with ID:', id);
-    return user = await User.findById(id).select('+profilePicture');
+    // 1. Fetch the user by ID and include the profile picture
+    const user = await User.findById(id).select('+profilePicture').lean(); // Use .lean() to get a plain JavaScript object for easier manipulation
+
+    // 2. Search for an active clicker assigned to the user
+    const assignedClicker = await Clicker.findOne({ 
+        assignedToUserId: id, 
+        status: 'assigned' 
+    }).select('+deviceCode'); 
+    
+    // 3. If an assigned clicker is found, include its details in the user object
+    if (assignedClicker) {
+        debug('Assigned clicker found for user:', assignedClicker);
+        user.assignedClickerCode = assignedClicker.deviceCode; 
+    } else {
+        debug('No assigned clicker found for user with ID:', id);
+    }
+
+    debug('User profile fetched successfully:', user);
+
+    return user;
 };
 
 // Service to fetch users' stats
@@ -174,6 +193,7 @@ const deleteUserPermanentlyById = async (id) => {
         debug('User found:', user);
 
         const Quiz = mongoose.model('Quiz');
+        const Question = mongoose.model('Question');
         const Session = mongoose.model('Session');
         const Clicker = mongoose.model('Clicker');
         const Response = mongoose.model('Response');
@@ -201,6 +221,12 @@ const deleteUserPermanentlyById = async (id) => {
                 Result.deleteMany({ sessionId: { $in: await Session.find({ teacherId: id }).distinct('_id') } })
             ]);
 
+            // Delete dependencies: questions associated with those quizzes
+            const questionsToDelete = await Quiz.find({ creatorId: id }).distinct('questionIds');
+
+            await Promise.all([
+                Question.deleteMany({ _id: { $in: questionsToDelete } })
+            ]);
 
             // Delete the teacher's quizzes and sessions
             await Promise.all([

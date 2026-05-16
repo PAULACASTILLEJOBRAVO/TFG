@@ -7,7 +7,6 @@ import {
     TableCell 
 } from "@/components/ui/table";
 import { ClickerRow } from ".";
-import { Spinner } from "@/components/ui/spinner";
 import { useTranslation } from "react-i18next";
 import { TablePaginationFooter } from "@/components/Common";
 import { icons } from "@/utils/constants";

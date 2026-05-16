@@ -12,24 +12,60 @@ import { breadcrumbConfig } from "@/config/breadcrumb.config";
 import { Fragment } from "react";
 
 const matchRoute = (pathname) => {
-  if (breadcrumbConfig[pathname]) return breadcrumbConfig[pathname];
+  // Exact match first
+  if (breadcrumbConfig[pathname]) {
+    return {
+      items: breadcrumbConfig[pathname],
+      params: {}
+    };
+  }
 
-  return Object.entries(breadcrumbConfig).find(([route]) => {
-    if (!route.includes(":")) return false;
+  // Dinamic routes
+  for(const [route, items] of Object.entries(breadcrumbConfig)) {
+    if (!route.includes(":")) continue;
+
+    const paramNames = [];
 
     const regex = new RegExp(
-      "^" + route.replace(/:\w+/g, "[^/]+") + "$"
+      "^" + route.replace(/:(\w+)/g, (_, paramName) => {
+        paramNames.push(paramName);
+        return "([^/]+)";
+      }) + "$"
     );
 
-    return regex.test(pathname);
-  })?.[1];
+    const match = pathname.match(regex);
+
+    if (match) {
+      const values = match.slice(1);
+
+      const params = Object.fromEntries(
+        paramNames.map((name, index) => [name, values[index]])
+      )
+
+      return { items, params };
+    }
+  }
+
+  return null;
 };
 
 export default function AppBreadcrumb() {
   const { pathname } = useLocation();
-  const items = matchRoute(pathname);
+  const match = matchRoute(pathname);
 
-  if (!items) return null;
+  if (!match) return null;
+
+  const { items, params } = match;
+
+  const replaceParams = (path) => {
+    let finalPath = path;
+
+    Object.entries(params).forEach(([key, value]) => {
+      finalPath = finalPath.replace(`:${key}`, value);
+    });
+
+    return finalPath;
+  };
 
   return (
     <Breadcrumb className="mb-6">
@@ -41,7 +77,7 @@ export default function AppBreadcrumb() {
             <Fragment key={item.href || item.label}>
               <BreadcrumbItem>
                 {item.href && !isLast ? (
-                  <BreadcrumbLink href={item.href}>
+                  <BreadcrumbLink href={replaceParams(item.href)}>
                     {item.label}
                   </BreadcrumbLink>
                 ) : (

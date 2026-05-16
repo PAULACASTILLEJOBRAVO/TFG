@@ -23,11 +23,16 @@ export const breadcrumbConfig = {
     ],
     "/dashboard_teacher/session/:id": [
         { label: "Quizzes", href: "/dashboard_teacher/quizzes" },
-        { label: "Quiz's Session" }
+        { label: "Session" }
     ],
     "/dashboard_teacher/quizzes/:id/sessions": [
         { label: "Quizzes", href: "/dashboard_teacher/quizzes" },
-        { label: "Quiz's Sessions" }
+        { label: "Quiz Sessions" }
+    ],
+    "/dashboard_teacher/quizzes/:id/students/:studentId/history": [
+        { label: "Quizzes", href: "/dashboard_teacher/quizzes" },
+        { label: "Quiz Sessions", href: "/dashboard_teacher/quizzes/:id/sessions" },
+        { label: "Session Details" }
     ],
     "/dashboard_teacher/profile": [
         { label: "Profile" }
@@ -35,7 +40,7 @@ export const breadcrumbConfig = {
 
     "/dashboard_student/quizzes/:id/history": [
         { label: "Quizzes", href: "/dashboard_student/quizzes" },
-        { label: "Quiz's History" }
+        { label: "Quiz History" }
     ],
     "/dashboard_student/profile": [
         { label: "Profile" }

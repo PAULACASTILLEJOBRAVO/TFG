@@ -177,6 +177,8 @@
                     "fullName": "Full name",
                     "email": "Email",
                     "role": "Role",
+                    "clicker": "Assigned clicker",
+                    "noClickerAssigned": "Not assigned",
                     "lastLogin": "Last login",
                     "lastLogout": "Last logout",
                     "archived": "Archived"
@@ -435,15 +437,6 @@
                 "averageScoreTooltip": "Average score achieved by students in all sessions of this quiz.",
                 "averageTimeTooltip": "Average time taken by students to complete this quiz.",
                 "accuracyTooltip": "Overall percentage of correct answers across all sessions of this quiz.",
-
-                "insight": "Insight",
-
-                "insightMessages": {
-                    "excellent": "Excellent!",
-                    "good": "Good!",
-                    "average": "Average.",
-                    "poor": "Poor."
-                },
 
                 "sessionNumber": "Session",
                 "questionNumber": "Question",

@@ -27,7 +27,7 @@ const DeleteClickerDialog = ({open, clicker, onConfirm, onClose}) => {
                 </DialogDescription>
 
                 <DialogFooter className="gap-2">
-                    <Button variant="destructive" onClick={() => onConfirm("Clicker removed by an admin")}>
+                    <Button variant="destructive" onClick={() => onConfirm()}>
                         {t("common.delete")}
                     </Button>
 

@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useQuizzesForTeacher } from "@/hooks/Quizzes/useQuizzesForTeacher";
 import { QuizDetailsCard } from "@/components/Quizzes/Content/";
 import { 
-    DeleteQuizDialog, 
+    ArchiveQuizDialog,
     PublishQuizDialog 
 } from "@/components/Quizzes/Dialogs";
 import { Fragment, useState } from "react";
@@ -53,14 +53,14 @@ const QuizzesManagement = () => {
 
     //DIALOGS
     const [dialogs, setDialogs] = useState({
-        delete: false,
+        archive: false,
         publish: false
     });
 
     // DIALOGS STATUS
-    const openDeleteDialog = (quiz) => {
+    const openArchiveDialog = (quiz) => {
         setSelectedQuiz(quiz);
-        setDialogs(prev => ({...prev, delete: true}));
+        setDialogs(prev => ({...prev, archive: true}));
     }
 
     const openPublishDialog = (quiz) => {
@@ -70,19 +70,19 @@ const QuizzesManagement = () => {
 
     const closeDialogs = () => {
         setDialogs({
-            delete: false,
+            archive: false,
             publish: false
         });
     }
 
     // DIALOGS ACTIONS
-    const handleConfirmDelete = async () => {
+    const handleConfirmArchive = async () => {
         try{
             await remove(selectedQuiz._id);
             closeDialogs();
             refetchTeacher({ limit: 0 });
         }catch(error){
-            console.error("Error deleting quiz", error);
+            console.error("Error archiving quiz", error);
         }
     }
 
@@ -158,7 +158,7 @@ const QuizzesManagement = () => {
                                         key={quiz._id} 
                                         quiz={quiz} 
                                         onClick={handleViewResults}
-                                        onDelete={openDeleteDialog}  
+                                        onDelete={openArchiveDialog}  
                                         onRestore={handleRestoreQuiz}
                                         onPublish={openPublishDialog}
                                         onEdit={handleEditQuiz}
@@ -171,10 +171,10 @@ const QuizzesManagement = () => {
                     
                 </div>
 
-                {selectedQuiz && <DeleteQuizDialog
-                    open={dialogs.delete}
+                {selectedQuiz && <ArchiveQuizDialog
+                    open={dialogs.archive}
                     quiz={selectedQuiz}
-                    onConfirm={handleConfirmDelete}
+                    onConfirm={handleConfirmArchive}
                     onClose={closeDialogs}
                 />}
 

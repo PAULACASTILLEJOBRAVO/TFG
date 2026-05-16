@@ -347,9 +347,9 @@
                 }
             },
             "dialogs": {
-                "delete": {
-                    "title": "Eliminar cuestionario",
-                    "description": "¿Estás seguro de que deseas eliminar este cuestionario? Esta acción no se puede deshacer.",
+                "archive": {
+                    "title": "Archivar cuestionario",
+                    "description": "¿Estás seguro de que deseas archivar este cuestionario?",
                     "warning": "El cuestionario {{title}} no podrá volver a ser utilizado ni jugado, pero podrás restaurarlo más tarde si lo deseas."
                 },
                 "publish": {

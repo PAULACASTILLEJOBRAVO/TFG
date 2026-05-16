@@ -1,7 +1,7 @@
 import { 
     EditButton, 
-    DeleteButton, 
-    RestoreButton 
+    RestoreButton, 
+    ArchiveButton
 } from "@/components/Common/ActionButtons";
 import { 
     StartSessionButton, 
@@ -42,7 +42,7 @@ const QuizActionCell = ({ label, onEdit, onDelete, onRestore, onPublish, onStart
                 )
             ) : (
                 onDelete && (
-                    <DeleteButton
+                    <ArchiveButton
                         onClick={onDelete}
                         label={label}
                     />

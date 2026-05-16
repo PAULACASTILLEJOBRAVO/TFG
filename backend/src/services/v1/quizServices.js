@@ -537,6 +537,137 @@ const getQuizQuestionAnalytics = async (quizId) => {
     return analytics;
 };
 
+// Service to fetch analytics grouped by session for a specific quiz
+const getQuizSessionAnalytics = async (quizId) => {
+    debug(`Fetching session analytics for quiz with ID: ${quizId}`);
+
+    // 1. Obtain sessions of the quiz
+    const sessions = await Session.find({ quizId }).sort({ startTime: 1 });
+
+    debug(`Fetched ${sessions.length} sessions for quiz with ID: ${quizId}`);
+
+    if (!sessions.length) {
+        return [];
+    }
+
+    // 2. Obtain responses for all sessions
+    const sessionIds = sessions.map(s => s._id);
+
+    const responses = await Response.find({
+        sessionId: { $in: sessionIds }
+    });
+
+    debug(`Fetched ${responses.length} responses for quiz with ID: ${quizId}`);
+
+    // 3. Group responses by session
+    const responsesBySession = new Map();
+
+    responses.forEach(r => {
+        const sessionId = r.sessionId.toString();
+
+        if (!responsesBySession.has(sessionId)) {
+            responsesBySession.set(sessionId, []);
+        }
+
+        responsesBySession.get(sessionId).push(r);
+    });
+
+    // 4. Build analytics per session
+    const analytics = sessions.map(session => {
+        const sessionId = session._id.toString();
+
+        const sessionResponses = responsesBySession.get(sessionId) || [];
+
+        let totalCorrect = 0;
+        let totalResponses = 0;
+
+        const questionsMap = new Map();
+
+        // Create questions structure from snapshot
+        session.questions.forEach(q => {
+            const qId = q.originalQuestionId.toString();
+
+            questionsMap.set(qId, {
+                questionId: qId,
+                text: q.questionSnapshot.text,
+                type: q.questionSnapshot.type,
+
+                options: q.questionSnapshot.options.map(o => ({
+                    letter: o.letter,
+                    text: o.text,
+                    isCorrect: o.isCorrect,
+                    count: 0
+                })),
+
+                totalResponses: 0,
+                correctResponses: 0,
+                accuracy: 0
+            });
+        });
+
+        // Process responses of this session
+        sessionResponses.forEach(r => {
+            const qId = r.questionId.toString();
+
+            const question = questionsMap.get(qId);
+
+            if (!question) return;
+
+            question.totalResponses += 1;
+            totalResponses += 1;
+
+            if (r.isCorrect) {
+                question.correctResponses += 1;
+                totalCorrect += 1;
+            }
+
+            const option = question.options.find(
+                o => o.letter === r.answer
+            );
+
+            if (option) {
+                option.count += 1;
+            }
+        });
+
+        // Final question metrics
+        const questions = Array.from(questionsMap.values()).map(q => ({
+            ...q,
+            accuracy: q.totalResponses
+                ? Math.round((q.correctResponses / q.totalResponses) * 100)
+                : 0
+        }));
+
+        // Session duration
+        const duration =
+            session.startTime && session.endTime
+                ? Math.round((session.endTime - session.startTime) / 1000)
+                : 0;
+
+        return {
+            sessionId,
+            label: session.startTime
+                ? new Date(session.startTime).toLocaleDateString()
+                : "Unknown",
+            startTime: session.startTime,
+            endTime: session.endTime,
+            stats: {
+                accuracy: totalResponses
+                    ? Math.round((totalCorrect / totalResponses) * 100)
+                    : 0,
+                totalResponses,
+                totalCorrect,
+                duration
+            },
+            questions
+        };
+    });
+
+    debug(`Calculated session analytics for quiz with ID: ${quizId}`);
+
+    return analytics;
+};
+
 // Service to create a new user
 const createQuiz = async (body) => {
     debug('Creating a new quiz with body:', body);
@@ -733,6 +864,7 @@ module.exports = {
     getQuizSessionsForTeacher,
     getAllQuizzesForStudent,
     getQuizByIdForStudent,
+    getQuizSessionAnalytics,
     getQuizQuestionAnalytics,
 
     createQuiz,

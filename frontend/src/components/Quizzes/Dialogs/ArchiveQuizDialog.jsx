@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
 
-const DeleteQuizDialog = ({open, quiz, onConfirm, onClose}) => {
+const ArchiveQuizDialog = ({open, quiz, onConfirm, onClose}) => {
     if (!quiz) return null;
 
     const { t } = useTranslation();
@@ -19,18 +19,18 @@ const DeleteQuizDialog = ({open, quiz, onConfirm, onClose}) => {
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>
-                        {t("teacher.quizzesManagement.dialogs.delete.title")}
+                        {t("teacher.quizzesManagement.dialogs.archive.title")}
                     </DialogTitle>
                 </DialogHeader>
                 <DialogDescription>
-                    {t("teacher.quizzesManagement.dialogs.delete.description")}
+                    {t("teacher.quizzesManagement.dialogs.archive.description")}
                     <br />
-                    <strong>{t("teacher.quizzesManagement.dialogs.delete.warning", {title: quiz.title})}</strong>
+                    <strong>{t("teacher.quizzesManagement.dialogs.archive.warning", {title: quiz.title})}</strong>
                 </DialogDescription>
 
                 <DialogFooter className="gap-2">
-                    <Button variant="destructive" onClick={() => onConfirm("Quiz removed by the teacher with id: " + quiz.creatorId)}>
-                        {t("common.delete")}
+                    <Button variant="destructive" onClick={() => onConfirm()}>
+                        {t("common.archive")}
                     </Button>
 
                     <Button variant="outline" onClick={onClose}>
@@ -42,4 +42,4 @@ const DeleteQuizDialog = ({open, quiz, onConfirm, onClose}) => {
     );
 }
 
-export default DeleteQuizDialog;
+export default ArchiveQuizDialog;

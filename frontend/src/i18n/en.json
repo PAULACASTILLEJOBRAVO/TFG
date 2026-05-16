@@ -177,6 +177,8 @@
                     "fullName": "Full name",
                     "email": "Email",
                     "role": "Role",
+                    "clicker": "Assigned clicker",
+                    "noClickerAssigned": "Not assigned",
                     "lastLogin": "Last login",
                     "lastLogout": "Last logout",
                     "archived": "Archived"
@@ -341,9 +343,9 @@
                 }
             },
             "dialogs": {
-                "delete": {
-                    "title": "Delete Quiz",
-                    "description": "Are you sure you want to delete this quiz? This action cannot be undone.",
+                "archive": {
+                    "title": "Archive Quiz",
+                    "description": "Are you sure you want to archive this quiz?",
                     "warning": "The quiz {{title}} will no longer be able to be used or played, but you can restore it later if you wish."
                 },
                 "publish": {
@@ -429,14 +431,26 @@
                 "averageScore": "average score",
                 "averageTime": "average time",
                 "accuracy": "accuracy",
-                "insight": "Insight",
 
-                "insightMessages": {
-                    "excellent": "Excellent!",
-                    "good": "Good!",
-                    "average": "Average.",
-                    "poor": "Poor."
-                }
+                "participantsTooltip": "Number of unique students who have played this quiz.",
+                "totalSessionsTooltip": "Total number of game sessions played for this quiz.",
+                "averageScoreTooltip": "Average score achieved by students in all sessions of this quiz.",
+                "averageTimeTooltip": "Average time taken by students to complete this quiz.",
+                "accuracyTooltip": "Overall percentage of correct answers across all sessions of this quiz.",
+
+                "sessionNumber": "Session",
+                "questionNumber": "Question",
+                "distractorDetected": "⚠ The option {{option}} has been selected by {{percentage}}% of students.",
+                "dispersedDistractors": "⚠ The options {{options}} have been selected by {{percentage}}% of students.",
+                "multipleStrongDistractors": "⚠ The options {{options}} have been selected by more than {{percentage}}% of students each.",
+                "noQuestions": "No questions have been played in this quiz yet.",
+                
+                "option": "Option",
+                "responses": "responses",
+                "percentage": "% of total",
+                "correct": "Correct",
+                "incorrect": "Incorrect"
+                
             }
         }
     },

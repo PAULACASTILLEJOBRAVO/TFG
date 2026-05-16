@@ -61,10 +61,26 @@ const generateResults = async ({playerId, sessionId}) => {
   const totalAnswers = responses.length;
   const unansweredQuestions = totalQuestions - totalAnswers; 
 
-  // Time 
-  const startedAt = session.startTime;
-  const finishedAt = session.endTime || new Date();
-  const timeTaken = Math.floor((finishedAt - startedAt) / 1000); // Time in seconds
+  // Time
+  const validResponses = responses.filter(r => r.answeredAt);
+  debug(`Valid responses with answeredAt for player ID ${playerId}:`, validResponses);
+
+  let startedAt = null;
+  let finishedAt = null;
+  let timeTaken = 0;
+
+  if (validResponses.length > 0) {
+    const sortedResponses = validResponses.sort(
+      (a, b) => new Date(a.answeredAt) - new Date(b.answeredAt)
+    );
+
+    startedAt = sortedResponses[0].answeredAt;
+    finishedAt = sortedResponses[sortedResponses.length - 1].answeredAt;
+
+    timeTaken = Math.floor(
+      (new Date(finishedAt) - new Date(startedAt)) / 1000
+    );
+  }
 
   // Score
   const totalScore = responses.reduce(

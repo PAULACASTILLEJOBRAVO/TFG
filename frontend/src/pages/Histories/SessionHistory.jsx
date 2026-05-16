@@ -5,7 +5,7 @@ import {
     DashboardLayout 
 } from "@/components/Dashboard/Layout";
 import { DashboardSubtitle } from "@/components/Dashboard/Layout/Content";
-import SessionDetailsAccordion from "@/components/Sessions/Content/SessionHistory/SessionDetailsAccordion";
+import { SessionDetailsAccordion } from "@/components/Sessions/Content/SessionHistory";
 import { Separator } from "@/components/ui/separator";
 import { Spinner } from "@/components/ui/spinner";
 import { useQuizForStudent } from "@/hooks/Quizzes/useQuizForStudent";
@@ -61,7 +61,7 @@ const SessionHistory = () => {
                 <div className="grid grid-cols-[1fr_8fr] items-center pb-2">
                     {/** Left */}
                     <div className="pr-6 md:pr-16">
-                        <BackButton href={`/dashboard_${user.role}/quizzes`} label={t("common.sessionHistory.backToQuizzes")} />
+                        <BackButton href={user.role === 'student' ?  `/dashboard_${user.role}/quizzes` : `/dashboard_${user.role}/quizzes/${id}/sessions`} label={t("common.sessionHistory.backToQuizzes")} />
                     </div>             
 
                     {/** Center */}

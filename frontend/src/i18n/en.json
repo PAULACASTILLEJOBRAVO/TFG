@@ -47,7 +47,8 @@
                     "easy": "Easy",
                     "unknown": "No difficulty"
                 },
-                "noQuizzes": "You don't have any quizzes created.",
+                "noQuizzesTeacher": "You don't have any quizzes created.",
+                "noQuizzesStudent": "You haven't played any quizzes yet.",
                 "noSessions": "No game sessions yet."
             }
         },

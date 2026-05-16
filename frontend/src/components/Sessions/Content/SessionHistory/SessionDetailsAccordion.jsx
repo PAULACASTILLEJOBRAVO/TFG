@@ -44,7 +44,7 @@ const SessionDetailsAccordion = ({ sessions = [], quiz = [] }) => {
             {sessions.map((session) => {
                 const hasTime = !!session.totalTime;
                 
-                const totalSeconds = Math.floor((session.totalTime || 0) / 1000);
+                const totalSeconds = session.totalTime || 0;
 
                 const hours = Math.floor(totalSeconds / 3600);
                 const minutes = Math.floor((totalSeconds % 3600) / 60);

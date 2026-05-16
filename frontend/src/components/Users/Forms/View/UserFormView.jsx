@@ -18,13 +18,13 @@ const UserFormView = ({user}) => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">   
-
-                        {console.log("User assigned clicker:", user)}
                     <InfoBlock label={t("admin.usersManagement.drawer.view.role")} value={t(rolesType[user.role])} />
+                    
                     {user.role === "student" && user?.assignedClickerCode && (
                         <InfoBlock label={t("admin.usersManagement.drawer.view.clicker")} value={user.assignedClickerCode ? user.assignedClickerCode : t("admin.usersManagement.drawer.view.noClickerAssigned")} />
                     )}
                 </div>
+
                 <Separator/>
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 justify-items-center items-center">     

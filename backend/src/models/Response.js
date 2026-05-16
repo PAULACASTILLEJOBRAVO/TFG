@@ -15,12 +15,15 @@ const responseSchema = new Schema({
     pointsAwarded: { 
         type: Number,
     },
+    answeredAt: {
+        type: Date,
+        default: Date.now
+    },
 
     //Relations
     playerId: { 
         type: mongoose.Schema.Types.ObjectId, 
-        ref: 'User',
-        required: true 
+        ref: 'User'
     },
     sessionId: { 
         type: mongoose.Schema.Types.ObjectId, 

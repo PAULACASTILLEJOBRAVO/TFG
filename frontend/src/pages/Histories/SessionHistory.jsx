@@ -35,15 +35,15 @@ const SessionHistory = () => {
 
     // Session data
     const sessions = finalQuiz?.sessions?.slice().sort((a, b) => new Date(b.startTime) - new Date(a.startTime)) || [];
-    const validSessions = sessions.filter(s => s.totalTime);
+    const validSessions = sessions.filter(s => s.results);
 
     // Stats
     const averageTime = validSessions.length
-        ? validSessions.reduce((acc, s) => acc + s.totalTime, 0) / validSessions.length
+        ? validSessions.reduce((acc, s) => acc + s.results?.timeTaken || 0, 0) / validSessions.length
         : 0;
 
     const bestTime = validSessions.length
-        ? Math.min(...validSessions.map(s => s.totalTime))
+        ? Math.min(...validSessions.map(s => s.results?.timeTaken))
         : 0;
 
     const totalAttempts = sessions.length;

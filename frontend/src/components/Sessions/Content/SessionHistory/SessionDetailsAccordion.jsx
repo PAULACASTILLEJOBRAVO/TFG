@@ -25,16 +25,16 @@ const SessionDetailsAccordion = ({ sessions = [], quiz = [] }) => {
     const { t } = useTranslation();
 
     const { averageTime, bestTime } = useMemo(() => {
-        const validSessions = sessions.filter(s => s.totalTime);
+        const validSessions = sessions.filter(s => s.results);
 
-        const totalTime = validSessions.reduce((acc, s) => acc + s.totalTime, 0);
+        const totalTime = validSessions.reduce((acc, s) => acc + s.results?.timeTaken || 0, 0);
 
         return {
             averageTime: validSessions.length > 0 
                 ? totalTime / validSessions.length 
                 : 0,
             bestTime: validSessions.length > 0 
-                ? Math.min(...validSessions.map(s => s.totalTime))
+                ? Math.min(...validSessions.map(s => s.results?.timeTaken))
                 : 0
         };
     }, [sessions]);
@@ -42,9 +42,9 @@ const SessionDetailsAccordion = ({ sessions = [], quiz = [] }) => {
     return (
         <Accordion type="multiple" className="w-full border rounded-lg">
             {sessions.map((session) => {
-                const hasTime = !!session.totalTime;
+                const hasTime = !!session.results?.timeTaken;
                 
-                const totalSeconds = session.totalTime || 0;
+                const totalSeconds = session.results?.timeTaken || 0;
 
                 const hours = Math.floor(totalSeconds / 3600);
                 const minutes = Math.floor((totalSeconds % 3600) / 60);
@@ -54,9 +54,9 @@ const SessionDetailsAccordion = ({ sessions = [], quiz = [] }) => {
                     ? `${hours.toString().padStart(2,"0")}:${minutes.toString().padStart(2,"0")}:${seconds.toString().padStart(2,"0")}`
                     : `${minutes.toString().padStart(2,"0")}:${seconds.toString().padStart(2,"0")}`;
 
-                const isFast = hasTime && session.totalTime <= averageTime;
+                const isFast = hasTime && session.results?.timeTaken <= averageTime;
 
-                const isBest = bestTime && session.totalTime === bestTime;
+                const isBest = bestTime && session.results?.timeTaken === bestTime;
 
                 const data = [
                     { name: t("common.sessionHistory.correctAnswers"), value: session.results?.correctAnswers || 0 },

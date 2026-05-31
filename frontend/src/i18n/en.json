@@ -436,7 +436,7 @@
                 "participantsTooltip": "Number of unique students who have played this quiz.",
                 "totalSessionsTooltip": "Total number of game sessions played for this quiz.",
                 "averageScoreTooltip": "Average score achieved by students in all sessions of this quiz.",
-                "averageTimeTooltip": "Average time taken by students to complete this quiz.",
+                "averageTimeTooltip": "Average time in seconds taken by students to complete this quiz.",
                 "accuracyTooltip": "Overall percentage of correct answers across all sessions of this quiz.",
 
                 "sessionNumber": "Session",

@@ -398,6 +398,49 @@ describe('GET /v1/quizzes/:id/questions-analytics', () => {
     });
 });
 
+describe('GET /v1/quizzes/:id/sessions-analytics', () => {
+    it('200 - should return the quiz by ID', async () => {
+        const response = await request(app)
+            .get(`/v1/quizzes/${quizId}/sessions-analytics`)
+            .set('Authorization', `Bearer ${teacherToken}`);
+        
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toHaveProperty('message');
+        expect(response.body.message).toBe('Quiz session analytics fetched successfully');
+        expect(response.body).toHaveProperty('data');
+    })
+
+    it('400 - should return 400 if quiz ID is invalid', async () => {
+        const response = await request(app)
+            .get(`/v1/quizzes/invalid-id/sessions-analytics`)
+            .set('Authorization', `Bearer ${teacherToken}`);
+        
+        expect(response.statusCode).toBe(400);
+        expect(response.body).toHaveProperty('message');
+        expect(response.body.message).toBe('Quiz ID is incorrect');
+    })
+
+    it('500 - should return 500 if there is a server error', async () => {
+        // Mock the service to throw an error
+        jest.spyOn(quizServices, 'getQuizSessionAnalytics').mockImplementation(() => {
+            throw new Error('Database error');
+        });
+
+        const response = await request(app)
+            .get(`/v1/quizzes/${quizId}/sessions-analytics`)
+            .set('Authorization', `Bearer ${teacherToken}`);
+        
+        expect(response.statusCode).toBe(500);
+        expect(response.body).toHaveProperty('message');
+        expect(response.body.message).toBe('Error fetching quiz session analytics');
+        expect(response.body).toHaveProperty('error');
+        expect(response.body.error).toBe('Database error');
+
+        // Restore the original implementation
+        quizServices.getQuizSessionAnalytics.mockRestore();
+    });
+});
+
 describe('GET /v1/quizzes/:id/student', () => {
     it('200 - should return the quiz by ID', async () => {
         const response = await request(app)

@@ -238,6 +238,8 @@ export const generatePDFReview = ({session, quiz, t}) => {
 }
 
 export const formatTime = (totalSeconds) => {
+    totalSeconds = Math.floor(totalSeconds); 
+
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
     const seconds = totalSeconds % 60;

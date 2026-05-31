@@ -363,7 +363,7 @@ router.get('/:id/questions-analytics', requireTeacherRole, quizController.getQui
 // Route to get session analytics for a specific quiz and teacher
 /**
  * @swagger
- * /v1/quizzes/{id}/sess-analytics:
+ * /v1/quizzes/{id}/sessions-analytics:
  *   get:
  *     summary: Get session analytics for a specific quiz and teacher
  *     description: Retrieve analytics data for each session in a specific quiz, accessible only to the teacher who created the quiz.
@@ -431,6 +431,69 @@ router.get('/:id/questions-analytics', requireTeacherRole, quizController.getQui
  */
 router.get('/:id/sessions-analytics', requireTeacherRole, quizController.getQuizSessionAnalytics);
 
+
+// Route to get a quiz by ID for a specific student
+/**
+ * @swagger
+ * /v1/quizzes/{id}:
+ *   get:
+ *     summary: Retrieve a quiz by ID
+ *     description: Retrieve a specific quiz by their unique MongoDB ObjectId.
+ *     tags: [Quizzes]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: "68e28ac9d9eaff29b0c8453b"
+ *     responses:
+ *       200:
+ *         description: Quiz fetched successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Quiz fetched successfully
+ *                 data: 
+ *                   $ref: '#/components/schemas/Quiz'
+ *       400:
+ *         description: Missing or invalid quiz ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Quiz ID is required
+ *       404:
+ *         description: Quiz not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Quiz not found
+ *       500:
+ *         description: Server error while fetching quiz
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Error fetching quiz
+ *                 error:
+ *                   type: string
+ */
+router.get('/:id', quizController.getQuizById);
 
 // Route to restore a quiz by ID
 /**
@@ -553,69 +616,6 @@ router.patch('/:id/restore', requireTeacherRole, quizController.restoreQuizById)
  *                   type: string
  */
 router.patch('/:id/publish', requireTeacherRole, quizController.publishQuizById);
-
-// Route to get a quiz by ID for a specific student
-/**
- * @swagger
- * /v1/quizzes/{id}:
- *   get:
- *     summary: Retrieve a quiz by ID
- *     description: Retrieve a specific quiz by their unique MongoDB ObjectId.
- *     tags: [Quizzes]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *           example: "68e28ac9d9eaff29b0c8453b"
- *     responses:
- *       200:
- *         description: Quiz fetched successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Quiz fetched successfully
- *                 data: 
- *                   $ref: '#/components/schemas/Quiz'
- *       400:
- *         description: Missing or invalid quiz ID
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Quiz ID is required
- *       404:
- *         description: Quiz not found
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Quiz not found
- *       500:
- *         description: Server error while fetching quiz
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Error fetching quiz
- *                 error:
- *                   type: string
- */
-router.get('/:id', quizController.getQuizById);
 
 // Route to update a quiz by ID
 /**

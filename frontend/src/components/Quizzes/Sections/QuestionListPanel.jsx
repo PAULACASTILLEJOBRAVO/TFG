@@ -40,7 +40,7 @@ const QuestionListPanel = ({ displayQuestions, selectedQuestion, questionErrors,
                         ); 
                     })}
                 </div> 
-            <CreateButton label={t("common.create")} onClick={() => onAdd(createNewQuestion())}/>
+            <CreateButton label={t("teacher.quizzesManagement.quizForm.settings.labelButton")} onClick={() => onAdd(createNewQuestion())}/>
             </CardContent>
         </Card>
     );

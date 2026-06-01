@@ -160,3 +160,9 @@ export const searchDictionary = {
 };
 
 export const TOLERANCE = 2;
+
+export const pdfTutorials = {
+    admin: "/tutorials/ManualUsuarioAdmin_QuizLective.pdf",
+    teacher: "/tutorials/ManualUsuarioProfesor_QuizLective.pdf",
+    student: "/tutorials/ManualUsuarioEstudiante_QuizLective.pdf",
+}

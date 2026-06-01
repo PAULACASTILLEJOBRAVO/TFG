@@ -444,7 +444,7 @@
                 "distractorDetected": "⚠ The option {{option}} has been selected by {{percentage}}% of students.",
                 "dispersedDistractors": "⚠ The options {{options}} have been selected by {{percentage}}% of students.",
                 "multipleStrongDistractors": "⚠ The options {{options}} have been selected by more than {{percentage}}% of students each.",
-                "noQuestions": "No questions have been played in this quiz yet.",
+                "noQuestions": "No questions have been played in this session yet.",
                 
                 "option": "Option",
                 "responses": "responses",

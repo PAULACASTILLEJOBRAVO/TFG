@@ -328,7 +328,7 @@
 
                 "settings": {
                     "title": "Configuración",
-                    "labelButton": "Pregunta",
+                    "labelButton": "pregunta",
                     "options": "opciones",
                     "multipleChoice": "Opción múltiple",
                     "trueFalse": "Verdadero/Falso",
@@ -448,7 +448,7 @@
                 "distractorDetected": "⚠ La opción {{option}} ha sido seleccionada por el {{percentage}}% de los estudiantes.",
                 "dispersedDistractors": "⚠ La opción {{option}} ha sido seleccionada por el {{percentage}}% de los estudiantes.",
                 "multipleStrongDistractors": "⚠ Las opciones {{options}} han sido seleccionadas por más del {{percentage}}% de los estudiantes cada una.",
-                "noQuizData": "No hay datos de sesiones para este cuestionario todavía.",
+                "noQuestions": "No hay preguntas disponibles para esta sesión todavía.",
 
                 "option": "Opción",
                 "responses": "respuestas",
